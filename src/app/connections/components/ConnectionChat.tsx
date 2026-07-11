@@ -66,7 +66,10 @@ export default function ConnectionChat({
           filter: `connection_id=eq.${connection.id}`,
         },
         (payload) => {
-          setMessages((prev) => [...prev, payload.new as Message]);
+          setMessages((prev) => {
+            const msg = payload.new as Message;
+            return prev.some((m) => m.id === msg.id) ? prev : [...prev, msg];
+          });
         },
       )
       .on(
@@ -137,15 +140,28 @@ export default function ConnectionChat({
     const content = input.trim();
     setInput("");
 
-    const { error } = await supabase.from("messages").insert({
-      connection_id: connection.id,
-      sender_id: currentUser.id,
-      content,
-    });
+    const { data, error } = await supabase
+      .from("messages")
+      .insert({
+        connection_id: connection.id,
+        sender_id: currentUser.id,
+        content,
+      })
+      .select()
+      .single();
 
     if (error) {
       toast.error("Failed to send message.");
       setInput(content);
+      setSending(false);
+      return;
+    }
+
+    // Optimistically append — Realtime may echo but we dedupe by id
+    if (data) {
+      setMessages((prev) =>
+        prev.some((m) => m.id === data.id) ? prev : [...prev, data as Message],
+      );
     }
 
     setSending(false);
