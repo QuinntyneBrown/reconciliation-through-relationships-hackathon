@@ -499,7 +499,7 @@ export default function MatchingClient({
 
       {/* Participant profile dialog */}
       <Dialog open={profileDialog !== null} onOpenChange={(open) => !open && setProfileDialog(null)}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-lg p-6 sm:p-8">
           {profileDialog && (
             <>
               <DialogHeader>
