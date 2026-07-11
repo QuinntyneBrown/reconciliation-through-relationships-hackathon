@@ -42,7 +42,7 @@ export default function RecommendedTab({ matches, connections, currentUser }: Pr
         Your top {matches.length} recommended connection{matches.length !== 1 ? "s" : ""}, reviewed
         by RTR facilitators.
       </p>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {matches.map(({ participant, score, criteria }) => {
           const connection = connectionMap.get(participant.id);
           const initials =

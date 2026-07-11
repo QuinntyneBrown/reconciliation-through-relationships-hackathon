@@ -38,7 +38,7 @@ export default function DashboardClient({
     <div className="bg-background flex min-h-screen flex-col">
       <DashboardNav user={currentUser} />
 
-      <main className="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6">
+      <main className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 sm:px-6">
         <PageIntro
           eyebrow="Your relationship journey"
           title={`Welcome, ${currentUser.first_name ?? "friend"}`}
