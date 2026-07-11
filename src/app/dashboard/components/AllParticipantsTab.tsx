@@ -163,7 +163,7 @@ export default function AllParticipantsTab({ participants, currentUser, connecti
       {viewMode === "map" ? (
         <ParticipantMap participants={filtered} />
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 items-stretch">
           {filtered.map((participant) => {
             const connection = connectionMap.get(participant.id);
             const initials =
@@ -172,9 +172,9 @@ export default function AllParticipantsTab({ participants, currentUser, connecti
             return (
               <Card
                 key={participant.id}
-                className="border-border hover:border-primary/30 transition-colors"
+                className="border-border hover:border-primary/30 transition-colors flex flex-col h-full"
               >
-                <CardContent className="space-y-3 p-4">
+                <CardContent className="space-y-3 p-4 flex flex-col flex-1">
                   <div className="flex items-start gap-3">
                     <Avatar variant="default">
                       <AvatarFallback>{initials || "?"}</AvatarFallback>
@@ -208,7 +208,7 @@ export default function AllParticipantsTab({ participants, currentUser, connecti
                     </div>
                   )}
 
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 mt-auto">
                     <Button variant="outline" size="sm" className="flex-1" asChild>
                       <Link href={`/profile/${participant.id}`}>View</Link>
                     </Button>

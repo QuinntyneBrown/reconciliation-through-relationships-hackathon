@@ -42,7 +42,7 @@ export default function RecommendedTab({ matches, connections, currentUser }: Pr
         Your top {matches.length} recommended connection{matches.length !== 1 ? "s" : ""}, reviewed
         by RTR facilitators.
       </p>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 items-stretch">
         {matches.map(({ participant, score, criteria }) => {
           const connection = connectionMap.get(participant.id);
           const initials =
@@ -52,7 +52,7 @@ export default function RecommendedTab({ matches, connections, currentUser }: Pr
           return (
             <Card
               key={participant.id}
-              className="border-border hover:border-primary/40 transition-colors"
+              className="border-border hover:border-primary/40 transition-colors flex flex-col h-full"
             >
               <CardHeader className="pb-3">
                 <div className="flex items-start gap-3">
@@ -82,7 +82,7 @@ export default function RecommendedTab({ matches, connections, currentUser }: Pr
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-3 flex flex-col flex-1">
                 {/* Match criteria chips */}
                 <div className="flex flex-wrap gap-1">
                   {labels.map((l) => (
@@ -115,7 +115,7 @@ export default function RecommendedTab({ matches, connections, currentUser }: Pr
                   </div>
                 )}
 
-                <div className="flex gap-2 pt-1">
+                <div className="flex gap-2 pt-1 mt-auto">
                   <Button variant="outline" size="sm" asChild className="flex-1">
                     <Link href={`/profile/${participant.id}`}>View profile</Link>
                   </Button>
