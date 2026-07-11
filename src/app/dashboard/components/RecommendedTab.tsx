@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -135,12 +136,20 @@ export default function RecommendedTab({ matches, connections, currentUser }: Pr
                             ? `Waiting for ${participant.first_name} to accept`
                             : `${participant.first_name} is waiting for you to accept`;
 
-                      return (
-                        <Button size="sm" className="flex-1" asChild title={tooltip}>
+                      const btn = (
+                        <Button size="sm" className="flex-1" asChild>
                           <Link href={`/connections/${connection.id}`}>
                             {isActive ? "Open chat" : "Pending"}
                           </Link>
                         </Button>
+                      );
+                      return isActive ? (
+                        btn
+                      ) : (
+                        <Tooltip>
+                          <TooltipTrigger render={<div className="flex-1" />}>{btn}</TooltipTrigger>
+                          <TooltipContent>{tooltip}</TooltipContent>
+                        </Tooltip>
                       );
                     })()
                   ) : (

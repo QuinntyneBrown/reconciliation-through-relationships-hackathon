@@ -14,7 +14,10 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
-import { List, Map as MapIcon, MapPin, Search } from "lucide-react";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import { List, Map as MapIcon, MapPin, Search, ChevronLeft, ChevronRight } from "lucide-react";
+
+const PAGE_SIZE = 9;
 import type { Profile, Connection } from "@/data/supabase/database.types";
 import ParticipantMap from "./ParticipantMap";
 
@@ -59,6 +62,7 @@ export default function AllParticipantsTab({ participants, currentUser, connecti
   const [province, setProvince] = useState("All provinces");
   const [faith, setFaith] = useState("All faiths");
   const [background, setBackground] = useState("all");
+  const [page, setPage] = useState(1);
 
   const connectionMap = new globalThis.Map<string, (typeof connections)[number]>(
     connections.map((c) => {
@@ -96,11 +100,20 @@ export default function AllParticipantsTab({ participants, currentUser, connecti
           <Input
             placeholder="Search by name, city, or interest…"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1);
+            }}
             className="pl-9"
           />
         </div>
-        <Select value={province} onValueChange={(v) => setProvince(v ?? "All provinces")}>
+        <Select
+          value={province}
+          onValueChange={(v) => {
+            setProvince(v ?? "All provinces");
+            setPage(1);
+          }}
+        >
           <SelectTrigger className="w-full sm:w-48">
             <SelectValue />
           </SelectTrigger>
@@ -112,7 +125,13 @@ export default function AllParticipantsTab({ participants, currentUser, connecti
             ))}
           </SelectContent>
         </Select>
-        <Select value={background} onValueChange={(v) => setBackground(v ?? "all")}>
+        <Select
+          value={background}
+          onValueChange={(v) => {
+            setBackground(v ?? "all");
+            setPage(1);
+          }}
+        >
           <SelectTrigger className="w-full sm:w-40">
             <SelectValue placeholder="Background" />
           </SelectTrigger>
@@ -122,7 +141,13 @@ export default function AllParticipantsTab({ participants, currentUser, connecti
             <SelectItem value="non_indigenous">Non-Indigenous</SelectItem>
           </SelectContent>
         </Select>
-        <Select value={faith} onValueChange={(v) => setFaith(v ?? "All faiths")}>
+        <Select
+          value={faith}
+          onValueChange={(v) => {
+            setFaith(v ?? "All faiths");
+            setPage(1);
+          }}
+        >
           <SelectTrigger className="w-full sm:w-44">
             <SelectValue placeholder="Faith tradition" />
           </SelectTrigger>
@@ -156,15 +181,26 @@ export default function AllParticipantsTab({ participants, currentUser, connecti
         </div>
       </div>
 
-      <p className="text-muted-foreground text-sm">
-        {filtered.length} participant{filtered.length !== 1 ? "s" : ""}
-      </p>
+      {(() => {
+        const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+        const currentPage = Math.min(page, totalPages);
+        const start = (currentPage - 1) * PAGE_SIZE;
+        const pageItems = viewMode === "map" ? filtered : filtered.slice(start, start + PAGE_SIZE);
 
-      {viewMode === "map" ? (
-        <ParticipantMap participants={filtered} />
-      ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 items-stretch">
-          {filtered.map((participant) => {
+        return (
+          <>
+            <p className="text-muted-foreground text-sm">
+              {viewMode === "list" && filtered.length > 0
+                ? `Showing ${start + 1}–${start + pageItems.length} of ${filtered.length}`
+                : `${filtered.length} participant${filtered.length !== 1 ? "s" : ""}`}
+            </p>
+
+            {viewMode === "map" ? (
+              <ParticipantMap participants={filtered} />
+            ) : (
+              <>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 items-stretch">
+                  {pageItems.map((participant) => {
             const connection = connectionMap.get(participant.id);
             const initials =
               `${participant.first_name?.[0] ?? ""}${participant.last_name?.[0] ?? ""}`.toUpperCase();
@@ -228,12 +264,20 @@ export default function AllParticipantsTab({ participants, currentUser, connecti
                               ? `Waiting for ${participant.first_name} to accept`
                               : `${participant.first_name} is waiting for you to accept`;
 
-                        return (
-                          <Button size="sm" className="flex-1" asChild title={tooltip}>
+                        const btn = (
+                          <Button size="sm" className="flex-1" asChild>
                             <Link href={`/connections/${connection.id}`}>
                               {isActive ? "Chat" : "Pending"}
                             </Link>
                           </Button>
+                        );
+                        return isActive ? (
+                          btn
+                        ) : (
+                          <Tooltip>
+                            <TooltipTrigger render={<div className="flex-1" />}>{btn}</TooltipTrigger>
+                            <TooltipContent>{tooltip}</TooltipContent>
+                          </Tooltip>
                         );
                       })()
                     ) : (
@@ -247,13 +291,47 @@ export default function AllParticipantsTab({ participants, currentUser, connecti
             );
           })}
 
-          {filtered.length === 0 && (
-            <div className="text-muted-foreground col-span-full py-16 text-center">
-              No participants match your filters.
-            </div>
-          )}
-        </div>
-      )}
+                  {pageItems.length === 0 && (
+                    <div className="text-muted-foreground col-span-full py-16 text-center">
+                      No participants match your filters.
+                    </div>
+                  )}
+                </div>
+
+                {totalPages > 1 && (
+                  <div className="flex items-center justify-between gap-2 pt-4">
+                    <span className="text-muted-foreground text-sm">
+                      Page {currentPage} of {totalPages}
+                    </span>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setPage((p) => Math.max(1, p - 1))}
+                        disabled={currentPage === 1}
+                        className="gap-1"
+                      >
+                        <ChevronLeft className="h-4 w-4" />
+                        Previous
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                        disabled={currentPage === totalPages}
+                        className="gap-1"
+                      >
+                        Next
+                        <ChevronRight className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+          </>
+        );
+      })()}
     </div>
   );
 }
