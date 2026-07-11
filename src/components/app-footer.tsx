@@ -4,7 +4,7 @@ import { Weave } from "@/components/rtr-brand";
 
 export function AppFooter() {
   return (
-    <footer className="bg-spruce-900 text-on-dark-soft mt-auto px-4 py-10 text-[14.5px] sm:px-6 sm:py-12">
+    <footer className="bg-spruce-900 text-on-dark-soft rtr-panel-on-dark mt-auto px-4 py-10 text-[14.5px] sm:px-6 sm:py-12">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
           <div>

@@ -57,7 +57,7 @@ export default function SignupPage() {
 
   return (
     <div className="grid min-h-screen min-[861px]:grid-cols-2">
-      <aside className="bg-spruce-800 text-on-dark hidden flex-col justify-between p-12 min-[861px]:flex">
+      <aside className="bg-spruce-800 text-on-dark rtr-panel-on-dark hidden flex-col justify-between p-12 min-[861px]:flex">
         <RtrBrand href="/" />
         <div>
           <p className="font-heading text-on-dark max-w-[20ch] text-[26px] leading-[1.4] italic">

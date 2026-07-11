@@ -328,6 +328,27 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='12' viewBox='0 0 120 12'%3E%3Cpath d='M0 9 C15 9 15 3 30 3 S45 9 60 9 S75 3 90 3 S105 9 120 9' fill='none' stroke='%237FB5AE' stroke-width='2.4' stroke-linecap='round'/%3E%3Cpath d='M0 3 C15 3 15 9 30 9 S45 3 60 3 S75 9 90 9 S105 3 120 3' fill='none' stroke='%23E0A34E' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E");
   }
 
+  /*
+   * Faint interlocking-rings texture for the deep-green (spruce) panels.
+   * Echoes the BrandMark's two overlapping circles — the "relationship" motif.
+   * Apply to any surface with bg-spruce-800/900 that has enough open space.
+   */
+  .rtr-panel-on-dark {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .rtr-panel-on-dark::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260'%3E%3Cg fill='none' stroke='%23F4EFE3' stroke-width='1.5'%3E%3Ccircle cx='95' cy='130' r='55'/%3E%3Ccircle cx='165' cy='130' r='55'/%3E%3C/g%3E%3Cg fill='%23F4EFE3'%3E%3Ccircle cx='117' cy='130' r='3.5'/%3E%3Ccircle cx='143' cy='130' r='3.5'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 260px 260px;
+    opacity: 0.05;
+  }
+
   .rtr-empty-state {
     border: 1.5px dashed var(--border-strong);
     border-radius: var(--r-lg);
