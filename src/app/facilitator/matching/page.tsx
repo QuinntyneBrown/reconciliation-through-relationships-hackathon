@@ -34,12 +34,9 @@ export default async function FacilitatorMatchingPage() {
   const indigenous = participants.filter((p) => p.is_indigenous);
   const nonIndigenous = participants.filter((p) => !p.is_indigenous);
 
-  // Collect all profile IDs referenced in matches
-  const profileIds = new Set(
-    (matches ?? []).flatMap((m) => [m.indigenous_participant_id, m.non_indigenous_participant_id]),
-  );
-  const matchProfiles = participants.filter((p) => profileIds.has(p.id));
-  const profileMap = new Map(matchProfiles.map((p) => [p.id, p]));
+  // Include every eligible profile so newly-created manual matches can render
+  // immediately without a server refresh.
+  const profileMap = new Map(participants.map((p) => [p.id, p]));
 
   // Get system settings
   const { data: settings } = await supabase.from("system_settings").select("*");

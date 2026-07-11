@@ -76,7 +76,12 @@ export default function ScheduleMeetingModal({
   }
 
   return (
-    <Dialog open onOpenChange={onClose}>
+    <Dialog
+      open
+      onOpenChange={(open) => {
+        if (!open) onClose();
+      }}
+    >
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>Schedule a call</DialogTitle>

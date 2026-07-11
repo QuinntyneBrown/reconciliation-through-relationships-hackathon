@@ -15,6 +15,7 @@
 
 # next.js
 /.next/
+/.next-boundary/
 /out/
 
 # production
@@ -23,6 +24,12 @@
 # misc
 .DS_Store
 *.pem
+
+# Playwright acceptance-test artifacts
+e2e/test-results/
+e2e/playwright-report/
+boundary-interface-tests/test-results/
+boundary-interface-tests/playwright-report/
 
 # debug
 npm-debug.log*
