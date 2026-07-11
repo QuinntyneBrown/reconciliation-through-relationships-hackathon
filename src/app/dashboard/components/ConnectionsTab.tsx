@@ -66,15 +66,30 @@ export default function ConnectionsTab({ connections, partners, currentUserId }:
               {status === "active" ? (
                 <Badge variant="matched">Active</Badge>
               ) : status === "pending_review" ? (
-                <Badge variant="secondary" className="gap-1 text-xs">
-                  <Clock className="h-3 w-3" />
-                  Under facilitator review
-                </Badge>
-              ) : (
-                <Badge variant="secondary" className="gap-1 text-xs">
+                <Badge
+                  variant="secondary"
+                  className="gap-1 text-xs"
+                  title="Waiting for a facilitator to approve this match"
+                >
                   <Clock className="h-3 w-3" />
                   Pending
                 </Badge>
+              ) : (
+                (() => {
+                  const iAmA = connection.participant_a_id === currentUserId;
+                  const iConnected = iAmA
+                    ? connection.participant_a_connected
+                    : connection.participant_b_connected;
+                  const tip = iConnected
+                    ? `Waiting for ${partner.first_name} to accept`
+                    : `${partner.first_name} is waiting for you to accept`;
+                  return (
+                    <Badge variant="secondary" className="gap-1 text-xs" title={tip}>
+                      <Clock className="h-3 w-3" />
+                      Pending
+                    </Badge>
+                  );
+                })()
               )}
             </div>
           </Link>

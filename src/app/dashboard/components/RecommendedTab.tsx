@@ -120,15 +120,29 @@ export default function RecommendedTab({ matches, connections, currentUser }: Pr
                     <Link href={`/profile/${participant.id}`}>View profile</Link>
                   </Button>
                   {connection ? (
-                    <Button size="sm" className="flex-1" asChild>
-                      <Link href={`/connections/${connection.id}`}>
-                        {connection.status === "active"
-                          ? "Open chat"
-                          : connection.status === "pending_review"
-                            ? "Under review…"
-                            : "Pending…"}
-                      </Link>
-                    </Button>
+                    (() => {
+                      const isActive = connection.status === "active";
+                      const isReview = connection.status === "pending_review";
+                      const iAmA = connection.participant_a_id === currentUser.id;
+                      const iConnected = iAmA
+                        ? connection.participant_a_connected
+                        : connection.participant_b_connected;
+                      const tooltip = isActive
+                        ? "Open chat"
+                        : isReview
+                          ? "Waiting for a facilitator to approve this match"
+                          : iConnected
+                            ? `Waiting for ${participant.first_name} to accept`
+                            : `${participant.first_name} is waiting for you to accept`;
+
+                      return (
+                        <Button size="sm" className="flex-1" asChild title={tooltip}>
+                          <Link href={`/connections/${connection.id}`}>
+                            {isActive ? "Open chat" : "Pending"}
+                          </Link>
+                        </Button>
+                      );
+                    })()
                   ) : (
                     <Button size="sm" className="flex-1" asChild>
                       <Link href={`/profile/${participant.id}`}>Connect</Link>
