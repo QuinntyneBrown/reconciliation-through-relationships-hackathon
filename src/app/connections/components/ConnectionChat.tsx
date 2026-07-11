@@ -187,6 +187,15 @@ export default function ConnectionChat({
       );
     }
 
+    // Notify the partner about the new message
+    await supabase.from("notifications").insert({
+      user_id: partner.id,
+      type: "new_message",
+      title: `New message from ${currentUser.first_name}`,
+      body: content.length > 80 ? content.slice(0, 80) + "…" : content,
+      data: { connection_id: connection.id },
+    });
+
     setSending(false);
   }
 

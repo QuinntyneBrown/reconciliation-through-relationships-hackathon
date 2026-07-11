@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogOut } from "lucide-react";
+import { NotificationCenter } from "@/components/notification-center";
 import type { Profile } from "@/data/supabase/database.types";
 
 const NAV_LINKS = [
@@ -40,7 +41,9 @@ export default function FacilitatorNav({ facilitator }: { facilitator: Profile }
       navItems={NAV_LINKS}
       roleLabel="Facilitator"
       actions={
-        <DropdownMenu>
+        <>
+          <NotificationCenter userId={facilitator.id} />
+          <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="quiet"
@@ -67,6 +70,7 @@ export default function FacilitatorNav({ facilitator }: { facilitator: Profile }
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        </>
       }
     />
   );

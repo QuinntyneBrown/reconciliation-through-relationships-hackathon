@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogOut, User } from "lucide-react";
+import { NotificationCenter } from "@/components/notification-center";
 import type { Profile } from "@/data/supabase/database.types";
 
 const NAV_ITEMS = [
@@ -37,7 +38,9 @@ export default function DashboardNav({ user }: { user: Profile }) {
       homeHref="/dashboard"
       navItems={NAV_ITEMS}
       actions={
-        <DropdownMenu>
+        <>
+          <NotificationCenter userId={user.id} />
+          <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="quiet"
@@ -71,6 +74,7 @@ export default function DashboardNav({ user }: { user: Profile }) {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        </>
       }
     />
   );
