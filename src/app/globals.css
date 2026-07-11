@@ -328,6 +328,31 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='12' viewBox='0 0 120 12'%3E%3Cpath d='M0 9 C15 9 15 3 30 3 S45 9 60 9 S75 3 90 3 S105 9 120 9' fill='none' stroke='%237FB5AE' stroke-width='2.4' stroke-linecap='round'/%3E%3Cpath d='M0 3 C15 3 15 9 30 9 S45 3 60 3 S75 9 90 9 S105 3 120 3' fill='none' stroke='%23E0A34E' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E");
   }
 
+  /*
+   * Faint figure for the deep-green (spruce) panels: two facing profile
+   * silhouettes joined by an open circle — the "relationship" motif —
+   * rising from the panel's bottom edge.
+   * Apply to any surface with bg-spruce-800/900 that has enough open space.
+   * Tune per panel with --rtr-figure-position / --rtr-figure-size.
+   */
+  .rtr-panel-on-dark {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .rtr-panel-on-dark::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='620' height='480' viewBox='0 0 620 480'%3E%3Cg fill='none' stroke='%23F4EFE3' stroke-width='5' stroke-linecap='round'%3E%3Cpath d='M334 30A138 138 0 0 1 334 302'/%3E%3Cpath d='M286 302A138 138 0 0 1 286 30'/%3E%3C/g%3E%3Cpath fill='%23F4EFE3' d='M148 24C192 26 222 58 226 100C227 112 224 118 228 124C244 138 250 148 244 154C240 160 233 160 233 166C241 172 241 180 234 185C243 193 241 203 228 210C219 219 208 224 201 227C200 243 206 254 215 262C240 282 259 303 265 338C270 372 272 424 272 480L60 480C60 424 58 372 66 336C72 306 86 278 104 258C95 240 92 226 94 208C80 190 72 162 74 128C76 72 106 22 148 24Z'/%3E%3Cpath fill='%23F4EFE3' transform='translate(620 0) scale(-1 1)' d='M148 24C192 26 222 58 226 100C227 112 224 118 228 124C244 138 250 148 244 154C240 160 233 160 233 166C241 172 241 180 234 185C243 193 241 203 228 210C219 219 208 224 201 227C200 243 206 254 215 262C240 282 259 303 265 338C270 372 272 424 272 480L60 480C60 424 58 372 66 336C72 306 86 278 104 258C95 240 92 226 94 208C80 190 72 162 74 128C76 72 106 22 148 24Z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: var(--rtr-figure-position, right 48px bottom);
+    background-size: var(--rtr-figure-size, auto min(70%, 460px));
+    opacity: 0.05;
+  }
+
   .rtr-empty-state {
     border: 1.5px dashed var(--border-strong);
     border-radius: var(--r-lg);

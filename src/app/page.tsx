@@ -48,7 +48,7 @@ export default function LandingPage() {
       />
 
       <main>
-        <section className="bg-spruce-800 text-on-dark overflow-hidden px-4 pt-12 sm:px-6 sm:pt-16">
+        <section className="bg-spruce-800 text-on-dark rtr-panel-on-dark overflow-hidden px-4 pt-12 [--rtr-figure-position:right_25%_bottom] [--rtr-figure-size:auto_300px] sm:px-6 sm:pt-16">
           <div className="relative mx-auto max-w-7xl">
             <svg
               viewBox="0 0 200 200"
