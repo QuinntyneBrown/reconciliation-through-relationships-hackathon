@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dialog — Schedule an introductory call</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<style>
+  .slot {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 44px;
+    border: 1.5px solid var(--border-strong);
+    border-radius: 10px;
+    background: var(--parchment);
+    font-weight: 600;
+    font-size: 14.5px;
+    cursor: pointer;
+  }
+  .slot:hover { border-color: var(--spruce-600); }
+  .slot.picked { background: var(--spruce-700); border-color: var(--spruce-700); color: #fff; }
+  .slot.overlap { border-style: solid; border-color: var(--ochre-500); }
+</style>
+</head>
+<body>
+
+<div class="mock-page-behind" aria-hidden="true">
+  <div class="skeleton-bar" style="width: 35%"></div>
+  <div class="skeleton-block" style="height: 320px"></div>
+  <div class="skeleton-bar" style="width: 50%"></div>
+</div>
+
+<div class="scrim">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="dlg-title">
+    <div class="modal-header">
+      <div>
+        <div class="kicker">You and David · introductory call</div>
+        <h2 id="dlg-title" class="h2">Pick a time that suits you both</h2>
+      </div>
+      <button class="close" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="small muted">Times with an <span style="color: var(--ochre-700); font-weight: 700">ochre edge</span> fit inside both of your stated availabilities.</p>
+
+      <div class="field">
+        <span class="label">Saturday, July 12</span>
+        <div class="grid cols-3" style="gap: var(--s2)">
+          <span class="slot overlap">10:00 am</span>
+          <span class="slot picked">10:30 am</span>
+          <span class="slot overlap">11:00 am</span>
+        </div>
+      </div>
+      <div class="field">
+        <span class="label">Sunday, July 13</span>
+        <div class="grid cols-3" style="gap: var(--s2)">
+          <span class="slot">1:00 pm</span>
+          <span class="slot overlap">2:00 pm</span>
+          <span class="slot overlap">3:30 pm</span>
+        </div>
+      </div>
+
+      <div class="field mb-0">
+        <span class="label">How would you like to talk?</span>
+        <label class="choice"><input type="radio" name="call-fmt" checked> Video call — a link is created for you both</label>
+        <label class="choice"><input type="radio" name="call-fmt"> Phone call — numbers are shared only after you confirm</label>
+      </div>
+
+      <div class="alert info mt-4">
+        <span class="alert-icon">ℹ</span>
+        <div><p class="mb-0">Calls are <b>not recorded or transcribed</b>. Whether that ever changes is a decision for RTR, with consent rules set first.</p></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-quiet push-left">Cancel</button>
+      <button class="btn btn-primary">Invite David — Sat 10:30 am</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

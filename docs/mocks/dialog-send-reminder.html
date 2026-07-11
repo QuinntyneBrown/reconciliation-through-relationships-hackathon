@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dialog — Send reminders (facilitator)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+</head>
+<body>
+
+<div class="mock-page-behind" aria-hidden="true">
+  <div class="skeleton-bar" style="width: 30%"></div>
+  <div class="skeleton-block"></div>
+  <div class="skeleton-block" style="height: 200px"></div>
+</div>
+
+<div class="scrim">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="dlg-title">
+    <div class="modal-header">
+      <div>
+        <div class="kicker">Facilitator · communications</div>
+        <h2 id="dlg-title" class="h2">Send a gentle reminder</h2>
+      </div>
+      <button class="close" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <div class="field">
+        <span class="label">Going to</span>
+        <div class="card tinted card-pad" style="box-shadow:none; padding: var(--s3) var(--s4)">
+          <div class="row between">
+            <span class="small"><b>7 participants</b> with unfinished onboarding or learning</span>
+            <button class="btn btn-quiet sm">Edit list</button>
+          </div>
+          <div class="row mt-2" style="gap:6px">
+            <span class="avatar-group">
+              <span class="avatar sm river">JF</span><span class="avatar sm">HM</span><span class="avatar sm ochre">KT</span><span class="avatar sm berry">+4</span>
+            </span>
+            <span class="tiny">Stalled between 1 and 3 weeks</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="rem-template">Template</label>
+        <select class="select" id="rem-template">
+          <option selected>Learning journey — friendly nudge</option>
+          <option>Onboarding — finish your profile</option>
+          <option>Write my own message</option>
+        </select>
+      </div>
+
+      <div class="field mb-0">
+        <label for="rem-msg">Message preview</label>
+        <textarea class="textarea" id="rem-msg" style="min-height: 130px">Hi {first name},
+
+Your seat in the circle is still waiting. You're {modules left} short module(s) away from being ready to connect. No rush — but if anything is getting in the way, just reply and tell me.
+
+— Joel, your RTR facilitator</textarea>
+        <p class="hint">Sent by email from your facilitator address. Placeholders in braces fill in per person.</p>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-quiet push-left">Cancel</button>
+      <button class="btn btn-secondary">Send myself a test</button>
+      <button class="btn btn-primary">Send to 7 participants</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

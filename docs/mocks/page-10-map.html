@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regional map — RTR Portal (Facilitator)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<style>
+  .map-panel {
+    position: relative;
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: #EFEAD9;
+  }
+  .map-panel svg.terrain { width: 100%; height: auto; display: block; }
+  .map-marker {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  .map-marker .label {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--spruce-800);
+    background: rgba(255, 253, 247, .9);
+    border-radius: var(--r-pill);
+    padding: 1px 10px;
+    white-space: nowrap;
+  }
+  .map-legend {
+    position: absolute;
+    left: 14px; bottom: 14px;
+    background: rgba(255, 253, 247, .95);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 10px 14px;
+    font-size: 12.5px;
+    display: grid;
+    gap: 4px;
+  }
+  .map-legend .key { display: flex; align-items: center; gap: 8px; }
+  .map-legend .dot { width: 11px; height: 11px; border-radius: 50%; }
+  .region-row { display: flex; align-items: center; gap: var(--s4); padding: var(--s3) 0; border-bottom: 1px dashed var(--border); }
+  .region-row:last-child { border-bottom: 0; }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="container wide">
+    <div class="bar">
+      <a class="brand" href="page-11-facilitator.html">
+        <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <path d="M16 4 a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28 a12 12 0 0 1 0 -24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+        </svg>
+        <span><span class="brand-name">RTR Portal</span><span class="brand-sub">Facilitator</span></span>
+      </a>
+      <nav class="app-nav" aria-label="Main">
+        <a href="page-11-facilitator.html">Overview</a>
+        <a href="page-11-facilitator.html">Participants</a>
+        <a href="page-11-facilitator.html">Matches</a>
+        <a href="page-10-map.html" aria-current="page">Map</a>
+        <a href="page-09-events.html">Events</a>
+      </nav>
+      <div class="actions"><span class="role-tag">Facilitator</span><span class="avatar sm dark">JO</span></div>
+      <button class="menu-btn" type="button">Menu</button>
+    </div>
+  </div>
+</header>
+
+<main class="container wide">
+
+  <div class="page-title">
+    <span class="eyebrow">Facilitator view · Saskatchewan</span>
+    <h1>Regional participant map</h1>
+    <p class="lead">Eligible participants who consented to appear, shown by region — never by address. Watch for circles ready to form.</p>
+    <div class="weave short mt-4" role="presentation"></div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="field mb-0" style="min-width: 220px">
+      <label class="visually-hidden" for="map-province">Province</label>
+      <select class="select" id="map-province"><option>Saskatchewan</option><option>Alberta</option><option>Manitoba</option><option>All provinces</option></select>
+    </div>
+    <a class="filter-chip active" href="#">Eligible participants</a>
+    <a class="filter-chip" href="#">Include in-learning</a>
+    <a class="filter-chip" href="#">Cohorts only</a>
+  </div>
+
+  <div class="grid sidebar">
+
+    <!-- Schematic map -->
+    <div class="map-panel">
+      <svg class="terrain" viewBox="0 0 720 520" aria-label="Schematic map of Saskatchewan regions">
+        <rect width="720" height="520" fill="#EDE7D4"/>
+        <!-- soft land forms -->
+        <path d="M0 90 Q160 40 340 78 T720 60 V0 H0 Z" fill="#E3DCC5"/>
+        <path d="M0 520 V400 Q180 440 360 410 T720 430 V520 Z" fill="#E7E0CB"/>
+        <!-- rivers: two strands crossing the province -->
+        <path d="M-10 210 C 120 190 200 260 330 240 S 560 170 730 200" fill="none" stroke="#9FC4C0" stroke-width="7" stroke-linecap="round" opacity=".8"/>
+        <path d="M-10 260 C 140 250 240 310 400 290 S 600 240 730 270" fill="none" stroke="#B4D0CB" stroke-width="5" stroke-linecap="round" opacity=".7"/>
+        <!-- lakes -->
+        <ellipse cx="560" cy="110" rx="46" ry="26" fill="#B4D0CB" opacity=".8"/>
+        <ellipse cx="140" cy="120" rx="30" ry="18" fill="#B4D0CB" opacity=".7"/>
+        <!-- treaty boundary hints (dashed, deliberately soft) -->
+        <path d="M40 360 Q 250 330 420 370 T 700 340" fill="none" stroke="#C9BCA3" stroke-width="2" stroke-dasharray="8 8"/>
+        <path d="M60 180 Q 260 150 480 170 T 700 150" fill="none" stroke="#C9BCA3" stroke-width="2" stroke-dasharray="8 8"/>
+        <text x="24" y="480" font-family="Georgia, serif" font-size="15" fill="#8A968E" font-style="italic">Schematic — regions approximate, boundaries indicative only</text>
+        <text x="596" y="352" font-size="12" fill="#8A968E">Treaty 4</text>
+        <text x="596" y="162" font-size="12" fill="#8A968E">Treaty 6</text>
+      </svg>
+
+      <!-- Region markers -->
+      <div class="map-marker" style="left: 62%; top: 72%">
+        <div class="cohort-circle sm ready" style="margin: 0 auto">
+          <span class="seat filled"></span><span class="seat filled"></span><span class="seat filled"></span><span class="seat filled"></span><span class="seat filled"></span>
+          <span class="count">5</span>
+        </div>
+        <span class="label">Regina · ready</span>
+      </div>
+      <div class="map-marker" style="left: 38%; top: 38%">
+        <div class="cohort-circle sm" style="margin: 0 auto">
+          <span class="seat filled"></span><span class="seat filled"></span><span class="seat filled"></span><span class="seat"></span><span class="seat"></span>
+          <span class="count">3</span>
+        </div>
+        <span class="label">Saskatoon</span>
+      </div>
+      <div class="map-marker" style="left: 80%; top: 55%">
+        <div class="cohort-circle sm" style="margin: 0 auto">
+          <span class="seat filled"></span><span class="seat filled"></span><span class="seat"></span><span class="seat"></span><span class="seat"></span>
+          <span class="count">2</span>
+        </div>
+        <span class="label">Fort Qu’Appelle</span>
+      </div>
+      <div class="map-marker" style="left: 22%; top: 62%">
+        <div class="cohort-circle sm" style="margin: 0 auto">
+          <span class="seat filled"></span><span class="seat"></span><span class="seat"></span><span class="seat"></span><span class="seat"></span>
+          <span class="count">1</span>
+        </div>
+        <span class="label">Swift Current</span>
+      </div>
+
+      <div class="map-legend">
+        <span class="key"><span class="dot" style="background: var(--ochre-600)"></span> Circle ready (5+ eligible)</span>
+        <span class="key"><span class="dot" style="background: var(--spruce-600)"></span> Filled seat — eligible participant</span>
+        <span class="key"><span class="dot" style="background: var(--parchment); border: 2px solid var(--border-strong)"></span> Open seat</span>
+      </div>
+    </div>
+
+    <!-- Region list -->
+    <aside class="stack loose">
+      <div class="card card-pad" style="border-color: var(--ochre-500); border-width: 1.5px">
+        <div class="row between mb-2">
+          <h4 class="mb-0">Regina · Treaty 4</h4>
+          <span class="pill plain" style="background: var(--ochre-100); color: var(--ochre-700)">Ready to gather</span>
+        </div>
+        <p class="small muted mb-4">5 eligible · 3 Indigenous / 2 non-Indigenous · 2 more in learning</p>
+        <button class="btn btn-primary sm block">Form the Regina cohort</button>
+      </div>
+
+      <div class="card card-pad">
+        <div class="region-row">
+          <div class="flex-1"><b>Saskatoon · Treaty 6</b><div class="tiny">3 eligible · 4 in learning</div></div>
+          <button class="btn btn-quiet sm">Nudge learners</button>
+        </div>
+        <div class="region-row">
+          <div class="flex-1"><b>Fort Qu’Appelle · Treaty 4</b><div class="tiny">2 eligible · 1 in learning</div></div>
+          <button class="btn btn-quiet sm">View</button>
+        </div>
+        <div class="region-row">
+          <div class="flex-1"><b>Swift Current · Treaty 4</b><div class="tiny">1 eligible</div></div>
+          <button class="btn btn-quiet sm">View</button>
+        </div>
+      </div>
+
+      <div class="card spruce-tint card-pad">
+        <h4 class="mb-2">Privacy on this map</h4>
+        <p class="small mb-0">Markers show region-level counts of consenting, eligible participants only. Facilitators see names in region lists; participants never see this map. Cohort threshold (5) pending confirmation with RTR.</p>
+      </div>
+    </aside>
+
+  </div>
+
+</main>
+
+<footer class="app-footer">
+  <div class="container wide">
+    <div class="row between">
+      <p class="mb-0 small">RTR Matching Portal — facilitator map (synthetic demo data)</p>
+      <div class="weave on-dark short" role="presentation"></div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dialog — Waitlist pathway</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+</head>
+<body>
+
+<div class="mock-page-behind" aria-hidden="true">
+  <div class="skeleton-bar" style="width: 34%"></div>
+  <div class="skeleton-block"></div>
+  <div class="skeleton-bar" style="width: 48%"></div>
+</div>
+
+<div class="scrim">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="dlg-title">
+    <div class="modal-header">
+      <div>
+        <div class="kicker">About your match</div>
+        <h2 id="dlg-title" class="h2">The circle needs more Indigenous voices right now</h2>
+      </div>
+      <button class="close" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+      <p>Thank you for finishing your learning journey. Right now, more non-Indigenous participants are ready in your region than can be thoughtfully matched — a good problem, but it means a wait.</p>
+      <p class="mb-4">Here’s what you can choose while your facilitator works on it:</p>
+
+      <label class="choice-card selected mb-2" style="display:flex">
+        <input type="radio" name="wl" checked>
+        <span><b>Join the waitlist</b><span>You keep your place in line and we email you the moment a match is possible. Current wait in Regina: about 4–6 weeks.</span></span>
+      </label>
+      <label class="choice-card" style="display:flex">
+        <input type="radio" name="wl">
+        <span><b>Keep learning while you wait</b><span>Optional modules, readings, and local events — including cohort gatherings, which you can attend right away.</span></span>
+      </label>
+
+      <p class="tiny mt-4 mb-0">Either way you stay eligible, and choosing one doesn’t rule out the other. Know someone who should join the journey? Invitations from participants are the way most circles grow.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-quiet push-left">Ask my facilitator</button>
+      <button class="btn btn-primary">Save my choice</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

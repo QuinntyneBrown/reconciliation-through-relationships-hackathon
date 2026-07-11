@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home — RTR Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+</head>
+<body>
+
+<header class="app-header">
+  <div class="container wide">
+    <div class="bar">
+      <a class="brand" href="page-05-dashboard.html">
+        <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <path d="M16 4 a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28 a12 12 0 0 1 0 -24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+        </svg>
+        <span><span class="brand-name">RTR Portal</span><span class="brand-sub">Reconciliation Through Relationships</span></span>
+      </a>
+      <nav class="app-nav" aria-label="Main">
+        <a href="page-05-dashboard.html" aria-current="page">Home</a>
+        <a href="page-04-learning.html">Learning</a>
+        <a href="page-07-match.html">Connections</a>
+        <a href="page-08-messages.html">Messages</a>
+        <a href="page-09-events.html">Events</a>
+      </nav>
+      <div class="actions"><a href="page-06-profile.html" class="avatar sm dark" style="text-decoration:none">MC</a></div>
+      <button class="menu-btn" type="button">Menu</button>
+    </div>
+  </div>
+</header>
+
+<main class="container wide">
+
+  <div class="page-title">
+    <span class="eyebrow">Friday, July 10</span>
+    <h1>Welcome back, Marie</h1>
+    <p class="lead">Your learning journey is complete — you’re eligible for matching, and your region is one seat from a cohort.</p>
+    <div class="weave short mt-4" role="presentation"></div>
+  </div>
+
+  <div class="grid sidebar">
+
+    <div class="stack loose">
+
+      <!-- New recommendation -->
+      <div class="card" style="border-color: var(--ochre-500); border-width: 1.5px">
+        <div class="card-header">
+          <h3 class="h4">A recommendation is waiting for you</h3>
+          <span class="pill matched">Facilitator approved</span>
+        </div>
+        <div class="card-pad" style="display:flex; gap: var(--s4); align-items:flex-start; flex-wrap:wrap">
+          <span class="avatar xl river">DT</span>
+          <div class="flex-1" style="min-width: 240px">
+            <h3 class="mb-0">David Tremblay</h3>
+            <p class="small muted mb-2">Regina, SK · Treaty 4 · Non-Indigenous individual</p>
+            <div class="row" style="gap:6px">
+              <span class="tag">Community gardens</span>
+              <span class="tag">Youth mentorship</span>
+              <span class="tag ochre">Music</span>
+            </div>
+            <p class="small mt-4 mb-0">Joel, your facilitator, thinks you two would have a lot to talk about — shared neighbourhood, shared causes, overlapping weekends.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <a class="btn btn-primary" href="page-07-match.html">Review this recommendation</a>
+          <span class="tiny">David has not seen your profile yet — both of you must say yes first.</span>
+        </div>
+      </div>
+
+      <!-- Discovery -->
+      <section>
+        <div class="row between mb-4">
+          <h2 class="mb-0">Find participants</h2>
+        </div>
+        <div class="row mb-4">
+          <a class="filter-chip active" href="#">Recommended for you</a>
+          <a class="filter-chip" href="#">Indigenous participants</a>
+          <a class="filter-chip" href="#">Non-Indigenous participants</a>
+          <a class="filter-chip" href="#">All eligible</a>
+        </div>
+
+        <div class="grid cols-3">
+          <div class="card participant-card">
+            <div class="top">
+              <span class="avatar lg ochre">AS</span>
+              <div>
+                <div class="name">Amara Singh</div>
+                <div class="meta">Regina, SK · Treaty 4</div>
+              </div>
+            </div>
+            <div class="tags"><span class="tag">Interfaith dialogue</span><span class="tag">Cooking</span></div>
+            <div class="card-footer"><button class="btn btn-secondary sm">View profile</button><span class="tiny">Religious leader</span></div>
+          </div>
+          <div class="card participant-card">
+            <div class="top">
+              <span class="avatar lg">RB</span>
+              <div>
+                <div class="name">Ruth Bird</div>
+                <div class="meta">Fort Qu’Appelle, SK · Treaty 4</div>
+              </div>
+            </div>
+            <div class="tags"><span class="tag river">Land-based learning</span><span class="tag">Quilting</span></div>
+            <div class="card-footer"><button class="btn btn-secondary sm">View profile</button><span class="tiny">Indigenous leader</span></div>
+          </div>
+          <div class="card participant-card">
+            <div class="top">
+              <span class="avatar lg berry">LP</span>
+              <div>
+                <div class="name">Liam Park</div>
+                <div class="meta">Regina, SK · Treaty 4</div>
+              </div>
+            </div>
+            <div class="tags"><span class="tag">Hockey</span><span class="tag ochre">Photography</span></div>
+            <div class="card-footer"><button class="btn btn-secondary sm">View profile</button><span class="tiny">Artist</span></div>
+          </div>
+        </div>
+        <p class="small muted mt-4 mb-0">Up to five recommendations at a time, chosen with your facilitator. Browsing beyond recommendations is a decision RTR is still confirming.</p>
+      </section>
+
+      <!-- Upcoming event -->
+      <section>
+        <h2 class="mb-4">Happening near you</h2>
+        <div class="card">
+          <div class="card-pad" style="display:flex; gap: var(--s4)">
+            <div class="date-block national"><div class="month">Sep</div><div class="day">30</div></div>
+            <div class="flex-1">
+              <span class="tiny" style="color: var(--ochre-700); font-weight:700">NATIONAL DAY FOR TRUTH AND RECONCILIATION</span>
+              <h3 class="h4" style="margin: 2px 0 4px">Blanket exercise &amp; shared meal</h3>
+              <p class="small muted mb-0">Knox-Metropolitan Hall, Regina · Hosted by the forming Treaty 4 cohort</p>
+            </div>
+            <a class="btn btn-primary sm" href="page-09-events.html" style="align-self:center">Register</a>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="stack loose">
+
+      <div class="card card-pad text-center">
+        <h4 class="mb-4">Your region’s circle</h4>
+        <div class="cohort-circle" style="margin: 0 auto var(--s3)">
+          <span class="seat filled"></span><span class="seat filled"></span><span class="seat filled"></span><span class="seat filled"></span><span class="seat"></span>
+          <span class="count">4<small>of 5</small></span>
+        </div>
+        <p class="small muted mb-4"><b>Regina · Treaty 4</b> is one eligible participant away from forming a reconciliation cohort.</p>
+        <button class="btn btn-soft sm block">Invite someone to the journey</button>
+      </div>
+
+      <div class="card card-pad">
+        <div class="progress-label"><span>Learning journey</span><span>Complete</span></div>
+        <div class="progress mb-2"><div class="bar" style="width:100%"></div></div>
+        <p class="small muted mb-0">✓ Finished March 24 · <a href="page-04-learning.html">Revisit the modules</a></p>
+      </div>
+
+      <div class="card card-pad">
+        <h4 class="mb-2">Messages</h4>
+        <div class="row nowrap" style="align-items:flex-start">
+          <span class="avatar sm river">DT</span>
+          <p class="small mb-0" style="min-width:0"><b>David</b> · “Would a call this weekend work…”<br><a href="page-08-messages.html">Open messages</a></p>
+        </div>
+      </div>
+
+      <div class="card tinted card-pad">
+        <h4 class="mb-2">Your profile</h4>
+        <p class="small muted mb-4">Profiles with availability filled in are matched twice as fast.</p>
+        <a class="btn btn-secondary sm block" href="page-06-profile.html">Review my profile</a>
+      </div>
+
+    </aside>
+  </div>
+
+</main>
+
+<footer class="app-footer">
+  <div class="container wide">
+    <div class="row between">
+      <p class="mb-0 small">RTR Matching Portal — participant dashboard (synthetic demo data)</p>
+      <div class="weave on-dark short" role="presentation"></div>
+    </div>
+    <p class="acknowledgment">This dashboard is signed in from Regina, Saskatchewan — Treaty 4 territory, the traditional lands of the Cree, Saulteaux, Dakota, Nakota, Lakota, and the homeland of the Métis Nation.</p>
+  </div>
+</footer>
+
+</body>
+</html>

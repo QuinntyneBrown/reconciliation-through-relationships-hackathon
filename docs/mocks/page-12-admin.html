@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Administration — RTR Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<style>
+  .module-row { display: flex; align-items: center; gap: var(--s4); padding: var(--s3) 0; border-bottom: 1px dashed var(--border); }
+  .module-row:last-child { border-bottom: 0; }
+  .drag { color: var(--ink-faint); cursor: grab; font-size: 18px; flex: none; }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="container wide">
+    <div class="bar">
+      <a class="brand" href="page-12-admin.html">
+        <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <path d="M16 4 a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28 a12 12 0 0 1 0 -24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+        </svg>
+        <span><span class="brand-name">RTR Portal</span><span class="brand-sub">Administration</span></span>
+      </a>
+      <nav class="app-nav" aria-label="Main">
+        <a href="page-12-admin.html" aria-current="page">Settings</a>
+        <a href="#people">People &amp; roles</a>
+        <a href="#learning">Learning content</a>
+        <a href="#notifications">Notifications</a>
+      </nav>
+      <div class="actions"><span class="role-tag">Administrator</span><span class="avatar sm dark">AR</span></div>
+      <button class="menu-btn" type="button">Menu</button>
+    </div>
+  </div>
+</header>
+
+<main class="container wide">
+
+  <div class="page-title">
+    <span class="eyebrow">Administration</span>
+    <h1>Keep the portal running gently</h1>
+    <p class="lead">Everything here is built for non-technical staff — plain settings, no code, and nothing you can’t undo.</p>
+    <div class="weave short mt-4" role="presentation"></div>
+  </div>
+
+  <div class="grid sidebar">
+
+    <div class="stack loose">
+
+      <!-- People & roles -->
+      <section id="people">
+        <div class="row between mb-4">
+          <h2 class="mb-0">People &amp; roles</h2>
+          <button class="btn btn-secondary sm">Invite a staff member</button>
+        </div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th>Person</th><th>Role</th><th>Regions</th><th>Last active</th><th></th></tr></thead>
+            <tbody>
+              <tr>
+                <td><div class="row nowrap"><span class="avatar sm dark">AR</span><b>Andrew R.</b></div></td>
+                <td><span class="pill plain matched">Administrator</span></td>
+                <td>All</td>
+                <td>Today</td>
+                <td><button class="btn btn-quiet sm">Edit</button></td>
+              </tr>
+              <tr>
+                <td><div class="row nowrap"><span class="avatar sm ochre">JO</span><b>Joel G.</b></div></td>
+                <td><span class="pill plain eligible">Facilitator</span></td>
+                <td>Saskatchewan</td>
+                <td>Today</td>
+                <td><button class="btn btn-quiet sm">Edit</button></td>
+              </tr>
+              <tr>
+                <td><div class="row nowrap"><span class="avatar sm river">DC</span><b>Diane C.</b></div></td>
+                <td><span class="pill plain eligible">Facilitator</span></td>
+                <td>Manitoba, Ontario</td>
+                <td>Yesterday</td>
+                <td><button class="btn btn-quiet sm">Edit</button></td>
+              </tr>
+              <tr>
+                <td><div class="row nowrap"><span class="avatar sm">MC</span><b>Marie Cardinal</b></div></td>
+                <td><span class="pill plain pending">Participant</span></td>
+                <td>Regina</td>
+                <td>Today</td>
+                <td><button class="btn btn-quiet sm">Edit</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tiny mt-2">Three roles: participants join the journey, facilitators approve and match, administrators manage settings and staff. Exact permissions per role are pending confirmation with RTR.</p>
+      </section>
+
+      <!-- Learning content -->
+      <section id="learning">
+        <div class="row between mb-4">
+          <h2 class="mb-0">Learning content</h2>
+          <button class="btn btn-secondary sm">Add a module</button>
+        </div>
+        <div class="card card-pad">
+          <div class="module-row">
+            <span class="drag" aria-hidden="true">⠿</span>
+            <div class="flex-1"><b>1 · The history we share</b><div class="tiny">Video · 22 min · required</div></div>
+            <span class="pill eligible">Published</span>
+            <button class="btn btn-quiet sm">Edit</button>
+          </div>
+          <div class="module-row">
+            <span class="drag" aria-hidden="true">⠿</span>
+            <div class="flex-1"><b>2 · Treaties and the land</b><div class="tiny">Video · 18 min · required</div></div>
+            <span class="pill eligible">Published</span>
+            <button class="btn btn-quiet sm">Edit</button>
+          </div>
+          <div class="module-row">
+            <span class="drag" aria-hidden="true">⠿</span>
+            <div class="flex-1"><b>3 · Listening and cultural humility</b><div class="tiny">Video · 25 min · required</div></div>
+            <span class="pill eligible">Published</span>
+            <button class="btn btn-quiet sm">Edit</button>
+          </div>
+          <div class="module-row">
+            <span class="drag" aria-hidden="true">⠿</span>
+            <div class="flex-1"><b>4 · Beginning the relationship</b><div class="tiny">Video · 20 min · required</div></div>
+            <span class="pill eligible">Published</span>
+            <button class="btn btn-quiet sm">Edit</button>
+          </div>
+          <div class="module-row">
+            <span class="drag" aria-hidden="true">⠿</span>
+            <div class="flex-1"><b>5 · Hosting a blanket exercise</b><div class="tiny">Video · 30 min · optional, cohort hosts</div></div>
+            <span class="pill pending">Draft</span>
+            <button class="btn btn-quiet sm">Edit</button>
+          </div>
+        </div>
+        <p class="tiny mt-2">Drag to reorder. “Completion” currently means watching to the end — the definition is pending confirmation with RTR.</p>
+      </section>
+
+      <!-- Notifications -->
+      <section id="notifications">
+        <h2 class="mb-4">Automated notifications</h2>
+        <div class="card card-pad">
+          <div class="row between" style="padding: 10px 0; border-bottom: 1px dashed var(--border)">
+            <div><b>Onboarding nudge</b><div class="tiny">3 days after an unfinished registration</div></div>
+            <span class="switch"><input type="checkbox" checked aria-label="Onboarding nudge"><span class="track"></span></span>
+          </div>
+          <div class="row between" style="padding: 10px 0; border-bottom: 1px dashed var(--border)">
+            <div><b>Learning reminder</b><div class="tiny">Weekly, while modules remain</div></div>
+            <span class="switch"><input type="checkbox" checked aria-label="Learning reminder"><span class="track"></span></span>
+          </div>
+          <div class="row between" style="padding: 10px 0; border-bottom: 1px dashed var(--border)">
+            <div><b>New recommendation</b><div class="tiny">When a facilitator approves a match</div></div>
+            <span class="switch"><input type="checkbox" checked aria-label="New recommendation"><span class="track"></span></span>
+          </div>
+          <div class="row between" style="padding: 10px 0; border-bottom: 1px dashed var(--border)">
+            <div><b>Event updates</b><div class="tiny">Changes to events a participant registered for</div></div>
+            <span class="switch"><input type="checkbox" checked aria-label="Event updates"><span class="track"></span></span>
+          </div>
+          <div class="row between" style="padding: 10px 0">
+            <div><b>Cohort ready</b><div class="tiny">Tells facilitators when a region reaches the threshold</div></div>
+            <span class="switch"><input type="checkbox" checked aria-label="Cohort ready"><span class="track"></span></span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <aside class="stack loose">
+      <div class="card card-pad">
+        <h4 class="mb-2">Cohort threshold</h4>
+        <div class="field mb-2">
+          <label for="admin-threshold">Eligible participants needed to form a cohort</label>
+          <select class="select" id="admin-threshold" style="max-width: 120px">
+            <option>4</option><option selected>5</option><option>6</option><option>8</option>
+          </select>
+        </div>
+        <p class="tiny mb-0">Initial suggestion is 5 — to be confirmed with RTR before launch.</p>
+      </div>
+
+      <div class="card card-pad">
+        <h4 class="mb-2">Sign-in method</h4>
+        <label class="choice"><input type="radio" name="auth" checked> Magic link (recommended)</label>
+        <label class="choice"><input type="radio" name="auth"> Email and password</label>
+        <p class="tiny mb-0">One method for the first release, pending RTR’s decision.</p>
+      </div>
+
+      <div class="card spruce-tint card-pad">
+        <h4 class="mb-2">Privacy defaults</h4>
+        <p class="small mb-0">New participants start with the map switch <b>off</b> and all sharing <b>off</b>. Consent is opt-in everywhere — the portal never shares first and asks later.</p>
+      </div>
+
+      <div class="card card-pad">
+        <h4 class="mb-2">Website integration</h4>
+        <p class="small muted mb-0">The portal lives at <b>portal.rightrelationship.ca</b> and inherits RTR’s public branding. Integration details are pending with RTR’s web team.</p>
+      </div>
+    </aside>
+
+  </div>
+
+</main>
+
+<footer class="app-footer">
+  <div class="container wide">
+    <div class="row between">
+      <p class="mb-0 small">RTR Matching Portal — administration (synthetic demo data)</p>
+      <div class="weave on-dark short" role="presentation"></div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
