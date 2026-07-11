@@ -145,7 +145,19 @@ export default function OnboardingPage() {
       {/* Header */}
       <header className="border-b border-border bg-card px-4 py-4">
         <div className="max-w-2xl mx-auto">
-          <p className="text-sm font-medium text-primary">RTR · Create your profile</p>
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium text-primary">RTR · Create your profile</p>
+            <button
+              onClick={async () => {
+                const { createClient } = await import("@/lib/supabase/client");
+                await createClient().auth.signOut();
+                router.push("/auth/login");
+              }}
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Sign out
+            </button>
+          </div>
           <div className="mt-3 flex items-center gap-3">
             <Progress value={progress} className="flex-1 h-2" />
             <span className="text-xs text-muted-foreground whitespace-nowrap">
