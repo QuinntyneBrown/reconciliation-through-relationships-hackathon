@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,27 +10,52 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { toast } from "sonner";
 import Link from "next/link";
 
+type Mode = "magic" | "password";
+
 export default function LoginPage() {
+  const [mode, setMode] = useState<Mode>("password");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const router = useRouter();
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleMagicLink(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
-      },
+      options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
     });
-
     if (error) {
       toast.error(error.message);
     } else {
       setSent(true);
+    }
+    setLoading(false);
+  }
+
+  async function handlePassword(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    const supabase = createClient();
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      toast.error(error.message);
+    } else {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("role, onboarding_completed, learning_completed")
+        .eq("id", user.id)
+        .single();
+
+      if (profile?.role === "facilitator") router.push("/admin");
+      else if (!profile?.onboarding_completed) router.push("/onboarding");
+      else if (!profile?.learning_completed) router.push("/learn");
+      else router.push("/dashboard");
     }
     setLoading(false);
   }
@@ -49,11 +75,39 @@ export default function LoginPage() {
           <CardDescription>
             {sent
               ? `We sent a sign-in link to ${email}. Click it to continue.`
-              : "Enter your email to receive a sign-in link — no password needed."}
+              : "Sign in to your RTR account."}
           </CardDescription>
         </CardHeader>
 
-        <CardContent>
+        <CardContent className="space-y-4">
+          {/* Mode toggle */}
+          {!sent && (
+            <div className="flex rounded-lg border border-border p-1 gap-1">
+              <button
+                type="button"
+                onClick={() => setMode("password")}
+                className={`flex-1 text-sm py-1.5 rounded-md transition-colors ${
+                  mode === "password"
+                    ? "bg-primary text-primary-foreground font-medium"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Email & password
+              </button>
+              <button
+                type="button"
+                onClick={() => { setMode("magic"); setSent(false); }}
+                className={`flex-1 text-sm py-1.5 rounded-md transition-colors ${
+                  mode === "magic"
+                    ? "bg-primary text-primary-foreground font-medium"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Magic link
+              </button>
+            </div>
+          )}
+
           {sent ? (
             <div className="text-center space-y-4">
               <div className="text-5xl">📬</div>
@@ -67,8 +121,8 @@ export default function LoginPage() {
                 </button>
               </p>
             </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
+          ) : mode === "password" ? (
+            <form onSubmit={handlePassword} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email address</Label>
                 <Input
@@ -81,11 +135,51 @@ export default function LoginPage() {
                   autoFocus
                 />
               </div>
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? "Signing in…" : "Sign in"}
+              </Button>
+              <p className="text-xs text-center text-muted-foreground">
+                New here?{" "}
+                <button
+                  type="button"
+                  className="underline text-primary"
+                  onClick={() => setMode("magic")}
+                >
+                  Use a magic link
+                </button>{" "}
+                to create your account.
+              </p>
+            </form>
+          ) : (
+            <form onSubmit={handleMagicLink} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email-magic">Email address</Label>
+                <Input
+                  id="email-magic"
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  autoFocus
+                />
+              </div>
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? "Sending…" : "Send sign-in link"}
               </Button>
               <p className="text-xs text-center text-muted-foreground">
-                New here? Use your email and we&apos;ll create your account automatically.
+                New here? We&apos;ll create your account automatically.
               </p>
             </form>
           )}
