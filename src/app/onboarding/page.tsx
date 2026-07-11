@@ -19,6 +19,7 @@ export type OnboardingData = {
   additional_matching_info: string;
   is_indigenous: boolean | null;
   sex: string;
+  age: number | null;
   participation_categories: string[];
   city: string;
   province: string;
@@ -45,6 +46,7 @@ const INITIAL_DATA: OnboardingData = {
   additional_matching_info: "",
   is_indigenous: null,
   sex: "",
+  age: null,
   participation_categories: [],
   city: "",
   province: "",
@@ -110,6 +112,7 @@ export default function OnboardingPage() {
         additional_matching_info: data.additional_matching_info,
         is_indigenous: data.is_indigenous,
         sex: data.sex as "male" | "female" | "prefer_not_to_say" | undefined,
+        age: data.age,
         participation_categories: data.participation_categories,
         city: data.city,
         province: data.province,

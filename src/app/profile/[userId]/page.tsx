@@ -80,6 +80,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ userId
               <div className="min-w-0 flex-1">
                 <h1>
                   {profile.first_name} {profile.last_name}
+                  {profile.age && <span className="ml-3 text-sm text-muted-foreground">({profile.age})</span>}
                 </h1>
                 <div className="mt-1 flex flex-wrap gap-2">
                   <Badge variant={profile.is_indigenous ? "default" : "secondary"}>

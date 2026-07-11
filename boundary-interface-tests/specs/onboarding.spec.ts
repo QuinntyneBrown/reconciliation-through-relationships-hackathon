@@ -35,6 +35,7 @@ test.describe("onboarding", () => {
     expect(saved).toMatchObject({
       first_name: "Jamie",
       last_name: "River",
+      age: 34,
       city: "Toronto",
       province: "Ontario",
       faith_tradition: "other",
