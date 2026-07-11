@@ -1,8 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { AppFooter } from "@/components/app-footer";
 import { AppHeader } from "@/components/app-header";
 import { Weave } from "@/components/rtr-brand";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
@@ -12,8 +14,29 @@ const journeySteps = [
     "Complete the learning journey",
     "Build a shared foundation for respectful, meaningful conversation.",
   ],
-  ["Meet your match", "A facilitator reviews every recommendation before an introduction."],
+  [
+    "Meet your match",
+    "You choose whether a facilitator matches you—every recommendation is reviewed, and introductions happen only when both people say yes.",
+  ],
   ["Build the relationship", "Talk, listen, and take part in reconciliation in your community."],
+];
+
+const successStories = [
+  {
+    name: "Miriam",
+    role: "Participant",
+    quote: "I came to learn the truth and left with a real friend.",
+  },
+  {
+    name: "Joseph",
+    role: "Participant",
+    quote: "Our weekly walks turned two strangers into neighbours who pray together.",
+  },
+  {
+    name: "David",
+    role: "Facilitator",
+    quote: "Watching a match grow into a friendship is why I facilitate.",
+  },
 ];
 
 const participantTypes = [
@@ -91,14 +114,15 @@ export default function LandingPage() {
 
             <div className="relative z-10 max-w-3xl">
               <span className="rtr-eyebrow text-ochre-500 mb-3">
-                An invitation in response to the TRC&apos;s calls to action
+                An invitation, in response to the TRC&apos;s calls to action
               </span>
               <h1 className="text-on-dark max-w-[760px] text-[clamp(38px,6vw,60px)] leading-[1.06] font-[480]">
                 Reconciliation begins with a <em className="text-ochre-500">relationship</em>.
               </h1>
               <p className="text-on-dark-soft mt-5 max-w-[52ch] text-[19px] leading-[1.55]">
-                RTR brings Indigenous and non-Indigenous people together—to learn the truth, listen
-                well, and walk together in your own community. Not a program. A friendship.
+                RTR brings Indigenous and non-Indigenous people together to form relationships as
+                Christians—learning the truth, listening well, and walking together in your own
+                community. Not a program. A friendship rooted in shared faith.
               </p>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                 <Button variant="on-dark" size="lg" asChild>
@@ -115,7 +139,15 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className="border-on-dark/15 text-on-dark-soft mt-12 flex flex-wrap gap-x-6 gap-y-2 border-t py-4 text-sm">
+            <div className="border-on-dark/15 text-on-dark-soft mt-12 flex flex-wrap items-center gap-x-6 gap-y-3 border-t py-4 text-sm">
+              <span className="bg-parchment inline-flex shrink-0 items-center rounded-lg px-3 py-1.5">
+                <Image
+                  src="/rtr-logo.png"
+                  alt="Reconciliation Through Relationships logo"
+                  width={129}
+                  height={60}
+                />
+              </span>
               <span>Founded in 2021 by Indigenous leaders</span>
               <span aria-hidden="true">·</span>
               <span>Participants across every treaty territory</span>
@@ -153,7 +185,7 @@ export default function LandingPage() {
                 fits; it helps us find the right relationship.
               </p>
               <div className="mt-5 flex flex-wrap gap-2">
-                {participantTypes.map((type, index) => (
+                {participantTypes.map((type) => (
                   <Badge key={type} variant="secondary">
                     {type}
                   </Badge>
@@ -167,6 +199,35 @@ export default function LandingPage() {
               <Button className="mt-5 w-full" asChild>
                 <Link href="/auth/signup">Find your place in the circle</Link>
               </Button>
+            </div>
+          </div>
+        </section>
+
+        <section aria-label="Success stories" className="px-4 py-12 sm:px-6 sm:py-16">
+          <div className="mx-auto max-w-7xl">
+            <span className="rtr-eyebrow mb-2">Success stories</span>
+            <h2>Friendships already forming</h2>
+            <Weave className="mt-4 mb-8 w-[120px]" />
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {successStories.map(({ name, role, quote }) => (
+                <figure
+                  key={name}
+                  className="border-spruce-200 bg-parchment shadow-rtr-1 m-0 rounded-2xl border p-6"
+                >
+                  <blockquote className="font-heading text-spruce-700 m-0 text-[19px] leading-[1.45] italic">
+                    “{quote}”
+                  </blockquote>
+                  <figcaption className="mt-4 flex items-center gap-3">
+                    <Avatar size="sm">
+                      <AvatarFallback>{name[0]}</AvatarFallback>
+                    </Avatar>
+                    <span>
+                      <span className="block font-semibold">{name}</span>
+                      <span className="text-ink-soft block text-sm">{role}</span>
+                    </span>
+                  </figcaption>
+                </figure>
+              ))}
             </div>
           </div>
         </section>

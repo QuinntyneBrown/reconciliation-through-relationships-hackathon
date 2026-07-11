@@ -13,6 +13,62 @@ test.describe("public journey and authentication", () => {
     ).toBeVisible();
   });
 
+  test("the landing page shows the organization's logo", async ({ landing }) => {
+    await landing.goto();
+    await expect(landing.organizationLogo()).toBeVisible();
+  });
+
+  test("the invitation tagline is fully visible on small and large screens", async ({
+    landing,
+  }) => {
+    for (const viewport of [
+      { width: 320, height: 700 },
+      { width: 1280, height: 900 },
+    ]) {
+      await landing.page.setViewportSize(viewport);
+      await landing.goto();
+      await expect(landing.tagline()).toBeVisible();
+      const box = await landing.tagline().boundingBox();
+      expect(box).not.toBeNull();
+      expect(box!.x).toBeGreaterThanOrEqual(0);
+      expect(box!.x + box!.width).toBeLessThanOrEqual(viewport.width);
+    }
+  });
+
+  test("the introduction names the purpose of forming relationships as Christians", async ({
+    landing,
+  }) => {
+    await landing.goto();
+    await expect(landing.page.getByText(/relationships as Christians/)).toBeVisible();
+  });
+
+  test("the journey explains you choose whether a facilitator matches you", async ({
+    landing,
+  }) => {
+    await landing.goto();
+    await expect(
+      landing.journeySection().getByText(/choose whether a facilitator matches you/i),
+    ).toBeVisible();
+  });
+
+  test("success stories from participants and facilitators encourage joining", async ({
+    landing,
+  }) => {
+    await landing.goto();
+    await expect(landing.successStories()).toBeVisible();
+    await expect(landing.testimonials().first()).toBeVisible();
+    expect(await landing.testimonials().count()).toBeGreaterThanOrEqual(3);
+    for (const testimonial of await landing.testimonials().all()) {
+      await expect(testimonial.locator('[data-slot="avatar"]')).toBeVisible();
+    }
+    await expect(
+      landing.successStories().getByText("Participant", { exact: true }).first(),
+    ).toBeVisible();
+    await expect(
+      landing.successStories().getByText("Facilitator", { exact: true }).first(),
+    ).toBeVisible();
+  });
+
   test("landing calls to action navigate and the journey anchor works", async ({ landing }) => {
     await landing.goto();
     await expect(landing.heading(/Reconciliation begins with a relationship/)).toBeVisible();

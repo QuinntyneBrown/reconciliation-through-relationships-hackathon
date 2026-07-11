@@ -16,4 +16,20 @@ export class LandingPage extends BasePage {
   journeySection() {
     return this.page.locator("#how");
   }
+
+  tagline() {
+    return this.page.getByText("An invitation, in response to the TRC's calls to action");
+  }
+
+  organizationLogo() {
+    return this.page.getByRole("img", { name: "Reconciliation Through Relationships logo" });
+  }
+
+  successStories() {
+    return this.page.getByRole("region", { name: "Success stories" });
+  }
+
+  testimonials() {
+    return this.successStories().getByRole("figure");
+  }
 }
