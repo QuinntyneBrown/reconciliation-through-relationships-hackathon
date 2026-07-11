@@ -248,12 +248,8 @@ export default function MatchingClient({
         </CardContent>
       </Card>
 
-      <Tabs defaultValue="suggested">
+      <Tabs defaultValue="mutual">
         <TabsList className="w-full justify-start gap-2">
-          <TabsTrigger value="suggested">
-            Pending review
-            {suggested.length > 0 && <Badge className="ml-1.5 text-xs">{suggested.length}</Badge>}
-          </TabsTrigger>
           <TabsTrigger value="mutual">
             Mutual connect requests
             {reviewList.length > 0 && (
@@ -375,7 +371,6 @@ export default function MatchingClient({
         </TabsContent>
 
         {[
-          { key: "suggested", list: suggested },
           { key: "approved", list: approved },
           { key: "rejected", list: rejected },
         ].map(({ key, list }) => (
@@ -457,30 +452,7 @@ export default function MatchingClient({
                           </div>
                         </div>
 
-                        {/* Actions */}
-                        {key === "suggested" && (
-                          <div className="flex shrink-0 gap-2 sm:flex-col">
-                            <Button
-                              size="sm"
-                              onClick={() => updateMatchStatus(match.id, "approved")}
-                              disabled={updating === match.id}
-                              className="flex-1 gap-1.5 sm:flex-none"
-                            >
-                              <CheckCircle2 className="h-4 w-4" />
-                              Approve
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => updateMatchStatus(match.id, "rejected")}
-                              disabled={updating === match.id}
-                              className="text-destructive border-destructive/30 hover:bg-destructive/10 flex-1 gap-1.5 sm:flex-none"
-                            >
-                              <XCircle className="h-4 w-4" />
-                              Reject
-                            </Button>
-                          </div>
-                        )}
+                        {/* Actions removed — no more suggested queue */}
 
                         {key === "approved" && (
                           <Badge variant="matched" className="self-start">

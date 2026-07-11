@@ -34,6 +34,17 @@ function isCurrentPath(pathname: string, href: string) {
   return href === "/" ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
 }
 
+/**
+ * Pick the single nav item that best matches the current pathname.
+ * Uses the longest matching prefix so `/facilitator/participants` only
+ * highlights "Participants" and not the shorter "/facilitator" Overview.
+ */
+function findActiveHref(pathname: string, hrefs: string[]): string | null {
+  const matches = hrefs.filter((h) => isCurrentPath(pathname, h));
+  if (matches.length === 0) return null;
+  return matches.sort((a, b) => b.length - a.length)[0];
+}
+
 export function AppHeader({
   homeHref = "/dashboard",
   navItems = [],
@@ -42,6 +53,7 @@ export function AppHeader({
   className,
 }: AppHeaderProps) {
   const pathname = usePathname();
+  const activeHref = findActiveHref(pathname, navItems.map((i) => i.href));
 
   return (
     <header
@@ -59,7 +71,7 @@ export function AppHeader({
             aria-label="Main"
           >
             {navItems.map((item) => {
-              const active = isCurrentPath(pathname, item.href);
+              const active = item.href === activeHref;
               return (
                 <Link
                   key={item.href}
@@ -108,7 +120,7 @@ export function AppHeader({
                 </SheetHeader>
                 <nav className="flex flex-col p-3" aria-label="Mobile navigation">
                   {navItems.map((item) => {
-                    const active = isCurrentPath(pathname, item.href);
+                    const active = item.href === activeHref;
                     return (
                       <SheetClose
                         key={item.href}
