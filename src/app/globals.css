@@ -329,9 +329,10 @@
   }
 
   /*
-   * Faint interlocking-rings texture for the deep-green (spruce) panels.
-   * Echoes the BrandMark's two overlapping circles — the "relationship" motif.
+   * Faint figure for the deep-green (spruce) panels: one large person
+   * silhouette (head and shoulders) rising from the panel's bottom edge.
    * Apply to any surface with bg-spruce-800/900 that has enough open space.
+   * Tune per panel with --rtr-figure-position / --rtr-figure-size.
    */
   .rtr-panel-on-dark {
     position: relative;
@@ -344,8 +345,10 @@
     z-index: -1;
     inset: 0;
     pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260'%3E%3Cg fill='none' stroke='%23F4EFE3' stroke-width='1.5'%3E%3Ccircle cx='95' cy='130' r='55'/%3E%3Ccircle cx='165' cy='130' r='55'/%3E%3C/g%3E%3Cg fill='%23F4EFE3'%3E%3Ccircle cx='117' cy='130' r='3.5'/%3E%3Ccircle cx='143' cy='130' r='3.5'/%3E%3C/g%3E%3C/svg%3E");
-    background-size: 260px 260px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='480' viewBox='0 0 420 480'%3E%3Cg fill='%23F4EFE3'%3E%3Ccircle cx='210' cy='138' r='92'/%3E%3Cpath d='M210 252c92 0 162 74 172 228H38c10-154 80-228 172-228Z'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: var(--rtr-figure-position, right 48px bottom);
+    background-size: var(--rtr-figure-size, auto min(78%, 480px));
     opacity: 0.05;
   }
 
