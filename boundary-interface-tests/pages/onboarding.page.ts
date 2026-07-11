@@ -4,6 +4,7 @@ export class OnboardingPage extends BasePage {
   async completeBasicInfo() {
     await this.page.getByLabel("First name *").fill("Jamie");
     await this.page.getByLabel("Last name *").fill("River");
+    await this.page.getByLabel("Age *").fill("34");
     await this.page.getByLabel("Bio").fill("I want to learn and build lasting relationships.");
     await this.page.getByRole("radio", { name: "No", exact: true }).click();
     await this.page.getByRole("radio", { name: "Prefer not to say", exact: true }).click();

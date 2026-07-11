@@ -38,6 +38,7 @@ export interface ParticipantProfile {
   sex: Sex;
   /** Only when sex === "self-described". */
   sexSelfDescribed?: string;
+  age?: number;
 
   /** At least one required — enforced by the intake schema. */
   categories: ParticipationCategory[];

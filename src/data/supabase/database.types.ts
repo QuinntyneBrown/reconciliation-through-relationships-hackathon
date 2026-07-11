@@ -12,6 +12,7 @@ export type ProfileRow = {
   additional_matching_info: string | null;
   is_indigenous: boolean | null;
   sex: "male" | "female" | "prefer_not_to_say" | null;
+  age: number | null;
   participation_categories: string[];
   city: string | null;
   province: string | null;

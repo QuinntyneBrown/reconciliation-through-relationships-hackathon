@@ -46,6 +46,7 @@ export default function StepBasicInfo({ data, onChange, onNext }: Props) {
   const canContinue =
     data.first_name.trim() &&
     data.last_name.trim() &&
+    data.age &&
     data.sex &&
     data.is_indigenous !== null &&
     hasRequiredCategory;
@@ -79,6 +80,20 @@ export default function StepBasicInfo({ data, onChange, onNext }: Props) {
             placeholder="Smith"
           />
         </div>
+      </div>
+
+      {/* Age */}
+      <div className="space-y-2">
+        <Label htmlFor="age">Age *</Label>
+        <Input
+          id="age"
+          type="number"
+          value={data.age ?? ""}
+          onChange={(e) => onChange({ age: e.target.value ? parseInt(e.target.value, 10) : null })}
+          placeholder="25"
+          min="13"
+          max="120"
+        />
       </div>
 
       {/* Bio */}

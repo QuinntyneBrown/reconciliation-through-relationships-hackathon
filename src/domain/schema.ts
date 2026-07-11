@@ -16,6 +16,7 @@ export const participantIntakeSchema = z.object({
   email: z.string().email("Enter a valid email"),
   sex: z.enum(SEX_OPTIONS),
   sexSelfDescribed: z.string().optional(),
+  age: z.number().int().min(13, "You must be at least 13 years old").max(120, "Please enter a valid age").optional(),
 
   // The brief: at least one participation category must be selected.
   categories: z
