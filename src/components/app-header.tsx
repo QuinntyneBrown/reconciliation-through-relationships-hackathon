@@ -24,7 +24,6 @@ export type AppNavItem = {
 
 type AppHeaderProps = {
   homeHref?: string;
-  subtitle?: string;
   navItems?: AppNavItem[];
   roleLabel?: string;
   actions?: ReactNode;
@@ -37,7 +36,6 @@ function isCurrentPath(pathname: string, href: string) {
 
 export function AppHeader({
   homeHref = "/dashboard",
-  subtitle,
   navItems = [],
   roleLabel,
   actions,
@@ -53,7 +51,7 @@ export function AppHeader({
       )}
     >
       <div className="mx-auto flex min-h-16 w-full max-w-7xl items-center gap-6 px-4 sm:px-6">
-        <RtrBrand href={homeHref} subtitle={subtitle} />
+        <RtrBrand href={homeHref} />
 
         {navItems.length > 0 && (
           <nav
@@ -104,7 +102,9 @@ export function AppHeader({
               </SheetTrigger>
               <SheetContent side="right" className="border-spruce-700 bg-spruce-800 text-on-dark">
                 <SheetHeader className="border-on-dark/15 border-b px-5 py-5">
-                  <SheetTitle className="text-on-dark text-left">RTR Portal</SheetTitle>
+                  <SheetTitle className="text-on-dark text-left">
+                    Reconciliation Through Relationships
+                  </SheetTitle>
                 </SheetHeader>
                 <nav className="flex flex-col p-3" aria-label="Mobile navigation">
                   {navItems.map((item) => {

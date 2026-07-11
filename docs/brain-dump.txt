@@ -1,4 +1,4 @@
-# RTR Matching Portal: Product Notes
+# Reconciliation Through Relationships (RTR) matching platform: Product Notes
 
 ## Product Goal
 

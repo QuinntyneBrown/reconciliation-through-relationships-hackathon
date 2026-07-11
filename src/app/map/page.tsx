@@ -27,7 +27,7 @@ export default async function MapPage() {
 
   return (
     <div className="bg-background flex min-h-screen flex-col">
-      <AppHeader homeHref="/" subtitle="Regional discovery" />
+      <AppHeader homeHref="/" />
       <main className="mx-auto w-full max-w-7xl flex-1 space-y-8 px-4 py-8 sm:px-6">
         <PageIntro
           eyebrow="Consent-first discovery"

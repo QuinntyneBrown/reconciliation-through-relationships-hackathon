@@ -40,11 +40,10 @@ export function BrandMark({ className, muted = false }: BrandMarkProps) {
 
 type BrandProps = {
   href?: string;
-  subtitle?: string;
   className?: string;
 };
 
-export function RtrBrand({ href = "/dashboard", subtitle, className }: BrandProps) {
+export function RtrBrand({ href = "/dashboard", className }: BrandProps) {
   return (
     <Link
       href={href}
@@ -56,10 +55,10 @@ export function RtrBrand({ href = "/dashboard", subtitle, className }: BrandProp
       <BrandMark className="size-[30px]" />
       <span className="leading-none">
         <span className="font-heading block text-[19px] leading-[1.1] font-semibold tracking-[0.01em]">
-          RTR Portal
+          Reconciliation
         </span>
-        <span className="text-on-dark-soft mt-0.5 hidden text-[10.5px] leading-none font-semibold tracking-[0.12em] uppercase sm:block">
-          {subtitle ?? "Reconciliation Through Relationships"}
+        <span className="text-on-dark-soft mt-0.5 block text-[10.5px] leading-none font-semibold tracking-[0.12em] uppercase">
+          Through Relationships
         </span>
       </span>
     </Link>

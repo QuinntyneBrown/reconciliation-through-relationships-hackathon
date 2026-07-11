@@ -163,7 +163,7 @@ export default function SignupPage() {
           </Card>
 
           <p className="text-ink-faint mt-5 text-center text-xs">
-            Your email is used only for your RTR account and portal notifications.
+            Your email is used only for your RTR account and notifications.
           </p>
         </div>
       </main>

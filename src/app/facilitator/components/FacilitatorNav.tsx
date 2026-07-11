@@ -37,7 +37,6 @@ export default function FacilitatorNav({ facilitator }: { facilitator: Profile }
   return (
     <AppHeader
       homeHref="/facilitator"
-      subtitle="Facilitator"
       navItems={NAV_LINKS}
       roleLabel="Facilitator"
       actions={

@@ -16,7 +16,7 @@ export class LoginPage extends BasePage {
 
   async signIn(email: string, password = "password123") {
     await this.page.getByLabel("Email address").fill(email);
-    await this.page.getByLabel("Password").fill(password);
+    await this.page.getByLabel("Password", { exact: true }).fill(password);
     await this.page.getByRole("button", { name: "Sign in" }).click();
   }
 

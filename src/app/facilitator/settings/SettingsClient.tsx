@@ -55,7 +55,7 @@ export default function SettingsClient({ settings, facilitatorId }: Props) {
   return (
     <main className="mx-auto max-w-3xl space-y-8 px-4 py-8 sm:px-6">
       <PageIntro
-        eyebrow="Portal administration"
+        eyebrow="Platform administration"
         title="Platform settings"
         description="Configure matching behavior and the threshold for forming regional reconciliation cohorts."
       />
