@@ -84,24 +84,27 @@ export default async function AdminParticipantsPage() {
                     <td className="px-4 py-3">
                       <div className="flex min-w-24 items-center gap-2">
                         <Progress value={progressPct} className="h-1.5 flex-1" />
-                        <span className="text-muted-foreground text-xs whitespace-nowrap">
-                          {p.learning_completed ? (
-                            <span className="text-accent flex items-center gap-0.5">
-                              <CheckCircle2 className="h-3 w-3" />
-                              Ready
-                            </span>
-                          ) : p.onboarding_completed ? (
-                            <span className="flex items-center gap-0.5">
-                              <Clock className="h-3 w-3" />
-                              Learning
-                            </span>
-                          ) : (
-                            <span className="flex items-center gap-0.5">
-                              <Circle className="h-3 w-3" />
-                              Onboarding
-                            </span>
-                          )}
-                        </span>
+                        {p.learning_completed ? (
+                          <Badge variant="matched" className="gap-1 text-xs whitespace-nowrap">
+                            <CheckCircle2 className="h-3 w-3" />
+                            Ready
+                          </Badge>
+                        ) : p.onboarding_completed ? (
+                          <Badge
+                            className="gap-1 text-xs whitespace-nowrap bg-ochre-100 text-ochre-700 border-ochre-200 border"
+                          >
+                            <Clock className="h-3 w-3" />
+                            Learning
+                          </Badge>
+                        ) : (
+                          <Badge
+                            variant="secondary"
+                            className="gap-1 text-xs whitespace-nowrap"
+                          >
+                            <Circle className="h-3 w-3" />
+                            Onboarding
+                          </Badge>
+                        )}
                       </div>
                     </td>
                     <td className="text-muted-foreground hidden px-4 py-3 text-xs lg:table-cell">
