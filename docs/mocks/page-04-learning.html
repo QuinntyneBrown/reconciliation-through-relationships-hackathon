@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning journey — RTR Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<style>
+  .module { display: grid; grid-template-columns: 240px 1fr; gap: var(--s5); align-items: start; }
+  .module.locked { opacity: .75; }
+  @media (max-width: 620px) { .module { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="container wide">
+    <div class="bar">
+      <a class="brand" href="page-05-dashboard.html">
+        <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <path d="M16 4 a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28 a12 12 0 0 1 0 -24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+        </svg>
+        <span><span class="brand-name">RTR Portal</span><span class="brand-sub">Reconciliation Through Relationships</span></span>
+      </a>
+      <nav class="app-nav" aria-label="Main">
+        <a href="page-05-dashboard.html">Home</a>
+        <a href="page-04-learning.html" aria-current="page">Learning</a>
+        <a href="page-07-match.html">Connections</a>
+        <a href="page-08-messages.html">Messages</a>
+        <a href="page-09-events.html">Events</a>
+      </nav>
+      <div class="actions"><a href="page-06-profile.html" class="avatar sm dark" style="text-decoration:none">MC</a></div>
+      <button class="menu-btn" type="button">Menu</button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <div class="page-title">
+    <span class="eyebrow">Your learning journey</span>
+    <h1>Learn the truth first</h1>
+    <p class="lead">These four modules use RTR’s training videos to prepare you for relationship. Finish all four to become eligible for matching and cohort invitations.</p>
+    <div class="weave short mt-4" role="presentation"></div>
+  </div>
+
+  <div class="grid sidebar">
+
+    <!-- Modules -->
+    <div class="stack loose">
+
+      <div class="alert caution">
+        <span class="alert-icon">◔</span>
+        <div><b>You’re over halfway.</b><p>Two modules remain. Most participants finish in about two weeks — take the pace that lets it sink in.</p></div>
+      </div>
+
+      <div class="card card-pad module">
+        <div class="video-thumb"><span class="duration">22 min</span></div>
+        <div>
+          <div class="row between">
+            <span class="eyebrow mb-0">Module 1</span>
+            <span class="pill eligible">Completed</span>
+          </div>
+          <h3 class="mt-2 mb-2">The history we share</h3>
+          <p class="small muted">Residential schools, the TRC, and why the calls to action are addressed to all of us. Completed March 4.</p>
+          <button class="btn btn-quiet sm">Watch again</button>
+        </div>
+      </div>
+
+      <div class="card card-pad module">
+        <div class="video-thumb"><span class="duration">18 min</span></div>
+        <div>
+          <div class="row between">
+            <span class="eyebrow mb-0">Module 2</span>
+            <span class="pill eligible">Completed</span>
+          </div>
+          <h3 class="mt-2 mb-2">Treaties and the land</h3>
+          <p class="small muted">What the treaties promised, whose land you live on, and how to find the territory nearest you. Completed March 11.</p>
+          <button class="btn btn-quiet sm">Watch again</button>
+        </div>
+      </div>
+
+      <div class="card card-pad module" style="border-color: var(--ochre-500); border-width: 1.5px">
+        <div class="video-thumb"><span class="duration">25 min</span></div>
+        <div>
+          <div class="row between">
+            <span class="eyebrow mb-0">Module 3</span>
+            <span class="pill learning">In progress</span>
+          </div>
+          <h3 class="mt-2 mb-2">Listening and cultural humility</h3>
+          <p class="small muted mb-2">How to enter a relationship as a learner — protocols, patience, and the difference between curiosity and intrusion.</p>
+          <div class="progress-label"><span></span><span>9 min remaining</span></div>
+          <div class="progress ochre mb-4"><div class="bar" style="width:64%"></div></div>
+          <button class="btn btn-primary sm">Continue watching</button>
+        </div>
+      </div>
+
+      <div class="card card-pad module locked">
+        <div class="video-thumb locked"><span class="duration">20 min</span></div>
+        <div>
+          <div class="row between">
+            <span class="eyebrow mb-0" style="color: var(--ink-faint)">Module 4</span>
+            <span class="pill pending">Unlocks after Module 3</span>
+          </div>
+          <h3 class="mt-2 mb-2">Beginning the relationship</h3>
+          <p class="small muted mb-0">What a first conversation can look like, boundaries that keep everyone safe, and how facilitators support you along the way.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="stack loose">
+      <div class="card card-pad text-center">
+        <div class="progress-label"><span>Overall progress</span><span>2 of 4</span></div>
+        <div class="progress mb-4"><div class="bar" style="width:50%"></div></div>
+        <div class="cohort-circle" style="margin: var(--s2) auto var(--s3)">
+          <span class="seat filled"></span><span class="seat filled"></span><span class="seat filled"></span><span class="seat filled"></span><span class="seat"></span>
+          <span class="count">4<small>of 5</small></span>
+        </div>
+        <p class="small muted mb-0">Your region is <b>one participant away</b> from forming a cohort. Finishing your journey fills the fifth seat.</p>
+      </div>
+
+      <div class="card tinted card-pad">
+        <h4 class="mb-2">Why learning comes first</h4>
+        <p class="small muted mb-0">Every RTR participant — Indigenous and non-Indigenous — completes the same preparation. It means each first conversation starts from shared ground, not from scratch.</p>
+      </div>
+
+      <div class="card card-pad">
+        <h4 class="mb-2">Need a hand?</h4>
+        <p class="small muted mb-4">Captions and transcripts are available on every video. If a module raises something heavy, you don’t have to carry it alone.</p>
+        <button class="btn btn-secondary sm block">Talk to a facilitator</button>
+      </div>
+    </aside>
+
+  </div>
+
+</main>
+
+<footer class="app-footer">
+  <div class="container wide">
+    <div class="row between">
+      <p class="mb-0 small">RTR Matching Portal — learning journey (synthetic demo data)</p>
+      <div class="weave on-dark short" role="presentation"></div>
+    </div>
+    <p class="acknowledgment">Each gathering begins by acknowledging the treaty territory and traditional lands on which it takes place.</p>
+  </div>
+</footer>
+
+</body>
+</html>

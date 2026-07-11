@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Events — RTR Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<style>
+  .event-row { display: flex; gap: var(--s4); align-items: flex-start; }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="container wide">
+    <div class="bar">
+      <a class="brand" href="page-05-dashboard.html">
+        <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <path d="M16 4 a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28 a12 12 0 0 1 0 -24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+        </svg>
+        <span><span class="brand-name">RTR Portal</span><span class="brand-sub">Reconciliation Through Relationships</span></span>
+      </a>
+      <nav class="app-nav" aria-label="Main">
+        <a href="page-05-dashboard.html">Home</a>
+        <a href="page-04-learning.html">Learning</a>
+        <a href="page-07-match.html">Connections</a>
+        <a href="page-08-messages.html">Messages</a>
+        <a href="page-09-events.html" aria-current="page">Events</a>
+      </nav>
+      <div class="actions"><a href="page-06-profile.html" class="avatar sm dark" style="text-decoration:none">MC</a></div>
+      <button class="menu-btn" type="button">Menu</button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <div class="page-title">
+    <span class="eyebrow">Regina · Treaty 4 territory</span>
+    <h1>Events &amp; gatherings</h1>
+    <p class="lead">Where cohorts turn relationship into local action. Every event is hosted by participants and facilitators together.</p>
+    <div class="weave short mt-4" role="presentation"></div>
+  </div>
+
+  <nav class="tabs mb-5" aria-label="Events">
+    <a href="#" aria-current="true">Upcoming</a>
+    <a href="#">My events</a>
+    <a href="#">Past</a>
+  </nav>
+
+  <div class="grid sidebar">
+
+    <div class="stack loose">
+
+      <div class="card">
+        <div class="card-pad event-row">
+          <div class="date-block national"><div class="month">Sep</div><div class="day">30</div></div>
+          <div class="flex-1">
+            <span class="tiny" style="color: var(--ochre-700); font-weight: 700">NATIONAL DAY FOR TRUTH AND RECONCILIATION</span>
+            <h3 style="margin: 2px 0 6px">Blanket exercise &amp; shared meal</h3>
+            <p class="small muted mb-2">6:00–9:00 pm · Knox-Metropolitan Hall, Regina · Hosted by the forming Treaty 4 cohort</p>
+            <p class="small mb-0">An experiential walk through the history of this land, led by trained facilitators, followed by soup, bannock, and conversation. Wear orange if you can.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-primary sm">Register</button>
+          <span class="avatar-group">
+            <span class="avatar sm">MC</span><span class="avatar sm river">DT</span><span class="avatar sm ochre">AS</span><span class="avatar sm berry">+9</span>
+          </span>
+          <span class="tiny">12 registered · 28 seats</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-pad event-row">
+          <div class="date-block national"><div class="month">Jun</div><div class="day">21</div></div>
+          <div class="flex-1">
+            <span class="tiny" style="color: var(--ochre-700); font-weight: 700">NATIONAL INDIGENOUS PEOPLES DAY · NEXT YEAR</span>
+            <h3 style="margin: 2px 0 6px">Film screening: stories from Treaty 4</h3>
+            <p class="small muted mb-2">7:00 pm · RPL Film Theatre, Regina · Co-hosted with the Friendship Centre</p>
+            <p class="small mb-0">A documentary evening curated by cohort artists, with a talking circle afterward. Open to participants and their invited guests.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-secondary sm">Interested</button>
+          <span class="tiny">Planning · date to be confirmed by the cohort</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-pad event-row">
+          <div class="date-block"><div class="month">Aug</div><div class="day">16</div></div>
+          <div class="flex-1">
+            <span class="tiny" style="color: var(--spruce-600); font-weight: 700">COHORT GATHERING</span>
+            <h3 style="margin: 2px 0 6px">Potluck &amp; planning circle</h3>
+            <p class="small muted mb-2">5:30 pm · Wascana Park picnic area C · Treaty 4 cohort members</p>
+            <p class="small mb-0">First in-person gathering of the forming Regina cohort. Bring a dish that tells a story about where you come from.</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="pill matched">You’re registered</span>
+          <button class="btn btn-quiet sm">Can’t make it anymore</button>
+        </div>
+      </div>
+
+      <div class="empty">
+        <svg class="empty-mark" viewBox="0 0 32 32" width="56" aria-hidden="true">
+          <circle cx="16" cy="16" r="12" fill="none" stroke="#C9BCA3" stroke-width="3" stroke-dasharray="5 6" stroke-linecap="round"/>
+        </svg>
+        <h3>That’s everything for now</h3>
+        <p>New events appear here as your cohort plans them. Have an idea for a gathering? Your facilitator would love to hear it.</p>
+        <button class="btn btn-secondary">Suggest an event</button>
+      </div>
+
+    </div>
+
+    <aside class="stack loose">
+      <div class="card card-pad text-center">
+        <h4 class="mb-4">Treaty 4 cohort</h4>
+        <div class="cohort-circle" style="margin: 0 auto var(--s3)">
+          <span class="seat filled"></span><span class="seat filled"></span><span class="seat filled"></span><span class="seat filled"></span><span class="seat"></span>
+          <span class="count">4<small>of 5</small></span>
+        </div>
+        <p class="small muted mb-0">One more eligible participant and this circle can host its own events with a facilitator’s support.</p>
+      </div>
+
+      <div class="card tinted card-pad">
+        <h4 class="mb-2">Days that matter</h4>
+        <p class="small mb-0">
+          <b>June 21</b> — National Indigenous Peoples Day<br>
+          <b>Sep 30</b> — National Day for Truth and Reconciliation (Orange Shirt Day)<br>
+          <span class="tiny">Cohorts are encouraged to gather on both.</span>
+        </p>
+      </div>
+
+      <div class="card card-pad">
+        <h4 class="mb-2">Getting there</h4>
+        <p class="small muted mb-0">Event pages share the venue only with registered participants. Need a ride? Every registration form includes a carpool option.</p>
+      </div>
+    </aside>
+
+  </div>
+
+</main>
+
+<footer class="app-footer">
+  <div class="container wide">
+    <div class="row between">
+      <p class="mb-0 small">RTR Matching Portal — events (synthetic demo data)</p>
+      <div class="weave on-dark short" role="presentation"></div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

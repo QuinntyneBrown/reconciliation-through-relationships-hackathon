@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RTR Design System — Components</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<style>
+  /* Local styles for the specimen page only */
+  .spec-section { padding: var(--s6) 0; border-bottom: 1px solid var(--border); }
+  .spec-section:last-of-type { border-bottom: 0; }
+  .spec-label {
+    font-size: 12px; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ink-faint);
+    margin: var(--s5) 0 var(--s3);
+  }
+  .swatch { border-radius: var(--r-md); overflow: hidden; border: 1px solid var(--border); }
+  .swatch .chip { height: 72px; }
+  .swatch .info { padding: 10px 14px; background: var(--parchment); font-size: 13px; }
+  .swatch .info b { display: block; font-size: 14px; }
+  .swatch .info code { color: var(--ink-soft); font-size: 12.5px; }
+  .type-row { display: flex; align-items: baseline; gap: var(--s5); padding: var(--s3) 0; border-bottom: 1px dashed var(--border); }
+  .type-row .type-meta { flex: none; width: 220px; font-size: 12.5px; color: var(--ink-faint); }
+  .demo-row { display: flex; flex-wrap: wrap; gap: var(--s3); align-items: center; }
+  .demo-box {
+    background: var(--parchment); border: 1px solid var(--border);
+    border-radius: var(--r-lg); padding: var(--s5);
+  }
+  .toc a { text-decoration: none; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="container wide">
+    <div class="bar">
+      <a class="brand" href="index.html">
+        <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <path d="M16 4 a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28 a12 12 0 0 1 0 -24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/>
+          <circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+        </svg>
+        <span>
+          <span class="brand-name">RTR Portal</span>
+          <span class="brand-sub">Design system</span>
+        </span>
+      </a>
+      <nav class="app-nav" aria-label="Specimen">
+        <a href="index.html">All mocks</a>
+        <a href="design-system.html" aria-current="page">Components</a>
+      </nav>
+      <div class="actions"><span class="role-tag">Specimen</span></div>
+      <button class="menu-btn" type="button">Menu</button>
+    </div>
+  </div>
+</header>
+
+<main class="container wide">
+
+  <div class="page-title">
+    <span class="eyebrow">Reconciliation Through Relationships</span>
+    <h1>Design system &amp; component library</h1>
+    <p class="lead">Every component used across the RTR Matching Portal mocks, in one place. The direction is <em>“two strands, one circle”</em> — warm, land-grounded, and built for readability first.</p>
+    <div class="weave short mt-4" role="presentation"></div>
+  </div>
+
+  <div class="card card-pad toc mb-5">
+    <strong>On this page:</strong>
+    <a href="#principles">Principles</a> ·
+    <a href="#color">Color</a> ·
+    <a href="#type">Typography</a> ·
+    <a href="#brand">Brand &amp; motifs</a> ·
+    <a href="#buttons">Buttons</a> ·
+    <a href="#forms">Forms</a> ·
+    <a href="#chips">Tags &amp; status</a> ·
+    <a href="#avatars">Avatars</a> ·
+    <a href="#cards">Cards</a> ·
+    <a href="#cohort">Cohort circle</a> ·
+    <a href="#progress">Progress</a> ·
+    <a href="#nav">Navigation</a> ·
+    <a href="#alerts">Alerts</a> ·
+    <a href="#tables">Tables</a> ·
+    <a href="#messages">Messages</a> ·
+    <a href="#modal">Dialogs</a> ·
+    <a href="#empty">Empty states</a> ·
+    <a href="#a11y">Accessibility</a>
+  </div>
+
+  <!-- ============================ PRINCIPLES ============================ -->
+  <section class="spec-section" id="principles">
+    <h2>Principles</h2>
+    <div class="grid cols-3 mt-4">
+      <div class="card card-pad">
+        <h3 class="h4">Welcome before wow</h3>
+        <p class="small mb-0">Participants range widely in age and comfort with technology. Large type, plain words, one clear action per screen.</p>
+      </div>
+      <div class="card card-pad">
+        <h3 class="h4">Consent is a design element</h3>
+        <p class="small mb-0">Nothing about a person is shown — no photo, no precise location — until they choose to share it. Avatars use initials; the map shows regions, not addresses.</p>
+      </div>
+      <div class="card card-pad">
+        <h3 class="h4">Abstract, not appropriated</h3>
+        <p class="small mb-0">Motifs (woven strands, the circle) are geometric abstractions of relationship and gathering. Final iconography must be reviewed with RTR’s Indigenous leadership.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ COLOR ============================ -->
+  <section class="spec-section" id="color">
+    <h2>Color</h2>
+    <p class="muted">Drawn from the land: spruce forest, birchbark, prairie ochre, river water, wild berry. Spruce carries structure and action; ochre and river are the two relationship strands; berry is reserved for warnings.</p>
+
+    <p class="spec-label">Core palette</p>
+    <div class="grid cols-4">
+      <div class="swatch"><div class="chip" style="background:#1E3D36"></div><div class="info"><b>Spruce 800</b><code>#1E3D36</code> · headers, ink</div></div>
+      <div class="swatch"><div class="chip" style="background:#2A5148"></div><div class="info"><b>Spruce 700</b><code>#2A5148</code> · primary actions</div></div>
+      <div class="swatch"><div class="chip" style="background:#396B5E"></div><div class="info"><b>Spruce 600</b><code>#396B5E</code> · progress, filled seats</div></div>
+      <div class="swatch"><div class="chip" style="background:#E0EAE2"></div><div class="info"><b>Spruce 100</b><code>#E0EAE2</code> · tints, tags</div></div>
+      <div class="swatch"><div class="chip" style="background:#D89543"></div><div class="info"><b>Ochre 500</b><code>#D89543</code> · accent strand, highlights</div></div>
+      <div class="swatch"><div class="chip" style="background:#9A5B14"></div><div class="info"><b>Ochre 700</b><code>#9A5B14</code> · accent text</div></div>
+      <div class="swatch"><div class="chip" style="background:#37767C"></div><div class="info"><b>River 600</b><code>#37767C</code> · second strand</div></div>
+      <div class="swatch"><div class="chip" style="background:#2C5F66"></div><div class="info"><b>River 700</b><code>#2C5F66</code> · links</div></div>
+      <div class="swatch"><div class="chip" style="background:#8C3130"></div><div class="info"><b>Berry 700</b><code>#8C3130</code> · destructive, errors</div></div>
+      <div class="swatch"><div class="chip" style="background:#F9F5EB; border-bottom:1px solid #E0D6C2"></div><div class="info"><b>Birch</b><code>#F9F5EB</code> · page background</div></div>
+      <div class="swatch"><div class="chip" style="background:#FFFDF7; border-bottom:1px solid #E0D6C2"></div><div class="info"><b>Parchment</b><code>#FFFDF7</code> · cards, inputs</div></div>
+      <div class="swatch"><div class="chip" style="background:#EFE7D7"></div><div class="info"><b>Sand</b><code>#EFE7D7</code> · subtle fills</div></div>
+    </div>
+  </section>
+
+  <!-- ============================ TYPOGRAPHY ============================ -->
+  <section class="spec-section" id="type">
+    <h2>Typography</h2>
+    <p class="muted"><strong>Fraunces</strong> carries the voice — warm, human, a little old-growth. <strong>Atkinson Hyperlegible</strong> carries the reading — designed by the Braille Institute for maximum legibility, chosen because accessibility is a stated goal of this platform, not an afterthought.</p>
+
+    <div class="type-row"><div class="type-meta">Display · Fraunces 520</div><div class="display">Walking together</div></div>
+    <div class="type-row"><div class="type-meta">Heading 1 · Fraunces 560</div><h1 class="mb-0">Your learning journey</h1></div>
+    <div class="type-row"><div class="type-meta">Heading 2 · Fraunces 560</div><h2 class="mb-0">Recommended connections</h2></div>
+    <div class="type-row"><div class="type-meta">Heading 3 · Fraunces 560</div><h3 class="mb-0">Regional cohorts</h3></div>
+    <div class="type-row"><div class="type-meta">Heading 4 · Atkinson 700</div><h4 class="mb-0">Availability and format</h4></div>
+    <div class="type-row"><div class="type-meta">Lead · Atkinson 400 / 19px</div><p class="lead mb-0">A gentle introduction that sets the tone of a page.</p></div>
+    <div class="type-row"><div class="type-meta">Body · Atkinson 400 / 16.5px</div><p class="mb-0">Reconciliation begins with a relationship — one conversation, one shared meal, one community at a time.</p></div>
+    <div class="type-row"><div class="type-meta">Eyebrow · caps, ochre</div><span class="eyebrow mb-0">Step 2 of 5</span></div>
+    <div class="type-row"><div class="type-meta">Small · 14px, muted</div><p class="small muted mb-0">Shown only to facilitators. Participants see their region, never an address.</p></div>
+    <div class="type-row"><div class="type-meta">Quote · Fraunces italic</div><p class="quote mb-0">“We were told the truth. Now we choose the relationship.”</p></div>
+  </section>
+
+  <!-- ============================ BRAND & MOTIFS ============================ -->
+  <section class="spec-section" id="brand">
+    <h2>Brand &amp; motifs</h2>
+    <div class="grid cols-3 mt-4">
+      <div class="demo-box text-center">
+        <svg viewBox="0 0 32 32" width="72" height="72" aria-hidden="true" style="margin:0 auto var(--s3)">
+          <path d="M16 4 a12 12 0 0 1 0 24" fill="none" stroke="#C07A22" stroke-width="3.2" stroke-linecap="round"/>
+          <path d="M16 28 a12 12 0 0 1 0 -24" fill="none" stroke="#37767C" stroke-width="3.2" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#C07A22"/>
+          <circle cx="19.6" cy="16" r="2.1" fill="#37767C"/>
+        </svg>
+        <h3 class="h4 mb-2">The mark</h3>
+        <p class="small muted mb-0">Two arcs — ochre and river — form one circle around two people. The circle is open at top and bottom: the relationship is never closed to others.</p>
+      </div>
+      <div class="demo-box">
+        <div class="weave" role="presentation" style="margin: 28px 0"></div>
+        <h3 class="h4 mb-2">The woven strand</h3>
+        <p class="small muted mb-0">Two strands interlacing — used as a section divider and under page titles. Use once per view, never as wallpaper.</p>
+      </div>
+      <div class="demo-box text-center">
+        <div class="cohort-circle" style="margin: 6px auto var(--s3)">
+          <span class="seat filled"></span><span class="seat filled"></span><span class="seat filled"></span><span class="seat"></span><span class="seat"></span>
+          <span class="count">3<small>of 5</small></span>
+        </div>
+        <h3 class="h4 mb-2">The cohort circle</h3>
+        <p class="small muted mb-0">The signature component — a circle of seats that fills as a region approaches cohort readiness. See <a href="#cohort">states below</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ BUTTONS ============================ -->
+  <section class="spec-section" id="buttons">
+    <h2>Buttons</h2>
+
+    <p class="spec-label">Variants</p>
+    <div class="demo-row">
+      <button class="btn btn-primary">Begin your journey</button>
+      <button class="btn btn-secondary">View profile</button>
+      <button class="btn btn-soft">Save for later</button>
+      <button class="btn btn-quiet">Skip this step</button>
+      <button class="btn btn-danger">Remove participant</button>
+      <button class="btn btn-danger-quiet">Decline</button>
+      <button class="btn btn-primary" disabled>Continue</button>
+    </div>
+
+    <p class="spec-label">Sizes</p>
+    <div class="demo-row">
+      <button class="btn btn-primary lg">Start learning</button>
+      <button class="btn btn-primary">Save changes</button>
+      <button class="btn btn-primary sm">Approve</button>
+    </div>
+
+    <p class="spec-label">With icon · on dark</p>
+    <div class="demo-row">
+      <button class="btn btn-secondary">
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        Add interest
+      </button>
+      <span style="background: var(--spruce-800); padding: 14px 18px; border-radius: var(--r-md); display:inline-flex; gap:12px">
+        <button class="btn on-dark">Sign in</button>
+      </span>
+    </div>
+
+    <p class="small muted mt-4 mb-0">Rules: one primary button per view. “Decline” and other reversible refusals use the quiet danger outline; solid berry is reserved for destructive, hard-to-undo actions. Buttons name the action’s result: “Send invitation,” not “Submit.”</p>
+  </section>
+
+  <!-- ============================ FORMS ============================ -->
+  <section class="spec-section" id="forms">
+    <h2>Forms</h2>
+    <div class="grid cols-2 mt-4">
+      <div class="demo-box">
+        <div class="field">
+          <label for="ds-name">Full name <span class="req">*</span></label>
+          <input class="input" id="ds-name" type="text" placeholder="e.g. Marie Cardinal">
+          <p class="hint">Shown to facilitators and, after you both agree, to your connection.</p>
+        </div>
+        <div class="field">
+          <label for="ds-province">Province or territory <span class="req">*</span></label>
+          <select class="select" id="ds-province">
+            <option>Saskatchewan</option>
+            <option>Alberta</option>
+            <option>Manitoba</option>
+            <option>Ontario</option>
+          </select>
+        </div>
+        <div class="field error">
+          <label for="ds-city">City, town, or county <span class="req">*</span></label>
+          <input class="input" id="ds-city" type="text" value="">
+          <p class="error-msg">⚠ Enter your city or town so we can find participants near you.</p>
+        </div>
+        <div class="field mb-0">
+          <label for="ds-bio">A little about you</label>
+          <textarea class="textarea" id="ds-bio" placeholder="What brings you to this journey?"></textarea>
+        </div>
+      </div>
+      <div class="demo-box">
+        <div class="field">
+          <span class="label">Search</span>
+          <div class="search"><input class="input" type="search" placeholder="Search participants…"></div>
+        </div>
+        <div class="field">
+          <span class="label">Preferred connection format</span>
+          <label class="choice"><input type="radio" name="ds-fmt" checked> In person <span class="choice-hint" style="margin-left:4px"></span></label>
+          <label class="choice"><input type="radio" name="ds-fmt"> Video call</label>
+          <label class="choice"><input type="radio" name="ds-fmt"> Either works for me</label>
+        </div>
+        <div class="field">
+          <span class="label">Availability</span>
+          <label class="choice"><input type="checkbox" checked> Weekday evenings</label>
+          <label class="choice"><input type="checkbox" checked> Weekends</label>
+          <label class="choice"><input type="checkbox"> Weekday daytime</label>
+        </div>
+        <div class="field mb-0">
+          <span class="label">Visibility</span>
+          <div class="row between" style="padding: 6px 0">
+            <span class="small">Show my region on the participant map</span>
+            <span class="switch"><input type="checkbox" checked aria-label="Show my region on the participant map"><span class="track"></span></span>
+          </div>
+          <div class="row between" style="padding: 6px 0">
+            <span class="small">Email me when I have a new recommendation</span>
+            <span class="switch"><input type="checkbox" aria-label="Email me when I have a new recommendation"><span class="track"></span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="spec-label">Choice cards — participation categories</p>
+    <div class="grid cols-3">
+      <label class="choice-card selected"><input type="checkbox" checked>
+        <span><b>Indigenous leader</b><span>Community, cultural, or organizational leadership</span></span>
+      </label>
+      <label class="choice-card"><input type="checkbox">
+        <span><b>Non-Indigenous individual</b><span>Here to listen, learn, and build a relationship</span></span>
+      </label>
+      <label class="choice-card"><input type="checkbox">
+        <span><b>Artist</b><span>Musician, writer, visual artist, storyteller</span></span>
+      </label>
+    </div>
+  </section>
+
+  <!-- ============================ CHIPS & STATUS ============================ -->
+  <section class="spec-section" id="chips">
+    <h2>Tags, filters &amp; status</h2>
+
+    <p class="spec-label">Interest tags</p>
+    <div class="demo-row">
+      <span class="tag">Beading</span>
+      <span class="tag">Youth mentorship</span>
+      <span class="tag ochre">Gospel music</span>
+      <span class="tag river">Land-based learning</span>
+      <span class="tag">Hockey</span>
+      <span class="tag">Community gardens <a class="x" href="#" aria-label="Remove Community gardens">✕</a></span>
+    </div>
+
+    <p class="spec-label">Discovery filter chips</p>
+    <div class="demo-row">
+      <a class="filter-chip active" href="#">Recommended for you</a>
+      <a class="filter-chip" href="#">Indigenous participants</a>
+      <a class="filter-chip" href="#">Non-Indigenous participants</a>
+      <a class="filter-chip" href="#">All eligible</a>
+    </div>
+
+    <p class="spec-label">Status pills — the participant journey</p>
+    <div class="demo-row">
+      <span class="pill pending">Pending approval</span>
+      <span class="pill learning">In learning</span>
+      <span class="pill eligible">Eligible</span>
+      <span class="pill matched">Matched</span>
+      <span class="pill waitlist">Waitlist</span>
+      <span class="pill alert">Needs attention</span>
+    </div>
+  </section>
+
+  <!-- ============================ AVATARS ============================ -->
+  <section class="spec-section" id="avatars">
+    <h2>Avatars</h2>
+    <p class="muted">Initials only, by design — photos are shared in conversation after both people agree to connect, never displayed by the system beforehand.</p>
+    <div class="demo-row">
+      <span class="avatar xl">MC</span>
+      <span class="avatar lg river">DT</span>
+      <span class="avatar ochre">JO</span>
+      <span class="avatar berry">AS</span>
+      <span class="avatar dark">RB</span>
+      <span class="avatar sm">LP</span>
+      <span class="avatar-group">
+        <span class="avatar">MC</span><span class="avatar river">DT</span><span class="avatar ochre">JO</span><span class="avatar berry">+4</span>
+      </span>
+    </div>
+  </section>
+
+  <!-- ============================ CARDS ============================ -->
+  <section class="spec-section" id="cards">
+    <h2>Cards</h2>
+    <div class="grid cols-3 mt-4">
+
+      <div class="card participant-card">
+        <div class="top">
+          <span class="avatar lg">MC</span>
+          <div>
+            <div class="name">Marie Cardinal</div>
+            <div class="meta">Regina, SK · Treaty 4</div>
+            <span class="pill eligible" style="margin-top:4px">Eligible</span>
+          </div>
+        </div>
+        <div class="tags">
+          <span class="tag">Beading</span><span class="tag">Youth mentorship</span><span class="tag river">Cree</span>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-secondary sm">View profile</button>
+          <span class="tiny">Recommended · 92% match</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h4>Module 2 · Treaties and the land</h4><span class="pill learning">In progress</span></div>
+        <div class="card-pad">
+          <div class="video-thumb mb-4"><span class="duration">18 min</span></div>
+          <div class="progress-label"><span>Progress</span><span>60%</span></div>
+          <div class="progress"><div class="bar" style="width:60%"></div></div>
+        </div>
+        <div class="card-footer"><button class="btn btn-primary sm">Continue watching</button></div>
+      </div>
+
+      <div class="card">
+        <div class="card-pad" style="display:flex; gap:var(--s4)">
+          <div class="date-block national"><div class="month">Sep</div><div class="day">30</div></div>
+          <div>
+            <span class="tiny" style="color:var(--ochre-700); font-weight:700">NATIONAL DAY FOR TRUTH AND RECONCILIATION</span>
+            <h3 class="h4" style="margin:2px 0 4px">Blanket exercise &amp; shared meal</h3>
+            <p class="small muted mb-0">Regina cohort · Knox-Metropolitan Hall</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-primary sm">Register</button>
+          <span class="tiny">12 registered</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="spec-label">Stat tiles (facilitator dashboards)</p>
+    <div class="grid cols-4">
+      <div class="card stat"><div class="stat-num">14</div><div class="stat-label">Pending registrations</div><div class="stat-note">4 waiting more than a week</div></div>
+      <div class="card stat"><div class="stat-num">9</div><div class="stat-label">Matches to review</div><div class="stat-note">Oldest: 3 days</div></div>
+      <div class="card stat"><div class="stat-num">3</div><div class="stat-label">Cohorts forming</div><div class="stat-note">Regina is 1 away</div></div>
+      <div class="card stat"><div class="stat-num">78%</div><div class="stat-label">Learning completion</div><div class="stat-note">Up 6% this month</div></div>
+    </div>
+  </section>
+
+  <!-- ============================ COHORT CIRCLE ============================ -->
+  <section class="spec-section" id="cohort">
+    <h2>Cohort circle</h2>
+    <p class="muted">Each seat is an eligible participant in a region. When the fifth seat fills, the circle turns ochre and gains its gathering ring — the region is ready to form a reconciliation cohort. (Threshold of five to be confirmed with RTR.)</p>
+    <div class="demo-row" style="gap: var(--s7); margin-top: var(--s5)">
+      <div class="text-center">
+        <div class="cohort-circle">
+          <span class="seat filled"></span><span class="seat"></span><span class="seat"></span><span class="seat"></span><span class="seat"></span>
+          <span class="count">1<small>of 5</small></span>
+        </div>
+        <p class="small muted mt-2 mb-0">Beginning</p>
+      </div>
+      <div class="text-center">
+        <div class="cohort-circle">
+          <span class="seat filled"></span><span class="seat filled"></span><span class="seat filled"></span><span class="seat"></span><span class="seat"></span>
+          <span class="count">3<small>of 5</small></span>
+        </div>
+        <p class="small muted mt-2 mb-0">Forming</p>
+      </div>
+      <div class="text-center">
+        <div class="cohort-circle">
+          <span class="seat filled"></span><span class="seat filled"></span><span class="seat filled"></span><span class="seat filled"></span><span class="seat"></span>
+          <span class="count">4<small>of 5</small></span>
+        </div>
+        <p class="small muted mt-2 mb-0">One away</p>
+      </div>
+      <div class="text-center">
+        <div class="cohort-circle ready">
+          <span class="seat filled"></span><span class="seat filled"></span><span class="seat filled"></span><span class="seat filled"></span><span class="seat filled"></span>
+          <span class="count">5<small>ready</small></span>
+        </div>
+        <p class="small muted mt-2 mb-0"><b style="color:var(--ochre-700)">Ready to gather</b></p>
+      </div>
+      <div class="text-center">
+        <div class="cohort-circle sm ready">
+          <span class="seat filled"></span><span class="seat filled"></span><span class="seat filled"></span><span class="seat filled"></span><span class="seat filled"></span>
+          <span class="count">5</span>
+        </div>
+        <p class="small muted mt-2 mb-0">Small (map, lists)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ PROGRESS ============================ -->
+  <section class="spec-section" id="progress">
+    <h2>Progress &amp; steppers</h2>
+
+    <p class="spec-label">Learning progress</p>
+    <div class="demo-box" style="max-width:520px">
+      <div class="progress-label"><span>Learning journey</span><span>2 of 4 modules</span></div>
+      <div class="progress"><div class="bar" style="width:50%"></div></div>
+      <div class="progress-label mt-4"><span>Module 3 · Listening and cultural humility</span><span>35%</span></div>
+      <div class="progress ochre"><div class="bar" style="width:35%"></div></div>
+    </div>
+
+    <p class="spec-label">Onboarding stepper</p>
+    <div class="demo-box">
+      <div class="stepper">
+        <div class="step done">Account</div>
+        <div class="step done">About you</div>
+        <div class="step current">Location &amp; treaty</div>
+        <div class="step">Interests</div>
+        <div class="step">Boundaries</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ NAVIGATION ============================ -->
+  <section class="spec-section" id="nav">
+    <h2>Navigation</h2>
+
+    <p class="spec-label">App header — participant</p>
+    <div style="border-radius: var(--r-md); overflow:hidden; border:1px solid var(--border)">
+      <header class="app-header">
+        <div class="container wide">
+          <div class="bar">
+            <a class="brand" href="#">
+              <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+                <path d="M16 4 a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+                <path d="M16 28 a12 12 0 0 1 0 -24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+                <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+              </svg>
+              <span><span class="brand-name">RTR Portal</span><span class="brand-sub">Reconciliation Through Relationships</span></span>
+            </a>
+            <nav class="app-nav" aria-label="Main">
+              <a href="#" aria-current="page">Home</a><a href="#">Learning</a><a href="#">Connections</a><a href="#">Messages</a><a href="#">Events</a>
+            </nav>
+            <div class="actions"><span class="avatar sm dark">MC</span></div>
+            <button class="menu-btn" type="button">Menu</button>
+          </div>
+        </div>
+      </header>
+    </div>
+
+    <p class="spec-label">App header — facilitator (role tag, extended nav)</p>
+    <div style="border-radius: var(--r-md); overflow:hidden; border:1px solid var(--border)">
+      <header class="app-header">
+        <div class="container wide">
+          <div class="bar">
+            <a class="brand" href="#">
+              <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+                <path d="M16 4 a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+                <path d="M16 28 a12 12 0 0 1 0 -24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+                <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+              </svg>
+              <span><span class="brand-name">RTR Portal</span><span class="brand-sub">Facilitator</span></span>
+            </a>
+            <nav class="app-nav" aria-label="Main">
+              <a href="#">Overview</a><a href="#" aria-current="page">Participants</a><a href="#">Matches</a><a href="#">Map</a><a href="#">Events</a>
+            </nav>
+            <div class="actions"><span class="role-tag">Facilitator</span><span class="avatar sm dark">JO</span></div>
+            <button class="menu-btn" type="button">Menu</button>
+          </div>
+        </div>
+      </header>
+    </div>
+
+    <p class="spec-label">Tabs · breadcrumb · pagination</p>
+    <div class="demo-box stack loose">
+      <nav class="tabs" aria-label="Events">
+        <a href="#" aria-current="true">Upcoming</a><a href="#">My events</a><a href="#">Past</a>
+      </nav>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="#">Participants</a><span class="sep">›</span><a href="#">Regina region</a><span class="sep">›</span><span>Marie Cardinal</span>
+      </nav>
+      <nav class="pagination" aria-label="Pagination">
+        <a href="#">‹</a><span class="current">1</span><a href="#">2</a><a href="#">3</a><span class="ellipsis">…</span><a href="#">8</a><a href="#">›</a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- ============================ ALERTS ============================ -->
+  <section class="spec-section" id="alerts">
+    <h2>Alerts, banners &amp; toasts</h2>
+    <div class="stack mt-4" style="max-width:680px">
+      <div class="alert info"><span class="alert-icon">ℹ</span><div><b>A facilitator is reviewing your match.</b><p>You’ll get an email when it’s ready — usually within a few days.</p></div></div>
+      <div class="alert success"><span class="alert-icon">✓</span><div><b>Learning journey complete.</b><p>You’re now eligible for matching and cohort invitations.</p></div></div>
+      <div class="alert caution"><span class="alert-icon">◔</span><div><b>One module left.</b><p>Finish “Beginning the relationship” to become eligible for matching.</p></div></div>
+      <div class="alert danger"><span class="alert-icon">⚠</span><div><b>We couldn’t send your sign-in link.</b><p>Check that the email address is correct, then try again.</p></div></div>
+    </div>
+    <p class="spec-label">Toast</p>
+    <div class="toast"><span class="tick">✓</span> Invitation sent to 11 participants</div>
+  </section>
+
+  <!-- ============================ TABLES ============================ -->
+  <section class="spec-section" id="tables">
+    <h2>Tables</h2>
+    <p class="muted">Facilitator and administrator views only. Rows lead with the person, not the record.</p>
+    <div class="table-wrap mt-4">
+      <table class="table">
+        <thead><tr><th>Participant</th><th>Region</th><th>Learning</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="row nowrap"><span class="avatar sm">MC</span><div><b>Marie Cardinal</b><div class="tiny">Indigenous leader</div></div></div></td>
+            <td>Regina, SK · Treaty 4</td>
+            <td>4 of 4 modules</td>
+            <td><span class="pill eligible">Eligible</span></td>
+            <td><button class="btn btn-quiet sm">Review</button></td>
+          </tr>
+          <tr>
+            <td><div class="row nowrap"><span class="avatar sm river">DT</span><div><b>David Tremblay</b><div class="tiny">Non-Indigenous individual</div></div></div></td>
+            <td>Regina, SK · Treaty 4</td>
+            <td>2 of 4 modules</td>
+            <td><span class="pill learning">In learning</span></td>
+            <td><button class="btn btn-quiet sm">Remind</button></td>
+          </tr>
+          <tr>
+            <td><div class="row nowrap"><span class="avatar sm ochre">AS</span><div><b>Amara Singh</b><div class="tiny">Religious leader</div></div></div></td>
+            <td>Saskatoon, SK · Treaty 6</td>
+            <td>—</td>
+            <td><span class="pill pending">Pending approval</span></td>
+            <td><button class="btn btn-primary sm">Approve</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============================ MESSAGES ============================ -->
+  <section class="spec-section" id="messages">
+    <h2>Message bubbles</h2>
+    <div class="demo-box" style="max-width:560px">
+      <div class="thread">
+        <span class="day-sep">Tuesday</span>
+        <div class="msg theirs">
+          <div class="bubble">Tansi Marie! Thanks for accepting. I’d love to hear about the youth beading circle you mentioned.</div>
+          <div class="msg-meta">David · 2:14 pm</div>
+        </div>
+        <div class="msg mine">
+          <div class="bubble">Happy to! We meet Thursday evenings at the Friendship Centre. Would a call this weekend work to talk more?</div>
+          <div class="msg-meta">You · 2:31 pm</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ MODAL ============================ -->
+  <section class="spec-section" id="modal">
+    <h2>Dialogs</h2>
+    <p class="muted">Every dialog opens with an ochre strand at its top edge, names one decision, and offers a way out. Full dialog mocks: see the <a href="index.html#dialogs">index</a>.</p>
+    <div style="background: var(--spruce-100); border-radius: var(--r-lg); padding: var(--s6); display:grid; place-items:center">
+      <div class="modal" role="dialog" aria-labelledby="ds-modal-title" style="max-width:480px">
+        <div class="modal-header">
+          <div>
+            <div class="kicker">Connection request</div>
+            <h3 id="ds-modal-title">Decline this recommendation?</h3>
+          </div>
+          <button class="close" aria-label="Close">✕</button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-0">No one is notified when you decline, and it won’t affect future recommendations. If something felt wrong, you can also <a href="#">tell your facilitator</a>.</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-quiet">Keep thinking</button>
+          <button class="btn btn-danger-quiet">Decline recommendation</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ EMPTY STATES ============================ -->
+  <section class="spec-section" id="empty">
+    <h2>Empty states</h2>
+    <div class="grid cols-2 mt-4">
+      <div class="empty">
+        <svg class="empty-mark" viewBox="0 0 32 32" width="56" aria-hidden="true">
+          <path d="M16 4 a12 12 0 0 1 0 24" fill="none" stroke="#C9BCA3" stroke-width="3" stroke-linecap="round"/>
+          <path d="M16 28 a12 12 0 0 1 0 -24" fill="none" stroke="#C9BCA3" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 7"/>
+        </svg>
+        <h3>No recommendations yet</h3>
+        <p>Your facilitator reviews every match personally. While you wait, your profile does the work — the more you share, the better the match.</p>
+        <button class="btn btn-secondary">Complete your profile</button>
+      </div>
+      <div class="empty">
+        <svg class="empty-mark" viewBox="0 0 32 32" width="56" aria-hidden="true">
+          <circle cx="16" cy="16" r="12" fill="none" stroke="#C9BCA3" stroke-width="3" stroke-dasharray="5 6" stroke-linecap="round"/>
+        </svg>
+        <h3>No cohort in your region yet</h3>
+        <p>Circles take time. Invite someone you know to join the journey — every seat filled brings a gathering closer.</p>
+        <button class="btn btn-secondary">Share an invitation</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ ACCESSIBILITY ============================ -->
+  <section class="spec-section" id="a11y">
+    <h2>Accessibility commitments</h2>
+    <div class="grid cols-2 mt-4">
+      <div class="card card-pad stack tight">
+        <p class="mb-0">✓ Body face is <b>Atkinson Hyperlegible</b>, designed for low-vision readers.</p>
+        <p class="mb-0">✓ Text and interactive colors meet WCAG AA contrast on their backgrounds.</p>
+        <p class="mb-0">✓ Every interactive element shows a visible ochre focus ring.</p>
+        <p class="mb-0">✓ Touch targets are at least 44px; base text is 16.5px.</p>
+      </div>
+      <div class="card card-pad stack tight">
+        <p class="mb-0">✓ <code>prefers-reduced-motion</code> disables all transitions.</p>
+        <p class="mb-0">✓ Status is never conveyed by color alone — pills carry text, seats carry counts.</p>
+        <p class="mb-0">✓ Layouts collapse to a single column below 620px; nav collapses at 860px.</p>
+        <p class="mb-0">✓ Plain language throughout; reading level checked with RTR staff.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="app-footer">
+  <div class="container wide">
+    <div class="row between">
+      <div>
+        <h4>RTR Matching Portal — design mocks</h4>
+        <p class="mb-0">Synthetic data only. Motifs pending review with RTR Indigenous leadership.</p>
+      </div>
+      <div class="weave on-dark short" role="presentation"></div>
+    </div>
+    <p class="acknowledgment">Each gathering begins by acknowledging the treaty territory and traditional lands on which it takes place. The portal shows a region-appropriate acknowledgment here, confirmed with local Indigenous partners.</p>
+  </div>
+</footer>
+
+</body>
+</html>

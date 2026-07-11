@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in — RTR Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<style>
+  .signin-wrap {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .signin-side {
+    background: var(--spruce-800);
+    color: var(--on-dark);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: var(--s6) var(--s7);
+  }
+  .signin-side .quote { color: var(--on-dark); font-size: 26px; max-width: 20ch; }
+  .signin-main {
+    display: grid;
+    place-items: center;
+    padding: var(--s6) var(--s5);
+  }
+  .signin-card { width: 100%; max-width: 420px; }
+  @media (max-width: 860px) {
+    .signin-wrap { grid-template-columns: 1fr; }
+    .signin-side { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="signin-wrap">
+
+  <aside class="signin-side">
+    <a class="brand" href="page-01-landing.html">
+      <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+        <path d="M16 4 a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+        <path d="M16 28 a12 12 0 0 1 0 -24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+        <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+      </svg>
+      <span><span class="brand-name">RTR Portal</span><span class="brand-sub">Reconciliation Through Relationships</span></span>
+    </a>
+    <div>
+      <p class="quote">“We were told the truth. Now we choose the relationship.”</p>
+      <div class="weave on-dark short" role="presentation"></div>
+    </div>
+    <p class="small" style="color: var(--on-dark-soft); margin: 0">Participants across every treaty territory in Canada.</p>
+  </aside>
+
+  <main class="signin-main">
+    <div class="signin-card">
+      <h1>Welcome back</h1>
+      <p class="muted">Enter your email and we’ll send you a sign-in link. No password to remember.</p>
+
+      <div class="card card-pad mt-5">
+        <form>
+          <div class="field">
+            <label for="email">Email address</label>
+            <input class="input" id="email" type="email" placeholder="you@example.ca" autocomplete="email">
+          </div>
+          <button class="btn btn-primary block" type="submit">Email me a sign-in link</button>
+        </form>
+        <hr class="divider">
+        <p class="small muted text-center mb-0">The link works for 15 minutes and signs you in on this device.</p>
+      </div>
+
+      <div class="alert success mt-5" role="status">
+        <span class="alert-icon">✓</span>
+        <div><b>Check your inbox.</b><p>We sent a sign-in link to <strong>marie.c@example.ca</strong>. Didn’t arrive? <a href="#">Send it again</a>.</p></div>
+      </div>
+
+      <p class="small text-center mt-5">New to RTR? <a href="page-03-onboarding.html"><strong>Begin your journey</strong></a></p>
+      <p class="tiny text-center">Trouble signing in? Your regional facilitator can help — <a href="#">contact us</a>.</p>
+    </div>
+  </main>
+
+</div>
+
+</body>
+</html>

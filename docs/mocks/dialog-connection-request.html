@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dialog — Connection recommendation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+</head>
+<body>
+
+<!-- Faded page behind the dialog -->
+<div class="mock-page-behind" aria-hidden="true">
+  <div class="skeleton-bar" style="width: 30%"></div>
+  <div class="skeleton-bar" style="width: 55%"></div>
+  <div class="skeleton-block"></div>
+  <div class="skeleton-bar" style="width: 42%"></div>
+  <div class="skeleton-block"></div>
+</div>
+
+<div class="scrim">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="dlg-title">
+    <div class="modal-header">
+      <div>
+        <div class="kicker">New recommendation · approved by Joel</div>
+        <h2 id="dlg-title" class="h2">You have a potential connection</h2>
+      </div>
+      <button class="close" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="row nowrap mb-4" style="align-items: flex-start">
+        <span class="avatar lg river">DT</span>
+        <div>
+          <b>David Tremblay</b>
+          <div class="small muted">Regina area, SK · Treaty 4 · Non-Indigenous individual</div>
+          <div class="row mt-2" style="gap: 6px">
+            <span class="tag">Community gardens</span>
+            <span class="tag">Youth mentorship</span>
+            <span class="tag ochre">Music</span>
+          </div>
+        </div>
+      </div>
+      <p class="small mb-0">Your facilitator reviewed this match personally. David hasn’t seen your profile — he will only if you accept, and you’ll only be introduced if he accepts too. There’s no deadline.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-quiet push-left">Decide later</button>
+      <a class="btn btn-secondary" href="page-07-match.html">See full profile</a>
+      <button class="btn btn-primary">Accept — I’d like to connect</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

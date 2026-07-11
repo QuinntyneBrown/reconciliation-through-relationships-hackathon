@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Messages — RTR Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<style>
+  .messages-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: var(--s5);
+    align-items: stretch;
+    margin-top: var(--s5);
+  }
+  .convo {
+    display: flex; gap: var(--s3); align-items: center;
+    padding: var(--s3) var(--s4);
+    border-radius: var(--r-md);
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .convo:hover { background: var(--birch); }
+  .convo.active { background: var(--spruce-100); }
+  .convo .preview { font-size: 13.5px; color: var(--ink-soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 190px; }
+  .convo .when { margin-left: auto; font-size: 12px; color: var(--ink-faint); flex: none; }
+  .thread-pane { display: flex; flex-direction: column; min-height: 560px; }
+  .thread-pane .thread-head {
+    display: flex; align-items: center; gap: var(--s3);
+    padding: var(--s4) var(--s5);
+    border-bottom: 1px solid var(--border);
+  }
+  .thread-pane .thread-body { flex: 1; padding: var(--s5); overflow-y: auto; }
+  .thread-pane .composer {
+    display: flex; gap: var(--s3);
+    padding: var(--s4) var(--s5);
+    border-top: 1px solid var(--border);
+  }
+  @media (max-width: 860px) { .messages-layout { grid-template-columns: 1fr; } .convo-list { display: none; } }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="container wide">
+    <div class="bar">
+      <a class="brand" href="page-05-dashboard.html">
+        <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <path d="M16 4 a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28 a12 12 0 0 1 0 -24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+        </svg>
+        <span><span class="brand-name">RTR Portal</span><span class="brand-sub">Reconciliation Through Relationships</span></span>
+      </a>
+      <nav class="app-nav" aria-label="Main">
+        <a href="page-05-dashboard.html">Home</a>
+        <a href="page-04-learning.html">Learning</a>
+        <a href="page-07-match.html">Connections</a>
+        <a href="page-08-messages.html" aria-current="page">Messages</a>
+        <a href="page-09-events.html">Events</a>
+      </nav>
+      <div class="actions"><a href="page-06-profile.html" class="avatar sm dark" style="text-decoration:none">MC</a></div>
+      <button class="menu-btn" type="button">Menu</button>
+    </div>
+  </div>
+</header>
+
+<main class="container wide">
+
+  <div class="page-title" style="padding-bottom: 0">
+    <h1 class="mb-0">Messages</h1>
+    <p class="lead">Conversations open only between connections who both said yes.</p>
+  </div>
+
+  <div class="messages-layout">
+
+    <!-- Conversation list -->
+    <div class="card card-pad convo-list" style="padding: var(--s3)">
+      <div class="search mb-4" style="margin: var(--s2)">
+        <input class="input" type="search" placeholder="Search conversations" aria-label="Search conversations">
+      </div>
+      <a class="convo active" href="#">
+        <span class="avatar river">DT</span>
+        <span style="min-width:0">
+          <b>David Tremblay</b>
+          <span class="preview">Would a call this weekend work to…</span>
+        </span>
+        <span class="when">2:31 pm</span>
+      </a>
+      <a class="convo" href="#">
+        <span class="avatar ochre">JO</span>
+        <span style="min-width:0">
+          <b>Joel (facilitator)</b>
+          <span class="preview">So glad you two connected. I’ll ch…</span>
+        </span>
+        <span class="when">Tue</span>
+      </a>
+    </div>
+
+    <!-- Thread -->
+    <div class="card thread-pane">
+      <div class="thread-head">
+        <span class="avatar river">DT</span>
+        <div class="flex-1">
+          <b>David Tremblay</b>
+          <div class="tiny">Connected since July 8 · Regina area · Treaty 4</div>
+        </div>
+        <button class="btn btn-quiet sm">Schedule a call</button>
+        <button class="btn btn-quiet sm" aria-label="Conversation options">⋯</button>
+      </div>
+
+      <div class="thread-body">
+        <div class="thread">
+          <div class="alert info" style="align-self:center; max-width: 480px">
+            <span class="alert-icon">✻</span>
+            <div><p class="mb-0"><b>You’re connected.</b> Marie’s boundaries: messages first, public places for first meetings. Joel will check in after your first month.</p></div>
+          </div>
+
+          <span class="day-sep">Tuesday, July 8</span>
+
+          <div class="msg theirs">
+            <div class="bubble">Hi Marie — thank you for saying yes. I read your profile twice. The youth beading circle sounds amazing; my daughter would lose her mind.</div>
+            <div class="msg-meta">David · 11:02 am</div>
+          </div>
+          <div class="msg mine">
+            <div class="bubble">Welcome, David 😊 Glad Joel introduced us. The circle meets Thursday evenings at the Friendship Centre — visitors are welcome once we’ve met properly.</div>
+            <div class="msg-meta">You · 12:40 pm</div>
+          </div>
+
+          <span class="day-sep">Today</span>
+
+          <div class="msg theirs">
+            <div class="bubble">That sounds fair. Would a call this weekend work to talk more? Saturday morning I’m free after 10.</div>
+            <div class="msg-meta">David · 2:14 pm</div>
+          </div>
+          <div class="msg mine">
+            <div class="bubble">Saturday at 10:30 works. I’ll send a proper invite through the portal so we both have it.</div>
+            <div class="msg-meta">You · 2:31 pm ✓</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="composer">
+        <label class="visually-hidden" for="composer-input">Write a message</label>
+        <input class="input" id="composer-input" type="text" placeholder="Write a message…">
+        <button class="btn btn-primary">Send</button>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="tiny mt-4">If anything in a conversation makes you uncomfortable, use ⋯ → “Tell my facilitator.” Facilitators can’t read your messages unless you share them.</p>
+
+</main>
+
+<footer class="app-footer">
+  <div class="container wide">
+    <div class="row between">
+      <p class="mb-0 small">RTR Matching Portal — messages (synthetic demo data)</p>
+      <div class="weave on-dark short" role="presentation"></div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

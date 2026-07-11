@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RTR — Reconciliation begins with a relationship</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<style>
+  .hero {
+    background: var(--spruce-800);
+    color: var(--on-dark);
+    padding: var(--s8) 0 0;
+    overflow: hidden;
+  }
+  .hero .container { position: relative; }
+  .hero h1 {
+    color: var(--on-dark);
+    font-size: clamp(38px, 6vw, 60px);
+    font-weight: 480;
+    line-height: 1.06;
+    max-width: 13ch;
+    margin-bottom: var(--s4);
+  }
+  .hero h1 em { font-style: italic; color: var(--ochre-500); }
+  .hero .lead { color: var(--on-dark-soft); max-width: 52ch; }
+  .hero-arcs {
+    position: absolute;
+    right: -40px; top: -30px;
+    width: 380px;
+    opacity: .9;
+    pointer-events: none;
+  }
+  .hero-foot {
+    margin-top: var(--s7);
+    padding: var(--s4) 0;
+    border-top: 1px solid rgba(244,239,227,.15);
+    display: flex; gap: var(--s5); flex-wrap: wrap;
+    color: var(--on-dark-soft);
+    font-size: 14px;
+  }
+  .journey-step { position: relative; }
+  .journey-step .step-num {
+    font-family: var(--font-display);
+    font-size: 40px;
+    font-weight: 500;
+    color: var(--ochre-500);
+    line-height: 1;
+  }
+  .cat-band { background: var(--parchment); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  @media (max-width: 860px) { .hero-arcs { display: none; } }
+</style>
+</head>
+<body>
+
+<header class="app-header" style="border-bottom-color: transparent">
+  <div class="container wide">
+    <div class="bar">
+      <a class="brand" href="page-01-landing.html">
+        <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <path d="M16 4 a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28 a12 12 0 0 1 0 -24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+        </svg>
+        <span><span class="brand-name">Reconciliation Through Relationships</span><span class="brand-sub">Participant portal</span></span>
+      </a>
+      <nav class="app-nav" aria-label="Main">
+        <a href="#how">How it works</a>
+        <a href="#who">Who it’s for</a>
+        <a href="https://rightrelationship.ca/">About RTR</a>
+      </nav>
+      <div class="actions">
+        <a class="btn on-dark sm" href="page-02-signin.html">Sign in</a>
+      </div>
+      <button class="menu-btn" type="button">Menu</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container wide">
+      <svg class="hero-arcs" viewBox="0 0 200 200" aria-hidden="true">
+        <path d="M100 18 a82 82 0 0 1 0 164" fill="none" stroke="#E0A34E" stroke-width="7" stroke-linecap="round" opacity=".85"/>
+        <path d="M100 182 a82 82 0 0 1 0 -164" fill="none" stroke="#7FB5AE" stroke-width="7" stroke-linecap="round" opacity=".85"/>
+        <path d="M100 46 a54 54 0 0 1 0 108" fill="none" stroke="#E0A34E" stroke-width="5" stroke-linecap="round" opacity=".4"/>
+        <path d="M100 154 a54 54 0 0 1 0 -108" fill="none" stroke="#7FB5AE" stroke-width="5" stroke-linecap="round" opacity=".4"/>
+        <circle cx="82" cy="100" r="8" fill="#E0A34E"/><circle cx="118" cy="100" r="8" fill="#7FB5AE"/>
+      </svg>
+
+      <span class="eyebrow" style="color: var(--ochre-500)">An invitation, in response to the TRC’s calls to action</span>
+      <h1>Reconciliation begins with a <em>relationship</em>.</h1>
+      <p class="lead">RTR brings Indigenous and non-Indigenous people together — to learn the truth, listen well, and walk together in your own community. Not a program. A friendship.</p>
+      <div class="row mt-5">
+        <a class="btn on-dark lg" href="page-03-onboarding.html">Begin your journey</a>
+        <a class="btn lg" style="border-color: var(--on-dark-soft); color: var(--on-dark)" href="page-02-signin.html">I already have an account</a>
+      </div>
+
+      <div class="hero-foot">
+        <span>Founded 2021 by Indigenous leaders with The Evangelical Fellowship of Canada</span>
+        <span>·</span>
+        <span>Participants across every treaty territory</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works — a real sequence, so numbered steps carry meaning -->
+  <section class="section" id="how">
+    <div class="container wide">
+      <span class="eyebrow">The journey</span>
+      <h2>Four steps, at your pace</h2>
+      <div class="weave short mb-5" role="presentation"></div>
+
+      <div class="grid cols-4">
+        <div class="journey-step">
+          <div class="step-num">1</div>
+          <h3 class="h4 mt-2 mb-2">Tell us who you are</h3>
+          <p class="small muted mb-0">Create a profile — where you live, what you care about, the treaty territory nearest you, and how you like to connect.</p>
+        </div>
+        <div class="journey-step">
+          <div class="step-num">2</div>
+          <h3 class="h4 mt-2 mb-2">Learn the truth first</h3>
+          <p class="small muted mb-0">A short learning journey with RTR’s videos prepares you before any introduction. Relationship starts with understanding.</p>
+        </div>
+        <div class="journey-step">
+          <div class="step-num">3</div>
+          <h3 class="h4 mt-2 mb-2">Be introduced, with care</h3>
+          <p class="small muted mb-0">A facilitator personally reviews every match. Both of you choose — nothing happens without a yes from each side.</p>
+        </div>
+        <div class="journey-step">
+          <div class="step-num">4</div>
+          <h3 class="h4 mt-2 mb-2">Gather locally</h3>
+          <p class="small muted mb-0">When five participants are ready in one region, a reconciliation cohort forms — film screenings, blanket exercises, shared meals.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who it's for -->
+  <section class="section cat-band" id="who">
+    <div class="container wide">
+      <div class="grid sidebar">
+        <div>
+          <span class="eyebrow">Who it’s for</span>
+          <h2>Every seat in the circle matters</h2>
+          <p class="muted" style="max-width: 56ch">You might come as a leader, a neighbour, an artist, or simply a person who believes the TRC’s calls to action were addressed to them. Choose every category that fits — it helps us find your right relationship.</p>
+          <div class="row mt-4">
+            <span class="filter-chip">Indigenous leader</span>
+            <span class="filter-chip">Indigenous individual</span>
+            <span class="filter-chip">Non-Indigenous individual</span>
+            <span class="filter-chip">Elected leader</span>
+            <span class="filter-chip">Religious leader</span>
+            <span class="filter-chip">Artist</span>
+          </div>
+        </div>
+        <div class="card card-pad text-center">
+          <div class="cohort-circle ready" style="margin: 4px auto var(--s4)">
+            <span class="seat filled"></span><span class="seat filled"></span><span class="seat filled"></span><span class="seat filled"></span><span class="seat filled"></span>
+            <span class="count">5<small>ready</small></span>
+          </div>
+          <h3 class="h4 mb-2">A circle is forming near you</h3>
+          <p class="small muted mb-4">When five prepared participants share a region, RTR helps them gather for local reconciliation action.</p>
+          <a class="btn btn-primary block" href="page-03-onboarding.html">Take a seat</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Grounding quote -->
+  <section class="section">
+    <div class="container narrow text-center">
+      <p class="quote" style="font-size: 27px">“Meaningful conversation. Shared understanding. Right relationship.”</p>
+      <p class="small muted">The heart of RTR’s response to the Truth and Reconciliation Commission</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="app-footer" style="margin-top: 0">
+  <div class="container wide">
+    <div class="grid cols-3">
+      <div>
+        <h4>Reconciliation Through Relationships</h4>
+        <p class="mb-0">A partnership of Reconciliation Thunder, iEmergence, and The Evangelical Fellowship of Canada.</p>
+      </div>
+      <div>
+        <h4>Portal</h4>
+        <p class="mb-0"><a href="page-02-signin.html">Sign in</a><br><a href="page-03-onboarding.html">Create an account</a><br><a href="https://rightrelationship.ca/">rightrelationship.ca</a></p>
+      </div>
+      <div>
+        <h4>Questions</h4>
+        <p class="mb-0">Write to your regional facilitator or <a href="#">contact RTR</a>. We reply within two business days.</p>
+      </div>
+    </div>
+    <p class="acknowledgment">Each gathering begins by acknowledging the treaty territory and traditional lands on which it takes place. A region-appropriate acknowledgment appears here, confirmed with local Indigenous partners.</p>
+  </div>
+</footer>
+
+</body>
+</html>

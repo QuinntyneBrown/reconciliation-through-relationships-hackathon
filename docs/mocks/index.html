@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RTR Matching Portal — Design mocks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<style>
+  .mock-link {
+    display: block;
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--parchment);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: var(--s4) var(--s5);
+    box-shadow: var(--shadow-1);
+    transition: border-color var(--ease);
+  }
+  .mock-link:hover { border-color: var(--spruce-600); color: var(--ink); }
+  .mock-link b { display: block; font-size: 16.5px; color: var(--spruce-800); }
+  .mock-link span { font-size: 13.5px; color: var(--ink-soft); }
+  .mock-link .num {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ochre-700);
+    margin-right: 6px;
+  }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="container wide">
+    <div class="bar">
+      <a class="brand" href="index.html">
+        <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <path d="M16 4 a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28 a12 12 0 0 1 0 -24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+        </svg>
+        <span><span class="brand-name">RTR Matching Portal</span><span class="brand-sub">Design mocks · hackathon</span></span>
+      </a>
+      <div class="actions" style="margin-left:auto">
+        <a class="btn on-dark sm" href="design-system.html">Open the design system</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <div class="page-title">
+    <span class="eyebrow">Reconciliation Through Relationships</span>
+    <h1>Design mocks</h1>
+    <p class="lead">HTML mockups for the RTR Matching Portal, built from the challenge brief and product notes. Direction: <em>“two strands, one circle”</em> — spruce and birch from the land, ochre and river as the two relationship strands, and the cohort circle as the signature element. All names and data are synthetic.</p>
+    <div class="weave short mt-4" role="presentation"></div>
+  </div>
+
+  <section class="section" style="padding-top: var(--s5)">
+    <h2>Design system</h2>
+    <div class="grid" style="grid-template-columns: 1fr">
+      <a class="mock-link" href="design-system.html"><b>Component library</b><span>Every component in one document — color, type, buttons, forms, tags, cards, cohort circle, navigation, alerts, tables, dialogs, empty states, accessibility commitments.</span></a>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0" id="pages">
+    <h2>Pages</h2>
+    <p class="small muted">The primary end-to-end participant journey, then the facilitator and administrator views.</p>
+    <div class="grid cols-2">
+      <a class="mock-link" href="page-01-landing.html"><b><span class="num">01</span>Landing</b><span>Public welcome page — the invitation into the journey, four steps, participation categories.</span></a>
+      <a class="mock-link" href="page-02-signin.html"><b><span class="num">02</span>Sign in</b><span>Magic-link authentication (lightweight auth per the hackathon scope), with sent-link confirmation state.</span></a>
+      <a class="mock-link" href="page-03-onboarding.html"><b><span class="num">03</span>Onboarding</b><span>Profile intake, step 2 of 5 — basics, participation categories (required), faith tradition, bio.</span></a>
+      <a class="mock-link" href="page-04-learning.html"><b><span class="num">04</span>Learning journey</b><span>Four video modules with progress tracking, locked/complete states, eligibility explanation.</span></a>
+      <a class="mock-link" href="page-05-dashboard.html"><b><span class="num">05</span>Participant dashboard</b><span>Recommendation waiting, discovery filters, cohort-readiness circle, events, messages, profile nudge.</span></a>
+      <a class="mock-link" href="page-06-profile.html"><b><span class="num">06</span>My profile</b><span>View/edit own profile — location &amp; treaty, faith &amp; language, interests, availability, private boundaries, consent switches.</span></a>
+      <a class="mock-link" href="page-07-match.html"><b><span class="num">07</span>Connection review</b><span>An approved recommendation — profile, “why you two,” facilitator note, accept/decline/ask.</span></a>
+      <a class="mock-link" href="page-08-messages.html"><b><span class="num">08</span>Messages</b><span>Two-pane messaging between approved connections, boundaries banner, schedule-a-call entry point.</span></a>
+      <a class="mock-link" href="page-09-events.html"><b><span class="num">09</span>Events &amp; gatherings</b><span>Cohort events including June 21 and September 30 national days, registration states, empty state.</span></a>
+      <a class="mock-link" href="page-10-map.html"><b><span class="num">10</span>Regional map (facilitator)</b><span>Schematic region map with cohort circles, privacy rules, region list with “form cohort” action.</span></a>
+      <a class="mock-link" href="page-11-facilitator.html"><b><span class="num">11</span>Facilitator overview</b><span>Stats, match review queue, pending registrations, waitlist imbalance alert, reminders, safeguarding.</span></a>
+      <a class="mock-link" href="page-12-admin.html"><b><span class="num">12</span>Administration</b><span>People &amp; roles, learning content management, notification automations, cohort threshold, sign-in method.</span></a>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0" id="dialogs">
+    <h2>Dialogs</h2>
+    <div class="grid cols-2">
+      <a class="mock-link" href="dialog-connection-request.html"><b>Connection recommendation</b><span>Participant receives a facilitator-approved match — accept, see profile, or decide later.</span></a>
+      <a class="mock-link" href="dialog-schedule-call.html"><b>Schedule an introductory call</b><span>Time slots highlighting mutual availability; video or phone; no-recording notice.</span></a>
+      <a class="mock-link" href="dialog-consent-map.html"><b>Map consent</b><span>Opt-in to the regional map — exactly what is and isn’t shown, changeable any time.</span></a>
+      <a class="mock-link" href="dialog-approve-match.html"><b>Approve a match (facilitator)</b><span>Side-by-side comparison, match factors, required personal note, approve/adjust/decline.</span></a>
+      <a class="mock-link" href="dialog-create-event.html"><b>Create an event</b><span>Facilitator event form with region-wide invitations and venue privacy.</span></a>
+      <a class="mock-link" href="dialog-waitlist.html"><b>Waitlist pathway</b><span>Kind handling of registration imbalance — waitlist or learning-resources pathway.</span></a>
+      <a class="mock-link" href="dialog-send-reminder.html"><b>Send reminders (facilitator)</b><span>Recipient summary, template picker, editable preview, send-myself-a-test.</span></a>
+      <a class="mock-link" href="dialog-learning-complete.html"><b>Learning complete</b><span>The celebration moment — eligibility explained, next steps, consent entry point.</span></a>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0">
+    <h2>Notes for the team</h2>
+    <div class="grid cols-2">
+      <div class="card card-pad">
+        <h4 class="mb-2">Sources</h4>
+        <p class="small mb-0">Built from <code>docs/challenge.txt</code> (hackathon brief) and <code>docs/brain-dump.txt</code> (product notes). Open decisions from those documents are reflected in-context — e.g. the cohort threshold, sign-in method, and browse-vs-recommend are all marked “pending RTR.”</p>
+      </div>
+      <div class="card card-pad">
+        <h4 class="mb-2">Cultural review</h4>
+        <p class="small mb-0">All motifs are deliberate geometric abstractions (woven strands, an open circle). Before launch, review iconography, language, and synthetic content with RTR’s Indigenous leadership and Joel Gordon.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="app-footer">
+  <div class="container wide">
+    <div class="row between">
+      <p class="mb-0 small">RTR Matching Portal — design mocks · Fraunces + Atkinson Hyperlegible · synthetic data only</p>
+      <div class="weave on-dark short" role="presentation"></div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My profile — RTR Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<style>
+  .profile-head {
+    display: flex; gap: var(--s5); align-items: center; flex-wrap: wrap;
+    padding: var(--s6) 0 var(--s5);
+  }
+  .defn { display: grid; grid-template-columns: 180px 1fr; gap: 6px var(--s4); font-size: 15.5px; }
+  .defn dt { color: var(--ink-soft); font-weight: 600; }
+  .defn dd { margin: 0; }
+  @media (max-width: 620px) { .defn { grid-template-columns: 1fr; } .defn dd { margin-bottom: var(--s2); } }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="container wide">
+    <div class="bar">
+      <a class="brand" href="page-05-dashboard.html">
+        <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <path d="M16 4 a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28 a12 12 0 0 1 0 -24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+        </svg>
+        <span><span class="brand-name">RTR Portal</span><span class="brand-sub">Reconciliation Through Relationships</span></span>
+      </a>
+      <nav class="app-nav" aria-label="Main">
+        <a href="page-05-dashboard.html">Home</a>
+        <a href="page-04-learning.html">Learning</a>
+        <a href="page-07-match.html">Connections</a>
+        <a href="page-08-messages.html">Messages</a>
+        <a href="page-09-events.html">Events</a>
+      </nav>
+      <div class="actions"><a href="page-06-profile.html" class="avatar sm dark" style="text-decoration:none">MC</a></div>
+      <button class="menu-btn" type="button">Menu</button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <div class="profile-head">
+    <span class="avatar xl">MC</span>
+    <div class="flex-1">
+      <h1 class="mb-0">Marie Cardinal</h1>
+      <p class="muted mb-2">Regina, Saskatchewan · Treaty 4 territory</p>
+      <div class="row" style="gap:8px">
+        <span class="pill eligible">Eligible</span>
+        <span class="pill plain matched">Indigenous leader</span>
+        <span class="pill plain matched">Artist</span>
+      </div>
+    </div>
+    <button class="btn btn-secondary">Edit profile</button>
+  </div>
+  <div class="weave short mb-5" role="presentation"></div>
+
+  <div class="grid sidebar">
+
+    <div class="stack loose">
+
+      <div class="card">
+        <div class="card-header"><h3 class="h4">About</h3><button class="btn btn-quiet sm">Edit</button></div>
+        <div class="card-pad">
+          <p class="mb-0">I lead a beading circle for youth in Regina and sing with a community drum group. I believe friendships change communities faster than policies do. Looking to walk with someone who wants to listen and be a good neighbour on this land.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3 class="h4">Location &amp; treaty</h3><button class="btn btn-quiet sm">Edit</button></div>
+        <div class="card-pad">
+          <dl class="defn">
+            <dt>City / town</dt><dd>Regina</dd>
+            <dt>Province</dt><dd>Saskatchewan</dd>
+            <dt>Nearest treaty area</dt><dd>Treaty 4 <span class="tiny">(found with the Native Land Digital search)</span></dd>
+          </dl>
+          <div class="alert info mt-4">
+            <span class="alert-icon">ℹ</span>
+            <div><p class="mb-0">Other participants see <b>“Regina area · Treaty 4”</b> — never your address or precise location.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3 class="h4">Faith &amp; language</h3><button class="btn btn-quiet sm">Edit</button></div>
+        <div class="card-pad">
+          <dl class="defn">
+            <dt>Faith tradition</dt><dd>Indigenous Traditional <span class="tiny">(used for matching only, never shown publicly)</span></dd>
+            <dt>Languages</dt><dd>English, Cree / nēhiyawēwin</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3 class="h4">Passions &amp; interests</h3><button class="btn btn-quiet sm">Edit</button></div>
+        <div class="card-pad">
+          <div class="row" style="gap:8px">
+            <span class="tag">Beading</span>
+            <span class="tag">Youth mentorship</span>
+            <span class="tag ochre">Drum group</span>
+            <span class="tag">Community gardens</span>
+            <span class="tag river">Land-based learning</span>
+            <span class="tag">Storytelling</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3 class="h4">Availability &amp; connection format</h3><button class="btn btn-quiet sm">Edit</button></div>
+        <div class="card-pad">
+          <dl class="defn">
+            <dt>Availability</dt><dd>Weekday evenings, weekends</dd>
+            <dt>Preferred format</dt><dd>In person first, video calls work too</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3 class="h4">Boundaries &amp; matching preferences</h3>
+          <button class="btn btn-quiet sm">Edit</button>
+        </div>
+        <div class="card-pad">
+          <div class="alert caution mb-4">
+            <span class="alert-icon">🔒</span>
+            <div><p class="mb-0"><b>Private.</b> Only you and your facilitator can read this section. It is never shown to other participants.</p></div>
+          </div>
+          <p class="mb-0">Please no cold phone calls — messages first. I’d rather meet in public places for the first while. Comfortable with faith conversations, not comfortable being asked to speak for all Indigenous people.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <aside class="stack loose">
+      <div class="card card-pad">
+        <h4 class="mb-2">Sharing &amp; consent</h4>
+        <div class="row between" style="padding: 8px 0; border-bottom: 1px dashed var(--border)">
+          <span class="small">Show my region on the map</span>
+          <span class="switch"><input type="checkbox" checked aria-label="Show my region on the participant map"><span class="track"></span></span>
+        </div>
+        <div class="row between" style="padding: 8px 0; border-bottom: 1px dashed var(--border)">
+          <span class="small">Share profile with approved matches</span>
+          <span class="switch"><input type="checkbox" checked aria-label="Share profile with approved matches"><span class="track"></span></span>
+        </div>
+        <div class="row between" style="padding: 8px 0">
+          <span class="small">Email me match recommendations</span>
+          <span class="switch"><input type="checkbox" checked aria-label="Email me match recommendations"><span class="track"></span></span>
+        </div>
+        <p class="tiny mt-2 mb-0">Changing a switch takes effect right away. Your facilitator is notified if you turn everything off, so they can check in.</p>
+      </div>
+
+      <div class="card tinted card-pad">
+        <h4 class="mb-2">Profile completeness</h4>
+        <div class="progress-label"><span></span><span>90%</span></div>
+        <div class="progress mb-2"><div class="bar" style="width:90%"></div></div>
+        <p class="small muted mb-0">Add one more availability window to reach 100%.</p>
+      </div>
+
+      <div class="card card-pad">
+        <h4 class="mb-2">Your journey</h4>
+        <p class="small mb-0">
+          ✓ Registered — Feb 26<br>
+          ✓ Approved by facilitator — Feb 28<br>
+          ✓ Learning journey — Mar 24<br>
+          <b style="color: var(--ochre-700)">● Match under review — now</b>
+        </p>
+      </div>
+    </aside>
+
+  </div>
+
+</main>
+
+<footer class="app-footer">
+  <div class="container wide">
+    <div class="row between">
+      <p class="mb-0 small">RTR Matching Portal — my profile (synthetic demo data)</p>
+      <div class="weave on-dark short" role="presentation"></div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
