@@ -39,6 +39,7 @@
     ".next-boundary/dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "boundary-interface-tests"
   ]
 }
