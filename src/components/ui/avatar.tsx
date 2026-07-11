@@ -7,7 +7,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const avatarVariants = cva(
-  "group/avatar relative flex shrink-0 items-center justify-center rounded-full font-sans font-bold tracking-[0.02em] select-none",
+  "group/avatar relative flex shrink-0 items-center justify-center rounded-full font-sans font-bold tracking-status select-none",
   {
     variants: {
       size: {
@@ -17,11 +17,11 @@ const avatarVariants = cva(
         xl: "size-[88px] text-[30px]",
       },
       variant: {
-        default: "bg-spruce-100 text-spruce-800",
-        river: "bg-river-100 text-river-700",
-        ochre: "bg-ochre-100 text-ochre-700",
-        berry: "bg-berry-100 text-berry-700",
-        dark: "bg-spruce-700 text-on-dark",
+        default: "bg-primary-subtle text-heading",
+        info: "bg-info-subtle text-info",
+        warning: "bg-warning-subtle text-warning",
+        danger: "bg-destructive-subtle text-destructive",
+        inverse: "bg-inverse text-inverse-foreground",
       },
     },
     defaultVariants: {
@@ -76,7 +76,7 @@ function AvatarBadge({ className, ...props }: React.ComponentProps<"span">) {
     <span
       data-slot="avatar-badge"
       className={cn(
-        "bg-ochre-500 text-spruce-900 ring-parchment absolute right-0 bottom-0 z-10 inline-flex size-3 items-center justify-center rounded-full ring-2 select-none group-data-[size=lg]/avatar:size-4 group-data-[size=sm]/avatar:size-2 group-data-[size=xl]/avatar:size-5 [&>svg]:size-2",
+        "bg-inverse-accent text-inverse-accent-foreground ring-card absolute right-0 bottom-0 z-10 inline-flex size-3 items-center justify-center rounded-full ring-2 select-none group-data-[size=lg]/avatar:size-4 group-data-[size=sm]/avatar:size-2 group-data-[size=xl]/avatar:size-5 [&>svg]:size-2",
         className,
       )}
       {...props}
@@ -89,7 +89,7 @@ function AvatarGroup({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="avatar-group"
       className={cn(
-        "group/avatar-group *:data-[slot=avatar]:ring-parchment flex -space-x-2.5 *:data-[slot=avatar]:ring-2",
+        "group/avatar-group *:data-[slot=avatar]:ring-card flex -space-x-2.5 *:data-[slot=avatar]:ring-2",
         className,
       )}
       {...props}
@@ -102,7 +102,7 @@ function AvatarGroupCount({ className, ...props }: React.ComponentProps<"div">) 
     <div
       data-slot="avatar-group-count"
       className={cn(
-        "bg-berry-100 text-berry-700 ring-parchment relative flex size-11 shrink-0 items-center justify-center rounded-full text-[15px] font-bold ring-2 group-has-data-[size=lg]/avatar-group:size-16 group-has-data-[size=lg]/avatar-group:text-[22px] group-has-data-[size=sm]/avatar-group:size-8 group-has-data-[size=sm]/avatar-group:text-xs group-has-data-[size=xl]/avatar-group:size-[88px] group-has-data-[size=xl]/avatar-group:text-[30px]",
+        "bg-destructive-subtle text-destructive ring-card relative flex size-11 shrink-0 items-center justify-center rounded-full text-[15px] font-bold ring-2 group-has-data-[size=lg]/avatar-group:size-16 group-has-data-[size=lg]/avatar-group:text-[22px] group-has-data-[size=sm]/avatar-group:size-8 group-has-data-[size=sm]/avatar-group:text-xs group-has-data-[size=xl]/avatar-group:size-[88px] group-has-data-[size=xl]/avatar-group:text-[30px]",
         className,
       )}
       {...props}

@@ -47,6 +47,7 @@ export default async function FacilitatorMatchingPage() {
   const autoMatchingEnabled = settingsMap.get("auto_matching_enabled") ?? true;
 
   return (
+<<<<<<< HEAD
     <div className="bg-background flex min-h-screen flex-col">
       <FacilitatorNav facilitator={profile} />
       <MatchingClient
@@ -58,6 +59,54 @@ export default async function FacilitatorMatchingPage() {
         autoMatchingEnabled={autoMatchingEnabled as boolean}
       />
       <AppFooter />
+=======
+    <div className="mx-auto max-w-4xl px-4 py-12">
+      <h1 className="text-3xl font-semibold tracking-tight">Suggested matches</h1>
+      <p className="text-muted-foreground mt-2">
+        A facilitator must approve a match before participants are connected.
+      </p>
+
+      {balance.waitlistedEstimate > 0 && (
+        <Card className="mt-6" variant="caution">
+          <CardHeader>
+            <CardTitle className="text-base">Registration imbalance</CardTitle>
+            <CardDescription>
+              {balance.nonIndigenousCount} non-Indigenous vs {balance.indigenousCount} Indigenous
+              eligible participants. ~{balance.waitlistedEstimate} may need the waitlist or a
+              learning-resources-only pathway.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      )}
+
+      <div className="mt-8 space-y-3">
+        {suggestions.length === 0 && (
+          <p className="text-muted-foreground">
+            No suggestions yet — participants must complete the learning journey to become eligible.
+          </p>
+        )}
+        {suggestions.map((s) => (
+          <Card key={`${s.a.id}-${s.b.id}`}>
+            <CardHeader>
+              <div className="flex items-center justify-between gap-4">
+                <CardTitle className="text-base">
+                  {s.a.name} &nbsp;×&nbsp; {s.b.name}
+                </CardTitle>
+                <Badge variant="secondary">{s.score}% match</Badge>
+              </div>
+              <CardDescription>{s.reasons.join(" · ")}</CardDescription>
+            </CardHeader>
+            <CardContent className="flex gap-2">
+              {/* TODO: wire to a Server Action calling repo.updateMatchStatus */}
+              <Button size="sm">Approve</Button>
+              <Button size="sm" variant="outline">
+                Reject
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+>>>>>>> origin/main
     </div>
   );
 }

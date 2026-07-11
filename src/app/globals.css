@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "../styles/design-tokens.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -12,44 +13,42 @@
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-subtle: var(--primary-subtle);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
+  --color-secondary-hover: var(--secondary-hover);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
+  --color-subtle-foreground: var(--subtle-foreground);
   --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  --color-destructive-hover: var(--destructive-hover);
+  --color-destructive-subtle: var(--destructive-subtle);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-heading: var(--heading-foreground);
-  --color-spruce-900: var(--spruce-900);
-  --color-spruce-800: var(--spruce-800);
-  --color-spruce-700: var(--spruce-700);
-  --color-spruce-600: var(--spruce-600);
-  --color-spruce-200: var(--spruce-200);
-  --color-spruce-100: var(--spruce-100);
-  --color-river-700: var(--river-700);
-  --color-river-600: var(--river-600);
-  --color-river-200: var(--river-200);
-  --color-river-100: var(--river-100);
-  --color-ochre-700: var(--ochre-700);
-  --color-ochre-600: var(--ochre-600);
-  --color-ochre-500: var(--ochre-500);
-  --color-ochre-200: var(--ochre-200);
-  --color-ochre-100: var(--ochre-100);
-  --color-berry-700: var(--berry-700);
-  --color-berry-100: var(--berry-100);
-  --color-birch: var(--birch);
-  --color-parchment: var(--parchment);
-  --color-sand: var(--sand);
-  --color-border-strong: var(--border-strong);
-  --color-ink: var(--ink);
-  --color-ink-soft: var(--ink-soft);
-  --color-ink-faint: var(--ink-faint);
-  --color-on-dark: var(--on-dark);
-  --color-on-dark-soft: var(--on-dark-soft);
+  --color-link: var(--link);
+  --color-link-hover: var(--link-hover);
+  --color-success: var(--success);
+  --color-success-subtle: var(--success-subtle);
+  --color-warning: var(--warning);
+  --color-warning-subtle: var(--warning-subtle);
+  --color-info: var(--info);
+  --color-info-subtle: var(--info-subtle);
+  --color-overlay: var(--overlay);
+  --color-inverse: var(--inverse);
+  --color-inverse-foreground: var(--inverse-foreground);
+  --color-inverse-muted-foreground: var(--inverse-muted-foreground);
+  --color-inverse-accent: var(--inverse-accent);
+  --color-inverse-accent-hover: var(--inverse-accent-hover);
+  --color-inverse-accent-foreground: var(--inverse-accent-foreground);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -66,15 +65,32 @@
   --font-sans: var(--font-atkinson);
   --font-heading: var(--font-fraunces);
   --font-mono: var(--font-geist-mono);
+  --text-action: 0.96875rem;
+  --text-action--line-height: 1.25;
+  --text-card-title: 1.0625rem;
+  --text-card-title--line-height: 1.25;
+  --text-caption: 0.84375rem;
+  --text-caption--line-height: 1.5;
+  --text-label: 0.9375rem;
+  --text-label--line-height: 1.375;
+  --text-status: 0.78125rem;
+  --text-status--line-height: 1.25;
+  --tracking-action: 0.01em;
+  --tracking-status: 0.02em;
+  --tracking-kicker: 0.12em;
+  --leading-copy: 1.55;
   --radius-sm: var(--r-sm);
   --radius-md: var(--r-md);
   --radius-lg: var(--r-lg);
+  --radius-control: 10px;
+  --radius-checkbox: 4px;
   --radius-xl: var(--r-lg);
   --radius-2xl: calc(var(--r-lg) + 4px);
   --radius-3xl: calc(var(--r-lg) + 8px);
   --radius-4xl: calc(var(--r-lg) + 12px);
   --shadow-rtr-1: var(--shadow-1);
   --shadow-rtr-2: var(--shadow-2);
+<<<<<<< HEAD
   --spacing-rtr-1: 4px;
   --spacing-rtr-2: 8px;
   --spacing-rtr-3: 12px;
@@ -182,6 +198,17 @@
   --border-strong: rgb(244 239 227 / 32%);
   --input: rgb(244 239 227 / 32%);
   --ring: var(--ochre-500);
+=======
+  --spacing-control: 2.875rem;
+  --spacing-control-sm: 2.375rem;
+  --spacing-textarea: 6.875rem;
+  --default-transition-duration: var(--motion-duration);
+  --default-transition-timing-function: var(--motion-easing);
+}
+
+@utility border-control {
+  border-width: var(--control-border-width);
+>>>>>>> origin/main
 }
 
 @layer base {
@@ -233,13 +260,13 @@
   }
 
   a {
-    color: var(--river-700);
+    color: var(--link);
     text-decoration-thickness: 1px;
     text-underline-offset: 3px;
   }
 
   a:hover {
-    color: var(--spruce-800);
+    color: var(--link-hover);
   }
 
   :focus-visible {
@@ -248,7 +275,7 @@
   }
 
   ::selection {
-    background: var(--ochre-200);
+    background: var(--secondary-hover);
   }
 }
 
