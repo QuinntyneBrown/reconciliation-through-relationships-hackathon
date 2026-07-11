@@ -1,0 +1,164 @@
+# RTR Matching Portal: Product Notes
+
+## Product Goal
+
+Create a simple, welcoming portal that helps Indigenous and non-Indigenous participants complete onboarding, prepare for participation, build relationships, and form regional reconciliation cohorts.
+
+The system should be straightforward for non-technical staff to operate and maintain.
+
+## Website Integration
+
+- Determine how the portal will connect to or be embedded in RTR's existing website.
+- Maintain consistent branding and provide a clear transition between the public website and the participant portal.
+- Confirm whether existing website accounts, content, or services need to be integrated.
+
+## User Roles
+
+The current notes suggest the following roles:
+
+- Participant
+- Facilitator
+- Administrator
+
+The permissions and responsibilities for each role still need to be confirmed.
+
+## Authentication
+
+Possible sign-in methods include:
+
+- Magic-link authentication
+- Email and password
+
+One method should be selected for the initial version.
+
+## Participant Onboarding
+
+The onboarding process should collect the information needed to create useful profiles and make appropriate match recommendations.
+
+Suggested profile fields include:
+
+- Name
+- Biography
+- Sex, with an option to specify
+- Language preferences
+- Location:
+  - City, town, or county
+  - Province
+- Nearest treaty area to where the participant lives, worships, or works. The Native Land Digital place search at https://native-land.ca/ may be used for assistance.
+- Participation category (select one or more):
+  - Indigenous leader
+  - Indigenous individual
+  - Non-Indigenous individual
+  - Elected leader
+  - Religious leader
+  - Artist
+- Faith tradition
+- Ministries, causes, hobbies, or interests the participant is passionate about
+- Availability and preferred ways to connect
+- Personal boundaries and matching preferences
+
+At least one of the participation categories identified as mandatory by RTR must be selected.
+
+## Learning Journey
+
+Participants should complete required learning content before they become eligible for matching or cohort participation.
+
+The learning system should:
+
+- Present RTR's existing training videos and related materials.
+- Track each participant's progress and completion status.
+- Send reminders to participants who have not completed onboarding or required learning.
+- Show facilitators and administrators which participants are eligible to proceed.
+
+## Participant Dashboard
+
+The main participant dashboard should provide clear navigation to profiles, learning content, matches, messages, and events.
+
+Potential participant discovery filters include:
+
+- Indigenous participants
+- Non-Indigenous participants
+- All eligible participants
+- Recommended connections, with up to five suggestions
+
+The dashboard could display a cohort-readiness indicator when at least five eligible participants are located in the same region. RTR must confirm the required number and geographic boundaries.
+
+## Matching and Connection Process
+
+The matching system should recommend suitable Indigenous and non-Indigenous connections based on factors such as:
+
+- Geographic proximity
+- Shared interests or ministry involvement
+- Language
+- Faith tradition
+- Availability
+- Preferred connection format
+- Personal boundaries
+
+Suggested connection process:
+
+1. The system recommends a potential connection.
+2. A facilitator reviews and approves the recommendation.
+3. Each participant reviews the other participant's profile.
+4. Both participants choose whether to connect.
+5. If both agree, they can schedule an introductory call and begin messaging.
+
+## Participant Profile Page
+
+A participant should be able to:
+
+- View and update their own profile.
+- Review an approved potential connection's profile.
+- Accept or decline a connection request.
+- Schedule an introductory call after both participants agree to connect.
+- Exchange messages with an approved connection.
+
+Call recording or transcription should only be considered after RTR confirms the consent, privacy, safeguarding, storage, and access requirements.
+
+## Events and Regional Cohorts
+
+Authorized users should be able to create and manage events for regional reconciliation cohorts.
+
+Potential capabilities include:
+
+- Create and edit an event.
+- Invite eligible participants in a region.
+- Track registrations or attendance.
+- Notify participants about event updates.
+
+## Facilitator and Administrator Pages
+
+Facilitators and administrators may need tools to:
+
+- Review and approve participant registrations.
+- Monitor onboarding and learning progress.
+- Review and approve suggested matches.
+- Create or adjust a match manually.
+- Manage regional cohorts and events.
+- Send reminders or other participant communications.
+- Respond to safeguarding, privacy, or support concerns.
+
+## Design Goals
+
+- Keep the participant experience welcoming, accessible, and easy to navigate.
+- Make routine content and participant management simple for non-technical staff.
+- Protect participants' personal information and precise locations.
+- Require clear consent before sharing profile information or enabling communication.
+- Use respectful, culturally appropriate language throughout the platform.
+- Support mobile and desktop devices.
+
+## Decisions to Confirm with RTR
+
+- How should the portal integrate with RTR's existing website?
+- Which sign-in method should be used?
+- What are the final user roles and permissions?
+- Which profile fields and participation categories are mandatory?
+- How should faith, ministry interests, or spiritual interests influence matching?
+- Can participants browse profiles, or should they see only facilitator-approved recommendations?
+- What must a participant complete before becoming eligible for matching?
+- How should regional proximity be calculated without exposing precise locations?
+- How many participants are required to form a regional cohort?
+- Which users may create and manage events?
+- Are in-platform messaging and call scheduling required for the initial version?
+- Should calls ever be recorded or transcribed? If so, what consent and data-protection rules apply?
+- Which email reminders and notifications should be automated?
