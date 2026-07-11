@@ -1,0 +1,327 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { createSupabaseBrowserClient } from "@/data/supabase/browser-client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { ArrowLeft, Send, Video, Clock, Check, CheckCheck } from "lucide-react";
+import { toast } from "sonner";
+import { AppHeader } from "@/components/app-header";
+
+const NAV_ITEMS = [
+  { href: "/dashboard", label: "Home" },
+  { href: "/learn", label: "Learning" },
+  { href: "/connections", label: "Connections" },
+  { href: "/map", label: "Regional map" },
+];
+import { format } from "date-fns";
+import type { Profile, Connection, Message, Meeting } from "@/data/supabase/database.types";
+import ScheduleMeetingModal from "./ScheduleMeetingModal";
+
+type Props = {
+  connection: Connection;
+  currentUser: Profile;
+  partner: Profile;
+  initialMessages: Message[];
+  meetings: Meeting[];
+  myConnectedField: "participant_a_connected" | "participant_b_connected";
+};
+
+export default function ConnectionChat({
+  connection,
+  currentUser,
+  partner,
+  initialMessages,
+  meetings,
+  myConnectedField,
+}: Props) {
+  const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const [input, setInput] = useState("");
+  const [sending, setSending] = useState(false);
+  const [connectionState, setConnectionState] = useState(connection);
+  const [meetingList, setMeetingList] = useState<Meeting[]>(meetings);
+  const [showSchedule, setShowSchedule] = useState(false);
+  const bottomRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  const [supabase] = useState(createSupabaseBrowserClient);
+
+  const partnerInitials =
+    `${partner.first_name?.[0] ?? ""}${partner.last_name?.[0] ?? ""}`.toUpperCase();
+  const iHaveConnected = connectionState[myConnectedField];
+  const isActive = connectionState.status === "active";
+
+  // Subscribe to new messages
+  useEffect(() => {
+    const channel = supabase
+      .channel(`connection:${connection.id}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "messages",
+          filter: `connection_id=eq.${connection.id}`,
+        },
+        (payload) => {
+          setMessages((prev) => [...prev, payload.new as Message]);
+        },
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "connections",
+          filter: `id=eq.${connection.id}`,
+        },
+        (payload) => {
+          setConnectionState(payload.new as Connection);
+          if (payload.new.status === "active") {
+            toast.success("You're now connected! You can start chatting.");
+          }
+        },
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [connection.id, supabase]);
+
+  // Auto-scroll
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  async function handleConnect() {
+    const { error } = await supabase
+      .from("connections")
+      .update({
+        [myConnectedField]: true,
+        ...(connectionState[
+          myConnectedField === "participant_a_connected"
+            ? "participant_b_connected"
+            : "participant_a_connected"
+        ]
+          ? { status: "active", connected_at: new Date().toISOString() }
+          : {}),
+      })
+      .eq("id", connection.id);
+
+    if (error) {
+      toast.error("Failed to connect. Please try again.");
+      return;
+    }
+
+    // Create notification for partner
+    await supabase.from("notifications").insert({
+      user_id: partner.id,
+      type: "connect_request",
+      title: `${currentUser.first_name} ${currentUser.last_name} wants to connect`,
+      body: "Click to accept and start chatting.",
+      data: { connection_id: connection.id },
+    });
+
+    toast.success("Connection request sent!");
+    router.refresh();
+  }
+
+  async function sendMessage(e: React.FormEvent) {
+    e.preventDefault();
+    if (!input.trim() || !isActive) return;
+
+    setSending(true);
+    const content = input.trim();
+    setInput("");
+
+    const { error } = await supabase.from("messages").insert({
+      connection_id: connection.id,
+      sender_id: currentUser.id,
+      content,
+    });
+
+    if (error) {
+      toast.error("Failed to send message.");
+      setInput(content);
+    }
+
+    setSending(false);
+  }
+
+  function onMeetingScheduled(meeting: Meeting) {
+    setMeetingList((prev) => [...prev, meeting]);
+    setShowSchedule(false);
+    toast.success("Meeting scheduled! Both participants have been notified.");
+  }
+
+  return (
+    <div className="bg-background flex min-h-screen flex-col">
+      <AppHeader homeHref="/dashboard" navItems={NAV_ITEMS} />
+      {/* Header */}
+      <header className="border-border bg-parchment border-b px-4 py-3">
+        <div className="mx-auto flex max-w-3xl items-center gap-3">
+          <Button variant="ghost" size="icon" asChild>
+            <Link href="/connections">
+              <ArrowLeft className="h-4 w-4" />
+            </Link>
+          </Button>
+          <Avatar size="sm" variant="river">
+            <AvatarFallback>{partnerInitials}</AvatarFallback>
+          </Avatar>
+          <div className="flex-1">
+            <p className="text-sm font-medium">
+              {partner.first_name} {partner.last_name}
+            </p>
+            <p className="text-muted-foreground text-xs">
+              {partner.city}, {partner.province}
+            </p>
+          </div>
+          {isActive && (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => setShowSchedule(true)}
+              className="gap-1.5"
+            >
+              <Video className="h-4 w-4" />
+              Schedule call
+            </Button>
+          )}
+        </div>
+      </header>
+
+      <div className="mx-auto flex w-full max-w-3xl flex-1">
+        {/* Chat area */}
+        <div className="flex flex-1 flex-col">
+          {/* Connect prompt */}
+          {!isActive && (
+            <div className="bg-primary/5 border-border border-b p-4 text-center">
+              {iHaveConnected ? (
+                <p className="text-muted-foreground text-sm">
+                  Waiting for <strong>{partner.first_name}</strong> to accept your connection
+                  request…
+                </p>
+              ) : (
+                <div className="space-y-2">
+                  <p className="text-sm font-medium">
+                    RTR has matched you with {partner.first_name}!
+                  </p>
+                  <p className="text-muted-foreground text-sm">
+                    Click connect to start your relationship journey. Both parties must connect to
+                    activate chat.
+                  </p>
+                  <Button onClick={handleConnect} size="sm">
+                    Connect with {partner.first_name}
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Upcoming meetings */}
+          {meetingList.length > 0 && (
+            <div className="bg-muted/30 border-border border-b px-4 py-3">
+              {meetingList.slice(0, 1).map((meeting) => (
+                <div key={meeting.id} className="flex items-center gap-2 text-sm">
+                  <Clock className="text-primary h-4 w-4 shrink-0" />
+                  <span className="font-medium">Next call:</span>
+                  <span>{format(new Date(meeting.scheduled_at), "PPp")}</span>
+                  {meeting.zoom_join_url && (
+                    <a
+                      href={meeting.zoom_join_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary ml-auto text-xs underline"
+                    >
+                      Join Zoom
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Messages */}
+          <div className="flex-1 space-y-3 overflow-y-auto p-4">
+            {messages.length === 0 && isActive && (
+              <div className="text-muted-foreground py-8 text-center text-sm">
+                You&apos;re connected! Say hello to {partner.first_name}.
+              </div>
+            )}
+            {messages.map((msg) => {
+              const isMine = msg.sender_id === currentUser.id;
+              return (
+                <div key={msg.id} className={`flex ${isMine ? "justify-end" : "justify-start"}`}>
+                  {!isMine && (
+                    <Avatar
+                      size="sm"
+                      variant={partner.is_indigenous ? "default" : "river"}
+                      className="mt-1 mr-2"
+                    >
+                      <AvatarFallback>{partnerInitials}</AvatarFallback>
+                    </Avatar>
+                  )}
+                  <div className={`max-w-[72%] ${isMine ? "text-right" : "text-left"}`}>
+                    <div
+                      className={`rounded-2xl border px-4 py-2.5 text-left text-[15.5px] ${
+                        isMine
+                          ? "border-spruce-200 bg-spruce-100 rounded-br-md"
+                          : "border-border bg-parchment rounded-bl-md"
+                      }`}
+                    >
+                      <p>{msg.content}</p>
+                    </div>
+                    <p
+                      className={`text-ink-faint mt-1 px-1.5 text-xs ${isMine ? "text-right" : "text-left"}`}
+                    >
+                      {format(new Date(msg.created_at), "h:mm a")}
+                      {isMine && (
+                        <span className="ml-1">
+                          {msg.read_at ? (
+                            <CheckCheck className="inline h-3 w-3" />
+                          ) : (
+                            <Check className="inline h-3 w-3" />
+                          )}
+                        </span>
+                      )}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+            <div ref={bottomRef} />
+          </div>
+
+          {/* Input */}
+          <div className="border-border bg-card border-t p-3">
+            <form onSubmit={sendMessage} className="flex gap-2">
+              <Input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder={isActive ? "Type a message…" : "Connect first to start chatting"}
+                disabled={!isActive || sending}
+                className="flex-1"
+              />
+              <Button type="submit" size="icon" disabled={!isActive || !input.trim() || sending}>
+                <Send className="h-4 w-4" />
+              </Button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      {showSchedule && (
+        <ScheduleMeetingModal
+          connectionId={connection.id}
+          currentUser={currentUser}
+          partner={partner}
+          onClose={() => setShowSchedule(false)}
+          onScheduled={onMeetingScheduled}
+        />
+      )}
+    </div>
+  );
+}

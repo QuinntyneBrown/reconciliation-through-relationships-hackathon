@@ -1,3 +1,4 @@
+import * as React from "react";
 import { Button as ButtonPrimitive } from "@base-ui/react/button";
 import { cva, type VariantProps } from "class-variance-authority";
 
@@ -10,6 +11,19 @@ const buttonVariants = cva(
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary-hover",
         outline:
+<<<<<<< HEAD
+          "border-spruce-700 bg-transparent text-spruce-700 hover:bg-spruce-100 hover:text-spruce-800",
+        secondary:
+          "border-spruce-700 bg-transparent text-spruce-700 hover:bg-spruce-100 hover:text-spruce-800",
+        soft: "bg-ochre-100 text-ochre-700 hover:bg-ochre-200",
+        ghost: "bg-transparent text-river-700 hover:bg-river-100 hover:text-river-700",
+        quiet: "bg-transparent text-river-700 hover:bg-river-100 hover:text-river-700",
+        destructive: "bg-berry-700 text-white hover:bg-[#6f2726]",
+        "danger-quiet":
+          "border-berry-700 bg-transparent text-berry-700 hover:bg-berry-100 hover:text-berry-700",
+        "on-dark": "bg-ochre-500 text-spruce-900 hover:bg-ochre-200 hover:text-spruce-900",
+        link: "h-auto min-h-0 rounded-sm border-0 p-0 text-river-700 underline-offset-4 hover:text-spruce-800 hover:underline",
+=======
           "border-primary bg-transparent text-primary hover:bg-primary-subtle hover:text-heading",
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary-hover",
         ghost: "bg-transparent text-link hover:bg-accent hover:text-accent-foreground",
@@ -19,6 +33,7 @@ const buttonVariants = cva(
         inverse:
           "bg-inverse-accent text-inverse-accent-foreground hover:bg-inverse-accent-hover hover:text-inverse-accent-foreground",
         link: "text-link hover:text-link-hover h-auto min-h-0 rounded-sm border-0 p-0 underline-offset-4 hover:underline",
+>>>>>>> origin/main
       },
       size: {
         default: "min-h-11 px-[22px] py-2",
@@ -38,20 +53,32 @@ const buttonVariants = cva(
   },
 );
 
+type ButtonProps = ButtonPrimitive.Props &
+  VariantProps<typeof buttonVariants> & {
+    asChild?: boolean;
+  };
+
 function Button({
   className,
   variant = "default",
   size = "default",
+  asChild,
+  children,
   ...props
-}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
+}: ButtonProps) {
+  const render = asChild && React.isValidElement(children) ? children : undefined;
+
   return (
     <ButtonPrimitive
       data-slot="button"
       data-variant={variant}
       data-size={size}
       className={cn(buttonVariants({ variant, size, className }))}
+      render={render}
       {...props}
-    />
+    >
+      {render ? undefined : children}
+    </ButtonPrimitive>
   );
 }
 

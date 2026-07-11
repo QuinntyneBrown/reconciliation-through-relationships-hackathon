@@ -7,7 +7,7 @@ A quick tour of how the pieces fit, so anyone can find where their work goes.
 ```
 ┌─────────────────────────────────────────────────────────┐
 │  app/  (routes, pages, /api)      ← UI + HTTP             │
-│    imports domain types, calls getRepository()           │
+│    imports domain types and the appropriate data adapter │
 ├─────────────────────────────────────────────────────────┤
 │  domain/  (types, constants, schema, matching)           │
 │    pure, framework-free business vocabulary + logic      │
@@ -20,7 +20,7 @@ A quick tour of how the pieces fit, so anyone can find where their work goes.
 └─────────────────────────────────────────────────────────┘
 ```
 
-**The key idea:** UI depends on the `Repository` *interface*, never a concrete data source. `getRepository()` picks the implementation from the `DATA_SOURCE` env var. That's why frontend and backend can work fully in parallel.
+**The key idea:** mock-backed routes depend on the `Repository` interface and use `getRepository()` to select the data source. The authenticated participant journey uses the typed Supabase clients under `data/supabase/`, backed by the checked-in migrations in `supabase/`.
 
 ## Data flow example (creating a participant)
 
@@ -63,9 +63,9 @@ Generate types once tables exist:
 npx supabase gen types typescript --project-id <id> > src/data/supabase/database.types.ts
 ```
 
-## Auth (to build)
+## Auth
 
-Lightweight per the brief — Supabase magic-link **or** email+password (decision pending, see DECISIONS.md). Gate `/facilitator/*` to facilitator/admin roles via Next.js middleware once auth is live.
+Supabase magic-link auth is implemented under `app/auth/`. The Next.js 16 request proxy in `src/proxy.ts` applies onboarding, learning, and facilitator-role gates; the session implementation lives in `data/supabase/session-proxy.ts`.
 
 ## Deployment
 
