@@ -248,6 +248,11 @@ export async function createTestFixtures() {
   });
   if (pendingConnectionError) throw pendingConnectionError;
 
+  // `connectTargetIndigenous` is intentionally left with no match and no
+  // connection to the member — the state a peer-to-peer connection request
+  // starts from. It exercises the connections INSERT RLS policy for a
+  // participant-initiated request.
+
   for (const [indigenousKey, nonIndigenousKey] of [
     ["approveIndigenous", "approveNonIndigenous"],
     ["rejectIndigenous", "rejectNonIndigenous"],

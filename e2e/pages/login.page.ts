@@ -5,7 +5,7 @@ import { TEST_PASSWORD, testUsers, type TestUserKey } from "../support/test-data
 
 export class LoginPage extends BasePage {
   readonly email = this.page.getByLabel("Email address");
-  readonly password = this.page.getByLabel("Password");
+  readonly password = this.page.getByLabel("Password", { exact: true });
   readonly submit = this.page.getByRole("button", { name: "Sign in" });
 
   constructor(page: Page) {

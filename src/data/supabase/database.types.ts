@@ -85,7 +85,7 @@ export type MatchRow = {
 
 export type ConnectionRow = {
   id: string;
-  match_id: string;
+  match_id: string | null;
   participant_a_id: string;
   participant_b_id: string;
   participant_a_connected: boolean;
@@ -205,7 +205,7 @@ export type Database = {
         Row: ConnectionRow;
         Insert: {
           id?: string;
-          match_id: string;
+          match_id?: string | null;
           participant_a_id: string;
           participant_b_id: string;
           participant_a_connected?: boolean;

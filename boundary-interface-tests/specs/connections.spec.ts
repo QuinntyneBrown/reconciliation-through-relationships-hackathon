@@ -5,6 +5,70 @@ test.describe("connections and conversations", () => {
     await login.signInAs("participant");
   });
 
+  test("a connection request from a profile needs no facilitator match and reaches both people", async ({
+    profile,
+    connections,
+    backend,
+  }) => {
+    // No match and no existing connection between Avery and Andrew.
+    await backend.configure({ patch: { connections: [], matches: [] } });
+
+    await profile.page.goto("/profile/indigenous-1");
+    await profile.connectWith("Andrew");
+    await expect(profile.toast(/Connection request sent to Andrew/)).toBeVisible();
+
+    // The button reflects the pending state without a reload.
+    await expect(profile.page.getByRole("button", { name: /Request pending/ })).toBeVisible();
+
+    // Outbound: the sender sees the pending request in their own connections.
+    await connections.page.goto("/connections");
+    await expect(connections.page.getByText("Andrew Bright Star")).toBeVisible();
+    await expect(connections.page.getByText("Pending", { exact: true })).toBeVisible();
+
+    // The persisted row names both people, so the partner's (symmetric)
+    // connections query surfaces the same pending request for them too.
+    const state = await backend.state();
+    expect(state.connections).toContainEqual(
+      expect.objectContaining({
+        participant_a_id: "participant-user",
+        participant_b_id: "indigenous-1",
+        status: "pending",
+      }),
+    );
+  });
+
+  test("a sent connection request can be cancelled", async ({ profile, backend }) => {
+    await backend.configure({ patch: { connections: [], matches: [] } });
+
+    await profile.page.goto("/profile/indigenous-1");
+    await profile.connectWith("Andrew");
+    await expect(profile.page.getByRole("button", { name: /Request pending/ })).toBeVisible();
+
+    await profile.page.getByRole("button", { name: /Cancel/ }).click();
+    await expect(profile.toast(/cancelled/i)).toBeVisible();
+
+    // The request is gone and the profile offers to connect again.
+    await expect(profile.page.getByRole("button", { name: /Connect with Andrew/ })).toBeVisible();
+    const state = await backend.state();
+    expect(state.connections).toHaveLength(0);
+  });
+
+  test("a rejected connection request surfaces an error instead of false success", async ({
+    profile,
+    backend,
+  }) => {
+    await backend.configure({
+      patch: { connections: [], matches: [] },
+      failures: [{ table: "connections", method: "POST" }],
+    });
+
+    await profile.page.goto("/profile/indigenous-1");
+    await profile.connectWith("Andrew");
+
+    await expect(profile.toast(/couldn.t send|could not send|try again/i)).toBeVisible();
+    await expect(profile.toast(/Connection request sent/)).toHaveCount(0);
+  });
+
   test("connection list shows active and pending relationships and opens a conversation", async ({
     connections,
   }) => {

@@ -46,6 +46,24 @@ test.describe("mutual connections and chat", () => {
     await expect(page.getByRole("dialog")).toHaveCount(0);
   });
 
+  test("a participant-initiated connection request appears in the partner's connections", async ({
+    page,
+  }) => {
+    const ids = await fixtureIds();
+
+    // The member sends a connection request from the partner's profile.
+    await new LoginPage(page).signIn("member");
+    await page.goto(`/profile/${ids.connectTargetIndigenous}`);
+    await page.getByRole("button", { name: "Connect with Nova" }).click();
+    await expect(page.getByText("Connection request sent to Nova!")).toBeVisible();
+
+    // The partner sees the inbound request in their own connections list.
+    await new LoginPage(page).signIn("connectTargetIndigenous");
+    await new ConnectionsPage(page).open();
+    await expect(page.getByText("Avery Acceptance")).toBeVisible();
+    await expect(page.getByText("Pending", { exact: true })).toBeVisible();
+  });
+
   test.skip("creates a real Zoom meeting and displays its join link", async () => {
     // Deliberately skipped: this calls a paid/external Zoom API and may wait on OAuth/network.
     // The fast validation and dialog behavior remain covered above.

@@ -49,7 +49,7 @@ test.describe("participant dashboard and profiles", () => {
     await expect(dashboard.page).toHaveURL(/\/$/);
   });
 
-  test("an approved match without a connection can send a connection request", async ({
+  test("a participant without an existing connection can send a connection request", async ({
     dashboard,
     profile,
     backend,
@@ -57,22 +57,6 @@ test.describe("participant dashboard and profiles", () => {
     const state = await backend.state();
     await backend.configure({
       patch: {
-        matches: [
-          ...state.matches,
-          {
-            id: "match-connectable",
-            indigenous_participant_id: "indigenous-2",
-            non_indigenous_participant_id: "participant-user",
-            match_score: 70,
-            match_criteria: {},
-            status: "approved",
-            auto_generated: false,
-            created_by: "facilitator-user",
-            approved_by: "facilitator-user",
-            approved_at: "2026-07-11T16:00:00.000Z",
-            created_at: "2026-07-11T16:00:00.000Z",
-          },
-        ],
         connections: state.connections.filter((row) => row.participant_b_id !== "indigenous-2"),
       },
     });
@@ -82,8 +66,8 @@ test.describe("participant dashboard and profiles", () => {
     const updated = await backend.state();
     expect(updated.connections).toContainEqual(
       expect.objectContaining({
-        participant_a_id: "indigenous-2",
-        participant_b_id: "participant-user",
+        participant_a_id: "participant-user",
+        participant_b_id: "indigenous-2",
       }),
     );
     expect(updated.notifications).toContainEqual(
@@ -134,10 +118,10 @@ test.describe("participant dashboard and profiles", () => {
     await expect(dashboard.page.getByRole("button", { name: "Create cohort" })).toBeVisible();
   });
 
-  test("unmatched profiles explain that facilitator approval is pending", async ({ dashboard }) => {
+  test("any participant profile offers to send a connection request", async ({ dashboard }) => {
     await dashboard.page.goto("/profile/non-indigenous-2");
     await expect(
-      dashboard.page.getByRole("button", { name: "Awaiting facilitator match" }),
-    ).toBeDisabled();
+      dashboard.page.getByRole("button", { name: /Connect with David/ }),
+    ).toBeEnabled();
   });
 });
