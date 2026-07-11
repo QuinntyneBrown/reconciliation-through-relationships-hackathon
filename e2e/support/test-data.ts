@@ -46,6 +46,11 @@ export const testUsers = {
     firstName: "Casey",
     lastName: "Accepter",
   },
+  connectTargetIndigenous: {
+    email: "e2e.connect-target@rtr-demo.ca",
+    firstName: "Nova",
+    lastName: "Newmatch",
+  },
   approveIndigenous: {
     email: "e2e.approve-indigenous@rtr-demo.ca",
     firstName: "Approve",

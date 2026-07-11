@@ -295,6 +295,18 @@ async function handleRest(req: IncomingMessage, res: ServerResponse, url: URL) {
     return;
   }
 
+  if (method === "DELETE") {
+    const targets = new Set(filteredRows(table, url));
+    database[table] = database[table].filter((row) => !targets.has(row));
+    const returning = req.headers.prefer?.includes("return=representation");
+    if (returning) json(res, 200, [...targets]);
+    else {
+      res.writeHead(204);
+      res.end();
+    }
+    return;
+  }
+
   if (method === "POST") {
     const body = await readBody(req);
     const inputs = (Array.isArray(body) ? body : [body]) as Row[];

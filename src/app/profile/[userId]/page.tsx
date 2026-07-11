@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, MapPin, MessageSquare } from "lucide-react";
+import { ArrowLeft, MapPin } from "lucide-react";
 import DashboardNav from "../../dashboard/components/DashboardNav";
 import ConnectButton from "./ConnectButton";
 import { AppFooter } from "@/components/app-footer";
@@ -30,24 +30,14 @@ export default async function ProfilePage({ params }: { params: Promise<{ userId
 
   const isSelf = user.id === userId;
 
-  // Check for existing connection
+  // Check for existing connection (in either direction)
   const { data: connection } = await supabase
     .from("connections")
     .select("*")
     .or(
       `and(participant_a_id.eq.${user.id},participant_b_id.eq.${userId}),and(participant_a_id.eq.${userId},participant_b_id.eq.${user.id})`,
     )
-    .single();
-
-  // Check for approved match
-  const { data: match } = await supabase
-    .from("matches")
-    .select("*")
-    .in("status", ["approved", "connected"])
-    .or(
-      `and(indigenous_participant_id.eq.${user.id},non_indigenous_participant_id.eq.${userId}),and(indigenous_participant_id.eq.${userId},non_indigenous_participant_id.eq.${user.id})`,
-    )
-    .single();
+    .maybeSingle();
 
   const initials = `${profile.first_name?.[0] ?? ""}${profile.last_name?.[0] ?? ""}`.toUpperCase();
 
@@ -113,25 +103,12 @@ export default async function ProfilePage({ params }: { params: Promise<{ userId
 
             {!isSelf && (
               <div className="mt-4 flex gap-2">
-                {connection ? (
-                  <Button asChild className="flex-1 gap-2">
-                    <Link href={`/connections/${connection.id}`}>
-                      <MessageSquare className="h-4 w-4" />
-                      {connection.status === "active" ? "Open chat" : "View connection"}
-                    </Link>
-                  </Button>
-                ) : match ? (
-                  <ConnectButton
-                    matchId={match.id}
-                    currentUserId={user.id}
-                    partnerId={userId}
-                    partnerName={profile.first_name ?? "them"}
-                  />
-                ) : (
-                  <Button variant="outline" disabled className="flex-1">
-                    Awaiting facilitator match
-                  </Button>
-                )}
+                <ConnectButton
+                  currentUserId={user.id}
+                  partnerId={userId}
+                  partnerName={profile.first_name ?? "them"}
+                  initialConnection={connection ?? null}
+                />
               </div>
             )}
           </CardContent>
