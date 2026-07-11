@@ -65,7 +65,7 @@ export default function DashboardClient({
         )}
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full max-w-2xl grid-cols-3">
+          <TabsList className="w-full justify-start gap-2">
             <TabsTrigger value="recommended" className="gap-2">
               Recommended
               {recommendedMatches.length > 0 && (
