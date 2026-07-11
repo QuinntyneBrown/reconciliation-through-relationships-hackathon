@@ -124,6 +124,16 @@ export default function LearningLayout({ modules, progress, userId, isIndigenous
               {requiredCompleted}/{totalRequired} complete
             </span>
           </div>
+          <button
+            onClick={async () => {
+              const { createClient } = await import("@/lib/supabase/client");
+              await createClient().auth.signOut();
+              router.push("/auth/login");
+            }}
+            className="text-xs text-muted-foreground hover:text-foreground transition-colors shrink-0"
+          >
+            Sign out
+          </button>
         </div>
       </header>
 
