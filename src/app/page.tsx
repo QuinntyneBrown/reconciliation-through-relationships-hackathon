@@ -41,7 +41,7 @@ export default function LandingPage() {
               <Link href="/auth/login">Sign in</Link>
             </Button>
             <Button variant="on-dark" size="sm" asChild>
-              <Link href="/auth/login">Join RTR</Link>
+              <Link href="/auth/signup">Join RTR</Link>
             </Button>
           </div>
         }
@@ -102,7 +102,7 @@ export default function LandingPage() {
               </p>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                 <Button variant="on-dark" size="lg" asChild>
-                  <Link href="/auth/login">Begin your journey</Link>
+                  <Link href="/auth/signup">Begin your journey</Link>
                 </Button>
                 <Button
                   variant="quiet"
@@ -165,7 +165,7 @@ export default function LandingPage() {
                 “Meaningful conversation. Shared understanding. Right relationship.”
               </p>
               <Button className="mt-5 w-full" asChild>
-                <Link href="/auth/login">Find your place in the circle</Link>
+                <Link href="/auth/signup">Find your place in the circle</Link>
               </Button>
             </div>
           </div>
