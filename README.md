@@ -8,29 +8,33 @@ A welcoming digital platform that moves participants from **registration → lea
 
 ```bash
 npm install
-cp .env.example .env.local   # defaults work out of the box (mock data, no DB)
+cp .env.example .env.local   # add Supabase credentials for the full journey
 npm run dev                  # http://localhost:3000
 ```
 
-That's it — no database needed to start. The app runs on in-memory synthetic data.
+No database is needed for the landing page and mock-backed routes. Add Supabase credentials to use authentication and the full participant/facilitator journey.
 
 ## What's here
 
 | Route | What it is | Owner |
 |-------|-----------|-------|
-| `/onboarding` | Account creation + participant intake | Onboarding squad |
-| `/learn` | Required video learning journey | Learning squad |
-| `/map` | Regional map + cohort formation | Map squad |
-| `/facilitator/matching` | Facilitator-reviewed matching | Matching squad |
+| `/auth/login` | Supabase magic-link sign-in | Authentication |
+| `/onboarding` | Five-step participant intake | Onboarding |
+| `/learn` | Required learning journey | Learning |
+| `/dashboard` | Recommendations, participants, and regional map | Participant experience |
+| `/connections` | Mutual connection, chat, and meeting scheduling | Participant experience |
+| `/map` | Mock-backed regional cohort map | Cohorts |
+| `/facilitator` | Facilitator overview, participants, matching, and settings | Facilitation |
 
-Every screen is a working scaffold you can build on. Look for `⚠️` comments marking each squad's workspace.
+The landing page and mock-backed routes work without a database. The authenticated participant and facilitator journey requires the Supabase variables shown in `.env.example` and the migrations under `supabase/migrations`.
 
 ## Tech stack
 
 - **Next.js 16** (App Router) + **React 19** + **TypeScript**
 - **Tailwind CSS v4** + **shadcn/ui** components (`src/components/ui`)
 - **Zod** for shared validation (`src/domain/schema.ts`)
-- **Data layer**: a `Repository` interface with a mock impl (default) and a Supabase impl (to build). Swap via `DATA_SOURCE` env var — **no UI code changes**.
+- **Data layer**: the original repository seam remains available for mock-backed routes, while the authenticated journey uses generated database types and Supabase clients under `src/data/supabase`.
+- **Integrations**: Mapbox for participant maps and Zoom for scheduled calls.
 
 ## Key commands
 
@@ -50,11 +54,12 @@ src/
   components/     # shared React components
     ui/           # shadcn/ui primitives — don't hand-edit, regenerate
   domain/         # the shared vocabulary: types, constants, zod schema, matching logic
-  data/           # data access. Everything goes through getRepository()
+  data/           # repository seam plus typed Supabase access
     mock/         # in-memory synthetic data (default)
     supabase/     # Supabase clients + repository (backend team)
   lib/            # small utilities (env, cn)
 docs/             # architecture, decisions, the challenge brief
+supabase/         # database migrations and synthetic seed data
 ```
 
 ## New here?

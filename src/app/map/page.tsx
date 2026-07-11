@@ -2,6 +2,11 @@ import { getRepository } from "@/data";
 import { COHORT_MIN_PARTICIPANTS } from "@/domain/constants";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { AppFooter } from "@/components/app-footer";
+import { AppHeader } from "@/components/app-header";
+import { CohortCircle } from "@/components/cohort-circle";
+import { EmptyState } from "@/components/empty-state";
+import { PageIntro } from "@/components/page-intro";
 
 /**
  * Regional participant discovery. Server component — reads eligible + consented
@@ -21,41 +26,55 @@ export default async function MapPage() {
   ]);
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12">
-      <h1 className="text-3xl font-semibold tracking-tight">Regional map & cohorts</h1>
-      <p className="text-muted-foreground mt-2">
-        Only participants who completed the learning journey <em>and</em> consented to appear are
-        shown. A cohort can form at {COHORT_MIN_PARTICIPANTS}+ participants in a region.
-      </p>
+    <div className="bg-background flex min-h-screen flex-col">
+      <AppHeader homeHref="/" subtitle="Regional discovery" />
+      <main className="mx-auto w-full max-w-7xl flex-1 space-y-8 px-4 py-8 sm:px-6">
+        <PageIntro
+          eyebrow="Consent-first discovery"
+          title="Regional map & cohorts"
+          description={
+            <p>
+              Only participants who completed the learning journey <em>and</em> consented to appear
+              are shown. Regions—not precise locations—protect participant privacy.
+            </p>
+          }
+        />
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2">
-        {regions.map((r) => (
-          <Card key={r.key}>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-lg">
-                  {r.city}, {r.province}
-                </CardTitle>
-                {r.canFormCohort ? (
-                  <Badge>Cohort ready</Badge>
-                ) : (
-                  <Badge variant="outline">Building</Badge>
-                )}
-              </div>
-              <CardDescription>
-                {r.eligibleCount} eligible participant{r.eligibleCount === 1 ? "" : "s"}
-                {!r.canFormCohort &&
-                  ` · ${COHORT_MIN_PARTICIPANTS - r.eligibleCount} more to form a cohort`}
-              </CardDescription>
-            </CardHeader>
-          </Card>
-        ))}
-      </div>
+        {regions.length === 0 ? (
+          <EmptyState
+            title="No cohort in your region yet"
+            description="Circles take time. Every eligible participant brings a regional gathering closer."
+          />
+        ) : (
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {regions.map((r) => (
+              <Card key={r.key}>
+                <CardHeader className="grid-cols-[auto_1fr] items-center gap-5">
+                  <CohortCircle count={r.eligibleCount} threshold={COHORT_MIN_PARTICIPANTS} />
+                  <div>
+                    <CardTitle>
+                      {r.city}, {r.province}
+                    </CardTitle>
+                    <CardDescription className="mt-1">
+                      {r.eligibleCount} eligible participant{r.eligibleCount === 1 ? "" : "s"}
+                    </CardDescription>
+                    <Badge variant={r.canFormCohort ? "eligible" : "pending"} className="mt-3">
+                      {r.canFormCohort
+                        ? "Ready to gather"
+                        : `${COHORT_MIN_PARTICIPANTS - r.eligibleCount} seats remaining`}
+                    </Badge>
+                  </div>
+                </CardHeader>
+              </Card>
+            ))}
+          </div>
+        )}
 
-      <p className="text-muted-foreground mt-8 text-sm">
-        {mappable.length} participants visible on the map across {regions.length} regions. TODO:
-        render an interactive map here.
-      </p>
+        <p className="text-ink-soft text-sm">
+          {mappable.length} consenting participants across {regions.length} regions.
+        </p>
+      </main>
+      <AppFooter />
     </div>
   );
 }

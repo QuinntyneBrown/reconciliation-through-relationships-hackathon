@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
+import type { Database } from "./database.types";
 import { env } from "@/lib/env";
 
 /**
@@ -10,18 +11,16 @@ import { env } from "@/lib/env";
  */
 export async function createSupabaseServerClient() {
   const cookieStore = await cookies();
-  return createServerClient(env.supabaseUrl, env.supabaseAnonKey, {
+  return createServerClient<Database>(env.supabaseUrl, env.supabaseAnonKey, {
     cookies: {
       getAll() {
         return cookieStore.getAll();
       },
       setAll(cookiesToSet) {
         try {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            cookieStore.set(name, value, options),
-          );
+          cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options));
         } catch {
-          // Called from a Server Component — safe to ignore; middleware refreshes it.
+          // Called from a Server Component — safe to ignore; Proxy refreshes it.
         }
       },
     },

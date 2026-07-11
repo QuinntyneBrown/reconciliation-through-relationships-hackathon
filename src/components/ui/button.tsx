@@ -1,3 +1,4 @@
+import * as React from "react";
 import { Button as ButtonPrimitive } from "@base-ui/react/button";
 import { cva, type VariantProps } from "class-variance-authority";
 
@@ -11,7 +12,8 @@ const buttonVariants = cva(
         default: "bg-spruce-700 text-white hover:bg-spruce-800",
         outline:
           "border-spruce-700 bg-transparent text-spruce-700 hover:bg-spruce-100 hover:text-spruce-800",
-        secondary: "bg-ochre-100 text-ochre-700 hover:bg-ochre-200",
+        secondary:
+          "border-spruce-700 bg-transparent text-spruce-700 hover:bg-spruce-100 hover:text-spruce-800",
         soft: "bg-ochre-100 text-ochre-700 hover:bg-ochre-200",
         ghost: "bg-transparent text-river-700 hover:bg-river-100 hover:text-river-700",
         quiet: "bg-transparent text-river-700 hover:bg-river-100 hover:text-river-700",
@@ -39,20 +41,32 @@ const buttonVariants = cva(
   },
 );
 
+type ButtonProps = ButtonPrimitive.Props &
+  VariantProps<typeof buttonVariants> & {
+    asChild?: boolean;
+  };
+
 function Button({
   className,
   variant = "default",
   size = "default",
+  asChild,
+  children,
   ...props
-}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
+}: ButtonProps) {
+  const render = asChild && React.isValidElement(children) ? children : undefined;
+
   return (
     <ButtonPrimitive
       data-slot="button"
       data-variant={variant}
       data-size={size}
       className={cn(buttonVariants({ variant, size, className }))}
+      render={render}
       {...props}
-    />
+    >
+      {render ? undefined : children}
+    </ButtonPrimitive>
   );
 }
 
