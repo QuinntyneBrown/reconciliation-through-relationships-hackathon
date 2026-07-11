@@ -82,7 +82,7 @@ export default function ScheduleMeetingModal({
         if (!open) onClose();
       }}
     >
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md p-6 sm:p-8">
         <DialogHeader>
           <DialogTitle>Schedule a call</DialogTitle>
           <DialogDescription>

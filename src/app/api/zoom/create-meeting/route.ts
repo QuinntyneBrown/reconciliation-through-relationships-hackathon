@@ -1,34 +1,44 @@
 import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/data/supabase/server-client";
 
+/**
+ * Mint a fresh Zoom Server-to-Server OAuth access token.
+ * S2S tokens are short-lived (~1h), so we generate on every request.
+ */
 async function getZoomAccessToken(): Promise<string> {
-  // Use the access token from env if available (for hackathon)
-  if (process.env.ZOOM_ACCESS_TOKEN) {
-    return process.env.ZOOM_ACCESS_TOKEN;
+  const accountId = process.env.ZOOM_ACCOUNT_ID;
+  const clientId = process.env.ZOOM_CLIENT_ID;
+  const clientSecret = process.env.ZOOM_CLIENT_SECRET;
+
+  if (!accountId || !clientId || !clientSecret) {
+    throw new Error(
+      "Missing Zoom Server-to-Server OAuth env vars (ZOOM_ACCOUNT_ID, ZOOM_CLIENT_ID, ZOOM_CLIENT_SECRET)",
+    );
   }
 
-  // Otherwise use Server-to-Server OAuth (account credentials flow)
-  const credentials = Buffer.from(
-    `${process.env.ZOOM_CLIENT_ID}:${process.env.ZOOM_CLIENT_SECRET}`,
-  ).toString("base64");
+  const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
 
   const res = await fetch(
-    "https://zoom.us/oauth/token?grant_type=account_credentials&account_id=me",
+    `https://zoom.us/oauth/token?grant_type=account_credentials&account_id=${encodeURIComponent(
+      accountId,
+    )}`,
     {
       method: "POST",
       headers: {
         Authorization: `Basic ${credentials}`,
         "Content-Type": "application/x-www-form-urlencoded",
       },
+      cache: "no-store",
     },
   );
 
   if (!res.ok) {
-    throw new Error("Failed to obtain Zoom access token");
+    const text = await res.text();
+    throw new Error(`Failed to obtain Zoom access token (${res.status}): ${text}`);
   }
 
   const data = await res.json();
-  return data.access_token;
+  return data.access_token as string;
 }
 
 export async function POST(request: Request) {
@@ -48,7 +58,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
 
-  // Verify user is part of this connection
   const { data: connection } = await supabase
     .from("connections")
     .select("*")
@@ -73,7 +82,7 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         topic,
-        type: 2, // Scheduled meeting
+        type: 2,
         start_time: scheduledAt,
         duration: durationMinutes,
         timezone: "America/Toronto",
@@ -86,14 +95,16 @@ export async function POST(request: Request) {
     });
 
     if (!zoomRes.ok) {
-      const zoomErr = await zoomRes.json();
-      console.error("Zoom API error:", zoomErr);
-      return NextResponse.json({ error: "Failed to create Zoom meeting" }, { status: 502 });
+      const zoomErr = await zoomRes.text();
+      console.error("Zoom API error:", zoomRes.status, zoomErr);
+      return NextResponse.json(
+        { error: "Failed to create Zoom meeting", detail: zoomErr, status: zoomRes.status },
+        { status: 502 },
+      );
     }
 
     const zoomMeeting = await zoomRes.json();
 
-    // Save meeting to Supabase
     const { data: meeting, error } = await supabase
       .from("meetings")
       .insert({
@@ -113,7 +124,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Failed to save meeting" }, { status: 500 });
     }
 
-    // Notify both participants
     const partnerId =
       connection.participant_a_id === user.id
         ? connection.participant_b_id
@@ -130,6 +140,7 @@ export async function POST(request: Request) {
     return NextResponse.json(meeting);
   } catch (err) {
     console.error("Zoom integration error:", err);
-    return NextResponse.json({ error: "Zoom integration error" }, { status: 500 });
+    const message = err instanceof Error ? err.message : "Unknown error";
+    return NextResponse.json({ error: "Zoom integration error", detail: message }, { status: 500 });
   }
 }
