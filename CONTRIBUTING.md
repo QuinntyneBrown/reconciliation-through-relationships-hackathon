@@ -48,9 +48,9 @@ Each squad mainly lives in its own folders, so parallel work rarely collides.
 | **Map** | `app/map`, map component | Backend (regions, privacy) |
 | **Matching** | `app/facilitator/*`, `domain/matching.ts` | Backend (matches) |
 | **Backend** | `data/`, `domain/`, Supabase, auth | Everyone |
-| **Design / PM** | `docs/DECISIONS.md`, synthetic data, Tailwind theme in `app/globals.css`, copy | Everyone |
+| **Design / PM** | `docs/DECISIONS.md`, synthetic data, tokens in `styles/design-tokens.css`, copy | Everyone |
 
-Design & PM can contribute directly: edit demo data in [`src/data/mock/participants.ts`](src/data/mock/participants.ts), tweak colors/tokens in `src/app/globals.css`, and keep [`docs/DECISIONS.md`](docs/DECISIONS.md) current as RTR answers open questions.
+Design & PM can contribute directly: edit demo data in [`src/data/mock/participants.ts`](src/data/mock/participants.ts), tweak theme values in [`src/styles/design-tokens.css`](src/styles/design-tokens.css), and keep [`docs/DECISIONS.md`](docs/DECISIONS.md) current as RTR answers open questions. `src/app/globals.css` maps those shared values into Tailwind utilities.
 
 ## The one rule that keeps us unblocked
 
@@ -66,11 +66,21 @@ This means frontend builds against mock data on day one, and backend swaps in Su
 
 ## Adding UI components
 
-Use shadcn/ui — don't hand-write primitives:
+Use shadcn/ui to scaffold accessible primitives:
 
 ```bash
 npx shadcn@latest add <component>   # e.g. dropdown-menu, form, calendar
 ```
+
+Files under `src/components/ui` are owned application code after scaffolding. Adapt them to the
+semantic tokens and component conventions already in the repository; do not overwrite customized
+components during a shadcn update without reviewing the diff. Public visual variants belong in CVA,
+component parts use `data-slot`, and repeated control styling belongs in a shared recipe.
+
+The token values in `src/styles/design-tokens.css` are the single source of truth. Both the production
+Tailwind theme and `docs/mocks/rtr.css` consume that file. Use semantic roles such as `bg-primary`,
+`text-heading`, and `border-input` in components; reserve palette names such as `spruce` and `ochre`
+for token definitions and deliberately branded artwork.
 
 ## Style
 

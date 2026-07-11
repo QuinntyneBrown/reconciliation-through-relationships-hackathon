@@ -28,7 +28,7 @@ function DialogOverlay({ className, ...props }: DialogPrimitive.Backdrop.Props) 
     <DialogPrimitive.Backdrop
       data-slot="dialog-overlay"
       className={cn(
-        "data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0 fixed inset-0 isolate z-50 bg-[rgba(20,40,35,0.55)] duration-[180ms]",
+        "data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0 bg-overlay fixed inset-0 isolate z-50 duration-(--motion-duration)",
         className,
       )}
       {...props}
@@ -50,7 +50,7 @@ function DialogContent({
       <DialogPrimitive.Popup
         data-slot="dialog-content"
         className={cn(
-          "data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 border-border border-t-ochre-500 bg-parchment text-ink shadow-rtr-2 fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-0 overflow-hidden rounded-2xl border border-t-4 duration-[180ms] outline-none sm:max-w-[520px]",
+          "data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 border-border border-t-secondary-foreground bg-popover text-popover-foreground shadow-rtr-2 fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-0 overflow-hidden rounded-2xl border border-t-4 duration-(--motion-duration) outline-none sm:max-w-[520px]",
           className,
         )}
         {...props}
@@ -62,7 +62,7 @@ function DialogContent({
             render={
               <Button
                 variant="ghost"
-                className="text-ink-soft hover:bg-sand hover:text-ink absolute top-4 right-4"
+                className="text-muted-foreground hover:bg-muted hover:text-foreground absolute top-4 right-4"
                 size="icon"
               />
             }
@@ -94,7 +94,7 @@ function DialogKicker({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="dialog-kicker"
-      className={cn("text-ochre-700 mb-1 text-xs font-bold tracking-[0.12em] uppercase", className)}
+      className={cn("text-warning tracking-kicker mb-1 text-xs font-bold uppercase", className)}
       {...props}
     />
   );
@@ -129,7 +129,7 @@ function DialogTitle({ className, ...props }: DialogPrimitive.Title.Props) {
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
-      className={cn("font-heading text-spruce-800 text-xl leading-[1.16] font-[560]", className)}
+      className={cn("font-heading text-heading text-xl leading-[1.16] font-[560]", className)}
       {...props}
     />
   );
@@ -140,7 +140,7 @@ function DialogDescription({ className, ...props }: DialogPrimitive.Description.
     <DialogPrimitive.Description
       data-slot="dialog-description"
       className={cn(
-        "text-ink-soft *:[a]:text-river-700 *:[a]:hover:text-spruce-800 text-[15.5px] leading-[1.55] *:[a]:underline *:[a]:underline-offset-3",
+        "text-muted-foreground *:[a]:text-link *:[a]:hover:text-link-hover text-action leading-copy *:[a]:underline *:[a]:underline-offset-3",
         className,
       )}
       {...props}

@@ -48,7 +48,8 @@ npm run format        # prettier --write
 src/
   app/            # routes (pages + /api). One folder per feature.
   components/     # shared React components
-    ui/           # shadcn/ui primitives — don't hand-edit, regenerate
+    ui/           # owned design-system primitives, initially scaffolded with shadcn/ui
+  styles/         # shared design tokens consumed by the app and static specimens
   domain/         # the shared vocabulary: types, constants, zod schema, matching logic
   data/           # data access. Everything goes through getRepository()
     mock/         # in-memory synthetic data (default)
