@@ -1,0 +1,144 @@
+Reconciliation Through Relationships (RTR)
+Hackathon Challenge Brief
+
+
+PARTNER ORGANIZATION
+
+Reconciliation Through Relationships (RTR)
+Website: https://rightrelationship.ca/
+
+Primary contact:
+Joel Gordon
+joel.gordon@theefc.ca
+
+
+ABOUT RTR
+
+Reconciliation Through Relationships was launched in response to the Truth and Reconciliation Commission's call to bring Indigenous and non-Indigenous people together through meaningful conversations and interactions.
+
+RTR is led by Andrew Russell of Wood Mountain Lakota First Nation, who serves as the organization's Indigenous ambassador and partnership liaison.
+
+The initiative was founded in 2021 by Indigenous leaders Jimmy Thunder of Reconciliation Thunder and Ji-gaabiikwe (Diane Campeau) of iEmergence, together with Joel Gordon, a non-Indigenous convenor from The Evangelical Fellowship of Canada (EFC).
+
+
+THE CHALLENGE
+
+RTR needs a welcoming and culturally appropriate digital platform that helps participants move from initial registration to learning, relationship-building, and local action.
+
+The platform should help RTR:
+
+1. Recruit and onboard new Indigenous and non-Indigenous participants.
+2. Automate participant registration and the learning journey using RTR's existing training videos.
+3. Help facilitators identify participants in the same geographic region and support the formation of local reconciliation cohorts.
+4. Assist facilitators in matching Indigenous and non-Indigenous participants for relationship-building.
+
+
+PROPOSED SOLUTION
+
+Build a responsive web application that supports the participant journey described below. For the hackathon, focus on the primary end-to-end experience, use synthetic participant data, and implement lightweight authentication.
+
+
+1. Account Creation and Participant Profile
+
+Provide a structured and welcoming onboarding process. Participants should be able to create an account and enter the following information:
+
+- Name
+- Sex, with an option to specify
+- Participation category (select one or more):
+  - Indigenous leader
+  - Indigenous individual
+  - Non-Indigenous individual
+  - Elected leader
+  - Religious leader
+  - Artist
+- Location:
+  - City, town, or county
+  - Province
+- Nearest treaty area to where the participant lives, worships, or works. The Native Land Digital place search at https://native-land.ca/ may be used for assistance.
+- Faith tradition:
+  - Indigenous Traditional
+  - Atheist
+  - Christian
+  - Jewish
+  - Muslim
+  - Hindu
+  - Buddhist
+  - Other, with an option to specify
+- Hobbies and interests, entered as keywords or tags
+- Availability
+- Preferred participation format
+- Language preferences
+- Personal boundaries and other matching preferences
+
+At least one of the required participation categories identified by RTR must be selected.
+
+
+2. Learning Journey
+
+Registered participants must complete a learning journey before engaging with other participants. The platform should use RTR's existing training videos to guide participants through this preparation and track their progress.
+
+Participants should appear as eligible for mapping, cohort formation, or matching only after completing the required learning journey.
+
+
+3. Regional Participant Map and Reconciliation Cohorts
+
+With appropriate consent and privacy safeguards, participants who have completed the learning journey may be represented on a regional map. The map should help authorized facilitators identify areas with enough participants to form a reconciliation cohort.
+
+A regional cohort could collaborate on local reconciliation events, such as:
+
+- A film screening on June 21, National Indigenous Peoples Day
+- A blanket exercise on September 30, the National Day for Truth and Reconciliation
+
+The initial suggestion is to form a cohort when at least five eligible participants are present in a region. RTR must confirm this threshold.
+
+
+4. Participant Matching
+
+The platform should suggest viable Indigenous and non-Indigenous participant matches based on factors such as:
+
+- Geographic location
+- Availability
+- Language
+- Shared interests
+- Faith tradition
+- Participation format and personal boundaries
+
+A facilitator must review and approve suggested matches before participants are connected.
+
+The matching process must also account for an imbalance in registrations. If more non-Indigenous participants register than can be matched, the platform should provide a waitlist or a learning-resources-only pathway.
+
+
+HACKATHON SCOPE
+
+The hackathon solution should include:
+
+- A responsive web application
+- The agreed-upon user roles and permissions
+- The primary end-to-end participant journey
+- Participant profiles and intake
+- Learning journey progress tracking
+- Facilitator-supported matching
+- Regional participant discovery and cohort support
+- Synthetic demonstration data
+- Lightweight authentication, such as a magic link or a simple email-and-password login
+
+
+AVAILABLE RESOURCES
+
+- Joel Gordon of EFC will be the on-site domain steward for vision, partnerships, and communications. He is not the technical lead; consult him on cultural context and requirements.
+- Technical mentors will be available to provide architecture and technology support.
+- RTR has access to national networks of Christian leaders, churches, and schools.
+- Financial resources are available to operate a server and a DigitalOcean account.
+- Funding opportunities may be available to support the platform's long-term sustainability.
+
+
+DECISIONS TO CONFIRM WITH RTR
+
+- Which participation categories are mandatory during registration?
+- What are the three user roles, and what permissions does each role require?
+- Should the application use magic-link authentication or email and password?
+- What participant information may be shown on the regional map, and to whom?
+- What consent, privacy, safeguarding, and data-retention requirements apply?
+- How many eligible participants are required to form a regional cohort?
+- Which learning materials are mandatory, and what constitutes completion?
+- How should facilitators manage waitlisted participants and approve matches?
