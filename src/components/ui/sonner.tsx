@@ -18,23 +18,27 @@ const Toaster = ({ ...props }: ToasterProps) => {
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
       icons={{
-        success: <CircleCheckIcon className="size-4" />,
-        info: <InfoIcon className="size-4" />,
-        warning: <TriangleAlertIcon className="size-4" />,
-        error: <OctagonXIcon className="size-4" />,
-        loading: <Loader2Icon className="size-4 animate-spin" />,
+        success: <CircleCheckIcon className="text-ochre-500 size-4" />,
+        info: <InfoIcon className="text-ochre-500 size-4" />,
+        warning: <TriangleAlertIcon className="text-ochre-500 size-4" />,
+        error: <OctagonXIcon className="text-ochre-500 size-4" />,
+        loading: <Loader2Icon className="text-ochre-500 size-4 animate-spin" />,
       }}
       style={
         {
-          "--normal-bg": "var(--popover)",
-          "--normal-text": "var(--popover-foreground)",
-          "--normal-border": "var(--border)",
-          "--border-radius": "var(--radius)",
+          "--normal-bg": "var(--spruce-900)",
+          "--normal-text": "var(--on-dark)",
+          "--normal-border": "transparent",
+          "--border-radius": "var(--r-md)",
         } as React.CSSProperties
       }
       toastOptions={{
         classNames: {
-          toast: "cn-toast",
+          toast:
+            "!gap-2.5 !border-transparent !bg-spruce-900 !px-[18px] !py-3 !font-sans !text-[14.5px] !font-semibold !text-on-dark !shadow-rtr-2",
+          description: "!text-on-dark-soft",
+          actionButton: "!bg-ochre-500 !font-bold !text-spruce-900",
+          cancelButton: "!bg-transparent !font-bold !text-on-dark-soft",
         },
       }}
       {...props}

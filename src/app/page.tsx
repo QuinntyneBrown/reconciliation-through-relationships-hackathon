@@ -52,8 +52,10 @@ export default function HomePage() {
           other locally, and build lasting reconciliation cohorts.
         </p>
         <div className="mt-6 flex gap-3">
-          <Button render={<Link href="/onboarding" />}>Get started</Button>
-          <Button variant="outline" render={<Link href="/facilitator" />}>
+          <Button nativeButton={false} render={<Link href="/onboarding" />}>
+            Get started
+          </Button>
+          <Button nativeButton={false} variant="outline" render={<Link href="/facilitator" />}>
             Facilitator view
           </Button>
         </div>
