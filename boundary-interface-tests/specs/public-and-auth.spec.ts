@@ -59,7 +59,7 @@ test.describe("public journey and authentication", () => {
       "aria-current",
       "page",
     );
-    await dashboard.mobileNavigation().getByRole("link", { name: "Connections" }).click();
-    await expect(dashboard.page).toHaveURL(/\/connections$/);
+    await dashboard.mobileNavigation().getByRole("link", { name: "Regional map" }).click();
+    await expect(dashboard.page).toHaveURL(/\/map$/);
   });
 });
