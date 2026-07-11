@@ -18,6 +18,7 @@ import type { Profile } from "@/data/supabase/database.types";
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Home" },
   { href: "/learn", label: "Learning" },
+  { href: "/connections", label: "Connections" },
   { href: "/map", label: "Regional map" },
 ];
 

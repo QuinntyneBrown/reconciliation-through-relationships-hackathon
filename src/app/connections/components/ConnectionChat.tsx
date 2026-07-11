@@ -2,21 +2,21 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { createSupabaseBrowserClient } from "@/data/supabase/browser-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { ArrowLeft, Send, Video, Clock, Check, CheckCheck } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { ArrowLeft, Send, Video, Clock, Check, CheckCheck, MapPin } from "lucide-react";
 import { toast } from "sonner";
-import { AppHeader } from "@/components/app-header";
-
-const NAV_ITEMS = [
-  { href: "/dashboard", label: "Home" },
-  { href: "/learn", label: "Learning" },
-  { href: "/connections", label: "Connections" },
-  { href: "/map", label: "Regional map" },
-];
+import DashboardNav from "@/app/dashboard/components/DashboardNav";
 import { format } from "date-fns";
 import type { Profile, Connection, Message, Meeting } from "@/data/supabase/database.types";
 import ScheduleMeetingModal from "./ScheduleMeetingModal";
@@ -44,6 +44,7 @@ export default function ConnectionChat({
   const [connectionState, setConnectionState] = useState(connection);
   const [meetingList, setMeetingList] = useState<Meeting[]>(meetings);
   const [showSchedule, setShowSchedule] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const [supabase] = useState(createSupabaseBrowserClient);
@@ -197,26 +198,30 @@ export default function ConnectionChat({
 
   return (
     <div className="bg-background flex h-screen flex-col overflow-hidden">
-      <AppHeader homeHref="/dashboard" navItems={NAV_ITEMS} />
+      <DashboardNav user={currentUser} />
       {/* Header */}
       <header className="border-border bg-parchment border-b px-4 py-3 shrink-0">
         <div className="mx-auto flex max-w-3xl items-center gap-3">
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="/connections">
-              <ArrowLeft className="h-4 w-4" />
-            </Link>
+          <Button variant="ghost" size="icon" onClick={() => router.back()} aria-label="Back">
+            <ArrowLeft className="h-4 w-4" />
           </Button>
-          <Avatar size="sm" variant="default">
-            <AvatarFallback>{partnerInitials}</AvatarFallback>
-          </Avatar>
-          <div className="flex-1">
-            <p className="text-sm font-medium">
-              {partner.first_name} {partner.last_name}
-            </p>
-            <p className="text-muted-foreground text-xs">
-              {partner.city}, {partner.province}
-            </p>
-          </div>
+          <button
+            type="button"
+            onClick={() => setShowProfile(true)}
+            className="hover:bg-muted/50 flex flex-1 items-center gap-3 rounded-lg p-1 text-left transition-colors"
+          >
+            <Avatar size="sm" variant="default">
+              <AvatarFallback>{partnerInitials}</AvatarFallback>
+            </Avatar>
+            <div className="flex-1">
+              <p className="text-sm font-medium underline-offset-2 group-hover:underline">
+                {partner.first_name} {partner.last_name}
+              </p>
+              <p className="text-muted-foreground text-xs">
+                {partner.city}, {partner.province}
+              </p>
+            </div>
+          </button>
           {isActive && (
             <Button
               size="sm"
@@ -368,6 +373,100 @@ export default function ConnectionChat({
           onScheduled={onMeetingScheduled}
         />
       )}
+
+      {/* Partner profile dialog */}
+      <Dialog open={showProfile} onOpenChange={setShowProfile}>
+        <DialogContent className="max-w-lg p-6 sm:p-8">
+          <DialogHeader>
+            <div className="flex items-start gap-3">
+              <Avatar size="lg" variant="default">
+                <AvatarFallback>{partnerInitials}</AvatarFallback>
+              </Avatar>
+              <div className="flex-1 min-w-0">
+                <DialogTitle>
+                  {partner.first_name} {partner.last_name}
+                </DialogTitle>
+                <DialogDescription>
+                  <span className="flex flex-wrap items-center gap-2 mt-1">
+                    <Badge variant={partner.is_indigenous ? "default" : "secondary"}>
+                      {partner.is_indigenous ? "Indigenous" : "Non-Indigenous"}
+                    </Badge>
+                    <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <MapPin className="h-3 w-3" />
+                      {partner.city}, {partner.province}
+                    </span>
+                  </span>
+                </DialogDescription>
+              </div>
+            </div>
+          </DialogHeader>
+
+          <div className="space-y-4 pt-2 text-sm">
+            {partner.bio && (
+              <div>
+                <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wide mb-1">
+                  About
+                </p>
+                <p>{partner.bio}</p>
+              </div>
+            )}
+            {partner.treaty_area && (
+              <div>
+                <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wide mb-1">
+                  Treaty area
+                </p>
+                <p>{partner.treaty_area}</p>
+              </div>
+            )}
+            <div className="grid grid-cols-2 gap-4">
+              {partner.faith_tradition && (
+                <div>
+                  <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wide mb-1">
+                    Faith
+                  </p>
+                  <p className="capitalize">
+                    {partner.faith_tradition === "other"
+                      ? partner.faith_tradition_other
+                      : partner.faith_tradition.replace(/_/g, " ")}
+                  </p>
+                </div>
+              )}
+              {partner.language_preferences.length > 0 && (
+                <div>
+                  <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wide mb-1">
+                    Languages
+                  </p>
+                  <p className="capitalize">{partner.language_preferences.join(", ")}</p>
+                </div>
+              )}
+              {partner.participation_format.length > 0 && (
+                <div>
+                  <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wide mb-1">
+                    Format
+                  </p>
+                  <p className="capitalize">
+                    {partner.participation_format.map((f) => f.replace(/_/g, " ")).join(", ")}
+                  </p>
+                </div>
+              )}
+            </div>
+            {partner.interests.length > 0 && (
+              <div>
+                <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wide mb-1">
+                  Interests
+                </p>
+                <div className="flex flex-wrap gap-1">
+                  {partner.interests.map((i) => (
+                    <Badge key={i} variant="secondary" className="text-xs capitalize">
+                      {i}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
