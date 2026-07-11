@@ -54,6 +54,19 @@ export default function ConnectionChat({
   const iHaveConnected = connectionState[myConnectedField];
   const isActive = connectionState.status === "active";
 
+  // Show Schedule call only when no meeting is currently in-progress or upcoming.
+  // A meeting is "still ahead" if its scheduled end time (start + duration) is in the future.
+  const now = Date.now();
+  const upcomingMeeting = meetingList
+    .slice()
+    .sort((a, b) => new Date(a.scheduled_at).getTime() - new Date(b.scheduled_at).getTime())
+    .find((m) => {
+      const end =
+        new Date(m.scheduled_at).getTime() + (m.duration_minutes ?? 60) * 60 * 1000;
+      return end > now;
+    });
+  const canScheduleCall = isActive && !upcomingMeeting;
+
   // Subscribe to new messages
   useEffect(() => {
     const channel = supabase
@@ -231,7 +244,7 @@ export default function ConnectionChat({
               </p>
             </div>
           </button>
-          {isActive && (
+          {canScheduleCall && (
             <Button
               size="sm"
               variant="outline"
@@ -281,26 +294,24 @@ export default function ConnectionChat({
             </div>
           )}
 
-          {/* Upcoming meetings */}
-          {meetingList.length > 0 && (
+          {/* Upcoming meeting banner (only the next un-ended one) */}
+          {upcomingMeeting && (
             <div className="bg-muted/30 border-border border-b px-4 py-3">
-              {meetingList.slice(0, 1).map((meeting) => (
-                <div key={meeting.id} className="flex items-center gap-2 text-sm">
-                  <Clock className="text-primary h-4 w-4 shrink-0" />
-                  <span className="font-medium">Next call:</span>
-                  <span>{format(new Date(meeting.scheduled_at), "PPp")}</span>
-                  {meeting.zoom_join_url && (
-                    <a
-                      href={meeting.zoom_join_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-primary ml-auto text-xs underline"
-                    >
-                      Join Zoom
-                    </a>
-                  )}
-                </div>
-              ))}
+              <div className="flex items-center gap-2 text-sm">
+                <Clock className="text-primary h-4 w-4 shrink-0" />
+                <span className="font-medium">Next call:</span>
+                <span>{format(new Date(upcomingMeeting.scheduled_at), "PPp")}</span>
+                {upcomingMeeting.zoom_join_url && (
+                  <a
+                    href={upcomingMeeting.zoom_join_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary ml-auto text-xs underline"
+                  >
+                    Join Zoom
+                  </a>
+                )}
+              </div>
             </div>
           )}
 
