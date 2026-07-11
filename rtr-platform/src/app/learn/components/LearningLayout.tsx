@@ -6,9 +6,17 @@ import { createClient } from "@/lib/supabase/client";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, Circle, Clock, ChevronRight, BookOpen } from "lucide-react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { CheckCircle2, Circle, Clock, ChevronRight, BookOpen, LogOut } from "lucide-react";
 import { toast } from "sonner";
-import type { LearningModule, LearningProgress } from "@/types/database";
+import type { LearningModule, LearningProgress, Profile } from "@/types/database";
 import ModuleContent from "./ModuleContent";
 
 type Props = {
@@ -16,9 +24,10 @@ type Props = {
   progress: LearningProgress[];
   userId: string;
   isIndigenous: boolean;
+  profile: Pick<Profile, "first_name" | "last_name">;
 };
 
-export default function LearningLayout({ modules, progress, userId, isIndigenous }: Props) {
+export default function LearningLayout({ modules, progress, userId, isIndigenous, profile }: Props) {
   const [activeModuleId, setActiveModuleId] = useState<string>(
     modules.find(
       (m) => !progress.find((p) => p.module_id === m.id && p.completed)
@@ -124,16 +133,34 @@ export default function LearningLayout({ modules, progress, userId, isIndigenous
               {requiredCompleted}/{totalRequired} complete
             </span>
           </div>
-          <button
-            onClick={async () => {
-              const { createClient } = await import("@/lib/supabase/client");
-              await createClient().auth.signOut();
-              router.push("/auth/login");
-            }}
-            className="text-xs text-muted-foreground hover:text-foreground transition-colors shrink-0"
-          >
-            Sign out
-          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="rounded-full shrink-0">
+                <Avatar className="h-8 w-8">
+                  <AvatarFallback className="bg-primary text-primary-foreground text-xs font-semibold">
+                    {`${profile.first_name?.[0] ?? ""}${profile.last_name?.[0] ?? ""}`.toUpperCase() || "?"}
+                  </AvatarFallback>
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <div className="px-2 py-1.5">
+                <p className="text-sm font-medium">{profile.first_name} {profile.last_name}</p>
+                <p className="text-xs text-muted-foreground">Learning journey</p>
+              </div>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={async () => {
+                  await createClient().auth.signOut();
+                  router.push("/auth/login");
+                }}
+                className="gap-2 text-destructive"
+              >
+                <LogOut className="h-4 w-4" />
+                Sign out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </header>
 
