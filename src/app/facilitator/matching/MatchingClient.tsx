@@ -19,9 +19,10 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CheckCircle2, XCircle, Plus, Zap } from "lucide-react";
 import { toast } from "sonner";
-import type { Match, Profile } from "@/data/supabase/database.types";
+import type { FacilitatorAssignment, Match, Profile } from "@/data/supabase/database.types";
 import { computeMatches, criteriaLabels } from "@/domain/profile-matching";
 import { PageIntro } from "@/components/page-intro";
+import FacilitatorAssignments from "./FacilitatorAssignments";
 
 type Props = {
   matches: Match[];
@@ -30,6 +31,10 @@ type Props = {
   nonIndigenous: Profile[];
   facilitatorId: string;
   autoMatchingEnabled: boolean;
+  facilitators: Profile[];
+  assignments: FacilitatorAssignment[];
+  assignmentProfileMap: Record<string, Profile>;
+  autoFacilitatorMatchingEnabled: boolean;
 };
 
 export default function MatchingClient({
@@ -39,6 +44,10 @@ export default function MatchingClient({
   nonIndigenous,
   facilitatorId,
   autoMatchingEnabled: initialAutoMatching,
+  facilitators,
+  assignments,
+  assignmentProfileMap,
+  autoFacilitatorMatchingEnabled,
 }: Props) {
   const [autoMatching, setAutoMatching] = useState(initialAutoMatching);
   const [matchList, setMatchList] = useState<Match[]>(matches);
@@ -157,9 +166,18 @@ export default function MatchingClient({
       <PageIntro
         eyebrow="Facilitated introductions"
         title="Match management"
-        description="Review, approve, or create matches between Indigenous and non-Indigenous participants."
-        actions={
-          <div className="border-border bg-parchment shadow-rtr-1 flex items-center gap-3 rounded-xl border px-4 py-3">
+        description="Review and approve participant matches and facilitator assignments."
+      />
+
+      <Tabs defaultValue="participant-matches">
+        <TabsList>
+          <TabsTrigger value="participant-matches">Participant matches</TabsTrigger>
+          <TabsTrigger value="facilitator-assignments">Facilitator assignments</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="participant-matches" className="mt-6 space-y-6">
+          {/* Auto-matching toggle */}
+          <div className="border-border bg-parchment shadow-rtr-1 flex w-fit items-center gap-3 rounded-xl border px-4 py-3">
             <Zap className="text-spruce-600 size-4" />
             <Label htmlFor="auto-matching" className="cursor-pointer">
               Auto-matching
@@ -170,185 +188,200 @@ export default function MatchingClient({
               onCheckedChange={toggleAutoMatching}
             />
           </div>
-        }
-      />
 
-      {/* Manual match creation */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-base">
-            <Plus className="h-4 w-4" />
-            Create manual match
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <Select
-              value={selectedIndigenous}
-              onValueChange={(v) => setSelectedIndigenous(v ?? "")}
-            >
-              <SelectTrigger className="flex-1">
-                <SelectValue placeholder="Select Indigenous participant" />
-              </SelectTrigger>
-              <SelectContent>
-                {indigenous.map((p) => (
-                  <SelectItem key={p.id} value={p.id}>
-                    {p.first_name} {p.last_name} — {p.city}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Select
-              value={selectedNonIndigenous}
-              onValueChange={(v) => setSelectedNonIndigenous(v ?? "")}
-            >
-              <SelectTrigger className="flex-1">
-                <SelectValue placeholder="Select Non-Indigenous participant" />
-              </SelectTrigger>
-              <SelectContent>
-                {nonIndigenous.map((p) => (
-                  <SelectItem key={p.id} value={p.id}>
-                    {p.first_name} {p.last_name} — {p.city}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Button
-              onClick={createManualMatch}
-              disabled={!selectedIndigenous || !selectedNonIndigenous}
-            >
-              Create match
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+          {/* Manual match creation */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <Plus className="h-4 w-4" />
+                Create manual match
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Select
+                  value={selectedIndigenous}
+                  onValueChange={(v) => setSelectedIndigenous(v ?? "")}
+                >
+                  <SelectTrigger className="flex-1">
+                    <SelectValue placeholder="Select Indigenous participant" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {indigenous.map((p) => (
+                      <SelectItem key={p.id} value={p.id}>
+                        {p.first_name} {p.last_name} — {p.city}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Select
+                  value={selectedNonIndigenous}
+                  onValueChange={(v) => setSelectedNonIndigenous(v ?? "")}
+                >
+                  <SelectTrigger className="flex-1">
+                    <SelectValue placeholder="Select Non-Indigenous participant" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {nonIndigenous.map((p) => (
+                      <SelectItem key={p.id} value={p.id}>
+                        {p.first_name} {p.last_name} — {p.city}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Button
+                  onClick={createManualMatch}
+                  disabled={!selectedIndigenous || !selectedNonIndigenous}
+                >
+                  Create match
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
 
-      <Tabs defaultValue="suggested">
-        <TabsList>
-          <TabsTrigger value="suggested">
-            Pending review
-            {suggested.length > 0 && <Badge className="ml-1.5 text-xs">{suggested.length}</Badge>}
-          </TabsTrigger>
-          <TabsTrigger value="approved">Approved ({approved.length})</TabsTrigger>
-          <TabsTrigger value="rejected">Rejected ({rejected.length})</TabsTrigger>
-        </TabsList>
+          <Tabs defaultValue="suggested">
+            <TabsList>
+              <TabsTrigger value="suggested">
+                Pending review
+                {suggested.length > 0 && (
+                  <Badge className="ml-1.5 text-xs">{suggested.length}</Badge>
+                )}
+              </TabsTrigger>
+              <TabsTrigger value="approved">Approved ({approved.length})</TabsTrigger>
+              <TabsTrigger value="rejected">Rejected ({rejected.length})</TabsTrigger>
+            </TabsList>
 
-        {[
-          { key: "suggested", list: suggested },
-          { key: "approved", list: approved },
-          { key: "rejected", list: rejected },
-        ].map(({ key, list }) => (
-          <TabsContent key={key} value={key} className="mt-4 space-y-3">
-            {list.length === 0 ? (
-              <p className="text-muted-foreground py-8 text-center text-sm">No {key} matches.</p>
-            ) : (
-              list.map((match) => {
-                const ind = profileMap[match.indigenous_participant_id];
-                const nonInd = profileMap[match.non_indigenous_participant_id];
-                if (!ind || !nonInd) return null;
+            {[
+              { key: "suggested", list: suggested },
+              { key: "approved", list: approved },
+              { key: "rejected", list: rejected },
+            ].map(({ key, list }) => (
+              <TabsContent key={key} value={key} className="mt-4 space-y-3">
+                {list.length === 0 ? (
+                  <p className="text-muted-foreground py-8 text-center text-sm">
+                    No {key} matches.
+                  </p>
+                ) : (
+                  list.map((match) => {
+                    const ind = profileMap[match.indigenous_participant_id];
+                    const nonInd = profileMap[match.non_indigenous_participant_id];
+                    if (!ind || !nonInd) return null;
 
-                const criteria = match.match_criteria as Record<string, number>;
-                const labels = criteriaLabels(
-                  criteria as Parameters<typeof criteriaLabels>[0],
-                ).filter((l) => l.points > 0);
+                    const criteria = match.match_criteria as Record<string, number>;
+                    const labels = criteriaLabels(
+                      criteria as Parameters<typeof criteriaLabels>[0],
+                    ).filter((l) => l.points > 0);
 
-                return (
-                  <Card key={match.id} className="border-border">
-                    <CardContent className="p-5">
-                      <div className="flex flex-col gap-4 sm:flex-row">
-                        {/* Participants */}
-                        <div className="flex flex-1 items-center gap-3">
-                          {[ind, nonInd].map((p) => (
-                            <div key={p.id} className="flex items-center gap-2">
-                              <Avatar size="sm" variant={p.is_indigenous ? "default" : "river"}>
-                                <AvatarFallback>
-                                  {`${p.first_name?.[0] ?? ""}${p.last_name?.[0] ?? ""}`.toUpperCase()}
-                                </AvatarFallback>
-                              </Avatar>
-                              <div>
-                                <p className="text-sm font-medium">
-                                  {p.first_name} {p.last_name}
-                                </p>
-                                <Badge
-                                  variant={p.is_indigenous ? "default" : "secondary"}
-                                  className="text-xs"
-                                >
-                                  {p.is_indigenous ? "Indigenous" : "Non-Ind."}
-                                </Badge>
-                                <p className="text-muted-foreground mt-0.5 text-xs">
-                                  {p.city}, {p.province}
-                                </p>
+                    return (
+                      <Card key={match.id} className="border-border">
+                        <CardContent className="p-5">
+                          <div className="flex flex-col gap-4 sm:flex-row">
+                            {/* Participants */}
+                            <div className="flex flex-1 items-center gap-3">
+                              {[ind, nonInd].map((p) => (
+                                <div key={p.id} className="flex items-center gap-2">
+                                  <Avatar size="sm" variant={p.is_indigenous ? "default" : "river"}>
+                                    <AvatarFallback>
+                                      {`${p.first_name?.[0] ?? ""}${p.last_name?.[0] ?? ""}`.toUpperCase()}
+                                    </AvatarFallback>
+                                  </Avatar>
+                                  <div>
+                                    <p className="text-sm font-medium">
+                                      {p.first_name} {p.last_name}
+                                    </p>
+                                    <Badge
+                                      variant={p.is_indigenous ? "default" : "secondary"}
+                                      className="text-xs"
+                                    >
+                                      {p.is_indigenous ? "Indigenous" : "Non-Ind."}
+                                    </Badge>
+                                    <p className="text-muted-foreground mt-0.5 text-xs">
+                                      {p.city}, {p.province}
+                                    </p>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+
+                            {/* Score & criteria */}
+                            <div className="flex-1 space-y-2">
+                              <div className="flex items-center gap-2">
+                                <span className="text-primary text-2xl font-bold">
+                                  {Math.round(match.match_score ?? 0)}%
+                                </span>
+                                <Progress value={match.match_score ?? 0} className="h-2 flex-1" />
+                              </div>
+                              <div className="flex flex-wrap gap-1">
+                                {labels.map((l) => (
+                                  <Badge key={l.label} variant="outline" className="gap-1 text-xs">
+                                    {l.label}
+                                    <span className="text-primary font-medium">+{l.points}</span>
+                                  </Badge>
+                                ))}
+                                {match.auto_generated ? (
+                                  <Badge variant="secondary" className="gap-1 text-xs">
+                                    <Zap className="h-2.5 w-2.5" />
+                                    Auto
+                                  </Badge>
+                                ) : (
+                                  <Badge variant="outline" className="text-xs">
+                                    Manual
+                                  </Badge>
+                                )}
                               </div>
                             </div>
-                          ))}
-                        </div>
 
-                        {/* Score & criteria */}
-                        <div className="flex-1 space-y-2">
-                          <div className="flex items-center gap-2">
-                            <span className="text-primary text-2xl font-bold">
-                              {Math.round(match.match_score ?? 0)}%
-                            </span>
-                            <Progress value={match.match_score ?? 0} className="h-2 flex-1" />
-                          </div>
-                          <div className="flex flex-wrap gap-1">
-                            {labels.map((l) => (
-                              <Badge key={l.label} variant="outline" className="gap-1 text-xs">
-                                {l.label}
-                                <span className="text-primary font-medium">+{l.points}</span>
-                              </Badge>
-                            ))}
-                            {match.auto_generated ? (
-                              <Badge variant="secondary" className="gap-1 text-xs">
-                                <Zap className="h-2.5 w-2.5" />
-                                Auto
-                              </Badge>
-                            ) : (
-                              <Badge variant="outline" className="text-xs">
-                                Manual
+                            {/* Actions */}
+                            {key === "suggested" && (
+                              <div className="flex shrink-0 gap-2 sm:flex-col">
+                                <Button
+                                  size="sm"
+                                  onClick={() => updateMatchStatus(match.id, "approved")}
+                                  disabled={updating === match.id}
+                                  className="flex-1 gap-1.5 sm:flex-none"
+                                >
+                                  <CheckCircle2 className="h-4 w-4" />
+                                  Approve
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => updateMatchStatus(match.id, "rejected")}
+                                  disabled={updating === match.id}
+                                  className="text-destructive border-destructive/30 hover:bg-destructive/10 flex-1 gap-1.5 sm:flex-none"
+                                >
+                                  <XCircle className="h-4 w-4" />
+                                  Reject
+                                </Button>
+                              </div>
+                            )}
+
+                            {key === "approved" && (
+                              <Badge variant="matched" className="self-start">
+                                {match.status === "connected" ? "Connected" : "Approved"}
                               </Badge>
                             )}
                           </div>
-                        </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })
+                )}
+              </TabsContent>
+            ))}
+          </Tabs>
+        </TabsContent>
 
-                        {/* Actions */}
-                        {key === "suggested" && (
-                          <div className="flex shrink-0 gap-2 sm:flex-col">
-                            <Button
-                              size="sm"
-                              onClick={() => updateMatchStatus(match.id, "approved")}
-                              disabled={updating === match.id}
-                              className="flex-1 gap-1.5 sm:flex-none"
-                            >
-                              <CheckCircle2 className="h-4 w-4" />
-                              Approve
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => updateMatchStatus(match.id, "rejected")}
-                              disabled={updating === match.id}
-                              className="text-destructive border-destructive/30 hover:bg-destructive/10 flex-1 gap-1.5 sm:flex-none"
-                            >
-                              <XCircle className="h-4 w-4" />
-                              Reject
-                            </Button>
-                          </div>
-                        )}
-
-                        {key === "approved" && (
-                          <Badge variant="matched" className="self-start">
-                            {match.status === "connected" ? "Connected" : "Approved"}
-                          </Badge>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })
-            )}
-          </TabsContent>
-        ))}
+        <TabsContent value="facilitator-assignments" className="mt-6">
+          <FacilitatorAssignments
+            assignments={assignments}
+            profileMap={assignmentProfileMap}
+            participants={[...indigenous, ...nonIndigenous]}
+            facilitators={facilitators}
+            facilitatorId={facilitatorId}
+            autoMatchingEnabled={autoFacilitatorMatchingEnabled}
+          />
+        </TabsContent>
       </Tabs>
     </main>
   );

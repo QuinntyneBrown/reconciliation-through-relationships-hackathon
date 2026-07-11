@@ -83,6 +83,20 @@ export type MatchRow = {
   created_at: string;
 };
 
+export type FacilitatorAssignmentRow = {
+  id: string;
+  participant_id: string;
+  facilitator_id: string;
+  match_score: number | null;
+  match_criteria: Json;
+  status: "suggested" | "approved" | "rejected";
+  auto_generated: boolean;
+  created_by: string | null;
+  approved_by: string | null;
+  approved_at: string | null;
+  created_at: string;
+};
+
 export type ConnectionRow = {
   id: string;
   match_id: string;
@@ -201,6 +215,23 @@ export type Database = {
         Update: Partial<Omit<MatchRow, "id" | "created_at">>;
         Relationships: [];
       };
+      facilitator_assignments: {
+        Row: FacilitatorAssignmentRow;
+        Insert: {
+          id?: string;
+          participant_id: string;
+          facilitator_id: string;
+          match_score?: number | null;
+          match_criteria?: Json;
+          status?: "suggested" | "approved" | "rejected";
+          auto_generated?: boolean;
+          created_by?: string | null;
+          approved_by?: string | null;
+          approved_at?: string | null;
+        };
+        Update: Partial<Omit<FacilitatorAssignmentRow, "id" | "created_at">>;
+        Relationships: [];
+      };
       connections: {
         Row: ConnectionRow;
         Insert: {
@@ -297,6 +328,7 @@ export type Profile = ProfileRow;
 export type LearningModule = LearningModuleRow;
 export type LearningProgress = LearningProgressRow;
 export type Match = MatchRow;
+export type FacilitatorAssignment = FacilitatorAssignmentRow;
 export type Connection = ConnectionRow;
 export type Message = MessageRow;
 export type Meeting = MeetingRow;
