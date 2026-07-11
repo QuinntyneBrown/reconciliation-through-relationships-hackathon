@@ -14,6 +14,7 @@ export default async function DashboardPage() {
   const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single();
 
   if (!profile) redirect("/onboarding");
+  if (!profile.onboarding_completed) redirect("/onboarding");
   if (!profile.learning_completed) redirect("/learn");
 
   // Fetch all eligible participants (learning complete, opposite background)
@@ -39,6 +40,14 @@ export default async function DashboardPage() {
     .from("connections")
     .select("*")
     .or(`participant_a_id.eq.${user.id},participant_b_id.eq.${user.id}`);
+
+  // Fetch partner profiles for connections
+  const connectionPartnerIds = (connections ?? []).map((c) =>
+    c.participant_a_id === user.id ? c.participant_b_id : c.participant_a_id,
+  );
+  const { data: connectionPartners } = connectionPartnerIds.length
+    ? await supabase.from("profiles").select("*").in("id", connectionPartnerIds)
+    : { data: [] };
 
   // Get user's cohort membership (simplified — no join)
   const { data: cohortMembership } = await supabase
@@ -75,6 +84,7 @@ export default async function DashboardPage() {
       participants={participants}
       recommendedMatches={recommendedMatches}
       connections={connections ?? []}
+      connectionPartners={connectionPartners ?? []}
       cohort={cohortMembership ? { cohort_id: cohortMembership.cohort_id } : null}
       sameCityCount={sameCityCount + 1} // include self
     />

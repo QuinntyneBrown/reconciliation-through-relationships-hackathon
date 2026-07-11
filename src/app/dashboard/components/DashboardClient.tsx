@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Users } from "lucide-react";
+import { Users, MessageCircle } from "lucide-react";
 import { AppFooter } from "@/components/app-footer";
 import { PageIntro } from "@/components/page-intro";
 import type { Profile, Connection } from "@/data/supabase/database.types";
@@ -11,6 +11,7 @@ import type { MatchResult } from "@/domain/profile-matching";
 import DashboardNav from "./DashboardNav";
 import RecommendedTab from "./RecommendedTab";
 import AllParticipantsTab from "./AllParticipantsTab";
+import ConnectionsTab from "./ConnectionsTab";
 import CohortBanner from "./CohortBanner";
 
 type Props = {
@@ -18,6 +19,7 @@ type Props = {
   participants: Profile[];
   recommendedMatches: MatchResult[];
   connections: Connection[];
+  connectionPartners: Profile[];
   cohort: Record<string, unknown> | null;
   sameCityCount: number;
 };
@@ -27,6 +29,7 @@ export default function DashboardClient({
   participants,
   recommendedMatches,
   connections,
+  connectionPartners,
   cohort,
   sameCityCount,
 }: Props) {
@@ -62,7 +65,7 @@ export default function DashboardClient({
         )}
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full max-w-md grid-cols-2">
+          <TabsList className="grid w-full max-w-2xl grid-cols-3">
             <TabsTrigger value="recommended" className="gap-2">
               Recommended
               {recommendedMatches.length > 0 && (
@@ -74,6 +77,15 @@ export default function DashboardClient({
             <TabsTrigger value="all" className="gap-2">
               <Users className="h-4 w-4" />
               All participants
+            </TabsTrigger>
+            <TabsTrigger value="connections" className="gap-2">
+              <MessageCircle className="h-4 w-4" />
+              Connections
+              {connections.length > 0 && (
+                <span className="bg-primary text-primary-foreground rounded-full px-1.5 py-0.5 text-xs">
+                  {connections.length}
+                </span>
+              )}
             </TabsTrigger>
           </TabsList>
 
@@ -90,6 +102,14 @@ export default function DashboardClient({
               participants={participants}
               currentUser={currentUser}
               connections={connections}
+            />
+          </TabsContent>
+
+          <TabsContent value="connections" className="mt-6">
+            <ConnectionsTab
+              connections={connections}
+              partners={connectionPartners}
+              currentUserId={currentUser.id}
             />
           </TabsContent>
         </Tabs>

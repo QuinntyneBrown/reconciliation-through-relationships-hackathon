@@ -15,7 +15,7 @@ export default async function LearnPage() {
     .single();
 
   if (!profile) redirect("/onboarding");
-  if (profile.learning_completed) redirect("/dashboard");
+  // Allow revisiting learning modules even after completion
 
   const audience = profile.is_indigenous ? "indigenous" : "non_indigenous";
 
