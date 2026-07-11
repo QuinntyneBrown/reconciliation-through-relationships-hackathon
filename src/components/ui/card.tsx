@@ -9,8 +9,9 @@ const cardVariants = cva(
     variants: {
       variant: {
         default: "border-border bg-card shadow-rtr-1",
-        tinted: "border-border bg-birch shadow-none",
-        spruce: "border-spruce-200 bg-spruce-100 shadow-none",
+        tinted: "border-border bg-muted shadow-none",
+        success: "border-success/30 bg-success-subtle shadow-none",
+        caution: "border-warning/40 bg-warning-subtle shadow-none",
       },
     },
     defaultVariants: {
@@ -57,7 +58,7 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card-title"
       className={cn(
-        "text-spruce-800 font-sans text-[17px] leading-[1.25] font-bold group-data-[size=sm]/card:text-[15.5px]",
+        "text-heading text-card-title group-data-[size=sm]/card:text-action font-sans font-bold",
         className,
       )}
       {...props}
@@ -69,7 +70,7 @@ function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-description"
-      className={cn("text-ink-soft text-[13.5px] leading-normal", className)}
+      className={cn("text-muted-foreground text-caption", className)}
       {...props}
     />
   );

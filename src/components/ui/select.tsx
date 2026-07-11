@@ -4,6 +4,7 @@ import * as React from "react";
 import { Select as SelectPrimitive } from "@base-ui/react/select";
 
 import { cn } from "@/lib/utils";
+import { controlStyles } from "@/components/ui/control-styles";
 import { ChevronDownIcon, CheckIcon, ChevronUpIcon } from "lucide-react";
 
 const Select = SelectPrimitive.Root;
@@ -41,14 +42,15 @@ function SelectTrigger({
       data-slot="select-trigger"
       data-size={size}
       className={cn(
-        "border-border-strong bg-parchment text-ink hover:border-spruce-600 focus-visible:border-spruce-600 focus-visible:outline-ochre-600 disabled:bg-sand disabled:text-ink-faint aria-invalid:border-berry-700 aria-invalid:outline-berry-700 data-placeholder:text-ink-faint flex w-full items-center justify-between gap-2 rounded-[10px] border-[1.5px] px-3.5 py-2 font-sans text-base whitespace-nowrap transition-colors duration-[180ms] outline-none select-none focus-visible:outline-2 focus-visible:outline-offset-1 disabled:cursor-not-allowed disabled:opacity-100 data-[size=default]:min-h-[46px] data-[size=sm]:min-h-[38px] data-[size=sm]:rounded-lg *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        controlStyles,
+        "data-placeholder:text-subtle-foreground data-[size=sm]:min-h-control-sm flex items-center justify-between gap-2 py-2 whitespace-nowrap select-none data-[size=sm]:rounded-lg *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className,
       )}
       {...props}
     >
       {children}
       <SelectPrimitive.Icon
-        render={<ChevronDownIcon className="text-ink-soft pointer-events-none size-4" />}
+        render={<ChevronDownIcon className="text-muted-foreground pointer-events-none size-4" />}
       />
     </SelectPrimitive.Trigger>
   );
@@ -82,7 +84,7 @@ function SelectContent({
           data-slot="select-content"
           data-align-trigger={alignItemWithTrigger}
           className={cn(
-            "data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 border-border bg-parchment text-ink shadow-rtr-2 relative isolate z-50 max-h-(--available-height) w-(--anchor-width) min-w-36 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-xl border duration-100 data-[align-trigger=true]:animate-none",
+            "data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 border-border bg-popover text-popover-foreground shadow-rtr-2 relative isolate z-50 max-h-(--available-height) w-(--anchor-width) min-w-36 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-xl border duration-100 data-[align-trigger=true]:animate-none",
             className,
           )}
           {...props}
@@ -101,7 +103,7 @@ function SelectLabel({ className, ...props }: SelectPrimitive.GroupLabel.Props) 
     <SelectPrimitive.GroupLabel
       data-slot="select-label"
       className={cn(
-        "text-ink-soft px-2 py-1.5 text-xs font-bold tracking-wide uppercase",
+        "text-muted-foreground px-2 py-1.5 text-xs font-bold tracking-wide uppercase",
         className,
       )}
       {...props}
@@ -114,7 +116,7 @@ function SelectItem({ className, children, ...props }: SelectPrimitive.Item.Prop
     <SelectPrimitive.Item
       data-slot="select-item"
       className={cn(
-        "text-ink focus:bg-spruce-100 focus:text-spruce-800 data-disabled:text-ink-faint relative flex min-h-10 w-full cursor-default items-center gap-2 rounded-lg py-2 pr-9 pl-3 text-[15px] outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
+        "text-foreground focus:bg-primary-subtle focus:text-heading data-disabled:text-subtle-foreground text-label relative flex min-h-10 w-full cursor-default items-center gap-2 rounded-lg py-2 pr-9 pl-3 outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
         className,
       )}
       {...props}

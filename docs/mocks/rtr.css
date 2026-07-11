@@ -9,37 +9,11 @@
    leadership before launch.
    ========================================================================== */
 
-/* ----- Tokens ------------------------------------------------------------ */
-:root {
-  /* Color */
-  --spruce-900: #142823;
-  --spruce-800: #1E3D36;
-  --spruce-700: #2A5148;
-  --spruce-600: #396B5E;
-  --spruce-200: #C6D9CE;
-  --spruce-100: #E0EAE2;
-  --river-700: #2C5F66;
-  --river-600: #37767C;
-  --river-200: #C4DCDA;
-  --river-100: #DFECEA;
-  --ochre-700: #9A5B14;
-  --ochre-600: #C07A22;
-  --ochre-500: #D89543;
-  --ochre-200: #EFD9B4;
-  --ochre-100: #F7EAD1;
-  --berry-700: #8C3130;
-  --berry-100: #F4DFDC;
-  --birch: #F9F5EB;
-  --parchment: #FFFDF7;
-  --sand: #EFE7D7;
-  --border: #E0D6C2;
-  --border-strong: #C9BCA3;
-  --ink: #22322C;
-  --ink-soft: #5A6A61;
-  --ink-faint: #8A968E;
-  --on-dark: #F4EFE3;
-  --on-dark-soft: #B9C6BC;
+/* Shared with the production app; edit token values in src/styles/design-tokens.css. */
+@import "../../src/styles/design-tokens.css";
 
+/* ----- Mock-only typography and spacing aliases ------------------------- */
+:root {
   /* Type */
   --font-display: "Fraunces", Georgia, "Times New Roman", serif;
   --font-body: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
@@ -48,15 +22,8 @@
   --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px;
   --s5: 24px; --s6: 32px; --s7: 48px; --s8: 64px;
 
-  /* Radius */
-  --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-pill: 999px;
-
-  /* Elevation */
-  --shadow-1: 0 1px 2px rgba(34, 50, 44, .06), 0 4px 14px rgba(34, 50, 44, .07);
-  --shadow-2: 0 2px 6px rgba(34, 50, 44, .08), 0 12px 32px rgba(34, 50, 44, .14);
-
-  /* Motion */
-  --ease: 180ms ease;
+  /* Legacy shorthand retained for the static mock component rules. */
+  --ease: var(--motion-duration) var(--motion-easing);
 }
 
 /* ----- Base --------------------------------------------------------------- */

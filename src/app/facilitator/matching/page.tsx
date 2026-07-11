@@ -26,7 +26,7 @@ export default async function MatchingPage() {
       </p>
 
       {balance.waitlistedEstimate > 0 && (
-        <Card className="mt-6 border-amber-500/40 bg-amber-50/50 dark:bg-amber-950/20">
+        <Card className="mt-6" variant="caution">
           <CardHeader>
             <CardTitle className="text-base">Registration imbalance</CardTitle>
             <CardDescription>
