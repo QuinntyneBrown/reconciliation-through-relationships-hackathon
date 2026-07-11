@@ -1,0 +1,276 @@
+type Row = Record<string, unknown>;
+
+const now = "2026-07-11T16:00:00.000Z";
+
+function profile(overrides: Row): Row {
+  return {
+    id: "participant-user",
+    first_name: "Avery",
+    last_name: "Morgan",
+    bio: "I care about listening, community, and shared stories.",
+    additional_matching_info: null,
+    is_indigenous: false,
+    sex: "female",
+    participation_categories: ["non_indigenous_individual", "elected_leader"],
+    city: "Regina",
+    province: "Saskatchewan",
+    treaty_area: "Treaty 4",
+    faith_tradition: "christian",
+    faith_tradition_other: null,
+    interests: ["storytelling", "hiking", "cooking"],
+    availability: { days: ["Saturday"], times: ["Evening (5pm–9pm)"] },
+    participation_format: ["online", "in_person"],
+    language_preferences: ["english"],
+    personal_boundaries: null,
+    matching_preferences: { weight_location: true, weight_interests: true, weight_sex: false },
+    role: "participant",
+    onboarding_completed: true,
+    learning_completed: true,
+    map_consent: true,
+    lat: 50.4452,
+    lng: -104.6189,
+    avatar_url: null,
+    created_at: now,
+    updated_at: now,
+    ...overrides,
+  };
+}
+
+export type MockDatabase = Record<string, Row[]>;
+
+export function createDatabase(): MockDatabase {
+  const current = profile({});
+  const newParticipant = profile({
+    id: "new-user",
+    first_name: "New",
+    last_name: "Participant",
+    is_indigenous: null,
+    participation_categories: [],
+    city: null,
+    province: null,
+    treaty_area: null,
+    faith_tradition: null,
+    interests: [],
+    availability: {},
+    participation_format: [],
+    language_preferences: [],
+    onboarding_completed: false,
+    learning_completed: false,
+    map_consent: false,
+    lat: null,
+    lng: null,
+  });
+  const learner = profile({
+    id: "learner-user",
+    first_name: "Learning",
+    last_name: "Participant",
+    onboarding_completed: true,
+    learning_completed: false,
+  });
+  const facilitator = profile({
+    id: "facilitator-user",
+    first_name: "Fran",
+    last_name: "Facilitator",
+    is_indigenous: null,
+    role: "facilitator",
+    participation_categories: [],
+  });
+  const andrew = profile({
+    id: "indigenous-1",
+    first_name: "Andrew",
+    last_name: "Bright Star",
+    is_indigenous: true,
+    participation_categories: ["indigenous_leader"],
+    bio: "Storyteller and community leader.",
+    interests: ["storytelling", "hiking", "history", "music", "governance"],
+    faith_tradition: "indigenous_traditional",
+  });
+  const marie = profile({
+    id: "indigenous-2",
+    first_name: "Marie",
+    last_name: "Whitecloud",
+    is_indigenous: true,
+    participation_categories: ["indigenous_individual", "artist"],
+    interests: ["art", "beadwork"],
+    faith_tradition: "indigenous_traditional",
+  });
+  const david = profile({
+    id: "non-indigenous-2",
+    first_name: "David",
+    last_name: "Okafor",
+    city: "Saskatoon",
+    interests: ["music", "art"],
+  });
+
+  return {
+    profiles: [current, newParticipant, learner, facilitator, andrew, marie, david],
+    learning_modules: [
+      {
+        id: "module-1",
+        title: "Truth before reconciliation",
+        description: "A shared foundation for the journey.",
+        content_type: "text",
+        content_url: null,
+        content_body: "Truth comes before reconciliation.\n\nListen with humility and care.",
+        duration_minutes: 8,
+        order_index: 1,
+        audience: "non_indigenous",
+        is_required: true,
+        created_at: now,
+      },
+      {
+        id: "module-2",
+        title: "Listening in relationship",
+        description: "Practice listening without defensiveness.",
+        content_type: "text",
+        content_url: null,
+        content_body: "Make room for another person's story.",
+        duration_minutes: 6,
+        order_index: 2,
+        audience: "all",
+        is_required: true,
+        created_at: now,
+      },
+      {
+        id: "module-optional",
+        title: "Further reflection",
+        description: "Optional ideas for continued learning.",
+        content_type: "text",
+        content_url: null,
+        content_body: "Continue reflecting in community.",
+        duration_minutes: 4,
+        order_index: 3,
+        audience: "all",
+        is_required: false,
+        created_at: now,
+      },
+    ],
+    learning_progress: [],
+    matches: [
+      {
+        id: "match-1",
+        indigenous_participant_id: "indigenous-1",
+        non_indigenous_participant_id: "participant-user",
+        match_score: 75,
+        match_criteria: {
+          location: 30,
+          availability: 15,
+          interests: 10,
+          language: 10,
+          faith: 0,
+          format: 10,
+        },
+        status: "suggested",
+        auto_generated: true,
+        created_by: null,
+        approved_by: null,
+        approved_at: null,
+        created_at: now,
+      },
+      {
+        id: "match-approved",
+        indigenous_participant_id: "indigenous-2",
+        non_indigenous_participant_id: "non-indigenous-2",
+        match_score: 62,
+        match_criteria: {
+          location: 15,
+          availability: 10,
+          interests: 17,
+          language: 10,
+          faith: 0,
+          format: 10,
+        },
+        status: "approved",
+        auto_generated: false,
+        created_by: "facilitator-user",
+        approved_by: "facilitator-user",
+        approved_at: now,
+        created_at: now,
+      },
+    ],
+    connections: [
+      {
+        id: "connection-active",
+        match_id: "match-1",
+        participant_a_id: "participant-user",
+        participant_b_id: "indigenous-1",
+        participant_a_connected: true,
+        participant_b_connected: true,
+        connected_at: now,
+        status: "active",
+        created_at: now,
+      },
+      {
+        id: "connection-pending",
+        match_id: "match-pending",
+        participant_a_id: "participant-user",
+        participant_b_id: "indigenous-2",
+        participant_a_connected: false,
+        participant_b_connected: true,
+        connected_at: null,
+        status: "pending",
+        created_at: "2026-07-10T16:00:00.000Z",
+      },
+    ],
+    messages: [
+      {
+        id: "message-1",
+        connection_id: "connection-active",
+        sender_id: "indigenous-1",
+        content: "Hello Avery, I am glad we were introduced.",
+        read_at: now,
+        created_at: "2026-07-11T14:00:00.000Z",
+      },
+      {
+        id: "message-2",
+        connection_id: "connection-active",
+        sender_id: "participant-user",
+        content: "Hello Andrew, thank you for reaching out.",
+        read_at: null,
+        created_at: "2026-07-11T14:05:00.000Z",
+      },
+    ],
+    meetings: [],
+    cohorts: [
+      {
+        id: "cohort-1",
+        name: "Regina circle",
+        city: "Regina",
+        province: "Saskatchewan",
+        facilitator_id: "facilitator-user",
+        status: "active",
+        created_at: now,
+      },
+    ],
+    cohort_members: [],
+    system_settings: [
+      {
+        key: "auto_matching_enabled",
+        value: true,
+        updated_by: "facilitator-user",
+        updated_at: now,
+      },
+      { key: "cohort_threshold", value: 5, updated_by: "facilitator-user", updated_at: now },
+    ],
+    notifications: [],
+  };
+}
+
+export const authUsers: Record<string, { id: string; email: string; password: string }> = {
+  "participant@example.com": {
+    id: "participant-user",
+    email: "participant@example.com",
+    password: "password123",
+  },
+  "new@example.com": { id: "new-user", email: "new@example.com", password: "password123" },
+  "learner@example.com": {
+    id: "learner-user",
+    email: "learner@example.com",
+    password: "password123",
+  },
+  "facilitator@example.com": {
+    id: "facilitator-user",
+    email: "facilitator@example.com",
+    password: "password123",
+  },
+};

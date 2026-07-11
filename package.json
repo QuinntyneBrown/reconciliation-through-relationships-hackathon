@@ -6,10 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "test:e2e": "playwright test --config=e2e/playwright.config.ts",
+    "test:e2e:headed": "playwright test --config=e2e/playwright.config.ts --headed",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "test:boundary": "playwright test --config=boundary-interface-tests/playwright.config.ts",
+    "test:boundary:ui": "playwright test --config=boundary-interface-tests/playwright.config.ts --ui",
     "seed": "tsx supabase/seeds/participants.ts"
   },
   "dependencies": {
@@ -34,6 +38,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
     "@tailwindcss/postcss": "^4",
     "@types/mapbox-gl": "^3.4.1",
     "@types/node": "^20",
