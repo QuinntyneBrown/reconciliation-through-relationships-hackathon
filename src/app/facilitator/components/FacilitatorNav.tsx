@@ -49,7 +49,7 @@ export default function FacilitatorNav({ facilitator }: { facilitator: Profile }
               className="text-on-dark hover:bg-spruce-700 hover:text-on-dark rounded-full"
               aria-label="Open account menu"
             >
-              <Avatar size="sm" variant="dark">
+              <Avatar size="sm" variant="default">
                 <AvatarFallback>{initials || "F"}</AvatarFallback>
               </Avatar>
             </Button>

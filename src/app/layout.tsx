@@ -1,11 +1,6 @@
 import type { Metadata } from "next";
 import { Atkinson_Hyperlegible_Next, Fraunces, Geist_Mono } from "next/font/google";
 import "./globals.css";
-<<<<<<< HEAD
-=======
-import { SiteNav } from "@/components/site-nav";
-import { ThemeProvider } from "@/components/theme-provider";
->>>>>>> origin/main
 import { Toaster } from "@/components/ui/sonner";
 
 const atkinson = Atkinson_Hyperlegible_Next({
@@ -42,16 +37,8 @@ export default function RootLayout({
       className={`${atkinson.variable} ${fraunces.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
-<<<<<<< HEAD
         <main className="flex-1">{children}</main>
         <Toaster />
-=======
-        <ThemeProvider>
-          <SiteNav />
-          <main className="flex-1">{children}</main>
-          <Toaster />
-        </ThemeProvider>
->>>>>>> origin/main
       </body>
     </html>
   );

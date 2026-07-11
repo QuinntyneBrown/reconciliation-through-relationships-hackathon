@@ -84,7 +84,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ userId
         <Card>
           <CardContent className="p-6">
             <div className="flex items-start gap-4">
-              <Avatar size="lg" variant={profile.is_indigenous ? "default" : "river"}>
+              <Avatar size="lg" variant="default">
                 <AvatarFallback>{initials || "?"}</AvatarFallback>
               </Avatar>
               <div className="min-w-0 flex-1">

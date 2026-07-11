@@ -62,7 +62,7 @@ export default async function AdminParticipantsPage() {
                         href={`/profile/${p.id}`}
                         className="flex items-center gap-2 hover:underline"
                       >
-                        <Avatar size="sm" variant={p.is_indigenous ? "default" : "river"}>
+                        <Avatar size="sm" variant="default">
                           <AvatarFallback>{initials || "?"}</AvatarFallback>
                         </Avatar>
                         <span className="font-medium">

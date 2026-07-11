@@ -11,7 +11,6 @@ const buttonVariants = cva(
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary-hover",
         outline:
-<<<<<<< HEAD
           "border-spruce-700 bg-transparent text-spruce-700 hover:bg-spruce-100 hover:text-spruce-800",
         secondary:
           "border-spruce-700 bg-transparent text-spruce-700 hover:bg-spruce-100 hover:text-spruce-800",
@@ -23,17 +22,6 @@ const buttonVariants = cva(
           "border-berry-700 bg-transparent text-berry-700 hover:bg-berry-100 hover:text-berry-700",
         "on-dark": "bg-ochre-500 text-spruce-900 hover:bg-ochre-200 hover:text-spruce-900",
         link: "h-auto min-h-0 rounded-sm border-0 p-0 text-river-700 underline-offset-4 hover:text-spruce-800 hover:underline",
-=======
-          "border-primary bg-transparent text-primary hover:bg-primary-subtle hover:text-heading",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary-hover",
-        ghost: "bg-transparent text-link hover:bg-accent hover:text-accent-foreground",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive-hover",
-        "destructive-outline":
-          "border-destructive bg-transparent text-destructive hover:bg-destructive-subtle hover:text-destructive",
-        inverse:
-          "bg-inverse-accent text-inverse-accent-foreground hover:bg-inverse-accent-hover hover:text-inverse-accent-foreground",
-        link: "text-link hover:text-link-hover h-auto min-h-0 rounded-sm border-0 p-0 underline-offset-4 hover:underline",
->>>>>>> origin/main
       },
       size: {
         default: "min-h-11 px-[22px] py-2",

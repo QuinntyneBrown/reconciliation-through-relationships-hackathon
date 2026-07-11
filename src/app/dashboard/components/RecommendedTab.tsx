@@ -56,7 +56,7 @@ export default function RecommendedTab({ matches, connections, currentUser }: Pr
             >
               <CardHeader className="pb-3">
                 <div className="flex items-start gap-3">
-                  <Avatar variant={participant.is_indigenous ? "default" : "river"}>
+                  <Avatar variant="default">
                     <AvatarFallback>{initials || "?"}</AvatarFallback>
                   </Avatar>
                   <div className="min-w-0 flex-1">

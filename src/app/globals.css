@@ -90,7 +90,6 @@
   --radius-4xl: calc(var(--r-lg) + 12px);
   --shadow-rtr-1: var(--shadow-1);
   --shadow-rtr-2: var(--shadow-2);
-<<<<<<< HEAD
   --spacing-rtr-1: 4px;
   --spacing-rtr-2: 8px;
   --spacing-rtr-3: 12px;
@@ -198,17 +197,6 @@
   --border-strong: rgb(244 239 227 / 32%);
   --input: rgb(244 239 227 / 32%);
   --ring: var(--ochre-500);
-=======
-  --spacing-control: 2.875rem;
-  --spacing-control-sm: 2.375rem;
-  --spacing-textarea: 6.875rem;
-  --default-transition-duration: var(--motion-duration);
-  --default-transition-timing-function: var(--motion-easing);
-}
-
-@utility border-control {
-  border-width: var(--control-border-width);
->>>>>>> origin/main
 }
 
 @layer base {

@@ -1,0 +1,3 @@
+{
+  "/api/zoom/create-meeting/route": "app/api/zoom/create-meeting/route.js"
+}

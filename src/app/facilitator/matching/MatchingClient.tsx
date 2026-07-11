@@ -260,7 +260,7 @@ export default function MatchingClient({
                         <div className="flex flex-1 items-center gap-3">
                           {[ind, nonInd].map((p) => (
                             <div key={p.id} className="flex items-center gap-2">
-                              <Avatar size="sm" variant={p.is_indigenous ? "default" : "river"}>
+                              <Avatar size="sm" variant="default">
                                 <AvatarFallback>
                                   {`${p.first_name?.[0] ?? ""}${p.last_name?.[0] ?? ""}`.toUpperCase()}
                                 </AvatarFallback>

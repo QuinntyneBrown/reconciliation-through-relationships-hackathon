@@ -1,0 +1,19 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/admin/matches/page": "app/admin/matches/page.js",
+  "/admin/page": "app/admin/page.js",
+  "/admin/participants/page": "app/admin/participants/page.js",
+  "/admin/settings/page": "app/admin/settings/page.js",
+  "/api/zoom/create-meeting/route": "app/api/zoom/create-meeting/route.js",
+  "/auth/callback/route": "app/auth/callback/route.js",
+  "/auth/login/page": "app/auth/login/page.js",
+  "/connections/[connectionId]/page": "app/connections/[connectionId]/page.js",
+  "/connections/page": "app/connections/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/learn/page": "app/learn/page.js",
+  "/onboarding/page": "app/onboarding/page.js",
+  "/page": "app/page.js",
+  "/profile/[userId]/page": "app/profile/[userId]/page.js"
+}

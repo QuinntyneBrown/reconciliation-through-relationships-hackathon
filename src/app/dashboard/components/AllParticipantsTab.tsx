@@ -176,7 +176,7 @@ export default function AllParticipantsTab({ participants, currentUser, connecti
               >
                 <CardContent className="space-y-3 p-4">
                   <div className="flex items-start gap-3">
-                    <Avatar variant={participant.is_indigenous ? "default" : "river"}>
+                    <Avatar variant="default">
                       <AvatarFallback>{initials || "?"}</AvatarFallback>
                     </Avatar>
                     <div className="min-w-0 flex-1">

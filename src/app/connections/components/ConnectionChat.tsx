@@ -168,7 +168,7 @@ export default function ConnectionChat({
               <ArrowLeft className="h-4 w-4" />
             </Link>
           </Button>
-          <Avatar size="sm" variant="river">
+          <Avatar size="sm" variant="default">
             <AvatarFallback>{partnerInitials}</AvatarFallback>
           </Avatar>
           <div className="flex-1">
@@ -258,7 +258,7 @@ export default function ConnectionChat({
                   {!isMine && (
                     <Avatar
                       size="sm"
-                      variant={partner.is_indigenous ? "default" : "river"}
+                      variant="default"
                       className="mt-1 mr-2"
                     >
                       <AvatarFallback>{partnerInitials}</AvatarFallback>

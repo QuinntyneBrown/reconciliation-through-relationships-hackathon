@@ -1,0 +1,3 @@
+{
+  "/connections/[connectionId]/page": "app/connections/[connectionId]/page.js"
+}

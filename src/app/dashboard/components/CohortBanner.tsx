@@ -11,7 +11,7 @@ type Props = {
 
 export default function CohortBanner({ city, count }: Props) {
   return (
-    <Alert variant="caution" className="grid-cols-[auto_1fr] items-center gap-x-5">
+    <Alert variant="default" className="grid-cols-[auto_1fr] items-center gap-x-5">
       <CohortCircle count={count} size="sm" />
       <AlertDescription className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <span>

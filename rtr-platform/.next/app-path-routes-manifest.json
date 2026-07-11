@@ -1,0 +1,19 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/admin/matches/page": "/admin/matches",
+  "/admin/page": "/admin",
+  "/admin/participants/page": "/admin/participants",
+  "/admin/settings/page": "/admin/settings",
+  "/api/zoom/create-meeting/route": "/api/zoom/create-meeting",
+  "/auth/callback/route": "/auth/callback",
+  "/auth/login/page": "/auth/login",
+  "/connections/[connectionId]/page": "/connections/[connectionId]",
+  "/connections/page": "/connections",
+  "/dashboard/page": "/dashboard",
+  "/favicon.ico/route": "/favicon.ico",
+  "/learn/page": "/learn",
+  "/onboarding/page": "/onboarding",
+  "/page": "/",
+  "/profile/[userId]/page": "/profile/[userId]"
+}

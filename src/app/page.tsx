@@ -154,7 +154,7 @@ export default function LandingPage() {
               </p>
               <div className="mt-5 flex flex-wrap gap-2">
                 {participantTypes.map((type, index) => (
-                  <Badge key={type} variant={index % 3 === 2 ? "river" : "filter"}>
+                  <Badge key={type} variant="secondary">
                     {type}
                   </Badge>
                 ))}
