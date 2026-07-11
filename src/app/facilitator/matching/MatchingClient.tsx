@@ -164,7 +164,7 @@ export default function MatchingClient({
   }
 
   return (
-    <main className="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6">
+    <main className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8 sm:px-6">
       <PageIntro
         eyebrow="Facilitated introductions"
         title="Match management"
@@ -249,7 +249,7 @@ export default function MatchingClient({
       </Card>
 
       <Tabs defaultValue="suggested">
-        <TabsList>
+        <TabsList className="w-full justify-start gap-2">
           <TabsTrigger value="suggested">
             Pending review
             {suggested.length > 0 && <Badge className="ml-1.5 text-xs">{suggested.length}</Badge>}
