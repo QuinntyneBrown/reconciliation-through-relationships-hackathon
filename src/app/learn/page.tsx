@@ -4,15 +4,13 @@ import LearningLayout from "./components/LearningLayout";
 
 export default async function LearnPage() {
   const supabase = await createSupabaseServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) redirect("/auth/login");
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("is_indigenous, learning_completed")
+    .select("is_indigenous, learning_completed, first_name, last_name")
     .eq("id", user.id)
     .single();
 
@@ -38,6 +36,7 @@ export default async function LearnPage() {
       progress={progress ?? []}
       userId={user.id}
       isIndigenous={profile.is_indigenous ?? false}
+      profile={{ first_name: profile.first_name, last_name: profile.last_name }}
     />
   );
 }

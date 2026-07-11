@@ -5,9 +5,7 @@ import type { ProfileRow } from "@/data/supabase/database.types";
 import { useRouter } from "next/navigation";
 import { createSupabaseBrowserClient } from "@/data/supabase/browser-client";
 import { toast } from "sonner";
-import { AppFooter } from "@/components/app-footer";
-import { AppHeader } from "@/components/app-header";
-import { JourneyStepper } from "@/components/journey-stepper";
+import { Progress } from "@/components/ui/progress";
 import StepBasicInfo from "./components/StepBasicInfo";
 import StepLocation from "./components/StepLocation";
 import StepFaithInterests from "./components/StepFaithInterests";
@@ -95,9 +93,7 @@ export default function OnboardingPage() {
   async function submit() {
     setSaving(true);
     const supabase = createSupabaseBrowserClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
       toast.error("Session expired. Please sign in again.");
@@ -142,15 +138,57 @@ export default function OnboardingPage() {
     router.push("/learn");
   }
 
+  const progress = ((step + 1) / STEPS.length) * 100;
+
   return (
-    <div className="bg-background flex min-h-screen flex-col">
-      <AppHeader homeHref="/" subtitle="Create your profile" roleLabel={`Step ${step + 1} of 5`} />
+    <div className="min-h-screen bg-background flex flex-col">
+      {/* Header */}
+      <header className="border-b border-border bg-card px-4 py-4">
+        <div className="max-w-2xl mx-auto">
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium text-primary">RTR · Create your profile</p>
+            <button
+              onClick={async () => {
+                const { createSupabaseBrowserClient } = await import("@/data/supabase/browser-client");
+                await createSupabaseBrowserClient().auth.signOut();
+                router.push("/auth/login");
+              }}
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Sign out
+            </button>
+          </div>
+          <div className="mt-3 flex items-center gap-3">
+            <Progress value={progress} className="flex-1 h-2" />
+            <span className="text-xs text-muted-foreground whitespace-nowrap">
+              Step {step + 1} of {STEPS.length}
+            </span>
+          </div>
+          <div className="mt-2 flex gap-1">
+            {STEPS.map((s, i) => (
+              <span
+                key={s}
+                className={`text-xs px-2 py-0.5 rounded-full ${
+                  i === step
+                    ? "bg-primary text-primary-foreground"
+                    : i < step
+                    ? "bg-accent/20 text-accent-foreground"
+                    : "text-muted-foreground"
+                }`}
+              >
+                {s}
+              </span>
+            ))}
+          </div>
+        </div>
+      </header>
 
       {/* Step content */}
-      <main className="flex flex-1 flex-col items-center px-4 py-8 sm:py-10">
+      <main className="flex-1 flex flex-col items-center px-4 py-8">
         <div className="w-full max-w-2xl">
-          <JourneyStepper steps={STEPS} currentStep={step} className="mb-8" />
-          {step === 0 && <StepBasicInfo data={data} onChange={updateData} onNext={next} />}
+          {step === 0 && (
+            <StepBasicInfo data={data} onChange={updateData} onNext={next} />
+          )}
           {step === 1 && (
             <StepLocation data={data} onChange={updateData} onNext={next} onBack={back} />
           )}
@@ -171,7 +209,6 @@ export default function OnboardingPage() {
           )}
         </div>
       </main>
-      <AppFooter />
     </div>
   );
 }
