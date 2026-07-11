@@ -1,5 +1,6 @@
 "use client";
 
+import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, Clock, Video, FileText } from "lucide-react";
@@ -65,12 +66,28 @@ export default function ModuleContent({
 
       {/* Text content */}
       {module.content_type === "text" && module.content_body && (
-        <div className="prose prose-sm max-w-none rounded-xl border border-border bg-card p-6">
-          {module.content_body.split("\n\n").map((paragraph, i) => (
-            <p key={i} className="mb-4 leading-relaxed text-foreground last:mb-0">
-              {paragraph}
-            </p>
-          ))}
+        <div className="rounded-xl border border-border bg-card p-6 sm:p-8">
+          <ReactMarkdown
+            components={{
+              h1: ({ children }) => <h1 className="text-xl font-bold mb-4 text-foreground">{children}</h1>,
+              h2: ({ children }) => <h2 className="text-lg font-semibold mt-6 mb-3 text-foreground">{children}</h2>,
+              h3: ({ children }) => <h3 className="text-base font-semibold mt-4 mb-2 text-foreground">{children}</h3>,
+              p: ({ children }) => <p className="mb-4 leading-relaxed text-foreground last:mb-0">{children}</p>,
+              ul: ({ children }) => <ul className="mb-4 ml-4 space-y-1 list-disc text-foreground">{children}</ul>,
+              ol: ({ children }) => <ol className="mb-4 ml-4 space-y-1 list-decimal text-foreground">{children}</ol>,
+              li: ({ children }) => <li className="leading-relaxed">{children}</li>,
+              strong: ({ children }) => <strong className="font-semibold text-foreground">{children}</strong>,
+              em: ({ children }) => <em className="italic">{children}</em>,
+              blockquote: ({ children }) => (
+                <blockquote className="border-l-4 border-primary/40 pl-4 my-4 italic text-muted-foreground">
+                  {children}
+                </blockquote>
+              ),
+              hr: () => <hr className="my-6 border-border" />,
+            }}
+          >
+            {module.content_body}
+          </ReactMarkdown>
         </div>
       )}
 
