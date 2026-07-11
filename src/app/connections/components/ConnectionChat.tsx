@@ -174,10 +174,10 @@ export default function ConnectionChat({
   }
 
   return (
-    <div className="bg-background flex min-h-screen flex-col">
+    <div className="bg-background flex h-screen flex-col overflow-hidden">
       <AppHeader homeHref="/dashboard" navItems={NAV_ITEMS} />
       {/* Header */}
-      <header className="border-border bg-parchment border-b px-4 py-3">
+      <header className="border-border bg-parchment border-b px-4 py-3 shrink-0">
         <div className="mx-auto flex max-w-3xl items-center gap-3">
           <Button variant="ghost" size="icon" asChild>
             <Link href="/connections">
@@ -209,9 +209,9 @@ export default function ConnectionChat({
         </div>
       </header>
 
-      <div className="mx-auto flex w-full max-w-3xl flex-1">
+      <div className="mx-auto flex w-full max-w-3xl flex-1 min-h-0">
         {/* Chat area */}
-        <div className="flex flex-1 flex-col">
+        <div className="flex flex-1 flex-col min-h-0">
           {/* Connect prompt */}
           {!isActive && (
             <div className="bg-primary/5 border-border border-b p-4 text-center">
@@ -312,7 +312,7 @@ export default function ConnectionChat({
           </div>
 
           {/* Input */}
-          <div className="border-border bg-card border-t p-3">
+          <div className="border-border bg-card border-t p-3 shrink-0">
             <form onSubmit={sendMessage} className="flex gap-2">
               <Input
                 value={input}
