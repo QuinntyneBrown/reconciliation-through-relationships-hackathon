@@ -1,12 +1,15 @@
+import { redirect } from "next/navigation";
 import { getRepository } from "@/data";
+import { createSupabaseServerClient } from "@/data/supabase/server-client";
 import { COHORT_MIN_PARTICIPANTS } from "@/domain/constants";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AppFooter } from "@/components/app-footer";
-import { AppHeader } from "@/components/app-header";
 import { CohortCircle } from "@/components/cohort-circle";
 import { EmptyState } from "@/components/empty-state";
 import { PageIntro } from "@/components/page-intro";
+import DashboardNav from "../dashboard/components/DashboardNav";
+import FacilitatorNav from "../facilitator/components/FacilitatorNav";
 
 /**
  * Regional participant discovery. Server component — reads eligible + consented
@@ -19,15 +22,31 @@ import { PageIntro } from "@/components/page-intro";
  * repo.listMappableParticipants() so privacy rules stay centralized.
  */
 export default async function MapPage() {
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) redirect("/auth/login");
+
+  const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single();
+  if (!profile) redirect("/onboarding");
+
   const repo = getRepository();
   const [regions, mappable] = await Promise.all([
     repo.listRegions(),
     repo.listMappableParticipants(),
   ]);
 
+  const isFacilitator = profile.role === "facilitator";
+
   return (
     <div className="bg-background flex min-h-screen flex-col">
-      <AppHeader homeHref="/" />
+      {isFacilitator ? (
+        <FacilitatorNav facilitator={profile} />
+      ) : (
+        <DashboardNav user={profile} />
+      )}
       <main className="mx-auto w-full max-w-7xl flex-1 space-y-8 px-4 py-8 sm:px-6">
         <PageIntro
           eyebrow="Consent-first discovery"

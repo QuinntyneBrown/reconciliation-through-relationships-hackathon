@@ -215,7 +215,11 @@ export default function AllParticipantsTab({ participants, currentUser, connecti
                     {connection ? (
                       <Button size="sm" className="flex-1" asChild>
                         <Link href={`/connections/${connection.id}`}>
-                          {connection.status === "active" ? "Chat" : "Pending"}
+                          {connection.status === "active"
+                            ? "Chat"
+                            : connection.status === "pending_review"
+                              ? "Under review"
+                              : "Pending"}
                         </Link>
                       </Button>
                     ) : (

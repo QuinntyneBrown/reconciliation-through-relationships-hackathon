@@ -122,7 +122,11 @@ export default function RecommendedTab({ matches, connections, currentUser }: Pr
                   {connection ? (
                     <Button size="sm" className="flex-1" asChild>
                       <Link href={`/connections/${connection.id}`}>
-                        {connection.status === "active" ? "Open chat" : "Pending…"}
+                        {connection.status === "active"
+                          ? "Open chat"
+                          : connection.status === "pending_review"
+                            ? "Under review…"
+                            : "Pending…"}
                       </Link>
                     </Button>
                   ) : (

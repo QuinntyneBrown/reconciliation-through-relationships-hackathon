@@ -102,39 +102,47 @@ export default async function FacilitatorPage() {
         </div>
 
         {/* Quick actions */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="border-border bg-card divide-border overflow-hidden rounded-2xl border divide-y">
           {[
             {
               label: "Review pending matches",
+              description: "Approve or reject facilitator-suggested and mutual connect matches.",
               icon: GitMerge,
               href: "/facilitator/matching",
-              variant: "default" as const,
             },
             {
               label: "View all participants",
+              description: "Browse everyone in the program and their journey status.",
               icon: Users,
               href: "/facilitator/participants",
-              variant: "outline" as const,
             },
-            { label: "Manage cohorts", icon: MapPin, href: "/map", variant: "outline" as const },
+            {
+              label: "Manage cohorts",
+              description: "Form and manage regional reconciliation cohorts.",
+              icon: MapPin,
+              href: "/map",
+            },
             {
               label: "Platform settings",
+              description: "Toggle auto-matching, cohort thresholds, and other options.",
               icon: Settings,
               href: "/facilitator/settings",
-              variant: "outline" as const,
             },
           ].map((action) => (
-            <Button
+            <Link
               key={action.label}
-              variant={action.variant}
-              asChild
-              className="h-auto flex-col gap-2 py-4"
+              href={action.href}
+              className="hover:bg-muted/50 flex items-center gap-4 px-5 py-4 no-underline transition-colors"
             >
-              <Link href={action.href}>
+              <div className="bg-spruce-100 text-spruce-700 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
                 <action.icon className="h-5 w-5" />
-                <span>{action.label}</span>
-              </Link>
-            </Button>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-heading font-semibold">{action.label}</p>
+                <p className="text-muted-foreground text-sm">{action.description}</p>
+              </div>
+              <span className="text-muted-foreground text-lg">›</span>
+            </Link>
           ))}
         </div>
       </main>

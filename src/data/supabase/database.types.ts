@@ -91,7 +91,7 @@ export type ConnectionRow = {
   participant_a_connected: boolean;
   participant_b_connected: boolean;
   connected_at: string | null;
-  status: "pending" | "active";
+  status: "pending" | "pending_review" | "active";
   created_at: string;
 };
 
@@ -211,7 +211,7 @@ export type Database = {
           participant_a_connected?: boolean;
           participant_b_connected?: boolean;
           connected_at?: string | null;
-          status?: "pending" | "active";
+          status?: "pending" | "pending_review" | "active";
         };
         Update: Partial<Omit<ConnectionRow, "id" | "created_at">>;
         Relationships: [];

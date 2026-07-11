@@ -43,7 +43,7 @@ export default function ConnectionsTab({ connections, partners, currentUserId }:
 
         const initials =
           `${partner.first_name?.[0] ?? ""}${partner.last_name?.[0] ?? ""}`.toUpperCase();
-        const isActive = connection.status === "active";
+        const status = connection.status;
 
         return (
           <Link
@@ -63,8 +63,13 @@ export default function ConnectionsTab({ connections, partners, currentUserId }:
               </p>
             </div>
             <div className="flex items-center gap-2">
-              {isActive ? (
+              {status === "active" ? (
                 <Badge variant="matched">Active</Badge>
+              ) : status === "pending_review" ? (
+                <Badge variant="secondary" className="gap-1 text-xs">
+                  <Clock className="h-3 w-3" />
+                  Under facilitator review
+                </Badge>
               ) : (
                 <Badge variant="secondary" className="gap-1 text-xs">
                   <Clock className="h-3 w-3" />

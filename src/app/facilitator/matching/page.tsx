@@ -22,6 +22,13 @@ export default async function FacilitatorMatchingPage() {
     .select("*")
     .order("created_at", { ascending: false });
 
+  // Get connections awaiting facilitator review (both participants clicked connect while auto-matching off)
+  const { data: pendingReviewConnections } = await supabase
+    .from("connections")
+    .select("*")
+    .eq("status", "pending_review")
+    .order("created_at", { ascending: false });
+
   // Get all eligible participants for manual matching
   const { data: allParticipants } = await supabase
     .from("profiles")
@@ -48,6 +55,7 @@ export default async function FacilitatorMatchingPage() {
       <FacilitatorNav facilitator={profile} />
       <MatchingClient
         matches={matches ?? []}
+        pendingReviewConnections={pendingReviewConnections ?? []}
         profileMap={Object.fromEntries(profileMap)}
         indigenous={indigenous}
         nonIndigenous={nonIndigenous}

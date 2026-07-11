@@ -100,16 +100,34 @@ export default function ConnectionChat({
   }, [messages]);
 
   async function handleConnect() {
+    const partnerAlreadyConnected =
+      connectionState[
+        myConnectedField === "participant_a_connected"
+          ? "participant_b_connected"
+          : "participant_a_connected"
+      ];
+
+    let nextStatus: "pending" | "pending_review" | "active" = connectionState.status;
+    if (partnerAlreadyConnected) {
+      // Both parties have now clicked connect — check auto-matching setting
+      const { data: setting } = await supabase
+        .from("system_settings")
+        .select("value")
+        .eq("key", "auto_matching_enabled")
+        .single();
+      const autoMatching = setting?.value === true || setting?.value === "true";
+      nextStatus = autoMatching ? "active" : "pending_review";
+    }
+
     const { error } = await supabase
       .from("connections")
       .update({
         [myConnectedField]: true,
-        ...(connectionState[
-          myConnectedField === "participant_a_connected"
-            ? "participant_b_connected"
-            : "participant_a_connected"
-        ]
-          ? { status: "active", connected_at: new Date().toISOString() }
+        ...(partnerAlreadyConnected
+          ? {
+              status: nextStatus,
+              ...(nextStatus === "active" ? { connected_at: new Date().toISOString() } : {}),
+            }
           : {}),
       })
       .eq("id", connection.id);
@@ -128,7 +146,11 @@ export default function ConnectionChat({
       data: { connection_id: connection.id },
     });
 
-    toast.success("Connection request sent!");
+    if (partnerAlreadyConnected && nextStatus === "pending_review") {
+      toast.success("Both connected! A facilitator will review your match shortly.");
+    } else {
+      toast.success("Connection request sent!");
+    }
     router.refresh();
   }
 
@@ -215,7 +237,15 @@ export default function ConnectionChat({
           {/* Connect prompt */}
           {!isActive && (
             <div className="bg-primary/5 border-border border-b p-4 text-center">
-              {iHaveConnected ? (
+              {connectionState.status === "pending_review" ? (
+                <div className="space-y-1">
+                  <p className="text-sm font-medium">Under facilitator review</p>
+                  <p className="text-muted-foreground text-sm">
+                    Both you and <strong>{partner.first_name}</strong> have chosen to connect.
+                    A facilitator is reviewing your match — you&apos;ll be notified once approved.
+                  </p>
+                </div>
+              ) : iHaveConnected ? (
                 <p className="text-muted-foreground text-sm">
                   Waiting for <strong>{partner.first_name}</strong> to accept your connection
                   request…
