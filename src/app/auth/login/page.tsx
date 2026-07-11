@@ -46,8 +46,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4">
       <Link href="/" className="mb-8 text-center">
-        <p className="text-2xl font-bold text-primary">RTR</p>
-        <p className="text-sm text-muted-foreground">Reconciliation Through Relationships</p>
+        <p className="text-2xl font-bold text-primary">Reconciliation Through Relationships</p>
       </Link>
 
       <Card className="w-full max-w-sm">

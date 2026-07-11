@@ -135,7 +135,12 @@ export default function LearningLayout({ modules, progress, userId, isIndigenous
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="rounded-full shrink-0">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full shrink-0"
+                aria-label="Open account menu"
+              >
                 <Avatar className="h-8 w-8">
                   <AvatarFallback className="bg-primary text-primary-foreground text-xs font-semibold">
                     {`${profile.first_name?.[0] ?? ""}${profile.last_name?.[0] ?? ""}`.toUpperCase() || "?"}

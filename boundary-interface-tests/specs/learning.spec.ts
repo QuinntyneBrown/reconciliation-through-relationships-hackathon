@@ -48,7 +48,8 @@ test.describe("learning journey", () => {
   });
 
   test("signing out from learning returns to login", async ({ learning }) => {
-    await learning.page.getByRole("button", { name: "Sign out" }).click();
+    await learning.page.getByRole("button", { name: "Open account menu" }).click();
+    await learning.page.getByRole("menuitem", { name: "Sign out" }).click();
     await expect(learning.page).toHaveURL(/\/auth\/login$/);
   });
 });

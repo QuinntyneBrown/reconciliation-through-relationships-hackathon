@@ -1,13 +1,25 @@
 import { test, expect } from "../support/fixtures";
 
 test.describe("public journey and authentication", () => {
+  test("the platform brands itself as Reconciliation Through Relationships", async ({
+    landing,
+  }) => {
+    await landing.goto();
+    await expect(landing.page.getByText("RTR Portal")).toHaveCount(0);
+    await expect(
+      landing.page
+        .locator("header")
+        .getByRole("link", { name: "Reconciliation Through Relationships" }),
+    ).toBeVisible();
+  });
+
   test("landing calls to action navigate and the journey anchor works", async ({ landing }) => {
     await landing.goto();
     await expect(landing.heading(/Reconciliation begins with a relationship/)).toBeVisible();
     await landing.showHowItWorks();
     await expect(landing.journeySection()).toBeInViewport();
     await landing.beginJourney();
-    await expect(landing.page).toHaveURL(/\/auth\/login$/);
+    await expect(landing.page).toHaveURL(/\/auth\/signup$/);
   });
 
   test("invalid credentials show the backend error and allow another attempt", async ({
