@@ -74,10 +74,6 @@ export default function DashboardClient({
                 </span>
               )}
             </TabsTrigger>
-            <TabsTrigger value="all" className="gap-2">
-              <Users className="h-4 w-4" />
-              All participants
-            </TabsTrigger>
             <TabsTrigger value="connections" className="gap-2">
               <MessageCircle className="h-4 w-4" />
               Connections
@@ -86,6 +82,10 @@ export default function DashboardClient({
                   {connections.length}
                 </span>
               )}
+            </TabsTrigger>
+            <TabsTrigger value="all" className="gap-2">
+              <Users className="h-4 w-4" />
+              All participants
             </TabsTrigger>
           </TabsList>
 

@@ -36,7 +36,11 @@ export default async function LearnPage() {
       progress={progress ?? []}
       userId={user.id}
       isIndigenous={profile.is_indigenous ?? false}
-      profile={{ first_name: profile.first_name, last_name: profile.last_name }}
+      profile={{
+        first_name: profile.first_name,
+        last_name: profile.last_name,
+        learning_completed: profile.learning_completed,
+      }}
     />
   );
 }

@@ -14,7 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { CheckCircle2, Circle, Clock, ChevronRight, BookOpen, LogOut } from "lucide-react";
+import { CheckCircle2, Circle, Clock, ChevronRight, BookOpen, LogOut, LayoutDashboard } from "lucide-react";
 import { toast } from "sonner";
 import type { LearningModule, LearningProgress, Profile } from "@/data/supabase/database.types";
 import ModuleContent from "./ModuleContent";
@@ -24,7 +24,7 @@ type Props = {
   progress: LearningProgress[];
   userId: string;
   isIndigenous: boolean;
-  profile: Pick<Profile, "first_name" | "last_name">;
+  profile: Pick<Profile, "first_name" | "last_name" | "learning_completed">;
 };
 
 export default function LearningLayout({ modules, progress, userId, isIndigenous, profile }: Props) {
@@ -149,6 +149,15 @@ export default function LearningLayout({ modules, progress, userId, isIndigenous
                 <p className="text-xs text-muted-foreground">Learning journey</p>
               </div>
               <DropdownMenuSeparator />
+              {profile.learning_completed && (
+                <DropdownMenuItem
+                  onClick={() => router.push("/dashboard")}
+                  className="gap-2"
+                >
+                  <LayoutDashboard className="h-4 w-4" />
+                  Dashboard
+                </DropdownMenuItem>
+              )}
               <DropdownMenuItem
                 onClick={async () => {
                   await createSupabaseBrowserClient().auth.signOut();
