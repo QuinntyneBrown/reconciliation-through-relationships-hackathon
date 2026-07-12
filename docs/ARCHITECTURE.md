@@ -69,5 +69,5 @@ Supabase magic-link auth is implemented under `app/auth/`. The Next.js 16 reques
 
 ## Deployment
 
-- **App** → DigitalOcean App Platform (or Vercel for the demo). Set the same env vars there.
-- **Database/auth** → Supabase managed cloud.
+- **App** → See the costed [AWS, Azure, and DigitalOcean deployment plans](deployment/README.md).
+- **Database/auth** → Supabase managed cloud in the region nearest the primary users.
