@@ -1,5 +1,5 @@
 // Acceptance Test
-// Traces to: L2-020, L2-021, L2-022
+// Traces to: L2-LEARN-020, L2-LEARN-021, L2-LEARN-022
 // Description: Audience-filtered learning content, recorded progress, and dashboard unlock against real Supabase
 import { expect, test } from "@playwright/test";
 

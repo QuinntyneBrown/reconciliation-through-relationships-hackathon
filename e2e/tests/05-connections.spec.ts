@@ -1,5 +1,5 @@
 // Acceptance Test
-// Traces to: L2-035, L2-037, L2-039, L2-041, L2-044
+// Traces to: L2-CONN-035, L2-CONN-037, L2-CONN-039, L2-CONN-041, L2-MEET-044
 // Description: Mutual connection consent, chat, and call scheduling against real Supabase (real Zoom call deliberately skipped)
 import { expect, test } from "@playwright/test";
 

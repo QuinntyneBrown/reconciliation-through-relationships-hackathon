@@ -1,5 +1,5 @@
 // Acceptance Test
-// Traces to: L2-025, L2-028, L2-029, L2-031, L2-033, L2-051, L2-052
+// Traces to: L2-MATENG-025, L2-MATENG-028, L2-MATENG-029, L2-PROF-031, L2-PROF-033, L2-COHRT-051, L2-COHRT-052
 // Description: Dashboard recommendations, directory filters and map consent, profiles, and regional map counts against real Supabase
 import { expect, test } from "@playwright/test";
 

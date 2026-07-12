@@ -1,5 +1,5 @@
 // Acceptance Test
-// Traces to: L2-014, L2-021, L2-022, L2-023
+// Traces to: L2-SHELL-014, L2-LEARN-021, L2-LEARN-022, L2-LEARN-023
 // Description: Learning module progression, journey completion, and failed-save retry
 import { test, expect } from "../support/fixtures";
 

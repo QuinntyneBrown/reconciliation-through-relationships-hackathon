@@ -1,5 +1,5 @@
 // Acceptance Test
-// Traces to: L2-034, L2-035, L2-036, L2-037, L2-038, L2-039, L2-041, L2-043, L2-044, L2-045, L2-046, L2-048
+// Traces to: L2-PROF-034, L2-CONN-035, L2-CONN-036, L2-CONN-037, L2-CONN-038, L2-CONN-039, L2-CONN-041, L2-CONN-043, L2-MEET-044, L2-MEET-045, L2-MEET-046, L2-NOTIF-048
 // Description: Peer connection requests, mutual consent, chat messaging, and the Zoom scheduling contract
 import { test, expect } from "../support/fixtures";
 
