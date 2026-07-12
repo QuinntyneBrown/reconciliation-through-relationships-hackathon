@@ -104,6 +104,7 @@ docs/                       Architecture, product, and operations documentation
 | [Database schema](docs/DB_SCHEMA.md) | Tables, relationships, privacy safeguards, and open decisions |
 | [Architecture decisions](docs/DECISIONS.md) | Product and technical decisions requiring alignment |
 | [Deployment guide](docs/deployment/README.md) | Provider comparison, deployment options, and cost controls |
+| [Marketing materials](docs/marketing/README.md) | On-brand PDF one-sheets for the platform and each capability |
 
 ## Contributing
 
