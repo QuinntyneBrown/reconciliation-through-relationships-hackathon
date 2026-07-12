@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import Image from "next/image";
 import { RtrBrand, Weave } from "@/components/rtr-brand";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -31,9 +32,16 @@ const SLIDES: Slide[] = [
     id: "title",
     render: () => (
       <div className="bg-spruce-800 text-on-dark flex h-full flex-col items-center justify-center px-12 text-center">
-        <RtrBrand className="mb-16" />
+        <Image
+          src="/rtr-logo.png"
+          alt="Reconciliation Through Relationships"
+          width={320}
+          height={160}
+          className="mb-10 w-64 sm:w-80"
+          priority
+        />
         <Badge className="bg-ochre-500 text-spruce-900 mb-6">
-          Hackathon Demo · 2026
+          FaithTech Hackathon · 2026
         </Badge>
         <h1 className="font-heading text-on-dark mb-6 text-6xl italic sm:text-7xl md:text-8xl">
           Reconciliation begins with a{" "}
@@ -571,7 +579,7 @@ export default function DemoPage() {
       <div className="border-border bg-parchment/95 supports-[backdrop-filter]:bg-parchment/80 flex items-center justify-between border-t px-6 py-3 backdrop-blur">
         <div className="flex items-center gap-3">
           <RtrBrand />
-          <span className="text-ink-faint text-sm">Hackathon Demo</span>
+          <span className="text-ink-faint text-sm">FaithTech Hackathon</span>
         </div>
 
         <div className="flex items-center gap-1">
