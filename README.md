@@ -4,6 +4,8 @@ A welcoming digital platform that moves participants from **registration → lea
 
 > Hackathon build. Uses synthetic data and lightweight auth. See [`docs/challenge.txt`](docs/challenge.txt) for the full brief.
 
+📖 **New to the app?** The [plain-language user guide](docs/guide/README.md) walks participants and facilitators through every screen, with screenshots.
+
 ## Quick start
 
 ```bash
