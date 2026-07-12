@@ -1,3 +1,6 @@
+// Acceptance Test
+// Traces to: L2-014, L2-025, L2-026, L2-027, L2-028, L2-029, L2-030, L2-031, L2-034, L2-048
+// Description: Dashboard recommendations, directory search/filters/map, profile view, and connection requests from profiles
 import { test, expect } from "../support/fixtures";
 
 test.describe("participant dashboard and profiles", () => {

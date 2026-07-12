@@ -1,3 +1,6 @@
+// Acceptance Test
+// Traces to: L2-054, L2-055, L2-056, L2-057, L2-058, L2-059
+// Description: Facilitator overview, matching approve/reject, and settings persistence against real Supabase
 import { expect, test } from "@playwright/test";
 
 import { FacilitatorPage } from "../pages/facilitator.page";

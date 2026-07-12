@@ -1,0 +1,21 @@
+@startuml c4_container
+!theme plain
+!include <C4/C4_Container>
+title Learning Journey - Containers
+
+Person(participant, "Participant", "Completing required learning modules")
+
+System_Boundary(rtr, "Reconciliation Through Relationships") {
+  Container(browser, "Web Browser", "React 19 client components", "LearningLayout + ModuleContent: navigation, completion, content rendering")
+  Container(server, "Next.js Server", "App Router — server components, route handlers, proxy middleware", "LearnPage loader + gate that forces unfinished learners to /learn")
+}
+
+ContainerDb(supabase, "Supabase", "Postgres + Auth + Realtime, RLS-enforced")
+System_Ext(youtube, "YouTube", "Embedded video player")
+
+Rel(participant, browser, "Uses")
+Rel(browser, server, "Requests /learn page", "HTTPS")
+Rel(server, supabase, "Server component reads learning_modules + learning_progress", "postgrest")
+Rel(browser, supabase, "Upserts learning_progress; updates profiles.learning_completed", "postgrest")
+Rel(browser, youtube, "Embeds video content_url", "iframe")
+@enduml

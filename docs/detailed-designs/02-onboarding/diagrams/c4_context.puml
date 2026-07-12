@@ -1,0 +1,12 @@
+@startuml c4_context
+!theme plain
+!include <C4/C4_Context>
+title Onboarding - System Context
+
+Person(participant, "Participant", "A signed-in user completing the 5-step profile intake wizard")
+System(rtr, "Reconciliation Through Relationships", "Web platform connecting Indigenous and non-Indigenous participants for relationship building")
+System_Ext(supabase, "Supabase", "Postgres + Auth + Realtime, RLS-enforced")
+
+Rel(participant, rtr, "Fills in profile details across 5 steps")
+Rel(rtr, supabase, "Reads current user, writes the profiles row", "@supabase/ssr")
+@enduml

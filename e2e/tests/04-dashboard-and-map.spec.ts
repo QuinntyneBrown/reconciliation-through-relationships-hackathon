@@ -1,3 +1,6 @@
+// Acceptance Test
+// Traces to: L2-025, L2-028, L2-029, L2-031, L2-033, L2-051, L2-052
+// Description: Dashboard recommendations, directory filters and map consent, profiles, and regional map counts against real Supabase
 import { expect, test } from "@playwright/test";
 
 import { DashboardPage } from "../pages/dashboard.page";

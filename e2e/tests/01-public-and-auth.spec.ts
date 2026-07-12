@@ -1,3 +1,6 @@
+// Acceptance Test
+// Traces to: L2-003, L2-005, L2-007, L2-008, L2-010, L2-011, L2-012, L2-013, L2-014, L2-075
+// Description: Public landing, sign-in routing by role and stage, cross-role gates, navigation, and sign-out against real Supabase
 import { expect, test } from "@playwright/test";
 
 import { DashboardPage } from "../pages/dashboard.page";

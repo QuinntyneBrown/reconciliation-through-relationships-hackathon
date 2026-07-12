@@ -1,0 +1,64 @@
+@startuml class_diagram
+!theme plain
+skinparam classAttributeIconSize 0
+title Facilitator Console - Data Model
+
+class matches {
+  id : uuid <<PK>>
+  indigenous_participant_id : uuid <<FK profiles>>
+  non_indigenous_participant_id : uuid <<FK profiles>>
+  match_score : numeric(5,2)
+  match_criteria : jsonb
+  status : text  {suggested | approved | rejected | connected}
+  auto_generated : boolean = false
+  created_by : uuid <<FK profiles>>
+  approved_by : uuid <<FK profiles>>
+  approved_at : timestamptz
+  created_at : timestamptz
+}
+
+class connections {
+  id : uuid <<PK>>
+  match_id : uuid <<FK matches, nullable>>
+  participant_a_id : uuid <<FK profiles>>
+  participant_b_id : uuid <<FK profiles>>
+  status : text  {pending | pending_review | active}
+  connected_at : timestamptz
+  created_at : timestamptz
+}
+
+class system_settings {
+  key : text <<PK>>
+  value : jsonb
+  updated_by : uuid <<FK profiles>>
+  updated_at : timestamptz
+}
+
+class notifications {
+  id : uuid <<PK>>
+  user_id : uuid <<FK profiles>>
+  type : text  {match_approved | ...}
+  title : text
+  body : text
+  data : jsonb
+  read : boolean = false
+  created_at : timestamptz
+}
+
+note top of matches
+  Status lifecycle:
+  suggested --> approved (facilitator) --> connected (peer handshake)
+  suggested --> rejected (facilitator)
+  approved sets approved_by / approved_at.
+end note
+
+note bottom of system_settings
+  auto_matching_enabled (jsonb boolean) toggles whether
+  peer connect requests need facilitator review;
+  cohort_threshold gates regional cohort formation.
+end note
+
+matches "1" --> "0..1" connections : approval inserts\nmatch_id
+matches ..> notifications : match_approved\n(one per participant)
+connections ..> notifications : match_approved\n(mutual-connect review)
+@enduml

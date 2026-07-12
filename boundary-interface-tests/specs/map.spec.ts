@@ -1,3 +1,6 @@
+// Acceptance Test
+// Traces to: L2-051, L2-052, L2-053
+// Description: Regional aggregation limited to eligible, consenting participants with cohort readiness
 import { test, expect } from "../support/fixtures";
 
 test("regional discovery exposes only eligible consenting aggregate data", async ({ login }) => {

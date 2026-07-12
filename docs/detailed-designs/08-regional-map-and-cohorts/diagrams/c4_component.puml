@@ -1,0 +1,30 @@
+@startuml c4_component
+!theme plain
+!include <C4/C4_Component>
+
+title Regional Map & Cohorts - Components (Next.js Server)
+
+Person(participant, "Participant", "")
+ContainerDb_Ext(supabase, "Supabase", "Auth + profiles (RLS)", "Session & role only")
+
+Container_Boundary(server, "Next.js Server") {
+  Component(mappage, "map/page.tsx", "Server Component", "Auth guard, reads profile.role, renders region cards")
+  Component(apiroute, "api/participants/route.ts", "Route Handler", "GET list / POST create via the seam")
+  Component(getrepo, "getRepository()", "src/data/index.ts", "Singleton factory; DATA_SOURCE switch")
+  Component(repoiface, "Repository", "src/data/repository.ts", "The data-access contract (interface)")
+  Component(mockrepo, "MockRepository", "src/data/mock", "listRegions / listMappableParticipants")
+  Component(domain, "Domain modules", "src/domain/{types,constants,schema}", "ParticipantProfile, isEligible, COHORT_MIN_PARTICIPANTS, zod intake")
+  Component(cohortcircle, "CohortCircle", "src/components/cohort-circle.tsx", "Seat-fill visualization of eligibleCount vs threshold")
+}
+
+Rel(participant, mappage, "GET /map", "HTTPS")
+Rel(mappage, supabase, "auth.getUser(), profiles.select(role)")
+Rel(mappage, getrepo, "getRepository()")
+Rel(mappage, cohortcircle, "renders per region")
+Rel(apiroute, getrepo, "getRepository()")
+Rel(apiroute, domain, "participantIntakeSchema.safeParse")
+Rel(getrepo, repoiface, "returns")
+Rel(getrepo, mockrepo, "instantiates (DATA_SOURCE=mock)")
+Rel(mockrepo, domain, "isEligible, consentToMap, COHORT_MIN_PARTICIPANTS")
+
+@enduml

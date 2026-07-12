@@ -1,0 +1,12 @@
+@startuml c4_context
+!theme plain
+!include <C4/C4_Context>
+title Profiles & Connect Requests - System Context
+
+Person(participant, "Participant", "Views another participant's profile and sends or cancels a connection request")
+System(rtr, "Reconciliation Through Relationships", "Web platform connecting Indigenous and non-Indigenous participants for relationship building")
+System_Ext(supabase, "Supabase", "Postgres + Auth + Realtime, RLS-enforced")
+
+Rel(participant, rtr, "Views profiles, sends/cancels connect requests")
+Rel(rtr, supabase, "Reads profiles & connections; writes connections & notifications")
+@enduml

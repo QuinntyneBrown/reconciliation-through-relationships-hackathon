@@ -1,0 +1,18 @@
+@startuml sequence_realtime_chat
+!theme plain
+skinparam sequenceMessageAlign center
+title Realtime Chat (send & receive)
+
+actor "Participant A" as A
+participant "ConnectionChat (A)" as CA
+database "Supabase\n(RLS + Realtime)" as SB
+participant "ConnectionChat (B)" as CB
+
+A -> CA : Submit message (sendMessage)
+CA -> SB : messages.insert({content}).select().single()
+SB --> CA : inserted row
+CA -> CA : optimistic append (dedupe by id)
+SB --> CB : Realtime INSERT (messages, filtered by connection_id)
+CB -> CB : append (dedupe by id)
+CA -> SB : notifications.insert(type='new_message' -> B)
+@enduml
