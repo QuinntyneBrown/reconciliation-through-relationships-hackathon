@@ -125,7 +125,99 @@ const SLIDES: Slide[] = [
     ),
   },
 
-  // 4. Our Process
+  // 4. Before vs After (Benefits)
+  {
+    id: "benefits",
+    render: () => (
+      <div className="flex h-full flex-col justify-center px-12 sm:px-24">
+        <p className="rtr-eyebrow mb-4">What the app changes</p>
+        <h2 className="font-heading text-heading mb-10 text-5xl">
+          From spreadsheets and phone calls to a real portal.
+        </h2>
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+          {/* Before */}
+          <div className="border-berry-700/20 bg-berry-100/30 rounded-2xl border p-6">
+            <div className="mb-4 flex items-center gap-2">
+              <div className="bg-berry-700 h-2 w-2 rounded-full" />
+              <p className="text-berry-700 text-sm font-semibold uppercase tracking-wide">
+                Before
+              </p>
+            </div>
+            <h3 className="text-heading mb-4 text-xl font-semibold">
+              Manual, brittle, invisible
+            </h3>
+            <ul className="text-ink space-y-3 text-base leading-relaxed">
+              <li className="flex gap-2">
+                <span className="text-berry-700">×</span>
+                Matches tracked in spreadsheets and email threads
+              </li>
+              <li className="flex gap-2">
+                <span className="text-berry-700">×</span>
+                Facilitators phoning each side to introduce them one by one
+              </li>
+              <li className="flex gap-2">
+                <span className="text-berry-700">×</span>
+                No visibility into who&apos;s ready in each region
+              </li>
+              <li className="flex gap-2">
+                <span className="text-berry-700">×</span>
+                Learning happened off-platform, if at all
+              </li>
+              <li className="flex gap-2">
+                <span className="text-berry-700">×</span>
+                Every Zoom link scheduled by hand
+              </li>
+              <li className="flex gap-2">
+                <span className="text-berry-700">×</span>
+                Growth capped by facilitator capacity
+              </li>
+            </ul>
+          </div>
+
+          {/* After */}
+          <div className="border-spruce-700/20 bg-spruce-100 rounded-2xl border p-6">
+            <div className="mb-4 flex items-center gap-2">
+              <div className="bg-spruce-700 h-2 w-2 rounded-full" />
+              <p className="text-spruce-700 text-sm font-semibold uppercase tracking-wide">
+                With RTR Portal
+              </p>
+            </div>
+            <h3 className="text-heading mb-4 text-xl font-semibold">
+              Guided, safe, scalable
+            </h3>
+            <ul className="text-ink space-y-3 text-base leading-relaxed">
+              <li className="flex gap-2">
+                <span className="text-spruce-700">✓</span>
+                Weighted algorithm surfaces the strongest matches automatically
+              </li>
+              <li className="flex gap-2">
+                <span className="text-spruce-700">✓</span>
+                Facilitators approve or reject in one queue — 30 seconds per match
+              </li>
+              <li className="flex gap-2">
+                <span className="text-spruce-700">✓</span>
+                Regional map shows exactly where a cohort is ready to gather
+              </li>
+              <li className="flex gap-2">
+                <span className="text-spruce-700">✓</span>
+                Structured learning gates the journey, resumes on any device
+              </li>
+              <li className="flex gap-2">
+                <span className="text-spruce-700">✓</span>
+                Participants schedule their own Zoom calls — one click, both notified
+              </li>
+              <li className="flex gap-2">
+                <span className="text-spruce-700">✓</span>
+                One facilitator can now support hundreds, not dozens
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    ),
+  },
+
+  // 5. Our Process
   {
     id: "process",
     render: () => (
