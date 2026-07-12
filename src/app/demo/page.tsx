@@ -62,18 +62,54 @@ const SLIDES: Slide[] = [
     render: () => (
       <div className="flex h-full flex-col justify-center px-12 sm:px-24">
         <p className="rtr-eyebrow mb-4">The Challenge</p>
-        <h2 className="font-heading text-heading mb-8 text-5xl sm:text-6xl">
-          How do you build friendships across a 400-year fault line?
+        <h2 className="font-heading text-heading mb-3 text-5xl sm:text-6xl">
+          Sparking reconciliation, <em className="text-ochre-700">one friendship at a time.</em>
         </h2>
-        <div className="text-ink max-w-4xl space-y-5 text-xl leading-relaxed">
-          <p>
-            Today, the work is done through spreadsheets, email chains, and phone
-            calls. It doesn&apos;t scale. It doesn&apos;t protect participants&apos;
-            time or safety. And it can&apos;t answer basic questions like:{" "}
-            <em>&ldquo;how many people are ready to gather in Regina?&rdquo;</em>
-          </p>
+        <p className="text-ink-soft mb-10 max-w-3xl text-xl leading-relaxed">
+          RTR pairs Indigenous and non-Indigenous participants for months of one-on-one
+          conversation, guided by facilitators and shared learning about Indigenous history
+          in Canada.
+        </p>
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+          {[
+            {
+              step: "01",
+              title: "Orientation",
+              body: "Facilitators prepare each participant, set boundaries, and match pairs thoughtfully.",
+            },
+            {
+              step: "02",
+              title: "Meet monthly",
+              body: "Pairs meet once or twice a month over several months to talk, listen, and learn together.",
+            },
+            {
+              step: "03",
+              title: "Shared curriculum",
+              body: "Every conversation is anchored in learning material about Indigenous history in Canada.",
+            },
+            {
+              step: "04",
+              title: "Cohort gathering",
+              body: "The program closes with the whole cohort gathering to share what grew from every friendship.",
+            },
+          ].map((s) => (
+            <div key={s.step} className="border-border bg-parchment shadow-rtr-1 rounded-2xl border p-5">
+              <span className="text-ochre-500 font-heading mb-1 block text-2xl italic">{s.step}</span>
+              <h3 className="text-heading mb-2 text-lg font-semibold">{s.title}</h3>
+              <p className="text-ink-soft text-sm leading-relaxed">{s.body}</p>
+            </div>
+          ))}
         </div>
-        <Weave className="mt-10 w-32" />
+
+        <p className="text-ink mt-8 max-w-4xl text-lg italic leading-relaxed">
+          Today all of this runs on spreadsheets, email chains, and phone calls — brittle,
+          slow, and impossible to answer basic questions like{" "}
+          <span className="text-heading not-italic font-semibold">
+            &ldquo;how many people are ready to gather in Regina?&rdquo;
+          </span>
+        </p>
+        <Weave className="mt-6 w-32" />
       </div>
     ),
   },
