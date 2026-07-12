@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard · Cohort forming — Reconciliation Through Relationships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<!--
+  Mirrors: /dashboard (src/app/dashboard/components/DashboardClient.tsx + CohortBanner.tsx + RecommendedTab.tsx)
+  State: Elected-leader participant (Marie Cardinal) in a region approaching cohort
+  readiness. CohortBanner renders when currentUser.participation_categories
+  includes "elected_leader" && sameCityCount >= 5 && !cohort. Recommendation cards
+  below are copied verbatim from page-12.
+  Other states: page-12 (recommended), page-13 (waitlist), page-15/16 (all
+  participants list/map), page-17 (connections tab).
+-->
+<style>
+  .app-main { padding-top: 32px; padding-bottom: 32px; }
+  .app-main > * + * { margin-top: 32px; }
+  .page-intro { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+  .page-intro .intro-copy { max-width: 768px; }
+  .page-intro h1 { margin-bottom: 4px; }
+  .page-intro .lead { margin: 0 0 16px; }
+  /* CohortBanner: Alert variant="default" (river) with grid-cols-[auto_1fr] gap-x-5 */
+  .cohort-banner { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 20px; }
+  .cohort-banner .banner-desc { display: flex; flex-direction: column; gap: 12px; }
+  @media (min-width: 640px) {
+    .cohort-banner .banner-desc { flex-direction: row; align-items: center; justify-content: space-between; }
+  }
+  .match-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: stretch; }
+  .match-card { display: flex; flex-direction: column; }
+  .match-card:hover { border-color: rgb(42 81 72 / 40%); }
+  .match-head { display: flex; gap: 12px; align-items: flex-start; padding: 24px 24px 12px; }
+  .match-head .who { min-width: 0; flex: 1; }
+  .match-head .who b { display: block; font-size: 15.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .match-head .loc { display: flex; align-items: center; gap: 4px; font-size: 12.5px; color: var(--muted-foreground); margin-top: 2px; }
+  .match-head .loc svg { flex: none; }
+  .match-head .score { flex: none; text-align: right; }
+  .match-head .score b { display: block; font-size: 24px; font-weight: 700; color: var(--primary); line-height: 1.2; }
+  .match-body { display: flex; flex: 1; flex-direction: column; gap: 12px; padding: 0 24px 24px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 4px; }
+  .chip-xs { min-height: 0; padding: 2px 10px; font-size: 12px; }
+  .clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin: 0; }
+  .match-actions { display: flex; gap: 8px; margin-top: auto; padding-top: 4px; }
+  @media (max-width: 1020px) { .match-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 620px) { .match-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="container wide">
+    <div class="bar">
+      <a class="brand" href="page-12-dashboard-recommended.html">
+        <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+        </svg>
+        <span><span class="brand-name">Reconciliation</span><span class="brand-sub">Through Relationships</span></span>
+      </a>
+      <nav class="app-nav" aria-label="Main">
+        <a href="page-12-dashboard-recommended.html" aria-current="page">Home</a>
+        <a href="page-09-learning-video.html">Learning</a>
+        <a href="page-18-connections.html">Connections</a>
+        <a href="page-25-map.html">Regional map</a>
+      </nav>
+      <div class="actions" style="margin-left:auto;">
+        <button class="bell-btn" aria-label="Notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          <span class="bell-count">3</span>
+        </button>
+        <button aria-label="Open account menu" style="background:none;border:0;padding:0;cursor:pointer;border-radius:50%;">
+          <span class="avatar sm">MC</span>
+        </button>
+        <button class="menu-btn">Menu</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="app-main container wide">
+  <div class="page-intro">
+    <div class="intro-copy">
+      <span class="eyebrow">Your relationship journey</span>
+      <h1>Welcome, Marie</h1>
+      <p class="lead">Discover thoughtful recommendations, connect at your own pace, and see reconciliation circles forming near you.</p>
+      <div class="weave short" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <div class="alert info cohort-banner" role="alert">
+    <div class="cohort-circle sm ready" role="img" aria-label="5 of 5 seats filled, ready to gather">
+      <span class="seat filled"></span>
+      <span class="seat filled"></span>
+      <span class="seat filled"></span>
+      <span class="seat filled"></span>
+      <span class="seat filled"></span>
+      <span class="count">5</span>
+    </div>
+    <div class="banner-desc">
+      <span><strong>A reconciliation cohort is forming in Regina!</strong> There are 5 eligible participants in your area. As an elected leader, you can help bring this group together.</span>
+      <a class="btn btn-secondary sm" href="page-25-map.html" style="flex:none;">Create cohort</a>
+    </div>
+  </div>
+
+  <div>
+    <nav class="tabs" aria-label="Dashboard sections">
+      <a href="page-12-dashboard-recommended.html" aria-current="true">Recommended <span class="count">3</span></a>
+      <a href="page-17-dashboard-connections.html">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+        Connections <span class="count">3</span>
+      </a>
+      <a href="page-15-dashboard-participants-list.html">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        All participants
+      </a>
+    </nav>
+
+    <div style="margin-top:24px;">
+      <p class="small muted" style="margin-bottom:16px;">Your top 3 recommended connections, reviewed by RTR facilitators.</p>
+
+      <div class="match-grid">
+
+        <article class="card match-card">
+          <div class="match-head">
+            <span class="avatar">DT</span>
+            <div class="who">
+              <b>David Tremblay</b>
+              <span class="loc">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                Regina, Saskatchewan
+              </span>
+              <span class="tag ochre chip-xs" style="margin-top:4px;">Non-Indigenous</span>
+            </div>
+            <div class="score"><b>85%</b><span class="tiny">match</span></div>
+          </div>
+          <div class="match-body">
+            <div class="chips">
+              <span class="tag outline chip-xs">Location <b style="color:var(--primary);font-weight:500;">+30</b></span>
+              <span class="tag outline chip-xs">Availability <b style="color:var(--primary);font-weight:500;">+20</b></span>
+              <span class="tag outline chip-xs">Shared interests <b style="color:var(--primary);font-weight:500;">+15</b></span>
+              <span class="tag outline chip-xs">Format <b style="color:var(--primary);font-weight:500;">+10</b></span>
+              <span class="tag outline chip-xs">Language <b style="color:var(--primary);font-weight:500;">+10</b></span>
+            </div>
+            <div class="progress" style="height:6px;"><div class="bar" style="width:85%;"></div></div>
+            <p class="small muted clamp-2">Retired teacher in Regina hoping to listen more than I talk. My grandkids asked me what treaty we live on and I couldn't answer — that started this journey.</p>
+            <div class="chips">
+              <span class="tag ochre chip-xs">music</span>
+              <span class="tag ochre chip-xs">gardening</span>
+              <span class="tag ochre chip-xs">history</span>
+              <span class="tag ochre chip-xs">walking</span>
+              <span class="tag ochre chip-xs">+2 more</span>
+            </div>
+            <div class="match-actions">
+              <a class="btn btn-secondary sm flex-1" href="page-23-profile-other.html">View profile</a>
+              <a class="btn btn-primary sm flex-1" href="page-23-profile-other.html">Connect</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card match-card">
+          <div class="match-head">
+            <span class="avatar river">HM</span>
+            <div class="who">
+              <b>Helen McKay</b>
+              <span class="loc">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                Regina, Saskatchewan
+              </span>
+              <span class="tag ochre chip-xs" style="margin-top:4px;">Non-Indigenous</span>
+            </div>
+            <div class="score"><b>72%</b><span class="tiny">match</span></div>
+          </div>
+          <div class="match-body">
+            <div class="chips">
+              <span class="tag outline chip-xs">Location <b style="color:var(--primary);font-weight:500;">+30</b></span>
+              <span class="tag outline chip-xs">Shared interests <b style="color:var(--primary);font-weight:500;">+12</b></span>
+              <span class="tag outline chip-xs">Availability <b style="color:var(--primary);font-weight:500;">+10</b></span>
+              <span class="tag outline chip-xs">Faith tradition <b style="color:var(--primary);font-weight:500;">+10</b></span>
+              <span class="tag outline chip-xs">Language <b style="color:var(--primary);font-weight:500;">+10</b></span>
+            </div>
+            <div class="progress" style="height:6px;"><div class="bar" style="width:72%;"></div></div>
+            <p class="small muted clamp-2">Choir director and lifelong Regina resident. I want my faith community to be part of something honest.</p>
+            <div class="chips">
+              <span class="tag ochre chip-xs">choir</span>
+              <span class="tag ochre chip-xs">baking</span>
+              <span class="tag ochre chip-xs">volunteering</span>
+            </div>
+            <div class="match-actions">
+              <a class="btn btn-secondary sm flex-1" href="page-23-profile-other.html">View profile</a>
+              <a class="btn btn-primary sm flex-1" href="page-22-chat-active.html">Open chat</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card match-card">
+          <div class="match-head">
+            <span class="avatar ochre">JB</span>
+            <div class="who">
+              <b>Jonas Braun</b>
+              <span class="loc">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                Moose Jaw, Saskatchewan
+              </span>
+              <span class="tag ochre chip-xs" style="margin-top:4px;">Non-Indigenous</span>
+            </div>
+            <div class="score"><b>58%</b><span class="tiny">match</span></div>
+          </div>
+          <div class="match-body">
+            <div class="chips">
+              <span class="tag outline chip-xs">Availability <b style="color:var(--primary);font-weight:500;">+20</b></span>
+              <span class="tag outline chip-xs">Location <b style="color:var(--primary);font-weight:500;">+15</b></span>
+              <span class="tag outline chip-xs">Shared interests <b style="color:var(--primary);font-weight:500;">+8</b></span>
+              <span class="tag outline chip-xs">Language <b style="color:var(--primary);font-weight:500;">+10</b></span>
+            </div>
+            <div class="progress" style="height:6px;"><div class="bar" style="width:58%;"></div></div>
+            <p class="small muted clamp-2">Farmer and hockey dad an hour down the highway. New to all of this, showing up anyway.</p>
+            <div class="chips">
+              <span class="tag ochre chip-xs">hockey</span>
+              <span class="tag ochre chip-xs">farming</span>
+              <span class="tag ochre chip-xs">woodworking</span>
+            </div>
+            <div class="match-actions">
+              <a class="btn btn-secondary sm flex-1" href="page-23-profile-other.html">View profile</a>
+              <a class="btn btn-primary sm flex-1" href="page-19-chat-matched.html">Pending</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="app-footer panel-on-dark">
+  <div class="container wide">
+    <div class="row between" style="align-items:center;">
+      <div>
+        <h4>Reconciliation Through Relationships</h4>
+        <p style="margin:0;">Building meaningful relationships between Indigenous and non-Indigenous people.</p>
+        <p style="margin:4px 0 0;"><a href="https://rightrelationship.ca">rightrelationship.ca</a></p>
+      </div>
+      <div class="weave on-dark" style="width:240px;" aria-hidden="true"></div>
+    </div>
+    <p class="acknowledgment">Each gathering begins by acknowledging the treaty territory and traditional lands on which it takes place. Region-specific acknowledgments are confirmed with local Indigenous partners.</p>
+  </div>
+</footer>
+
+</body>
+</html>

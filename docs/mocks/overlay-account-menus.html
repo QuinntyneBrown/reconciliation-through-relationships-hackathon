@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account menus overlay — Reconciliation Through Relationships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<!--
+  Mirrors: the avatar dropdown menus opened from the account button in each
+  role's header. Three variants side by side:
+    · Participant — DashboardNav.tsx (src/app/dashboard/components/DashboardNav.tsx)
+    · Facilitator — FacilitatorNav.tsx (src/app/facilitator/components/FacilitatorNav.tsx)
+    · Learning   — LearningLayout.tsx (src/app/learn/components/LearningLayout.tsx)
+
+  Verified strings / icons / order:
+    Participant (w-56 ≈ 224px): name block "Marie Cardinal" + "Indigenous participant"
+      (`${is_indigenous ? "Indigenous" : "Non-Indigenous"} participant`, capitalize) →
+      separator → "My profile" (User icon) → separator → "Sign out" (LogOut, text-berry-700).
+    Facilitator (w-56 ≈ 224px): name block "Joel Gordon" + "Facilitator" →
+      separator → "Sign out" (LogOut, text-berry-700). No "My profile" item.
+    Learning: name block "Marie Cardinal" + "Learning journey" → separator →
+      "Dashboard" (LayoutDashboard icon) → "Sign out" (LogOut, text-destructive).
+      The "Dashboard" item is CONDITIONAL — it renders only when
+      profile.learning_completed is true. Shown here for that completed case.
+-->
+<style>
+  body { background: var(--birch); }
+  .mock-head { max-width: 760px; margin: 0 auto; padding: 40px 24px 8px; }
+  .mock-head h1 { margin-bottom: 8px; }
+  .mock-head .lead { margin: 0; }
+  .menus-demo {
+    display: flex; flex-wrap: wrap; gap: 32px;
+    align-items: flex-start; padding: 24px; max-width: 1000px; margin: 0 auto;
+  }
+  .menu-col { width: 280px; max-width: 100%; }
+  .variant-label {
+    font-size: 12.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--ink-soft); margin: 0 0 12px;
+  }
+  .menu-anchor-row { display: flex; justify-content: flex-end; margin-bottom: 8px; }
+  .menu-anchor {
+    background: none; border: 0; padding: 0; cursor: pointer; border-radius: 50%;
+  }
+  .menu-panel-wrap { display: flex; justify-content: flex-end; }
+</style>
+</head>
+<body>
+
+<div class="mock-head">
+  <span class="eyebrow">Overlay</span>
+  <h1>Account menus</h1>
+  <p class="lead">The avatar dropdown from each role's header — participant, facilitator, and the learning journey.</p>
+</div>
+
+<div class="menus-demo">
+
+  <!-- Participant -->
+  <section class="menu-col" aria-label="Participant account menu">
+    <p class="variant-label">Participant</p>
+    <div class="menu-anchor-row">
+      <button class="menu-anchor" aria-label="Open account menu" aria-haspopup="menu" aria-expanded="true">
+        <span class="avatar sm">MC</span>
+      </button>
+    </div>
+    <div class="menu-panel-wrap">
+      <div class="menu-panel" role="menu" aria-label="Account" style="width:224px;">
+        <div class="menu-label">
+          <b>Marie Cardinal</b>
+          Indigenous participant
+        </div>
+        <hr class="menu-sep">
+        <a class="menu-item" role="menuitem" href="page-24-profile-own.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          My profile
+        </a>
+        <hr class="menu-sep">
+        <button class="menu-item destructive" role="menuitem" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+          Sign out
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Facilitator -->
+  <section class="menu-col" aria-label="Facilitator account menu">
+    <p class="variant-label">Facilitator</p>
+    <div class="menu-anchor-row">
+      <button class="menu-anchor" aria-label="Open account menu" aria-haspopup="menu" aria-expanded="true">
+        <span class="avatar sm">JG</span>
+      </button>
+    </div>
+    <div class="menu-panel-wrap">
+      <div class="menu-panel" role="menu" aria-label="Account" style="width:224px;">
+        <div class="menu-label">
+          <b>Joel Gordon</b>
+          Facilitator
+        </div>
+        <hr class="menu-sep">
+        <button class="menu-item destructive" role="menuitem" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+          Sign out
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Learning journey -->
+  <section class="menu-col" aria-label="Learning journey account menu">
+    <p class="variant-label">Learning journey</p>
+    <div class="menu-anchor-row">
+      <button class="menu-anchor" aria-label="Open account menu" aria-haspopup="menu" aria-expanded="true">
+        <span class="avatar sm dark">MC</span>
+      </button>
+    </div>
+    <div class="menu-panel-wrap">
+      <div class="menu-panel" role="menu" aria-label="Account" style="width:224px;">
+        <div class="menu-label">
+          <b>Marie Cardinal</b>
+          Learning journey
+        </div>
+        <hr class="menu-sep">
+        <!-- "Dashboard" renders only when profile.learning_completed is true -->
+        <a class="menu-item" role="menuitem" href="page-12-dashboard-recommended.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+          Dashboard
+        </a>
+        <button class="menu-item destructive" role="menuitem" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+          Sign out
+        </button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+</body>
+</html>

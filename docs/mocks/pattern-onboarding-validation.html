@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onboarding validation pattern — Reconciliation Through Relationships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<style>
+  .pattern-toolbar { padding: var(--s4); background: var(--birch); border: 1px solid var(--border); border-radius: var(--r-lg); box-shadow: var(--shadow-1); }
+  .pattern-toolbar fieldset { margin: 0; padding: 0; border: 0; }
+  .pattern-toolbar legend { margin-bottom: var(--s2); font-weight: 700; color: var(--spruce-800); }
+  .pattern-options { display: flex; flex-wrap: wrap; gap: var(--s2); }
+  .pattern-options button[aria-pressed="true"] { background: var(--spruce-700); color: white; border-color: var(--spruce-700); }
+  .validation-summary { scroll-margin-top: var(--s4); }
+  .validation-summary h3 { font-family: var(--font-body); font-size: 16.5px; font-weight: 700; color: inherit; margin-bottom: var(--s2); }
+  .validation-summary ul { margin: 0; padding-left: 22px; }
+  .validation-summary a { color: inherit; }
+  .mock-group { border: 0; margin: 0; padding: 0; }
+  .mock-group > legend { display: block; width: 100%; font-weight: 700; color: var(--spruce-800); margin-bottom: var(--s2); }
+  .mock-group[aria-invalid="true"] { padding-left: var(--s3); border-left: 3px solid var(--berry-700); }
+  .mock-group:focus { outline: 2px solid var(--ochre-600); outline-offset: 4px; }
+  .mock-valid-note { border-left: 3px solid var(--spruce-600); padding-left: var(--s3); color: var(--spruce-700); }
+  .state-note { font-size: 14px; color: var(--ink-soft); }
+  @media (max-width: 620px) {
+    .pattern-options .btn { flex: 1 1 44%; }
+    .form-actions { align-items: stretch; flex-direction: column-reverse; }
+    .form-actions .btn { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="container wide">
+    <div class="bar">
+      <a class="brand" href="index.html">
+        <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <path d="M16 4 a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28 a12 12 0 0 1 0 -24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+        </svg>
+        <span><span class="brand-name">Reconciliation</span><span class="brand-sub">Through Relationships · Validation pattern</span></span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main class="container narrow">
+  <div class="page-title">
+    <span class="eyebrow">UI architecture specimen</span>
+    <h1>Enabled submission, clear errors</h1>
+    <p class="lead">Continue is always available. When required information is missing, one click reveals a complete summary and inline guidance without losing any entered information.</p>
+  </div>
+
+  <aside class="pattern-toolbar mb-5" aria-label="Mock controls">
+    <fieldset class="mb-4">
+      <legend>Affected onboarding step</legend>
+      <div class="pattern-options" id="step-options"></div>
+    </fieldset>
+    <fieldset>
+      <legend>Validation state</legend>
+      <div class="pattern-options" id="state-options"></div>
+    </fieldset>
+  </aside>
+
+  <section class="card card-pad mb-5" aria-live="polite">
+    <p class="eyebrow" id="step-count"></p>
+    <h2 id="step-title"></h2>
+    <p class="muted" id="step-description"></p>
+    <p class="state-note" id="state-note"></p>
+    <form id="validation-form" novalidate></form>
+  </section>
+</main>
+
+<footer class="app-footer">
+  <div class="container wide">
+    <div class="row between">
+      <p class="mb-0 small">Interactive mock · Select a step and state above</p>
+      <div class="weave on-dark short" role="presentation"></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const states = [
+    { id: "initial", label: "Initial", note: "No errors are shown before the first submission attempt." },
+    { id: "invalid", label: "Submitted invalid", note: "The error summary receives focus and every current error is also shown inline." },
+    { id: "partial", label: "Partially corrected", note: "Corrected errors disappear immediately; unresolved errors remain visible." },
+    { id: "valid", label: "Valid", note: "All requirements are met and the enabled button can advance to the next step." },
+  ];
+
+  const steps = [
+    {
+      id: "basic", label: "Basic Info", title: "Tell us about yourself", description: "This information helps us create your profile and find the right connections for you.",
+      fields: [
+        { id: "first_name", label: "First name *", error: "Enter your first name.", value: "Jamie" },
+        { id: "last_name", label: "Last name *", error: "Enter your last name.", value: "River" },
+        { id: "age", label: "Age *", error: "Enter an age from 13 to 120.", value: "34" },
+        { id: "indigenous_group", label: "Are you Indigenous? *", error: "Choose whether you are Indigenous.", value: "No", group: true },
+        { id: "sex_group", label: "Sex *", error: "Choose your sex.", value: "Prefer not to say", group: true },
+        { id: "participation_categories", label: "Participation categories *", error: "Choose at least one required participation category.", value: "Non-Indigenous Individual", group: true },
+      ],
+    },
+    {
+      id: "location", label: "Location", title: "Where are you located?", description: "Only your city will be shown on the map — never your exact address.",
+      fields: [
+        { id: "city", label: "City / Town / County *", error: "Enter your city, town, or county.", value: "Toronto" },
+        { id: "province", label: "Province / Territory *", error: "Choose a province or territory.", value: "Ontario" },
+      ],
+    },
+    {
+      id: "faith", label: "Faith & Interests", title: "Faith & Interests", description: "These help us find connections who share your values and passions.",
+      fields: [
+        { id: "faith_tradition", label: "Faith tradition *", error: "Choose a faith tradition or prefer not to say.", value: "Christian", group: true },
+      ],
+    },
+    {
+      id: "availability", label: "Availability", title: "Availability & Preferences", description: "Help us find connections who are available when you are.",
+      fields: [
+        { id: "participation_format", label: "Preferred participation format *", error: "Choose at least one participation format.", value: "Online (video calls)", group: true },
+        { id: "language_preferences", label: "Language preferences *", error: "Choose at least one language.", value: "English", group: true },
+      ],
+    },
+  ];
+
+  let currentStep = 0;
+  let currentState = "initial";
+
+  function activeErrors(step) {
+    if (currentState === "initial" || currentState === "valid") return [];
+    if (currentState === "partial") return step.fields.slice(1);
+    return step.fields;
+  }
+
+  function fieldMarkup(field, index, errors) {
+    const invalid = errors.some((item) => item.id === field.id);
+    const corrected = currentState === "valid" || (currentState === "partial" && index === 0);
+    const describedBy = invalid ? ` aria-describedby="${field.id}-error"` : "";
+    if (field.group) {
+      return `<fieldset class="field mock-group${invalid ? " error" : ""}" id="${field.id}" tabindex="-1" aria-invalid="${invalid}"${describedBy}>
+        <legend>${field.label}</legend>
+        <label class="choice"><input type="radio" ${corrected ? "checked" : ""}> ${corrected ? field.value : "First available option"}</label>
+        <label class="choice"><input type="radio"> Another option</label>
+        ${invalid ? `<p class="error-msg" id="${field.id}-error">⚠ ${field.error}</p>` : ""}
+      </fieldset>`;
+    }
+    return `<div class="field${invalid ? " error" : ""}">
+      <label for="${field.id}">${field.label}</label>
+      <input class="input" id="${field.id}" value="${corrected ? field.value : ""}" aria-invalid="${invalid}"${describedBy}>
+      ${invalid ? `<p class="error-msg" id="${field.id}-error">⚠ ${field.error}</p>` : ""}
+    </div>`;
+  }
+
+  function render() {
+    const step = steps[currentStep];
+    const errors = activeErrors(step);
+    document.getElementById("step-count").textContent = `Step ${currentStep + 1} of 4 impacted areas`;
+    document.getElementById("step-title").textContent = step.title;
+    document.getElementById("step-description").textContent = step.description;
+    document.getElementById("state-note").textContent = states.find((state) => state.id === currentState).note;
+
+    document.getElementById("step-options").innerHTML = steps.map((item, index) =>
+      `<button type="button" class="btn btn-secondary sm" data-step="${index}" aria-pressed="${index === currentStep}">${item.label}</button>`
+    ).join("");
+    document.getElementById("state-options").innerHTML = states.map((state) =>
+      `<button type="button" class="btn btn-secondary sm" data-state="${state.id}" aria-pressed="${state.id === currentState}">${state.label}</button>`
+    ).join("");
+
+    const summary = errors.length ? `<div class="alert danger validation-summary mb-5" id="validation-summary" role="alert" tabindex="-1" aria-labelledby="validation-summary-title">
+      <span class="alert-icon" aria-hidden="true">⚠</span><div>
+      <h3 id="validation-summary-title">Please fix ${errors.length} ${errors.length === 1 ? "error" : "errors"} to continue</h3>
+      <ul>${errors.map((item) => `<li><a href="#${item.id}">${item.error}</a></li>`).join("")}</ul></div></div>` : "";
+    const validNote = currentState === "valid" ? `<p class="mock-valid-note"><b>Ready to continue.</b> Submission advances to the next onboarding step.</p>` : "";
+    document.getElementById("validation-form").innerHTML = `${summary}${step.fields.map((field, index) => fieldMarkup(field, index, errors)).join("")}${validNote}
+      <div class="row between form-actions mt-5"><button type="button" class="btn btn-quiet">Back</button><button class="btn btn-primary" type="submit">Continue</button></div>`;
+
+    document.querySelectorAll("[data-step]").forEach((button) => button.addEventListener("click", () => { currentStep = Number(button.dataset.step); currentState = "initial"; render(); }));
+    document.querySelectorAll("[data-state]").forEach((button) => button.addEventListener("click", () => { currentState = button.dataset.state; render(); }));
+  }
+
+  document.getElementById("validation-form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (currentState !== "valid") {
+      currentState = "invalid";
+      render();
+      requestAnimationFrame(() => document.getElementById("validation-summary")?.focus());
+    }
+  });
+
+  render();
+</script>
+</body>
+</html>

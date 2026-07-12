@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Facilitator profile dialog — Reconciliation Through Relationships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<!--
+  Mirrors: the participant profile dialog in MatchingClient
+  (src/app/facilitator/matching/MatchingClient.tsx, ~lines 472-594), opened by
+  a facilitator tapping a participant on a mutual-request or approved-match card.
+  State: facilitator viewing Marie Cardinal (MC), an Indigenous participant.
+  DialogContent is max-w-lg (≈512px) — set inline on .modal below.
+  Section order matches source exactly: About · Treaty area · grid[Faith,
+  Languages, Format, Sex] · Roles · Interests · Personal boundaries ·
+  Additional info. These four are the sections the read-only partner dialog
+  (dialog-partner-profile.html) does NOT show: Sex, Roles, Personal boundaries,
+  Additional info. Labels render uppercase via CSS; each section renders only
+  when its field is present. No footer buttons — read-only; close ✕ only.
+-->
+<style>
+  body { background: var(--birch); }
+  .dlg-id { display: flex; gap: 12px; align-items: flex-start; }
+  .dlg-id .who { flex: 1; min-width: 0; }
+  .dlg-id h2 { margin: 0; }
+  .dlg-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 6px; }
+  .dlg-loc { display: inline-flex; align-items: center; gap: 4px; font-size: 12.5px; color: var(--muted-foreground); }
+  .dlg-loc svg { flex: none; }
+  .dlg-sections { font-size: 14px; }
+  .dlg-sections > * + * { margin-top: 16px; }          /* space-y-4 */
+  .dlg-sections p { margin: 0; }
+  .dlg-label {
+    font-size: 12px; font-weight: 600; letter-spacing: .04em;
+    text-transform: uppercase; color: var(--muted-foreground); margin-bottom: 4px;
+  }
+  .dlg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }  /* grid-cols-2 gap-4 */
+  .dlg-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+  .chip-xs { min-height: 0; padding: 2px 10px; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<!-- Blurred faux page behind the dialog (the facilitator matching screen) -->
+<div class="mock-page-behind" aria-hidden="true">
+  <div class="skeleton-bar" style="width:45%;"></div>
+  <div class="skeleton-block"></div>
+  <div class="skeleton-block"></div>
+  <div class="skeleton-bar" style="width:60%;"></div>
+</div>
+
+<div class="scrim">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="fp-title" style="max-width:512px;">
+    <button class="close" type="button" aria-label="Close">✕</button>
+
+    <div class="modal-header">
+      <div class="dlg-id">
+        <span class="avatar lg">MC</span>
+        <div class="who">
+          <h2 id="fp-title">Marie Cardinal</h2>
+          <div class="dlg-meta">
+            <span class="tag chip-xs">Indigenous</span>
+            <span class="dlg-loc">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              Regina, Saskatchewan
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-body">
+      <div class="dlg-sections">
+        <div>
+          <p class="dlg-label">About</p>
+          <p>Kokum raising two grandchildren in Regina. I've spent years being asked to explain, and I'm ready to meet people who genuinely want to do the work of learning.</p>
+        </div>
+
+        <div>
+          <p class="dlg-label">Treaty area</p>
+          <p>Treaty 4 Territory</p>
+        </div>
+
+        <div class="dlg-grid">
+          <div>
+            <p class="dlg-label">Faith</p>
+            <p>Traditional spirituality</p>
+          </div>
+          <div>
+            <p class="dlg-label">Languages</p>
+            <p>English, Cree</p>
+          </div>
+          <div>
+            <p class="dlg-label">Format</p>
+            <p>In person, Video call</p>
+          </div>
+          <div>
+            <p class="dlg-label">Sex</p>
+            <p>Female</p>
+          </div>
+        </div>
+
+        <div>
+          <p class="dlg-label">Roles</p>
+          <div class="dlg-chips">
+            <span class="tag outline chip-xs">Knowledge keeper</span>
+            <span class="tag outline chip-xs">Community member</span>
+          </div>
+        </div>
+
+        <div>
+          <p class="dlg-label">Interests</p>
+          <div class="dlg-chips">
+            <span class="tag ochre chip-xs">beading</span>
+            <span class="tag ochre chip-xs">drumming</span>
+            <span class="tag ochre chip-xs">gardening</span>
+            <span class="tag ochre chip-xs">storytelling</span>
+          </div>
+        </div>
+
+        <div>
+          <p class="dlg-label">Personal boundaries</p>
+          <p>Please no questions about residential schools in our first few conversations. I'll share when I'm ready.</p>
+        </div>
+
+        <div>
+          <p class="dlg-label">Additional info</p>
+          <p>I prefer to meet in the afternoon, and I'd love to include my grandchildren in some of our gatherings.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

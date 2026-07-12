@@ -8,6 +8,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="rtr.css">
+<!--
+  Gallery of the mock suite, in journey order. Every mock mirrors an
+  IMPLEMENTED screen, overlay, or state in the app (src/app, src/components).
+-->
 <style>
   .mock-link {
     display: block;
@@ -31,6 +35,15 @@
     color: var(--ochre-700);
     margin-right: 6px;
   }
+  .subhead {
+    grid-column: 1 / -1;
+    margin: var(--s3) 0 0;
+    font-size: 12px; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--ink-faint);
+  }
+  .subhead:first-child { margin-top: 0; }
+  .section h2 { margin-bottom: var(--s2); }
+  .section > .small { margin-bottom: var(--s4); }
 </style>
 </head>
 <body>
@@ -40,8 +53,8 @@
     <div class="bar">
       <a class="brand" href="index.html">
         <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
-          <path d="M16 4 a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
-          <path d="M16 28 a12 12 0 0 1 0 -24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
           <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
         </svg>
         <span><span class="brand-name">Reconciliation</span><span class="brand-sub">Through Relationships · Design mocks</span></span>
@@ -58,56 +71,124 @@
   <div class="page-title">
     <span class="eyebrow">Reconciliation Through Relationships</span>
     <h1>Design mocks</h1>
-    <p class="lead">HTML mockups for the Reconciliation Through Relationships platform, built from the challenge brief and product notes. Direction: <em>“two strands, one circle”</em> — spruce and birch from the land, ochre and river as the two relationship strands, and the cohort circle as the signature element. All names and data are synthetic.</p>
+    <p class="lead">A faithful catalog of the built platform — every page, overlay, and transient state, rendered in the app’s own components. Direction: <em>“two strands, one circle”</em> — spruce and birch from the land, ochre and river as the two relationship strands, the cohort circle as the signature element. All names and data are synthetic.</p>
     <div class="weave short mt-4" role="presentation"></div>
   </div>
 
+  <!-- ============================ DESIGN SYSTEM ============================ -->
   <section class="section" style="padding-top: var(--s5)">
     <h2>Design system</h2>
-    <div class="grid" style="grid-template-columns: 1fr">
-      <a class="mock-link" href="design-system.html"><b>Component library</b><span>Every component in one document — color, type, buttons, forms, tags, cards, cohort circle, navigation, alerts, tables, dialogs, empty states, accessibility commitments.</span></a>
-    </div>
-  </section>
-
-  <section class="section" style="padding-top: 0" id="pages">
-    <h2>Pages</h2>
-    <p class="small muted">The primary end-to-end participant journey, then the facilitator and administrator views.</p>
     <div class="grid cols-2">
-      <a class="mock-link" href="page-01-landing.html"><b><span class="num">01</span>Landing</b><span>Public welcome page — the invitation into the journey, four steps, participation categories.</span></a>
-      <a class="mock-link" href="page-02-signin.html"><b><span class="num">02</span>Sign in</b><span>Magic-link authentication (lightweight auth per the hackathon scope), with sent-link confirmation state.</span></a>
-      <a class="mock-link" href="page-03-onboarding.html"><b><span class="num">03</span>Onboarding</b><span>Profile intake, step 2 of 5 — basics, participation categories (required), faith tradition, bio.</span></a>
-      <a class="mock-link" href="page-04-learning.html"><b><span class="num">04</span>Learning journey</b><span>Four video modules with progress tracking, locked/complete states, eligibility explanation.</span></a>
-      <a class="mock-link" href="page-05-dashboard.html"><b><span class="num">05</span>Participant dashboard</b><span>Recommendation waiting, discovery filters, cohort-readiness circle, events, messages, profile nudge.</span></a>
-      <a class="mock-link" href="page-06-profile.html"><b><span class="num">06</span>My profile</b><span>View/edit own profile — location &amp; treaty, faith &amp; language, interests, availability, private boundaries, consent switches.</span></a>
-      <a class="mock-link" href="page-07-match.html"><b><span class="num">07</span>Connection review</b><span>An approved recommendation — profile, “why you two,” facilitator note, accept/decline/ask.</span></a>
-      <a class="mock-link" href="page-08-messages.html"><b><span class="num">08</span>Messages</b><span>Two-pane messaging between approved connections, boundaries banner, schedule-a-call entry point.</span></a>
-      <a class="mock-link" href="page-09-events.html"><b><span class="num">09</span>Events &amp; gatherings</b><span>Cohort events including June 21 and September 30 national days, registration states, empty state.</span></a>
-      <a class="mock-link" href="page-10-map.html"><b><span class="num">10</span>Regional map (facilitator)</b><span>Schematic region map with cohort circles, privacy rules, region list with “form cohort” action.</span></a>
-      <a class="mock-link" href="page-11-facilitator.html"><b><span class="num">11</span>Facilitator overview</b><span>Stats, match review queue, pending registrations, waitlist imbalance alert, reminders, safeguarding.</span></a>
-      <a class="mock-link" href="page-12-admin.html"><b><span class="num">12</span>Administration</b><span>People &amp; roles, learning content management, notification automations, cohort threshold, sign-in method.</span></a>
+      <a class="mock-link" href="design-system.html"><b>Component library</b><span>Every implemented component in one document — color, type, buttons, badges, forms, avatars, cards, tabs, alerts, toasts, dialogs, notifications, cohort circle, and accessibility commitments.</span></a>
+      <a class="mock-link" href="pattern-onboarding-validation.html"><b>Onboarding validation pattern</b><span>Interactive initial, submitted-invalid, partially corrected, and valid states for the onboarding steps that validate on submit.</span></a>
     </div>
   </section>
 
-  <section class="section" style="padding-top: 0" id="dialogs">
-    <h2>Dialogs</h2>
+  <!-- ============================ PUBLIC & AUTH ============================ -->
+  <section class="section" style="padding-top: 0" id="public">
+    <h2>Public &amp; auth</h2>
+    <p class="small muted">The way in — the public invitation and email-and-password sign in.</p>
     <div class="grid cols-2">
-      <a class="mock-link" href="dialog-connection-request.html"><b>Connection recommendation</b><span>Participant receives a facilitator-approved match — accept, see profile, or decide later.</span></a>
-      <a class="mock-link" href="dialog-schedule-call.html"><b>Schedule an introductory call</b><span>Time slots highlighting mutual availability; video or phone; no-recording notice.</span></a>
-      <a class="mock-link" href="dialog-consent-map.html"><b>Map consent</b><span>Opt-in to the regional map — exactly what is and isn’t shown, changeable any time.</span></a>
-      <a class="mock-link" href="dialog-approve-match.html"><b>Approve a match (facilitator)</b><span>Side-by-side comparison, match factors, required personal note, approve/adjust/decline.</span></a>
-      <a class="mock-link" href="dialog-create-event.html"><b>Create an event</b><span>Facilitator event form with region-wide invitations and venue privacy.</span></a>
-      <a class="mock-link" href="dialog-waitlist.html"><b>Waitlist pathway</b><span>Kind handling of registration imbalance — waitlist or learning-resources pathway.</span></a>
-      <a class="mock-link" href="dialog-send-reminder.html"><b>Send reminders (facilitator)</b><span>Recipient summary, template picker, editable preview, send-myself-a-test.</span></a>
-      <a class="mock-link" href="dialog-learning-complete.html"><b>Learning complete</b><span>The celebration moment — eligibility explained, next steps, consent entry point.</span></a>
+      <a class="mock-link" href="page-01-landing.html"><b><span class="num">01</span>Landing</b><span>Public welcome at <code>/</code> — hero with the relationship motif, how it works in four steps, who it’s for, testimonials, closing quote.</span></a>
+      <a class="mock-link" href="page-02-login.html"><b><span class="num">02</span>Log in</b><span><code>/auth/login</code> — centered card: email and password with a show/hide toggle, and a link to create an account.</span></a>
+      <a class="mock-link" href="page-03-signup.html"><b><span class="num">03</span>Sign up</b><span><code>/auth/signup</code> — split panel: a spruce aside with the brand and a quote, beside the Join RTR form.</span></a>
     </div>
   </section>
 
+  <!-- ============================ ONBOARDING ============================ -->
+  <section class="section" style="padding-top: 0" id="onboarding">
+    <h2>Onboarding</h2>
+    <p class="small muted">A five-step wizard, each step a full page with a progress bar and step chips.</p>
+    <div class="grid cols-2">
+      <a class="mock-link" href="page-04-onboarding-1-basics.html"><b><span class="num">04</span>Step 1 · Basic info</b><span>Name, age, bio, whether you’re Indigenous, sex, and participation-category cards.</span></a>
+      <a class="mock-link" href="page-04a-onboarding-1-invalid.html"><b><span class="num">04a</span>Step 1 · Submitted invalid</b><span>The error summary (“Please fix 6 errors to continue”) with anchor links, and inline field errors on every invalid control.</span></a>
+      <a class="mock-link" href="page-05-onboarding-2-location.html"><b><span class="num">05</span>Step 2 · Location</b><span>City, province or territory, treaty area, and a link out to native-land.ca.</span></a>
+      <a class="mock-link" href="page-06-onboarding-3-faith-interests.html"><b><span class="num">06</span>Step 3 · Faith &amp; interests</b><span>Faith-tradition radio cards and a free-form interest tag input.</span></a>
+      <a class="mock-link" href="page-07-onboarding-4-availability.html"><b><span class="num">07</span>Step 4 · Availability</b><span>Day, time, format, and language preference cards.</span></a>
+      <a class="mock-link" href="page-08-onboarding-5-matching.html"><b><span class="num">08</span>Step 5 · Matching</b><span>Preference switches, a personal-boundaries note, the map-consent card, and Complete profile.</span></a>
+    </div>
+  </section>
+
+  <!-- ============================ LEARNING ============================ -->
+  <section class="section" style="padding-top: 0" id="learning">
+    <h2>Learning</h2>
+    <p class="small muted">The learning journey at <code>/learn</code> — modules become a gate to matching.</p>
+    <div class="grid cols-2">
+      <a class="mock-link" href="page-09-learning-video.html"><b><span class="num">09</span>Video module</b><span>Sidebar module list (done, active, durations, optional badge) beside a 16:9 video frame and Mark complete.</span></a>
+      <a class="mock-link" href="page-10-learning-text.html"><b><span class="num">10</span>Text module</b><span>A markdown reading on a parchment card, with a Completed badge once you finish.</span></a>
+      <a class="mock-link" href="page-11-learning-complete.html"><b><span class="num">11</span>Journey complete</b><span>All required modules done — an accent panel, “Learning journey complete!”, and the redirect to matching.</span></a>
+    </div>
+  </section>
+
+  <!-- ============================ PARTICIPANT ============================ -->
+  <section class="section" style="padding-top: 0" id="participant">
+    <h2>Participant</h2>
+    <p class="small muted">The dashboard tabs, then connections, chat, profiles, and the regional map.</p>
+    <div class="grid cols-2">
+      <p class="subhead">Dashboard</p>
+      <a class="mock-link" href="page-12-dashboard-recommended.html"><b><span class="num">12</span>Recommended</b><span>Match cards with a score, criteria chips, a progress bar, and View profile / Connect.</span></a>
+      <a class="mock-link" href="page-13-dashboard-waitlist.html"><b><span class="num">13</span>Waitlist</b><span>Non-Indigenous participant with no recommendations — an info alert and a waiting empty state.</span></a>
+      <a class="mock-link" href="page-14-dashboard-cohort-banner.html"><b><span class="num">14</span>Cohort forming</b><span>Elected-leader state — a cohort banner with the cohort circle and Create cohort.</span></a>
+      <a class="mock-link" href="page-15-dashboard-participants-list.html"><b><span class="num">15</span>All participants · list</b><span>Search, province, background, and faith filters over a card grid with pagination.</span></a>
+      <a class="mock-link" href="page-16-dashboard-participants-map.html"><b><span class="num">16</span>All participants · map</b><span>The list⇄map toggle’s map view — a schematic Canada with city-level markers and a legend.</span></a>
+      <a class="mock-link" href="page-17-dashboard-connections.html"><b><span class="num">17</span>Connections tab</b><span>Status filter over rounded rows with Active / Pending / Under review badges.</span></a>
+      <p class="subhead">Connections &amp; chat</p>
+      <a class="mock-link" href="page-18-connections.html"><b><span class="num">18</span>My connections</b><span><code>/connections</code> — the full connections list, each row opening its chat.</span></a>
+      <a class="mock-link" href="page-19-chat-matched.html"><b><span class="num">19</span>Chat · matched</b><span>Neither has connected yet — a “matched with David” banner, a Connect button, and a disabled composer.</span></a>
+      <a class="mock-link" href="page-20-chat-waiting.html"><b><span class="num">20</span>Chat · waiting</b><span>“Waiting for David to accept your connection request…” banner state.</span></a>
+      <a class="mock-link" href="page-21-chat-review.html"><b><span class="num">21</span>Chat · under review</b><span>The “under facilitator review” banner state.</span></a>
+      <a class="mock-link" href="page-22-chat-active.html"><b><span class="num">22</span>Chat · active</b><span>Schedule call, a next-call meeting banner with Join Zoom, day-grouped bubbles with read receipts, and the composer.</span></a>
+      <p class="subhead">Profiles &amp; map</p>
+      <a class="mock-link" href="page-23-profile-other.html"><b><span class="num">23</span>Profile · someone else</b><span><code>/profile/[userId]</code> — header card with badges and treaty, a Connect button, and About / Details / Interests.</span></a>
+      <a class="mock-link" href="page-24-profile-own.html"><b><span class="num">24</span>Profile · your own</b><span>The same page viewed as yourself — no Connect button, a Back to dashboard link instead.</span></a>
+      <a class="mock-link" href="page-25-map.html"><b><span class="num">25</span>Regional map</b><span><code>/map</code> — region cards with cohort circles and “Ready to gather” / “N seats remaining” badges.</span></a>
+    </div>
+  </section>
+
+  <!-- ============================ FACILITATOR ============================ -->
+  <section class="section" style="padding-top: 0" id="facilitator">
+    <h2>Facilitator</h2>
+    <p class="small muted">The facilitator area — overview, match review, participants, and settings.</p>
+    <div class="grid cols-2">
+      <a class="mock-link" href="page-26-facilitator-overview.html"><b><span class="num">26</span>Overview</b><span><code>/facilitator</code> — five stat cards with Fraunces numbers and a Quick actions list.</span></a>
+      <a class="mock-link" href="page-27-facilitator-matching-mutual.html"><b><span class="num">27</span>Matches · mutual</b><span>The auto-matching switch, a manual-match card, and request cards with Approve / Reject.</span></a>
+      <a class="mock-link" href="page-28-facilitator-matching-approved.html"><b><span class="num">28</span>Matches · approved</b><span>Approved matches with score, progress, criteria chips, and Auto / Manual and Connected / Approved badges.</span></a>
+      <a class="mock-link" href="page-29-facilitator-participants.html"><b><span class="num">29</span>Participants</b><span>The participants table — name, location, background, journey progress, and joined date, with filters and pagination.</span></a>
+      <a class="mock-link" href="page-30-facilitator-settings.html"><b><span class="num">30</span>Settings</b><span>The matching card and the regional-cohorts card, where the cohort threshold is set (3–20).</span></a>
+    </div>
+  </section>
+
+  <!-- ============================ OVERLAYS ============================ -->
+  <section class="section" style="padding-top: 0" id="overlays">
+    <h2>Overlays</h2>
+    <p class="small muted">Dialogs, dropdowns, and the mobile navigation sheet, shown over a dimmed page.</p>
+    <div class="grid cols-2">
+      <a class="mock-link" href="dialog-schedule-call.html"><b>Schedule a call</b><span>The scheduling dialog — topic, date, time, and duration; a Zoom link is created and shared with both people.</span></a>
+      <a class="mock-link" href="dialog-partner-profile.html"><b>Chat partner profile</b><span>A read-only profile dialog opened from chat — background, treaty area, faith, languages, format, and interests.</span></a>
+      <a class="mock-link" href="dialog-facilitator-profile.html"><b>Matching profile (facilitator)</b><span>The fuller review dialog — adds sex, roles, personal boundaries, and additional info.</span></a>
+      <a class="mock-link" href="overlay-notifications.html"><b>Notifications</b><span>The bell dropdown — unread badge (3 and 9+), all four notification types, and the empty variant, side by side.</span></a>
+      <a class="mock-link" href="overlay-mobile-nav.html"><b>Mobile navigation</b><span>The right-side sheet — participant and facilitator link-sets shown together.</span></a>
+      <a class="mock-link" href="overlay-account-menus.html"><b>Account menus</b><span>Three avatar dropdown variants — participant, facilitator, and learning — side by side.</span></a>
+    </div>
+  </section>
+
+  <!-- ============================ STATE CATALOGS ============================ -->
+  <section class="section" style="padding-top: 0" id="states">
+    <h2>State catalogs</h2>
+    <p class="small muted">Every transient string in one place, checked line-by-line against the source.</p>
+    <div class="grid cols-2">
+      <a class="mock-link" href="states-toasts.html"><b>Toasts &amp; notifications</b><span>Every toast in the sonner style, grouped by feature, plus the notification-record templates that feed the bell.</span></a>
+      <a class="mock-link" href="states-feedback.html"><b>Validation, errors &amp; empties</b><span>Zod validation strings, API error messages, idle→pending button pairs, and every empty-state block.</span></a>
+    </div>
+  </section>
+
+  <!-- ============================ NOTES ============================ -->
   <section class="section" style="padding-top: 0">
     <h2>Notes for the team</h2>
     <div class="grid cols-2">
       <div class="card card-pad">
         <h4 class="mb-2">Sources</h4>
-        <p class="small mb-0">Built from <code>docs/challenge.txt</code> (hackathon brief) and <code>docs/brain-dump.txt</code> (product notes). Open decisions from those documents are reflected in-context — e.g. the cohort threshold, sign-in method, and browse-vs-recommend are all marked “pending RTR.”</p>
+        <p class="small mb-0">These mocks now mirror the <b>implemented</b> application. Ground truth is <code>src/app</code> and <code>src/components</code>; the shared <code>rtr.css</code> imports the same design tokens the app ships (<code>src/styles/design-tokens.css</code>). Every user-facing string is copied from source, not paraphrased. When a screen changes in the app, update its mock.</p>
       </div>
       <div class="card card-pad">
         <h4 class="mb-2">Cultural review</h4>

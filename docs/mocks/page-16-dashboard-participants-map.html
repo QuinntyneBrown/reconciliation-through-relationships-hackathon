@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard · Participant map — Reconciliation Through Relationships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<!--
+  Mirrors: /dashboard (src/app/dashboard/components/DashboardClient.tsx + AllParticipantsTab.tsx + ParticipantMap.tsx)
+  State: "All participants" tab, map view. The live app renders a Mapbox GL map of
+  Canada with initial markers (spruce = Indigenous, river = Non-Indigenous), popups,
+  legend, and a consent footnote. This mock is a static schematic stand-in.
+  Map empty state (mappable.length === 0): "No participants have consented to map display in this view."
+  Other states: page-15 (list view), page-12 (recommended), page-13 (waitlist),
+  page-14 (cohort banner), page-17 (connections tab).
+-->
+<style>
+  .app-main { padding-top: 32px; padding-bottom: 32px; }
+  .app-main > * + * { margin-top: 32px; }
+  .page-intro { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+  .page-intro .intro-copy { max-width: 768px; }
+  .page-intro h1 { margin-bottom: 4px; }
+  .page-intro .lead { margin: 0 0 16px; }
+  .tab-body { margin-top: 24px; display: flex; flex-direction: column; gap: 16px; }
+  .filters { display: flex; flex-direction: column; gap: 12px; }
+  @media (min-width: 640px) { .filters { flex-direction: row; } }
+  .filters .search { flex: 1; min-width: 0; }
+  @media (min-width: 640px) {
+    .filters .f-province { width: 192px; }
+    .filters .f-bg { width: 160px; }
+    .filters .f-faith { width: 176px; }
+  }
+  .view-toggle { display: flex; gap: 4px; border: 1.5px solid var(--border); border-radius: 10px; padding: 4px; flex: none; }
+  /* Map view (space-y-2) */
+  .map-view { display: flex; flex-direction: column; gap: 8px; }
+  .map-legend { display: flex; align-items: center; gap: 16px; font-size: 12px; color: var(--muted-foreground); }
+  .map-legend .leg { display: inline-flex; align-items: center; gap: 4px; }
+  .map-legend .dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+  .map-legend .dot.spruce { background: var(--spruce-700); }
+  .map-legend .dot.river { background: var(--river-700); }
+  .map-panel {
+    position: relative;
+    height: 480px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    background: #dfeaea;
+  }
+  .map-panel .map-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .marker {
+    position: absolute;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 10px; font-weight: 700;
+    box-shadow: 0 2px 4px rgba(0,0,0,.3);
+    transform: translate(-50%, -50%);
+  }
+  .marker.spruce { background: var(--spruce-700); }
+  .marker.river { background: var(--river-700); }
+  .map-popup {
+    position: absolute;
+    transform: translate(-50%, calc(-100% - 22px));
+    min-width: 140px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.18);
+    padding: 8px 10px;
+    z-index: 3;
+  }
+  .map-popup::after {
+    content: "";
+    position: absolute;
+    left: 50%; bottom: -7px;
+    width: 14px; height: 14px;
+    margin-left: -7px;
+    background: #fff;
+    transform: rotate(45deg);
+    box-shadow: 3px 3px 6px rgba(0,0,0,.08);
+  }
+  .map-popup .pp-name { font-weight: 600; font-size: 13px; margin: 0 0 2px; }
+  .map-popup .pp-city { font-size: 11px; color: #666; margin: 0 0 2px; }
+  .map-popup .pp-bg { font-size: 11px; margin: 0; }
+  .map-popup .pp-bg.spruce { color: var(--spruce-700); }
+  .map-popup .pp-bg.river { color: var(--river-700); }
+  .map-controls {
+    position: absolute;
+    top: 10px; right: 10px;
+    display: flex; flex-direction: column;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,.25);
+  }
+  .map-controls button {
+    width: 30px; height: 30px;
+    background: #fff; border: 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 17px; line-height: 1;
+    color: var(--ink-soft); cursor: pointer;
+  }
+  .map-controls button:last-child { border-bottom: 0; }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="container wide">
+    <div class="bar">
+      <a class="brand" href="page-12-dashboard-recommended.html">
+        <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+        </svg>
+        <span><span class="brand-name">Reconciliation</span><span class="brand-sub">Through Relationships</span></span>
+      </a>
+      <nav class="app-nav" aria-label="Main">
+        <a href="page-12-dashboard-recommended.html" aria-current="page">Home</a>
+        <a href="page-09-learning-video.html">Learning</a>
+        <a href="page-18-connections.html">Connections</a>
+        <a href="page-25-map.html">Regional map</a>
+      </nav>
+      <div class="actions" style="margin-left:auto;">
+        <button class="bell-btn" aria-label="Notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          <span class="bell-count">3</span>
+        </button>
+        <button aria-label="Open account menu" style="background:none;border:0;padding:0;cursor:pointer;border-radius:50%;">
+          <span class="avatar sm">MC</span>
+        </button>
+        <button class="menu-btn">Menu</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="app-main container wide">
+  <div class="page-intro">
+    <div class="intro-copy">
+      <span class="eyebrow">Your relationship journey</span>
+      <h1>Welcome, Marie</h1>
+      <p class="lead">Discover thoughtful recommendations, connect at your own pace, and see reconciliation circles forming near you.</p>
+      <div class="weave short" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <div>
+    <nav class="tabs" aria-label="Dashboard sections">
+      <a href="page-12-dashboard-recommended.html">Recommended <span class="count">3</span></a>
+      <a href="page-17-dashboard-connections.html">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+        Connections <span class="count">3</span>
+      </a>
+      <a href="page-15-dashboard-participants-list.html" aria-current="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        All participants
+      </a>
+    </nav>
+
+    <div class="tab-body">
+      <div class="filters">
+        <div class="search">
+          <input class="input" type="search" placeholder="Search by name, city, or interest…" aria-label="Search participants">
+        </div>
+        <select class="select f-province" aria-label="Filter by province">
+          <option selected>All provinces</option>
+          <option>Alberta</option>
+          <option>British Columbia</option>
+          <option>Manitoba</option>
+          <option>New Brunswick</option>
+          <option>Newfoundland and Labrador</option>
+          <option>Northwest Territories</option>
+          <option>Nova Scotia</option>
+          <option>Nunavut</option>
+          <option>Ontario</option>
+          <option>Prince Edward Island</option>
+          <option>Quebec</option>
+          <option>Saskatchewan</option>
+          <option>Yukon</option>
+        </select>
+        <select class="select f-bg" aria-label="Filter by background">
+          <option selected>All backgrounds</option>
+          <option>Indigenous</option>
+          <option>Non-Indigenous</option>
+        </select>
+        <select class="select f-faith" aria-label="Filter by faith tradition">
+          <option selected>All faiths</option>
+          <option>Indigenous Traditional</option>
+          <option>Christian</option>
+          <option>Muslim</option>
+          <option>Jewish</option>
+          <option>Hindu</option>
+          <option>Buddhist</option>
+          <option>Atheist</option>
+          <option>Other</option>
+        </select>
+        <div class="view-toggle" role="group" aria-label="View mode">
+          <a class="btn btn-quiet sm" href="page-15-dashboard-participants-list.html" aria-pressed="false">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            List
+          </a>
+          <button class="btn btn-primary sm" aria-pressed="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3Z"/><path d="M9 3v15"/><path d="M15 6v15"/></svg>
+            Map
+          </button>
+        </div>
+      </div>
+
+      <p class="small muted" style="margin:0;">8 participants</p>
+
+      <div class="map-view">
+        <div class="map-legend">
+          <span class="leg"><span class="dot spruce"></span> Indigenous participant</span>
+          <span class="leg"><span class="dot river"></span> Non-Indigenous participant</span>
+        </div>
+
+        <!-- static stand-in for Mapbox GL (src\app\dashboard\components\ParticipantMap.tsx) -->
+        <div class="map-panel" role="img" aria-label="Map of Canada showing participant locations at the city level">
+          <svg class="map-svg" viewBox="0 0 800 480" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <rect width="800" height="480" fill="#dfeaea"/>
+            <!-- Abstract Canada-ish landmass in soft sage; not to scale -->
+            <path fill="#cfe0d2" stroke="#bcd2c0" stroke-width="2" d="M70 250 C60 200 110 150 150 140 C180 90 250 70 300 95 C340 60 420 55 470 90 C520 70 600 85 640 120 C700 130 745 175 735 225 C760 260 740 315 700 330 C690 375 630 400 585 385 C560 420 500 430 460 405 C420 435 350 435 315 405 C275 425 205 420 175 385 C120 380 75 340 85 295 C70 285 68 265 70 250 Z"/>
+            <!-- inland waters -->
+            <path fill="#dfeaea" d="M330 210 C360 195 395 205 400 235 C405 265 375 285 345 275 C315 265 305 225 330 210 Z"/>
+            <path fill="#dfeaea" d="M520 250 C545 240 570 255 565 280 C560 300 530 305 512 290 C498 278 502 258 520 250 Z"/>
+            <!-- coastline hint -->
+            <path fill="none" stroke="#bcd2c0" stroke-width="1.5" stroke-linecap="round" d="M150 315 C210 330 280 330 330 315"/>
+          </svg>
+
+          <div class="map-controls" aria-hidden="true">
+            <button type="button" tabindex="-1">+</button>
+            <button type="button" tabindex="-1">&minus;</button>
+          </div>
+
+          <!-- markers (spruce = Indigenous, river = Non-Indigenous) -->
+          <span class="marker spruce" style="left:47%; top:41%;" title="Sarah Whitecalf">SW</span>
+          <span class="marker river"  style="left:56%; top:56%;" title="David Tremblay">DT</span>
+          <span class="marker river"  style="left:52%; top:62%;" title="Helen McKay">HM</span>
+          <span class="marker spruce" style="left:41%; top:31%;" title="Robert Nighttraveller">RN</span>
+          <span class="marker spruce" style="left:50%; top:64%;" title="Margaret Bear">MB</span>
+          <span class="marker river"  style="left:62%; top:50%;" title="Linda Anderson">LA</span>
+          <span class="marker spruce" style="left:38%; top:22%;" title="Thomas Fiddler">TF</span>
+
+          <!-- one open popup (mirrors ParticipantMap popup content) -->
+          <div class="map-popup" style="left:47%; top:41%;">
+            <p class="pp-name">Sarah Whitecalf</p>
+            <p class="pp-city">Saskatoon, Saskatchewan</p>
+            <p class="pp-bg spruce">Indigenous</p>
+          </div>
+        </div>
+
+        <p class="small muted" style="margin:0;">Only showing participants who consented to map display. Locations are city-level only.</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="app-footer panel-on-dark">
+  <div class="container wide">
+    <div class="row between" style="align-items:center;">
+      <div>
+        <h4>Reconciliation Through Relationships</h4>
+        <p style="margin:0;">Building meaningful relationships between Indigenous and non-Indigenous people.</p>
+        <p style="margin:4px 0 0;"><a href="https://rightrelationship.ca">rightrelationship.ca</a></p>
+      </div>
+      <div class="weave on-dark" style="width:240px;" aria-hidden="true"></div>
+    </div>
+    <p class="acknowledgment">Each gathering begins by acknowledging the treaty territory and traditional lands on which it takes place. Region-specific acknowledgments are confirmed with local Indigenous partners.</p>
+  </div>
+</footer>
+
+</body>
+</html>

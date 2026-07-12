@@ -5,19 +5,106 @@ test.describe("onboarding", () => {
     await login.signInAs("new");
   });
 
-  test("required fields gate each step and back navigation preserves entered data", async ({
+  test("enabled Continue reveals every error and clears errors as fields are corrected", async ({
     onboarding,
   }) => {
     await expect(onboarding.heading("Tell us about yourself")).toBeVisible();
-    await expect(onboarding.continueButton()).toBeDisabled();
+    await expect(onboarding.continueButton()).toBeEnabled();
+    await onboarding.continueButton().click();
+
+    const summary = onboarding.page.getByRole("alert", {
+      name: "Please fix 6 errors to continue",
+    });
+    await expect(summary).toBeFocused();
+    await expect(
+      summary.getByRole("heading", { name: "Please fix 6 errors to continue" }),
+    ).toBeVisible();
+    await expect(summary.getByRole("link", { name: "Enter your first name." })).toHaveAttribute(
+      "href",
+      "#first_name",
+    );
+    await expect(summary.getByRole("link", { name: "Enter your last name." })).toBeVisible();
+    await expect(summary.getByRole("link", { name: "Enter an age from 13 to 120." })).toBeVisible();
+    await expect(
+      summary.getByRole("link", { name: "Choose whether you are Indigenous." }),
+    ).toBeVisible();
+    await expect(summary.getByRole("link", { name: "Choose your sex." })).toBeVisible();
+    await expect(
+      summary.getByRole("link", {
+        name: "Choose at least one required participation category.",
+      }),
+    ).toBeVisible();
+
+    const firstName = onboarding.page.getByLabel("First name *");
+    await expect(firstName).toHaveAttribute("aria-invalid", "true");
+    await expect(firstName).toHaveAttribute("aria-describedby", "first_name-error");
+    await summary.getByRole("link", { name: "Enter your first name." }).click();
+    await expect(firstName).toBeFocused();
+    await firstName.fill("Jamie");
+    await expect(summary.getByRole("link", { name: "Enter your first name." })).toHaveCount(0);
+    await expect(firstName).not.toHaveAttribute("aria-invalid", "true");
+
     await onboarding.completeBasicInfo();
     await expect(onboarding.heading("Where are you located?")).toBeVisible();
-    await expect(onboarding.continueButton()).toBeDisabled();
+    await expect(onboarding.continueButton()).toBeEnabled();
+    await onboarding.continueButton().click();
+    await expect(
+      onboarding.page.getByRole("alert", { name: "Please fix 2 errors to continue" }),
+    ).toBeVisible();
+    await expect(
+      onboarding.page.getByText("Enter your city, town, or county.", { exact: true }),
+    ).toHaveCount(2);
+    await expect(
+      onboarding.page.getByText("Choose a province or territory.", { exact: true }),
+    ).toHaveCount(2);
     await onboarding.goBack();
     await expect(onboarding.page.getByLabel("First name *")).toHaveValue("Jamie");
     await expect(
       onboarding.page.getByRole("checkbox", { name: "Non-Indigenous Individual" }),
     ).toBeChecked();
+  });
+
+  test("age validation explains the accepted range", async ({ onboarding }) => {
+    await onboarding.page.getByLabel("First name *").fill("Jamie");
+    await onboarding.page.getByLabel("Last name *").fill("River");
+    await onboarding.page.getByLabel("Age *").fill("12");
+    await onboarding.page.getByRole("radio", { name: "No", exact: true }).click();
+    await onboarding.page.getByRole("radio", { name: "Prefer not to say", exact: true }).click();
+    await onboarding.page.getByRole("checkbox", { name: "Non-Indigenous Individual" }).click();
+    await onboarding.continueButton().click();
+
+    await expect(
+      onboarding.page.getByRole("alert", { name: "Please fix 1 error to continue" }),
+    ).toContainText("Enter an age from 13 to 120.");
+    await expect(onboarding.page.getByLabel("Age *")).toHaveAttribute("aria-invalid", "true");
+  });
+
+  test("later onboarding steps reveal required group errors on submit", async ({ onboarding }) => {
+    await onboarding.completeBasicInfo();
+    await onboarding.completeLocation();
+
+    await expect(onboarding.continueButton()).toBeEnabled();
+    await onboarding.continueButton().click();
+    await expect(
+      onboarding.page.getByRole("alert", { name: "Please fix 1 error to continue" }),
+    ).toContainText("Choose a faith tradition or prefer not to say.");
+    await expect(onboarding.page.getByRole("radio", { name: "Christian" })).toHaveAttribute(
+      "aria-invalid",
+      "true",
+    );
+
+    await onboarding.page.getByRole("radio", { name: "Christian" }).click();
+    await expect(onboarding.page.getByRole("alert")).toHaveCount(1);
+    await onboarding.continueButton().click();
+
+    await expect(onboarding.continueButton()).toBeEnabled();
+    await onboarding.continueButton().click();
+    await expect(
+      onboarding.page.getByRole("alert", { name: "Please fix 2 errors to continue" }),
+    ).toContainText("Choose at least one participation format.");
+    await expect(
+      onboarding.page.getByRole("alert", { name: "Please fix 2 errors to continue" }),
+    ).toContainText("Choose at least one language.");
   });
 
   test("the five-step form persists all preferences and opens learning", async ({

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notifications overlay — Reconciliation Through Relationships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<!--
+  Mirrors: NotificationCenter (src/components/notification-center.tsx) — the bell
+  dropdown in the spruce app header. Shown as three side-by-side variants:
+  populated (3 unread), empty, and a 9+ unread badge.
+
+  Bell badge: unread > 9 ? "9+" : unread  (ochre-500 on spruce-900).
+  Panel: DropdownMenuContent align="end" className="w-80 p-0" (≈320px).
+  Head: "Notifications" + "Mark all read" (Mark all read hidden when unread === 0).
+  Per-type icons (TYPE_ICONS): connect_request=Heart, match_approved=CheckCircle2,
+  new_message=MessageCircle, meeting_scheduled=Video. Unread rows: bold title +
+  bg-primary/5 tint + trailing dot. Times use formatDistanceToNow(addSuffix).
+
+  Notification title/body templates (verified against source call sites):
+    · connect_request  — ConnectionChat.tsx: `${first} ${last} wants to connect`
+                         / "Click to accept and start chatting."  (rendered here for David).
+                         NOTE: ConnectButton.tsx uses a DIFFERENT template for the same
+                         type — title "Someone wants to connect with you" /
+                         body "Visit your connections to accept."
+    · match_approved   — MatchingClient.updateMatchStatus: "Your match has been approved!"
+                         / "A facilitator has approved your connection. Visit your connections to begin."
+                         NOTE: MatchingClient's mutual-approve button uses a variant —
+                         "Your connection has been approved!" / "Visit your connections to start chatting."
+    · new_message      — ConnectionChat.tsx: `New message from ${first}` / body is the
+                         message, truncated to 80 chars + "…" when longer.
+    · meeting_scheduled — zoom/create-meeting/route.ts: "A call has been scheduled" / body = meeting topic.
+-->
+<style>
+  body { background: var(--birch); }
+  .mock-head { max-width: 760px; margin: 0 auto; padding: 40px 24px 8px; }
+  .mock-head h1 { margin-bottom: 8px; }
+  .mock-head .lead { margin: 0; }
+  .notif-demo {
+    display: flex; flex-wrap: wrap; gap: 32px;
+    align-items: flex-start; padding: 24px; max-width: 1160px; margin: 0 auto;
+  }
+  .notif-col { width: 340px; max-width: 100%; }
+  .variant-label {
+    font-size: 12.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--ink-soft); margin: 0 0 12px;
+  }
+  /* Faux spruce header strip that anchors the dropdown. */
+  .notif-strip {
+    background: var(--spruce-800); border-radius: 12px;
+    display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+    padding: 10px 12px; margin-bottom: 8px;
+  }
+  .notif-strip .avatar { border: 0; }
+  .notif-panel-wrap { display: flex; justify-content: flex-end; }
+  .notif-panel { width: 320px; }
+  .notif-item .notif-content { min-width: 0; flex: 1; }
+  .notif-head button {
+    background: none; border: 0; cursor: pointer;
+    font-size: 13.5px; font-weight: 600; color: var(--primary);
+  }
+  .notif-head button:hover { color: var(--primary-hover); }
+</style>
+</head>
+<body>
+
+<div class="mock-head">
+  <span class="eyebrow">Overlay</span>
+  <h1>Notification center</h1>
+  <p class="lead">The bell dropdown from the app header, shown populated, empty, and with a 9+ unread badge.</p>
+</div>
+
+<div class="notif-demo">
+
+  <!-- Variant 1: populated, 3 unread -->
+  <section class="notif-col" aria-label="Notifications, 3 unread">
+    <p class="variant-label">Populated · 3 unread</p>
+    <div class="notif-strip">
+      <button class="bell-btn" aria-label="Notifications" aria-haspopup="menu" aria-expanded="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        <span class="bell-count">3</span>
+      </button>
+      <span class="avatar sm">MC</span>
+    </div>
+
+    <div class="notif-panel-wrap">
+      <div class="menu-panel notif-panel" role="menu" aria-label="Notifications">
+        <div class="notif-head">
+          <p>Notifications</p>
+          <button type="button">Mark all read</button>
+        </div>
+
+        <a class="notif-item unread" href="page-19-chat-matched.html">
+          <span class="notif-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.49 4.04 3 5.5l7 7Z"/></svg>
+          </span>
+          <div class="notif-content">
+            <p class="notif-title">David Tremblay wants to connect</p>
+            <p class="notif-body">Click to accept and start chatting.</p>
+            <p class="notif-time">5 minutes ago</p>
+          </div>
+          <span class="notif-dot" aria-hidden="true"></span>
+        </a>
+
+        <a class="notif-item unread" href="page-18-connections.html">
+          <span class="notif-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          </span>
+          <div class="notif-content">
+            <p class="notif-title">Your match has been approved!</p>
+            <p class="notif-body">A facilitator has approved your connection. Visit your connections to begin.</p>
+            <p class="notif-time">about 2 hours ago</p>
+          </div>
+          <span class="notif-dot" aria-hidden="true"></span>
+        </a>
+
+        <a class="notif-item unread" href="page-22-chat-active.html">
+          <span class="notif-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+          </span>
+          <div class="notif-content">
+            <p class="notif-title">New message from David</p>
+            <p class="notif-body">Thank you so much for accepting my request. I've been looking forward to connect…</p>
+            <p class="notif-time">1 day ago</p>
+          </div>
+          <span class="notif-dot" aria-hidden="true"></span>
+        </a>
+
+        <a class="notif-item" href="page-22-chat-active.html">
+          <span class="notif-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/></svg>
+          </span>
+          <div class="notif-content">
+            <p class="notif-title">A call has been scheduled</p>
+            <p class="notif-body">RTR Connection Call — Marie &amp; David</p>
+            <p class="notif-time">3 days ago</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Variant 2: empty -->
+  <section class="notif-col" aria-label="Notifications, empty">
+    <p class="variant-label">Empty · 0 unread</p>
+    <div class="notif-strip">
+      <button class="bell-btn" aria-label="Notifications" aria-haspopup="menu" aria-expanded="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+      </button>
+      <span class="avatar sm">MC</span>
+    </div>
+
+    <div class="notif-panel-wrap">
+      <div class="menu-panel notif-panel" role="menu" aria-label="Notifications">
+        <div class="notif-head">
+          <p>Notifications</p>
+          <!-- Mark all read is hidden because unread === 0 -->
+        </div>
+        <div class="notif-empty">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          No notifications yet
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Variant 3: bell with 9+ badge (dropdown closed) -->
+  <section class="notif-col" aria-label="Notifications, 9 or more unread">
+    <p class="variant-label">Bell · 9+ unread</p>
+    <div class="notif-strip">
+      <button class="bell-btn" aria-label="Notifications" aria-haspopup="menu" aria-expanded="false">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        <span class="bell-count">9+</span>
+      </button>
+      <span class="avatar sm">MC</span>
+    </div>
+    <p class="small muted" style="margin:4px 0 0;">Any unread count above nine collapses to <b>9+</b>.</p>
+  </section>
+
+</div>
+
+</body>
+</html>

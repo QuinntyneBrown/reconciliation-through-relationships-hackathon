@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My connections — Reconciliation Through Relationships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<!--
+  Mirrors: /connections (src/app/connections/page.tsx)
+  State: participant with three connections, matching the dashboard snapshot
+  (Connections count = 3): Helen McKay active, Jonas Braun pending, Robert
+  Nighttraveller under review. Empty variant ("No active connections yet")
+  lives in states-feedback.html.
+  Badge fidelity (src lines 94-101): the /connections LIST renders only two
+  badges — Active (Badge variant "matched" → .pill.matched, river dot) or
+  Pending (Badge variant "secondary" → .tag.ochre + Clock icon, NO dot). It has
+  no separate "Under review" badge, so Robert's pending_review connection shows
+  as "Pending" here; it reads "Under review" only on the dashboard Connections
+  tab (page-17, ConnectionsTab).
+  Rows link to the chat state mocks (19-22), which use David as the single
+  demonstration partner — so a row's name may differ from the partner shown in
+  the linked chat state (an inherent limit of a one-file-per-state catalog).
+  Note: location renders the template {city}, {province}. The suite standardizes
+  on full province names, matching how onboarding (StepLocation) stores
+  user-entered profiles; seeded rows that carry the 2-letter code (e.g. "SK")
+  would render the abbreviation instead.
+-->
+<style>
+  .app-main { padding-top: 32px; padding-bottom: 32px; }
+  .app-main > * + * { margin-top: 32px; }
+  .conn-list { display: flex; flex-direction: column; gap: 8px; }
+  .conn-row .who { min-width: 0; flex: 1; }
+  .conn-row .who .name { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0; }
+  .conn-row .who .loc { font-size: 12.5px; color: var(--muted-foreground); margin: 0; }
+  .conn-row .status { display: flex; align-items: center; gap: 8px; }
+  /* Pending badge = Badge variant "secondary": ochre subtle + Clock, no dot. */
+  .status-pending { min-height: 0; padding: 3px 11px; font-size: 12.5px; gap: 6px; }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="container wide">
+    <div class="bar">
+      <a class="brand" href="page-12-dashboard-recommended.html">
+        <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+        </svg>
+        <span><span class="brand-name">Reconciliation</span><span class="brand-sub">Through Relationships</span></span>
+      </a>
+      <nav class="app-nav" aria-label="Main">
+        <a href="page-12-dashboard-recommended.html">Home</a>
+        <a href="page-09-learning-video.html">Learning</a>
+        <a href="page-18-connections.html" aria-current="page">Connections</a>
+        <a href="page-25-map.html">Regional map</a>
+      </nav>
+      <div class="actions" style="margin-left:auto;">
+        <button class="bell-btn" aria-label="Notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          <span class="bell-count">3</span>
+        </button>
+        <button aria-label="Open account menu" style="background:none;border:0;padding:0;cursor:pointer;border-radius:50%;">
+          <span class="avatar sm">MC</span>
+        </button>
+        <button class="menu-btn">Menu</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="app-main container" style="max-width:896px;">
+  <div class="page-intro">
+    <div class="intro-copy" style="max-width:768px;">
+      <span class="eyebrow">Walking together</span>
+      <h1>My connections</h1>
+      <p class="lead" style="margin:4px 0 0;">Relationships grow at their own pace. Return to a conversation or see where a new introduction stands.</p>
+      <div class="weave short" style="margin-top:16px;" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <div class="conn-list">
+
+    <a class="list-row conn-row" href="page-22-chat-active.html">
+      <span class="avatar river">HM</span>
+      <div class="who">
+        <p class="name">Helen McKay</p>
+        <p class="loc">Regina, Saskatchewan</p>
+      </div>
+      <div class="status">
+        <span class="pill matched">Active</span>
+      </div>
+    </a>
+
+    <a class="list-row conn-row" href="page-19-chat-matched.html">
+      <span class="avatar ochre">JB</span>
+      <div class="who">
+        <p class="name">Jonas Braun</p>
+        <p class="loc">Moose Jaw, Saskatchewan</p>
+      </div>
+      <div class="status">
+        <span class="tag ochre status-pending">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Pending
+        </span>
+      </div>
+    </a>
+
+    <!-- Robert's connection is pending_review; the /connections list has no
+         "Under review" badge, so it renders as "Pending" (isActive === false). -->
+    <a class="list-row conn-row" href="page-21-chat-review.html">
+      <span class="avatar">RN</span>
+      <div class="who">
+        <p class="name">Robert Nighttraveller</p>
+        <p class="loc">Regina, Saskatchewan</p>
+      </div>
+      <div class="status">
+        <span class="tag ochre status-pending">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Pending
+        </span>
+      </div>
+    </a>
+
+  </div>
+</main>
+
+<footer class="app-footer panel-on-dark">
+  <div class="container wide">
+    <div class="row between" style="align-items:center;">
+      <div>
+        <h4>Reconciliation Through Relationships</h4>
+        <p style="margin:0;">Building meaningful relationships between Indigenous and non-Indigenous people.</p>
+        <p style="margin:4px 0 0;"><a href="https://rightrelationship.ca">rightrelationship.ca</a></p>
+      </div>
+      <div class="weave on-dark" style="width:240px;" aria-hidden="true"></div>
+    </div>
+    <p class="acknowledgment">Each gathering begins by acknowledging the treaty territory and traditional lands on which it takes place. Region-specific acknowledgments are confirmed with local Indigenous partners.</p>
+  </div>
+</footer>
+
+</body>
+</html>

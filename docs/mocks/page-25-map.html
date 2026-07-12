@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regional map & cohorts — Reconciliation Through Relationships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<!--
+  Mirrors: /map (src/app/map/page.tsx) — PARTICIPANT view (role-aware page; the
+  facilitator variant swaps DashboardNav for FacilitatorNav, otherwise identical).
+  State: 4 consenting regions, one at threshold (Regina, "Ready to gather").
+  NOTE: the implementation renders a grid of region CARDS, not a real map — the
+  source carries a TODO to replace the list with react-leaflet / MapLibre using
+  participant lat/lng. The dashboard's "All participants" tab holds the real
+  Mapbox map (see page-16-dashboard-participants-map.html).
+-->
+<style>
+  .app-main { padding-top: 32px; padding-bottom: 32px; }
+  .app-main > * + * { margin-top: 32px; }
+  .page-intro .intro-copy { max-width: 768px; }
+  .page-intro h1 { margin-bottom: 4px; }
+  .page-intro .lead { margin: 0 0 16px; }
+  .region-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .region-card .region-head { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 24px; padding: 24px; }
+  .region-title { font-size: 20px; margin: 0; }
+  .region-count { margin: 4px 0 0; font-size: 14px; color: var(--muted-foreground); }
+  .region-card .pill { margin-top: 12px; }
+  .count-line { font-size: 14px; color: var(--ink-soft); }
+  @media (max-width: 900px) { .region-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 620px) { .region-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="container wide">
+    <div class="bar">
+      <a class="brand" href="page-12-dashboard-recommended.html">
+        <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+        </svg>
+        <span><span class="brand-name">Reconciliation</span><span class="brand-sub">Through Relationships</span></span>
+      </a>
+      <nav class="app-nav" aria-label="Main">
+        <a href="page-12-dashboard-recommended.html">Home</a>
+        <a href="page-09-learning-video.html">Learning</a>
+        <a href="page-18-connections.html">Connections</a>
+        <a href="page-25-map.html" aria-current="page">Regional map</a>
+      </nav>
+      <div class="actions" style="margin-left:auto;">
+        <button class="bell-btn" aria-label="Notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          <span class="bell-count">3</span>
+        </button>
+        <button aria-label="Open account menu" style="background:none;border:0;padding:0;cursor:pointer;border-radius:50%;">
+          <span class="avatar sm">MC</span>
+        </button>
+        <button class="menu-btn">Menu</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="app-main container wide">
+  <div class="page-intro">
+    <div class="intro-copy">
+      <span class="eyebrow">Consent-first discovery</span>
+      <h1>Regional map &amp; cohorts</h1>
+      <p class="lead">Only participants who completed the learning journey <em>and</em> consented to appear are shown. Regions—not precise locations—protect participant privacy.</p>
+      <div class="weave short" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <div class="region-grid">
+
+    <article class="card region-card">
+      <div class="region-head">
+        <div class="cohort-circle ready" role="img" aria-label="5 of 5 seats filled, ready to gather">
+          <span class="seat filled"></span>
+          <span class="seat filled"></span>
+          <span class="seat filled"></span>
+          <span class="seat filled"></span>
+          <span class="seat filled"></span>
+          <span class="count">5<small>ready</small></span>
+        </div>
+        <div>
+          <h3 class="region-title">Regina, Saskatchewan</h3>
+          <p class="region-count">5 eligible participants</p>
+          <span class="pill eligible">Ready to gather</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card region-card">
+      <div class="region-head">
+        <div class="cohort-circle" role="img" aria-label="3 of 5 seats filled">
+          <span class="seat filled"></span>
+          <span class="seat filled"></span>
+          <span class="seat filled"></span>
+          <span class="seat"></span>
+          <span class="seat"></span>
+          <span class="count">3<small>of 5</small></span>
+        </div>
+        <div>
+          <h3 class="region-title">Saskatoon, Saskatchewan</h3>
+          <p class="region-count">3 eligible participants</p>
+          <span class="pill pending">2 seats remaining</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card region-card">
+      <div class="region-head">
+        <div class="cohort-circle" role="img" aria-label="2 of 5 seats filled">
+          <span class="seat filled"></span>
+          <span class="seat filled"></span>
+          <span class="seat"></span>
+          <span class="seat"></span>
+          <span class="seat"></span>
+          <span class="count">2<small>of 5</small></span>
+        </div>
+        <div>
+          <h3 class="region-title">Fort Qu'Appelle, Saskatchewan</h3>
+          <p class="region-count">2 eligible participants</p>
+          <span class="pill pending">3 seats remaining</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card region-card">
+      <div class="region-head">
+        <div class="cohort-circle" role="img" aria-label="1 of 5 seats filled">
+          <span class="seat filled"></span>
+          <span class="seat"></span>
+          <span class="seat"></span>
+          <span class="seat"></span>
+          <span class="seat"></span>
+          <span class="count">1<small>of 5</small></span>
+        </div>
+        <div>
+          <h3 class="region-title">Swift Current, Saskatchewan</h3>
+          <p class="region-count">1 eligible participant</p>
+          <span class="pill pending">4 seats remaining</span>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <p class="count-line">11 consenting participants across 4 regions.</p>
+</main>
+
+<footer class="app-footer panel-on-dark">
+  <div class="container wide">
+    <div class="row between" style="align-items:center;">
+      <div>
+        <h4>Reconciliation Through Relationships</h4>
+        <p style="margin:0;">Building meaningful relationships between Indigenous and non-Indigenous people.</p>
+        <p style="margin:4px 0 0;"><a href="https://rightrelationship.ca">rightrelationship.ca</a></p>
+      </div>
+      <div class="weave on-dark" style="width:240px;" aria-hidden="true"></div>
+    </div>
+    <p class="acknowledgment">Each gathering begins by acknowledging the treaty territory and traditional lands on which it takes place. Region-specific acknowledgments are confirmed with local Indigenous partners.</p>
+  </div>
+</footer>
+
+</body>
+</html>

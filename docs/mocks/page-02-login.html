@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in — Reconciliation Through Relationships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<!--
+  Mirrors: /auth/login (src/app/auth/login/page.tsx — Card, Input, Label, Button)
+  State: Signed-out sign-in form. Centered on the birch background; password
+  field shows the resting eye-toggle (Show password). No header/footer chrome.
+  Other public/auth states: page-01 (landing), page-03 (signup).
+-->
+<style>
+  .auth-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--background);
+    padding: 32px 16px;
+  }
+  .auth-logo { margin-bottom: 32px; text-align: center; text-decoration: none; }
+  .auth-logo p { font-size: 24px; font-weight: 700; color: var(--primary); margin: 0; }
+
+  .auth-card {
+    width: 100%;
+    max-width: 384px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow-1);
+    overflow: hidden;
+  }
+  .auth-card-head {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+  .auth-card-head .title { font-family: var(--font-body); font-weight: 700; font-size: 20px; color: var(--spruce-800); margin: 0; }
+  .auth-card-head .desc { color: var(--muted-foreground); font-size: 13.5px; margin: 4px 0 0; }
+  .auth-card-body { padding: 24px; }
+
+  .auth-form { display: flex; flex-direction: column; gap: 16px; }
+  .auth-field { display: flex; flex-direction: column; gap: 8px; }
+  .auth-field label { font-weight: 700; font-size: 15px; color: var(--spruce-800); }
+  .pw-wrap { position: relative; }
+  .pw-wrap .input { padding-right: 40px; }
+  .pw-toggle {
+    position: absolute;
+    top: 50%; right: 12px;
+    transform: translateY(-50%);
+    background: none;
+    border: 0;
+    padding: 0;
+    color: var(--muted-foreground);
+    cursor: pointer;
+    display: inline-flex;
+  }
+  .pw-toggle:hover { color: var(--foreground); }
+  .auth-foot { text-align: center; font-size: 14px; color: var(--muted-foreground); margin: 0; }
+  .auth-foot a { color: var(--primary); text-decoration: underline; text-underline-offset: 4px; }
+</style>
+</head>
+<body>
+
+<div class="auth-page">
+  <a href="page-01-landing.html" class="auth-logo">
+    <p>Reconciliation Through Relationships</p>
+  </a>
+
+  <div class="auth-card">
+    <div class="auth-card-head">
+      <p class="title">Welcome</p>
+      <p class="desc">Sign in to your RTR account.</p>
+    </div>
+    <div class="auth-card-body">
+      <form class="auth-form" action="page-12-dashboard-recommended.html">
+        <div class="auth-field">
+          <label for="email">Email address</label>
+          <input class="input" id="email" type="email" placeholder="you@example.com" autofocus>
+        </div>
+        <div class="auth-field">
+          <label for="password">Password</label>
+          <div class="pw-wrap">
+            <input class="input" id="password" type="password" placeholder="••••••••">
+            <button type="button" class="pw-toggle" aria-label="Show password">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary block">Sign in</button>
+        <p class="auth-foot">New here? <a href="page-03-signup.html">Create an account</a></p>
+      </form>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

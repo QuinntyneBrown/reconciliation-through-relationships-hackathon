@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onboarding · Step 4 — Reconciliation Through Relationships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<!--
+  Mirrors: /onboarding — step 4 (src/app/onboarding/page.tsx + components/StepAvailability.tsx)
+  State: Step 4 of 5 · Availability & Format. Some days/times/formats selected; English selected.
+  Other steps: page-04 (basics), page-05 (location), page-06 (faith & interests),
+  page-08 (matching preferences).
+  Note: the onboarding wizard uses its own top bar (not the app header).
+-->
+<style>
+  /* Onboarding wizard chrome — layout only; components come from rtr.css */
+  body { background: var(--birch); }
+
+  .ob-topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 16px; }
+  .ob-shell { max-width: 672px; margin: 0 auto; }
+  .ob-bar-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .ob-brand { margin: 0; font-size: 14px; font-weight: 500; color: var(--primary); }
+  .ob-signout { font-size: 12px; color: var(--muted-foreground); text-decoration: none; }
+  .ob-signout:hover { color: var(--foreground); }
+  .ob-progress-row { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+  .ob-progress { flex: 1; height: 8px; }
+  .ob-chips { margin-top: 8px; }
+  .ob-step-count { font-size: 12px; color: var(--muted-foreground); white-space: nowrap; }
+
+  .ob-main { padding: 32px 16px; }
+  .ob-form > * + * { margin-top: 32px; }
+
+  .ob-h h2 { margin: 0 0 4px; }
+  .ob-h p { margin: 0; }
+
+  .ob-fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .ob-group > * + *, .ob-fieldset > * + * { margin-top: 12px; }
+  .ob-legend { display: block; font-size: 16px; font-weight: 500; color: var(--spruce-800); margin: 0; padding: 0; font-family: var(--font-body); }
+
+  .ob-card-grid { display: grid; gap: 8px; }
+  .ob-card-grid.days { grid-template-columns: repeat(4, 1fr); }
+  .ob-card-grid.times { grid-template-columns: 1fr 1fr; }
+  .ob-card-grid.formats { grid-template-columns: repeat(3, 1fr); }
+  .ob-card-grid.langs { display: flex; gap: 12px; flex-wrap: wrap; }
+  .choice-card.compact { padding: 12px 14px; gap: 10px; }
+  .choice-card .cc-text { font-size: 14px; font-weight: 500; color: var(--ink); }
+
+  .ob-btn-row { display: flex; gap: 12px; }
+
+  @media (max-width: 620px) {
+    .ob-card-grid.days { grid-template-columns: repeat(2, 1fr); }
+    .ob-card-grid.times, .ob-card-grid.formats { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="ob-topbar">
+  <div class="ob-shell">
+    <div class="ob-bar-row">
+      <p class="ob-brand">RTR · Create your profile</p>
+      <a class="ob-signout" href="page-02-login.html">Sign out</a>
+    </div>
+    <div class="ob-progress-row">
+      <div class="progress ob-progress"><div class="bar" style="width:80%;"></div></div>
+      <span class="ob-step-count">Step 4 of 5</span>
+    </div>
+    <div class="step-chips ob-chips" aria-label="Onboarding steps">
+      <span class="step-chip done">Basic Info</span>
+      <span class="step-chip done">Location &amp; Treaty</span>
+      <span class="step-chip done">Faith &amp; Interests</span>
+      <span class="step-chip current" aria-current="step">Availability &amp; Format</span>
+      <span class="step-chip">Matching Preferences</span>
+    </div>
+  </div>
+</header>
+
+<main class="ob-main">
+  <div class="ob-shell">
+    <form class="ob-form" novalidate>
+
+      <div class="ob-h">
+        <h2>Availability &amp; Preferences</h2>
+        <p class="muted">Help us find connections who are available when you are.</p>
+      </div>
+
+      <!-- Days available -->
+      <div class="ob-group" role="group" aria-label="Days available">
+        <span class="ob-legend">Days available</span>
+        <div class="ob-card-grid days">
+          <label class="choice-card compact"><input type="checkbox"><span class="cc-text">Mon</span></label>
+          <label class="choice-card compact"><input type="checkbox"><span class="cc-text">Tue</span></label>
+          <label class="choice-card compact selected"><input type="checkbox" checked><span class="cc-text">Wed</span></label>
+          <label class="choice-card compact selected"><input type="checkbox" checked><span class="cc-text">Thu</span></label>
+          <label class="choice-card compact"><input type="checkbox"><span class="cc-text">Fri</span></label>
+          <label class="choice-card compact selected"><input type="checkbox" checked><span class="cc-text">Sat</span></label>
+          <label class="choice-card compact"><input type="checkbox"><span class="cc-text">Sun</span></label>
+        </div>
+      </div>
+
+      <!-- Preferred times -->
+      <div class="ob-group" role="group" aria-label="Preferred times">
+        <span class="ob-legend">Preferred times</span>
+        <div class="ob-card-grid times">
+          <label class="choice-card compact"><input type="checkbox"><span class="cc-text">Morning (6am–12pm)</span></label>
+          <label class="choice-card compact selected"><input type="checkbox" checked><span class="cc-text">Afternoon (12pm–5pm)</span></label>
+          <label class="choice-card compact selected"><input type="checkbox" checked><span class="cc-text">Evening (5pm–9pm)</span></label>
+          <label class="choice-card compact"><input type="checkbox"><span class="cc-text">Weekends only</span></label>
+        </div>
+      </div>
+
+      <!-- Preferred participation format -->
+      <fieldset class="ob-fieldset">
+        <legend class="ob-legend">Preferred participation format <span class="req">*</span></legend>
+        <div class="ob-card-grid formats">
+          <label class="choice-card compact selected"><input type="checkbox" checked><span class="cc-text">In-person cohort</span></label>
+          <label class="choice-card compact selected"><input type="checkbox" checked><span class="cc-text">Online (video calls)</span></label>
+          <label class="choice-card compact"><input type="checkbox"><span class="cc-text">Chat only</span></label>
+        </div>
+      </fieldset>
+
+      <!-- Language preferences -->
+      <fieldset class="ob-fieldset">
+        <legend class="ob-legend">Language preferences <span class="req">*</span></legend>
+        <div class="ob-card-grid langs">
+          <label class="choice-card compact selected"><input type="checkbox" checked><span class="cc-text">English</span></label>
+          <label class="choice-card compact"><input type="checkbox"><span class="cc-text">French</span></label>
+        </div>
+      </fieldset>
+
+      <div class="ob-btn-row">
+        <a class="btn btn-secondary flex-1" href="page-06-onboarding-3-faith-interests.html">Back</a>
+        <a class="btn btn-primary flex-1" href="page-08-onboarding-5-matching.html">Continue</a>
+      </div>
+
+    </form>
+  </div>
+</main>
+
+</body>
+</html>

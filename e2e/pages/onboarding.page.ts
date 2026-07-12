@@ -24,9 +24,10 @@ export class OnboardingPage extends BasePage {
   async completeBasicInfo() {
     await this.expectStep(1, "Tell us about yourself");
     const continueButton = this.page.getByRole("button", { name: "Continue" });
-    await expect(continueButton).toBeDisabled();
+    await expect(continueButton).toBeEnabled();
     await this.page.getByLabel("First name *").fill("Olivia");
     await this.page.getByLabel("Last name *").fill("Onboarding");
+    await this.page.getByLabel("Age *").fill("34");
     await this.page.getByLabel("Bio").fill("I care about listening, learning, and community.");
     await this.page
       .getByLabel("Additional matching information")
@@ -67,7 +68,7 @@ export class OnboardingPage extends BasePage {
   async completeAvailability() {
     await this.expectStep(4, "Availability & Preferences");
     const continueButton = this.page.getByRole("button", { name: "Continue" });
-    await expect(continueButton).toBeDisabled();
+    await expect(continueButton).toBeEnabled();
     await this.clickChoice("Mon");
     await this.clickChoice("Evening (5pm–9pm)");
     await this.clickChoice("Online (video calls)");

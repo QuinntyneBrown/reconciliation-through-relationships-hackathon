@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Participants — Reconciliation Through Relationships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<!--
+  Mirrors: /facilitator/participants (src/app/facilitator/participants/ParticipantsTable.tsx)
+  State: default (no filters), page 1. Filters: search + Background + Journey.
+  Journey pills: Ready (matched, check) / Learning (learning, clock) /
+  Onboarding (pending, circle). Empty state: "No participants match your filters."
+  normalized: source PAGE_SIZE is 10; this mock shows 8 demo rows. The count-line
+  and pagination reproduce the source string formats exactly:
+  "Showing {a}–{b} of {n} participant(s)" and "Page {current} of {total}".
+  "Clear filters" only renders when a filter is active (filtered != total);
+  shown here to document the exact string.
+-->
+<style>
+  .app-main { padding-top: 32px; padding-bottom: 32px; }
+  .app-main > * + * { margin-top: 32px; }
+  .page-intro .intro-copy { max-width: 768px; }
+  .page-intro h1 { margin-bottom: 4px; }
+  .page-intro .lead { margin: 0 0 16px; }
+
+  .table-tools > * + * { margin-top: 16px; }
+  .filter-bar { display: flex; flex-direction: column; gap: 12px; }
+  @media (min-width: 640px) { .filter-bar { flex-direction: row; } }
+  .filter-bar .search { flex: 1; }
+  .filter-bar .select { background-color: var(--parchment); }
+  .sel-bg { width: 100%; }
+  .sel-journey { width: 100%; }
+  @media (min-width: 640px) { .sel-bg { width: 192px; } .sel-journey { width: 160px; } }
+
+  .count-line { font-size: 14px; color: var(--muted-foreground); margin: 0; }
+  .link-btn { background: none; border: 0; padding: 0; color: var(--primary); font: inherit; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+
+  .name-cell { display: inline-flex; align-items: center; gap: 8px; color: inherit; text-decoration: none; }
+  .name-cell:hover { text-decoration: underline; }
+  .name-cell .nm { font-weight: 500; }
+  .journey-cell { display: flex; align-items: center; gap: 8px; min-width: 160px; }
+  .journey-cell .progress { flex: 1; height: 6px; }
+  .journey-cell .pill svg { width: 12px; height: 12px; }
+  .joined { font-size: 12px; color: var(--muted-foreground); }
+
+  .pager { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 8px; }
+  .pager .page-label { font-size: 14px; color: var(--muted-foreground); }
+  .pager .pager-btns { display: flex; gap: 8px; }
+  .pager .btn { min-height: 36px; }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="container wide">
+    <div class="bar">
+      <a class="brand" href="page-26-facilitator-overview.html">
+        <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+        </svg>
+        <span><span class="brand-name">Reconciliation</span><span class="brand-sub">Through Relationships</span></span>
+      </a>
+      <nav class="app-nav" aria-label="Main">
+        <a href="page-26-facilitator-overview.html">Overview</a>
+        <a href="page-29-facilitator-participants.html" aria-current="page">Participants</a>
+        <a href="page-27-facilitator-matching-mutual.html">Matches</a>
+        <a href="page-25-map.html">Cohorts</a>
+        <a href="page-30-facilitator-settings.html">Settings</a>
+      </nav>
+      <div class="actions" style="margin-left:auto;">
+        <span class="role-tag">Facilitator</span>
+        <button class="bell-btn" aria-label="Notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          <span class="bell-count">3</span>
+        </button>
+        <button aria-label="Open account menu" style="background:none;border:0;padding:0;cursor:pointer;border-radius:50%;">
+          <span class="avatar sm">JG</span>
+        </button>
+        <button class="menu-btn">Menu</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="app-main container wide">
+  <div class="page-intro">
+    <div class="intro-copy">
+      <span class="eyebrow">Participant community</span>
+      <h1>Participants</h1>
+      <p class="lead">61 registered participants across the RTR journey.</p>
+      <div class="weave short" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <div class="table-tools">
+    <div class="filter-bar">
+      <div class="search">
+        <input class="input" type="search" placeholder="Search by name, city, or province…" aria-label="Search participants">
+      </div>
+      <select class="select sel-bg" aria-label="Filter by background">
+        <option>All backgrounds</option>
+        <option>Indigenous</option>
+        <option>Non-Indigenous</option>
+      </select>
+      <select class="select sel-journey" aria-label="Filter by status">
+        <option>All statuses</option>
+        <option>Ready</option>
+        <option>Learning</option>
+        <option>Onboarding</option>
+      </select>
+    </div>
+
+    <!-- "Clear filters" renders only when a filter is active (filtered.length !== total). -->
+    <p class="count-line">Showing 1–8 of 61 participants <button class="link-btn">Clear filters</button></p>
+
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Location</th>
+            <th scope="col">Background</th>
+            <th scope="col">Journey</th>
+            <th scope="col">Joined</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <a class="name-cell" href="page-23-profile-other.html"><span class="avatar sm">SC</span><span class="nm">Sarah Cardinal</span></a>
+            </td>
+            <td class="muted">Regina, Saskatchewan</td>
+            <td><span class="tag chip-xs">Indigenous</span></td>
+            <td>
+              <div class="journey-cell">
+                <div class="progress"><div class="bar" style="width:100%;"></div></div>
+                <span class="pill matched plain"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Ready</span>
+              </div>
+            </td>
+            <td class="joined">6/2/2025</td>
+          </tr>
+          <tr>
+            <td>
+              <a class="name-cell" href="page-23-profile-other.html"><span class="avatar sm river">DT</span><span class="nm">David Tremblay</span></a>
+            </td>
+            <td class="muted">Regina, Saskatchewan</td>
+            <td><span class="tag ochre chip-xs">Non-Indigenous</span></td>
+            <td>
+              <div class="journey-cell">
+                <div class="progress"><div class="bar" style="width:100%;"></div></div>
+                <span class="pill matched plain"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Ready</span>
+              </div>
+            </td>
+            <td class="joined">6/2/2025</td>
+          </tr>
+          <tr>
+            <td>
+              <a class="name-cell" href="page-23-profile-other.html"><span class="avatar sm ochre">MB</span><span class="nm">Michael Bear</span></a>
+            </td>
+            <td class="muted">Saskatoon, Saskatchewan</td>
+            <td><span class="tag chip-xs">Indigenous</span></td>
+            <td>
+              <div class="journey-cell">
+                <div class="progress ochre"><div class="bar" style="width:66.67%;"></div></div>
+                <span class="pill learning plain"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Learning</span>
+              </div>
+            </td>
+            <td class="joined">5/28/2025</td>
+          </tr>
+          <tr>
+            <td>
+              <a class="name-cell" href="page-23-profile-other.html"><span class="avatar sm">HM</span><span class="nm">Helen McKay</span></a>
+            </td>
+            <td class="muted">Regina, Saskatchewan</td>
+            <td><span class="tag ochre chip-xs">Non-Indigenous</span></td>
+            <td>
+              <div class="journey-cell">
+                <div class="progress"><div class="bar" style="width:100%;"></div></div>
+                <span class="pill matched plain"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Ready</span>
+              </div>
+            </td>
+            <td class="joined">5/21/2025</td>
+          </tr>
+          <tr>
+            <td>
+              <a class="name-cell" href="page-23-profile-other.html"><span class="avatar sm river">RS</span><span class="nm">Rita Sanderson</span></a>
+            </td>
+            <td class="muted">Fort Qu'Appelle, Saskatchewan</td>
+            <td><span class="tag chip-xs">Indigenous</span></td>
+            <td>
+              <div class="journey-cell">
+                <div class="progress"><div class="bar" style="width:33.33%;"></div></div>
+                <span class="pill pending plain"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>Onboarding</span>
+              </div>
+            </td>
+            <td class="joined">5/19/2025</td>
+          </tr>
+          <tr>
+            <td>
+              <a class="name-cell" href="page-23-profile-other.html"><span class="avatar sm ochre">JB</span><span class="nm">Jonas Braun</span></a>
+            </td>
+            <td class="muted">Moose Jaw, Saskatchewan</td>
+            <td><span class="tag ochre chip-xs">Non-Indigenous</span></td>
+            <td>
+              <div class="journey-cell">
+                <div class="progress ochre"><div class="bar" style="width:66.67%;"></div></div>
+                <span class="pill learning plain"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Learning</span>
+              </div>
+            </td>
+            <td class="joined">5/14/2025</td>
+          </tr>
+          <tr>
+            <td>
+              <a class="name-cell" href="page-23-profile-other.html"><span class="avatar sm">GN</span><span class="nm">Grace Nightingale</span></a>
+            </td>
+            <td class="muted">Saskatoon, Saskatchewan</td>
+            <td><span class="tag chip-xs">Indigenous</span></td>
+            <td>
+              <div class="journey-cell">
+                <div class="progress"><div class="bar" style="width:100%;"></div></div>
+                <span class="pill matched plain"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Ready</span>
+              </div>
+            </td>
+            <td class="joined">5/9/2025</td>
+          </tr>
+          <tr>
+            <td>
+              <a class="name-cell" href="page-23-profile-other.html"><span class="avatar sm river">TW</span><span class="nm">Thomas Wexler</span></a>
+            </td>
+            <td class="muted">Swift Current, Saskatchewan</td>
+            <td><span class="tag ochre chip-xs">Non-Indigenous</span></td>
+            <td>
+              <div class="journey-cell">
+                <div class="progress"><div class="bar" style="width:33.33%;"></div></div>
+                <span class="pill pending plain"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>Onboarding</span>
+              </div>
+            </td>
+            <td class="joined">5/6/2025</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pager">
+      <span class="page-label">Page 1 of 8</span>
+      <div class="pager-btns">
+        <button class="btn btn-secondary sm disabled" disabled>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+          Previous
+        </button>
+        <button class="btn btn-secondary sm">
+          Next
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="app-footer panel-on-dark">
+  <div class="container wide">
+    <div class="row between" style="align-items:center;">
+      <div>
+        <h4>Reconciliation Through Relationships</h4>
+        <p style="margin:0;">Building meaningful relationships between Indigenous and non-Indigenous people.</p>
+        <p style="margin:4px 0 0;"><a href="https://rightrelationship.ca">rightrelationship.ca</a></p>
+      </div>
+      <div class="weave on-dark" style="width:240px;" aria-hidden="true"></div>
+    </div>
+    <p class="acknowledgment">Each gathering begins by acknowledging the treaty territory and traditional lands on which it takes place. Region-specific acknowledgments are confirmed with local Indigenous partners.</p>
+  </div>
+</footer>
+
+</body>
+</html>

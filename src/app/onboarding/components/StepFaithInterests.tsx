@@ -8,6 +8,9 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
 import type { OnboardingData } from "../page";
+import { findError, validateFaithInterests } from "../validation";
+import { ErrorSummary, FieldErrorMessage } from "./OnboardingErrors";
+import { useStepValidation } from "./useStepValidation";
 
 const FAITH_TRADITIONS = [
   { value: "indigenous_traditional", label: "Indigenous Traditional" },
@@ -30,6 +33,12 @@ type Props = {
 
 export default function StepFaithInterests({ data, onChange, onNext, onBack }: Props) {
   const [interestInput, setInterestInput] = useState("");
+  const { errors, onSubmit, summaryRef } = useStepValidation({
+    data,
+    validate: validateFaithInterests,
+    onValidSubmit: onNext,
+  });
+  const faithError = findError(errors, "faith_tradition");
 
   function addInterest() {
     const trimmed = interestInput.trim().toLowerCase();
@@ -43,10 +52,8 @@ export default function StepFaithInterests({ data, onChange, onNext, onBack }: P
     onChange({ interests: data.interests.filter((i) => i !== interest) });
   }
 
-  const canContinue = !!data.faith_tradition;
-
   return (
-    <div className="space-y-8">
+    <form noValidate onSubmit={onSubmit} className="space-y-8">
       <div>
         <h2 className="text-2xl font-semibold">Faith & Interests</h2>
         <p className="text-muted-foreground mt-1">
@@ -54,26 +61,41 @@ export default function StepFaithInterests({ data, onChange, onNext, onBack }: P
         </p>
       </div>
 
+      <ErrorSummary errors={errors} summaryRef={summaryRef} />
+
       {/* Faith tradition */}
-      <div className="space-y-3">
-        <Label className="text-base font-medium">Faith tradition *</Label>
+      <fieldset
+        id="faith_tradition"
+        tabIndex={-1}
+        className="space-y-3"
+        aria-describedby={faithError?.errorId}
+      >
+        <legend className="text-base font-medium">Faith tradition *</legend>
         <RadioGroup
           value={data.faith_tradition}
           onValueChange={(v) => onChange({ faith_tradition: v, faith_tradition_other: "" })}
           className="grid grid-cols-1 gap-2 sm:grid-cols-2"
+          aria-invalid={!!faithError}
         >
           {FAITH_TRADITIONS.map(({ value, label }) => (
             <div
               key={value}
               className="border-border hover:bg-muted/50 flex cursor-pointer items-center gap-3 rounded-lg border p-3"
             >
-              <RadioGroupItem value={value} id={`faith_${value}`} />
+              <RadioGroupItem
+                value={value}
+                id={`faith_${value}`}
+                aria-invalid={!!faithError}
+                aria-describedby={faithError?.errorId}
+              />
               <Label htmlFor={`faith_${value}`} className="cursor-pointer">
                 {label}
               </Label>
             </div>
           ))}
         </RadioGroup>
+
+        <FieldErrorMessage error={faithError} />
 
         {data.faith_tradition === "other" && (
           <div className="space-y-2 pt-1">
@@ -86,7 +108,7 @@ export default function StepFaithInterests({ data, onChange, onNext, onBack }: P
             />
           </div>
         )}
-      </div>
+      </fieldset>
 
       {/* Interests */}
       <div className="space-y-3">
@@ -119,7 +141,7 @@ export default function StepFaithInterests({ data, onChange, onNext, onBack }: P
             {data.interests.map((interest) => (
               <Badge key={interest} variant="secondary" className="gap-1 capitalize">
                 {interest}
-                <button onClick={() => removeInterest(interest)}>
+                <button type="button" onClick={() => removeInterest(interest)}>
                   <X className="h-3 w-3" />
                 </button>
               </Badge>
@@ -129,13 +151,13 @@ export default function StepFaithInterests({ data, onChange, onNext, onBack }: P
       </div>
 
       <div className="flex gap-3">
-        <Button variant="outline" onClick={onBack} className="flex-1">
+        <Button type="button" variant="outline" onClick={onBack} className="flex-1">
           Back
         </Button>
-        <Button onClick={onNext} disabled={!canContinue} className="flex-1">
+        <Button type="submit" className="flex-1">
           Continue
         </Button>
       </div>
-    </div>
+    </form>
   );
 }

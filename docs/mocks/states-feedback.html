@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feedback &amp; state catalog — Reconciliation Through Relationships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<!--
+  Feedback & state catalog. Four sections: validation messages, API errors,
+  pending-button labels, and empty states. Every string is copied verbatim
+  from source and captioned with its file:line. Documentation-only.
+  Sibling: states-toasts.html (every sonner toast, grouped by feature).
+-->
+<style>
+  .catalog { padding-top: 8px; padding-bottom: 64px; }
+  .catalog > section { margin-top: 56px; }
+  .src, .cap { word-break: break-all; }
+  .catalog > section:first-of-type { margin-top: 32px; }
+
+  .spec-topbar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 18px 0; border-bottom: 1px solid var(--border);
+  }
+  .spec-topbar .mark { display: flex; align-items: center; gap: 10px; }
+  .spec-topbar .mark .wordmark { line-height: 1.05; }
+  .spec-topbar .mark .wordmark b {
+    display: block; font-family: var(--font-display);
+    font-size: 18px; font-weight: 600; color: var(--spruce-800);
+  }
+  .spec-topbar .mark .wordmark span {
+    display: block; font-size: 10.5px; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ink-faint);
+  }
+  .spec-topbar .subtitle {
+    margin-left: auto; font-size: 13px; font-weight: 700; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--ochre-700);
+    background: var(--ochre-100); border-radius: var(--r-pill); padding: 5px 14px;
+  }
+
+  .spec-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .spec-nav a {
+    font-size: 13.5px; font-weight: 600; text-decoration: none;
+    color: var(--river-700); border: 1.5px solid var(--border-strong);
+    border-radius: var(--r-pill); padding: 4px 14px;
+  }
+  .spec-nav a:hover { border-color: var(--spruce-600); color: var(--spruce-800); }
+  .spec-nav a.here { background: var(--spruce-700); border-color: var(--spruce-700); color: #fff; }
+
+  .lede { max-width: 780px; }
+  .sec-head { margin-bottom: 24px; }
+  .sec-head h2 { margin: 0 0 4px; }
+  .sec-head p { margin: 0; }
+
+  .sub-head { margin: 32px 0 16px; }
+  .sub-head .eyebrow { margin-bottom: 4px; }
+
+  .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 24px; max-width: 760px; }
+  .field-grid .field { margin-bottom: 0; }
+  .field .cap { display: block; margin-top: 6px; }
+  .field .input[readonly] { background: var(--parchment); cursor: default; }
+
+  .rules { display: flex; flex-direction: column; gap: 10px; max-width: 620px; }
+  .rules .rule {
+    display: flex; gap: 10px; align-items: baseline;
+    padding: 12px 16px; background: var(--ochre-100);
+    border: 1px solid var(--ochre-200); border-radius: var(--r-md);
+    color: var(--ochre-700); font-size: 14.5px; font-weight: 600;
+  }
+  .rules .rule .cap { font-weight: 400; }
+
+  .req-demo { display: flex; flex-wrap: wrap; gap: 8px 12px; max-width: 720px; }
+  .req-demo .req-label {
+    display: inline-flex; align-items: center;
+    font-weight: 700; font-size: 15px; color: var(--spruce-800);
+    background: var(--parchment); border: 1.5px solid var(--border-strong);
+    border-radius: var(--r-md); padding: 8px 14px;
+  }
+  .req-demo .req-label .req { color: var(--berry-700); margin-left: 4px; }
+
+  .btn-pairs { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr)); gap: 18px; }
+  .btn-pair {
+    border: 1px solid var(--border); border-radius: var(--r-lg);
+    background: var(--parchment); padding: 16px 18px;
+  }
+  .btn-pair .rowset { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .btn-pair .rowset .lab { font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); }
+  .btn-pair .arrow { color: var(--ink-faint); }
+  .btn-pair .cap { display: block; margin-top: 12px; }
+  .btn-pair .btn svg { width: 16px; height: 16px; }
+
+  .cb-states { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 18px; }
+  .cb-state {
+    border: 1px solid var(--border); border-radius: var(--r-lg);
+    background: var(--parchment); padding: 18px;
+  }
+  .cb-state .state-name { font-weight: 700; font-size: 14.5px; margin-bottom: 4px; color: var(--spruce-800); }
+  .cb-state .state-when { font-size: 13px; color: var(--ink-soft); margin-bottom: 14px; }
+  .cb-state .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .cb-state .actions .btn svg { width: 16px; height: 16px; }
+  .cb-state .cap { display: block; margin-top: 12px; }
+
+  .empties { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .empties .empty-cell .cap { display: block; margin-top: 8px; text-align: center; }
+  .empties .empty { height: 100%; }
+
+  .inline-empties { display: flex; flex-direction: column; gap: 10px; max-width: 820px; }
+  .inline-empties .ie {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; align-items: baseline;
+    padding: 12px 16px; background: var(--birch);
+    border: 1px solid var(--border); border-radius: var(--r-md);
+  }
+  .inline-empties .ie .msg { font-size: 15px; color: var(--ink); min-width: 0; }
+  /* Allow the file-path caption to shrink so word-break can wrap it instead of pushing the row wide. */
+  .inline-empties .ie .src { flex: 0 1 auto; min-width: 0; text-align: right; }
+
+  @media (max-width: 720px) {
+    .field-grid, .empties { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container wide">
+  <header class="spec-topbar">
+    <div class="mark">
+      <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+        <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+        <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+        <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+      </svg>
+      <span class="wordmark"><b>Reconciliation</b><span>Through Relationships</span></span>
+    </div>
+    <span class="subtitle">State catalog</span>
+  </header>
+</div>
+
+<main class="container wide catalog">
+
+  <div class="lede">
+    <span class="eyebrow">Transient states</span>
+    <h1>Feedback &amp; state catalog</h1>
+    <p class="lead">Validation messages, API error strings, pending-button labels, and empty states — every string copied verbatim from source with its file and line.</p>
+    <nav class="spec-nav" aria-label="Catalog navigation">
+      <a href="index.html">All mocks</a>
+      <a href="states-toasts.html">Toasts</a>
+      <a class="here" href="states-feedback.html" aria-current="page">Feedback &amp; states</a>
+    </nav>
+  </div>
+
+  <!-- ============================ 1 · VALIDATION ============================ -->
+  <section aria-labelledby="s-valid">
+    <div class="sec-head">
+      <span class="eyebrow">Section 1</span>
+      <h2 id="s-valid">Validation</h2>
+      <p class="lede">Validation runs in two places. The <b>onboarding wizard</b> validates each step client-side and shows inline errors — an error summary at the top of the step plus a red message under each bad field. The shared <b>zod schema</b> in <code>src/domain/schema.ts</code> validates the <code>/api/participants</code> route server-side. Both layers are catalogued below.</p>
+    </div>
+
+    <div class="sub-head" style="margin-top:8px;">
+      <span class="eyebrow">Onboarding wizard · client-side</span>
+      <h3>Onboarding inline validation</h3>
+    </div>
+    <p class="lede">Each onboarding step validates on submit and blocks navigation until fixed, using <code>src/app/onboarding/validation.ts</code> for the messages and <code>OnboardingErrors.tsx</code> for the rendering. Two things appear: a destructive <b>error summary</b> at the top of the step with anchor links to each bad field, and a red <b>per-field message</b> below the input. The zod messages further down are the API-side counterpart — the same intake validated server-side at <code>/api/participants</code>.</p>
+
+    <div class="alert danger" role="alert" style="max-width:560px; align-items:flex-start; margin-bottom:8px;">
+      <span class="alert-icon" aria-hidden="true">&#9888;</span>
+      <div>
+        <b>Please fix 3 errors to continue</b>
+        <ul style="margin:8px 0 0; padding-left:20px;">
+          <li><a href="#first_name">Enter your first name.</a></li>
+          <li><a href="#age">Enter an age from 13 to 120.</a></li>
+          <li><a href="#sex_group">Choose your sex.</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="tiny cap">ErrorSummary — destructive Alert, heading <code>Please fix ${n} ${n===1?"error":"errors"} to continue</code>, with an anchor-link list to each field · src/app/onboarding/components/OnboardingErrors.tsx:16, 34</p>
+
+    <div class="field error" style="max-width:360px; margin-top:20px;">
+      <label>First name <span class="req">*</span></label>
+      <input class="input" type="text" value="" aria-invalid="true" readonly>
+      <p class="error-msg">Enter your first name.</p>
+    </div>
+    <p class="tiny cap">FieldErrorMessage — red 14px medium text below the field (<code>text-destructive text-sm font-medium</code>, no icon) · src/app/onboarding/components/OnboardingErrors.tsx:47</p>
+
+    <div class="sub-head" style="margin-top:24px;">
+      <span class="eyebrow">All 11 messages · by step</span>
+      <h4 style="margin:0; font-family:var(--font-body); font-weight:700;">Every onboarding validation string</h4>
+    </div>
+    <div class="inline-empties" style="margin-top:4px;">
+      <p class="tiny" style="font-weight:700; color:var(--spruce-800); letter-spacing:.04em; margin:0;">Step 1 · Basic info</p>
+      <div class="ie"><span class="msg">Enter your first name.</span><span class="src tiny">validation.ts:16</span></div>
+      <div class="ie"><span class="msg">Enter your last name.</span><span class="src tiny">validation.ts:17</span></div>
+      <div class="ie"><span class="msg">Enter an age from 13 to 120.</span><span class="src tiny">validation.ts:19</span></div>
+      <div class="ie"><span class="msg">Choose whether you are Indigenous.</span><span class="src tiny">validation.ts:22</span></div>
+      <div class="ie"><span class="msg">Choose your sex.</span><span class="src tiny">validation.ts:24</span></div>
+      <div class="ie"><span class="msg">Choose at least one required participation category.</span><span class="src tiny">validation.ts:33</span></div>
+      <p class="tiny" style="font-weight:700; color:var(--spruce-800); letter-spacing:.04em; margin:8px 0 0;">Step 2 · Location</p>
+      <div class="ie"><span class="msg">Enter your city, town, or county.</span><span class="src tiny">validation.ts:42</span></div>
+      <div class="ie"><span class="msg">Choose a province or territory.</span><span class="src tiny">validation.ts:43</span></div>
+      <p class="tiny" style="font-weight:700; color:var(--spruce-800); letter-spacing:.04em; margin:8px 0 0;">Step 3 · Faith &amp; interests</p>
+      <div class="ie"><span class="msg">Choose a faith tradition or prefer not to say.</span><span class="src tiny">validation.ts:50</span></div>
+      <p class="tiny" style="font-weight:700; color:var(--spruce-800); letter-spacing:.04em; margin:8px 0 0;">Step 4 · Availability</p>
+      <div class="ie"><span class="msg">Choose at least one participation format.</span><span class="src tiny">validation.ts:56</span></div>
+      <div class="ie"><span class="msg">Choose at least one language.</span><span class="src tiny">validation.ts:59</span></div>
+    </div>
+
+    <div class="sub-head" style="margin-top:32px;">
+      <span class="eyebrow">API-side · shared zod schema</span>
+      <h3>Participant intake validation (server-side)</h3>
+    </div>
+    <p class="lede">The <code>/api/participants</code> route validates the request body against the shared zod schema in <code>src/domain/schema.ts</code>. These are its seven messages — the server-side counterpart to the onboarding wizard above.</p>
+
+    <div class="field-grid">
+      <div class="field error">
+        <label>Name <span class="req">*</span></label>
+        <input class="input" type="text" value="" aria-invalid="true" readonly>
+        <p class="error-msg"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>Name is required</p>
+        <span class="tiny cap">src/domain/schema.ts:15</span>
+      </div>
+
+      <div class="field error">
+        <label>Email <span class="req">*</span></label>
+        <input class="input" type="email" value="marie@" aria-invalid="true" readonly>
+        <p class="error-msg"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>Enter a valid email</p>
+        <span class="tiny cap">src/domain/schema.ts:16</span>
+      </div>
+
+      <div class="field error">
+        <label>Age <span class="req">*</span></label>
+        <input class="input" type="number" value="11" aria-invalid="true" readonly>
+        <p class="error-msg"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>You must be at least 13 years old</p>
+        <span class="tiny cap">src/domain/schema.ts:19 (min)</span>
+      </div>
+
+      <div class="field error">
+        <label>Age <span class="req">*</span></label>
+        <input class="input" type="number" value="199" aria-invalid="true" readonly>
+        <p class="error-msg"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>Please enter a valid age</p>
+        <span class="tiny cap">src/domain/schema.ts:19 (max)</span>
+      </div>
+
+      <div class="field error">
+        <label>Participation categories <span class="req">*</span></label>
+        <input class="input" type="text" value="" aria-invalid="true" readonly placeholder="None selected">
+        <p class="error-msg"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>Select at least one participation category</p>
+        <span class="tiny cap">src/domain/schema.ts:24</span>
+      </div>
+
+      <div class="field error">
+        <label>City, town, or county <span class="req">*</span></label>
+        <input class="input" type="text" value="" aria-invalid="true" readonly>
+        <p class="error-msg"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>City, town, or county is required</p>
+        <span class="tiny cap">src/domain/schema.ts:27</span>
+      </div>
+
+      <div class="field error">
+        <label>Languages <span class="req">*</span></label>
+        <input class="input" type="text" value="" aria-invalid="true" readonly placeholder="None added">
+        <p class="error-msg"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>Add at least one language</p>
+        <span class="tiny cap">src/domain/schema.ts:47</span>
+      </div>
+    </div>
+
+    <div class="sub-head">
+      <span class="eyebrow">Signup client-side rules</span>
+      <h3>Password rules fire as toasts, not field errors</h3>
+    </div>
+    <p class="lede">The sign-up form checks the password client-side before calling Supabase. On <em>this</em> form both rules surface as <code>toast.error</code> (see <a href="states-toasts.html">the toast catalog</a>) rather than inline field messages — unlike the onboarding wizard above, which renders inline field errors.</p>
+    <div class="rules">
+      <div class="rule">Password must be at least 8 characters. <span class="tiny cap">— src/app/auth/signup/page.tsx:28 · toast.error</span></div>
+      <div class="rule">Passwords do not match. <span class="tiny cap">— src/app/auth/signup/page.tsx:32 · toast.error</span></div>
+    </div>
+
+    <div class="sub-head">
+      <span class="eyebrow">Required-field convention</span>
+      <h3>Required labels append a literal &ldquo;&nbsp;*&rdquo;</h3>
+    </div>
+    <p class="lede">In the onboarding wizard, required fields append a trailing asterisk to the label text (e.g. <code>&lt;Label&gt;First name *&lt;/Label&gt;</code>). Optional fields (Bio, Additional matching information) carry no asterisk.</p>
+    <div class="req-demo">
+      <span class="req-label">First name <span class="req">*</span></span>
+      <span class="req-label">Last name <span class="req">*</span></span>
+      <span class="req-label">Age <span class="req">*</span></span>
+      <span class="req-label">Are you Indigenous? <span class="req">*</span></span>
+      <span class="req-label">Sex <span class="req">*</span></span>
+      <span class="req-label">Participation categories <span class="req">*</span></span>
+    </div>
+    <p class="tiny cap" style="margin-top:8px;">src/app/onboarding/components/StepBasicInfo.tsx:66, 78, 93, 139, 175, 208</p>
+
+    <div class="sub-head">
+      <span class="eyebrow">Helper text</span>
+      <h3>StepBasicInfo helper lines</h3>
+    </div>
+    <div class="card card-pad" style="max-width:640px;">
+      <p style="margin:0 0 4px;"><b>Tell us about yourself</b></p>
+      <p class="muted" style="margin:0;">This information helps us create your profile and find the right connections for you.</p>
+      <p class="tiny cap" style="margin-top:8px;">src/app/onboarding/components/StepBasicInfo.tsx:56</p>
+      <hr class="divider">
+      <p style="margin:0 0 4px;"><b>Participation categories *</b></p>
+      <p class="muted" style="margin:0;">Select all that apply. At least one of Indigenous Leader, Indigenous Individual, or Non-Indigenous Individual is required.</p>
+      <p class="tiny cap" style="margin-top:8px;">src/app/onboarding/components/StepBasicInfo.tsx:209</p>
+    </div>
+  </section>
+
+  <!-- ============================ 2 · API ERRORS ============================ -->
+  <section aria-labelledby="s-api">
+    <div class="sec-head">
+      <span class="eyebrow">Section 2</span>
+      <h2 id="s-api">API errors</h2>
+      <p class="lede">JSON error responses from the two API routes. Each returns <code>&#123; error: "…" &#125;</code> at the given HTTP status; the Zoom route adds a <code>detail</code> / <code>status</code> field on failures, and the participants route adds <code>issues</code> (the flattened zod error).</p>
+    </div>
+
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr><th>Route</th><th>Status</th><th>error string</th><th>When</th><th>Source</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="6"><code>POST /api/zoom/create-meeting</code></td>
+            <td><span class="pill destructive plain">401</span></td>
+            <td>Unauthorized</td>
+            <td>No authenticated user.</td>
+            <td class="tiny">route.ts:51</td>
+          </tr>
+          <tr>
+            <td><span class="pill destructive plain">400</span></td>
+            <td>Missing required fields</td>
+            <td>Any of connectionId / scheduledAt / durationMinutes / topic is missing.</td>
+            <td class="tiny">route.ts:58</td>
+          </tr>
+          <tr>
+            <td><span class="pill destructive plain">403</span></td>
+            <td>Forbidden</td>
+            <td>Caller is not a participant in the connection.</td>
+            <td class="tiny">route.ts:71</td>
+          </tr>
+          <tr>
+            <td><span class="pill destructive plain">502</span></td>
+            <td>Failed to create Zoom meeting</td>
+            <td>Zoom&rsquo;s meetings API returned a non-OK response.</td>
+            <td class="tiny">route.ts:101</td>
+          </tr>
+          <tr>
+            <td><span class="pill destructive plain">500</span></td>
+            <td>Failed to save meeting</td>
+            <td>Meeting row insert failed after Zoom created the meeting.</td>
+            <td class="tiny">route.ts:124</td>
+          </tr>
+          <tr>
+            <td><span class="pill destructive plain">500</span></td>
+            <td>Zoom integration error</td>
+            <td>Caught exception — e.g. missing Zoom S2S OAuth env vars.</td>
+            <td class="tiny">route.ts:144</td>
+          </tr>
+          <tr>
+            <td><code>POST /api/participants</code></td>
+            <td><span class="pill destructive plain">400</span></td>
+            <td>Validation failed</td>
+            <td>The body fails the shared zod schema; <code>issues</code> holds the flattened errors.</td>
+            <td class="tiny">route.ts:21</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="alert info" style="margin-top:20px; max-width:820px;">
+      <span class="alert-icon" aria-hidden="true">&#9432;</span>
+      <div>
+        <b>Profile pages have no custom 404.</b>
+        <p><code>/profile/[userId]</code> calls <code>notFound()</code> for a missing profile <em>or</em> a facilitator profile, and no <code>not-found.tsx</code> exists in the app, so Next.js renders its default 404 page. <span class="tiny">src/app/profile/[userId]/page.tsx:29</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ 3 · PENDING BUTTONS ============================ -->
+  <section aria-labelledby="s-pending">
+    <div class="sec-head">
+      <span class="eyebrow">Section 3</span>
+      <h2 id="s-pending">Pending buttons</h2>
+      <p class="lede">Async actions swap their label and disable the button while in flight. Idle label on the left, in-flight label on the right.</p>
+    </div>
+
+    <div class="btn-pairs">
+      <div class="btn-pair">
+        <div class="rowset">
+          <span class="lab">Idle</span>
+          <button class="btn btn-primary" type="button">Sign in</button>
+          <span class="arrow" aria-hidden="true">&rarr;</span>
+          <span class="lab">Pending</span>
+          <button class="btn btn-primary" type="button" disabled>Signing in&hellip;</button>
+        </div>
+        <span class="tiny cap">src/app/auth/login/page.tsx:95</span>
+      </div>
+
+      <div class="btn-pair">
+        <div class="rowset">
+          <span class="lab">Idle</span>
+          <button class="btn btn-primary" type="button">Create account</button>
+          <span class="arrow" aria-hidden="true">&rarr;</span>
+          <span class="lab">Pending</span>
+          <button class="btn btn-primary" type="button" disabled>Creating account&hellip;</button>
+        </div>
+        <span class="tiny cap">src/app/auth/signup/page.tsx:150</span>
+      </div>
+
+      <div class="btn-pair">
+        <div class="rowset">
+          <span class="lab">Idle</span>
+          <button class="btn btn-primary lg" type="button">Complete profile</button>
+          <span class="arrow" aria-hidden="true">&rarr;</span>
+          <span class="lab">Pending</span>
+          <button class="btn btn-primary lg" type="button" disabled>Saving&hellip;</button>
+        </div>
+        <span class="tiny cap">src/app/onboarding/components/StepMatchingPreferences.tsx:116</span>
+      </div>
+
+      <div class="btn-pair">
+        <div class="rowset">
+          <span class="lab">Idle</span>
+          <button class="btn btn-primary" type="button">Save settings</button>
+          <span class="arrow" aria-hidden="true">&rarr;</span>
+          <span class="lab">Pending</span>
+          <button class="btn btn-primary" type="button" disabled>Saving&hellip;</button>
+        </div>
+        <span class="tiny cap">src/app/facilitator/settings/SettingsClient.tsx:115</span>
+      </div>
+
+      <div class="btn-pair">
+        <div class="rowset">
+          <span class="lab">Idle</span>
+          <button class="btn btn-primary" type="button">Mark complete</button>
+          <span class="arrow" aria-hidden="true">&rarr;</span>
+          <span class="lab">Pending</span>
+          <button class="btn btn-primary" type="button" disabled>Saving&hellip;</button>
+        </div>
+        <span class="tiny cap">src/app/learn/components/ModuleContent.tsx:115</span>
+      </div>
+
+      <div class="btn-pair">
+        <div class="rowset">
+          <span class="lab">Idle</span>
+          <button class="btn btn-primary" type="button">Schedule call</button>
+          <span class="arrow" aria-hidden="true">&rarr;</span>
+          <span class="lab">Pending</span>
+          <button class="btn btn-primary" type="button" disabled>Creating Zoom link&hellip;</button>
+        </div>
+        <span class="tiny cap">src/app/connections/components/ScheduleMeetingModal.tsx:135</span>
+      </div>
+
+      <div class="btn-pair">
+        <div class="rowset">
+          <span class="lab">Idle</span>
+          <button class="btn btn-primary" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>Connect with David</button>
+          <span class="arrow" aria-hidden="true">&rarr;</span>
+          <span class="lab">Pending</span>
+          <button class="btn btn-primary" type="button" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>Sending&hellip;</button>
+        </div>
+        <span class="tiny cap">src/app/profile/[userId]/ConnectButton.tsx:88 · label is <code>Connect with ${partnerName}</code></span>
+      </div>
+
+      <div class="btn-pair">
+        <div class="rowset">
+          <span class="lab">Idle</span>
+          <button class="btn btn-secondary" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Cancel</button>
+          <span class="arrow" aria-hidden="true">&rarr;</span>
+          <span class="lab">Pending</span>
+          <button class="btn btn-secondary" type="button" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Cancelling&hellip;</button>
+        </div>
+        <span class="tiny cap">src/app/profile/[userId]/ConnectButton.tsx:123</span>
+      </div>
+    </div>
+
+    <div class="sub-head">
+      <span class="eyebrow">Profile page</span>
+      <h3>ConnectButton &mdash; four states</h3>
+    </div>
+    <p class="lede">The button on <code>/profile/[userId]</code> resolves to one of four states from the current connection record (<code>David</code> shown as the partner name).</p>
+    <div class="cb-states">
+      <div class="cb-state">
+        <div class="state-name">No connection yet</div>
+        <div class="state-when">Nothing sent in either direction.</div>
+        <div class="actions">
+          <button class="btn btn-primary flex-1" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>Connect with David</button>
+        </div>
+        <span class="tiny cap">ConnectButton.tsx:84</span>
+      </div>
+
+      <div class="cb-state">
+        <div class="state-name">Request pending</div>
+        <div class="state-when">I sent a request; they haven&rsquo;t accepted.</div>
+        <div class="actions">
+          <button class="btn btn-secondary flex-1" type="button" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Request pending</button>
+          <button class="btn btn-secondary" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Cancel</button>
+        </div>
+        <span class="tiny cap">ConnectButton.tsx:114 (disabled &ldquo;Request pending&rdquo; + outline &ldquo;Cancel&rdquo;)</span>
+      </div>
+
+      <div class="cb-state">
+        <div class="state-name">Active</div>
+        <div class="state-when">Both connected — connection is active.</div>
+        <div class="actions">
+          <button class="btn btn-primary flex-1" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Open chat</button>
+        </div>
+        <span class="tiny cap">ConnectButton.tsx:102 (links to /connections/[id])</span>
+      </div>
+
+      <div class="cb-state">
+        <div class="state-name">Respond to request</div>
+        <div class="state-when">They sent me a request to respond to.</div>
+        <div class="actions">
+          <button class="btn btn-primary flex-1" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>Respond to request</button>
+        </div>
+        <span class="tiny cap">ConnectButton.tsx:130 (links to /connections/[id])</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ 4 · EMPTY STATES ============================ -->
+  <section aria-labelledby="s-empty">
+    <div class="sec-head">
+      <span class="eyebrow">Section 4</span>
+      <h2 id="s-empty">Empty states</h2>
+      <p class="lede">The four <code>&lt;EmptyState&gt;</code> component usages render a muted brand mark, a title, a description, and an optional action. The connections page and the dashboard Connections tab share copy but link their action differently.</p>
+    </div>
+
+    <div class="empties">
+      <div class="empty-cell">
+        <div class="empty">
+          <svg class="empty-mark" viewBox="0 0 32 32" width="64" height="64" aria-hidden="true">
+            <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#C9BCA3" stroke-width="3.4" stroke-linecap="round"/>
+            <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#C9BCA3" stroke-width="3.4" stroke-linecap="round" stroke-dasharray="2 7"/>
+          </svg>
+          <h3>No recommendations yet</h3>
+          <p>A facilitator is reviewing potential matches for you. Check back soon.</p>
+        </div>
+        <span class="tiny cap">Recommended tab · src/app/dashboard/components/RecommendedTab.tsx:25 (no action)</span>
+      </div>
+
+      <div class="empty-cell">
+        <div class="empty">
+          <svg class="empty-mark" viewBox="0 0 32 32" width="64" height="64" aria-hidden="true">
+            <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#C9BCA3" stroke-width="3.4" stroke-linecap="round"/>
+            <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#C9BCA3" stroke-width="3.4" stroke-linecap="round" stroke-dasharray="2 7"/>
+          </svg>
+          <h3>No active connections yet</h3>
+          <p>Your facilitator reviews every match personally. While you wait, keep your profile current so recommendations reflect who you are.</p>
+          <a class="btn btn-secondary" href="page-12-dashboard-recommended.html">Explore recommendations</a>
+        </div>
+        <span class="tiny cap">Connections tab · src/app/dashboard/components/ConnectionsTab.tsx:53 (action &rarr; #recommended)</span>
+      </div>
+
+      <div class="empty-cell">
+        <div class="empty">
+          <svg class="empty-mark" viewBox="0 0 32 32" width="64" height="64" aria-hidden="true">
+            <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#C9BCA3" stroke-width="3.4" stroke-linecap="round"/>
+            <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#C9BCA3" stroke-width="3.4" stroke-linecap="round" stroke-dasharray="2 7"/>
+          </svg>
+          <h3>No active connections yet</h3>
+          <p>Your facilitator reviews every match personally. While you wait, keep your profile current so recommendations reflect who you are.</p>
+          <a class="btn btn-secondary" href="page-12-dashboard-recommended.html">Explore recommendations</a>
+        </div>
+        <span class="tiny cap">Connections page · src/app/connections/page.tsx:53 (action &rarr; /dashboard)</span>
+      </div>
+
+      <div class="empty-cell">
+        <div class="empty">
+          <svg class="empty-mark" viewBox="0 0 32 32" width="64" height="64" aria-hidden="true">
+            <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#C9BCA3" stroke-width="3.4" stroke-linecap="round"/>
+            <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#C9BCA3" stroke-width="3.4" stroke-linecap="round" stroke-dasharray="2 7"/>
+          </svg>
+          <h3>No cohort in your region yet</h3>
+          <p>Circles take time. Every eligible participant brings a regional gathering closer.</p>
+        </div>
+        <span class="tiny cap">Map page · src/app/map/page.tsx:63 (no action)</span>
+      </div>
+    </div>
+
+    <div class="sub-head">
+      <span class="eyebrow">Inline empties</span>
+      <h3>Inline empty messages</h3>
+    </div>
+    <p class="lede">Shorter empty strings rendered inline (filters, tabs, lists) rather than through the <code>&lt;EmptyState&gt;</code> component.</p>
+    <div class="inline-empties">
+      <div class="ie"><span class="msg">No connections match this filter.</span><span class="src tiny">src/app/dashboard/components/ConnectionsTab.tsx:96</span></div>
+      <div class="ie"><span class="msg">No mutual connect requests awaiting review.</span><span class="src tiny">src/app/facilitator/matching/MatchingClient.tsx:266</span></div>
+      <div class="ie"><span class="msg">No approved matches. / No rejected matches.</span><span class="src tiny">src/app/facilitator/matching/MatchingClient.tsx:379 · <code>No &#123;key&#125; matches.</code></span></div>
+      <div class="ie"><span class="msg">No participants match your filters.</span><span class="src tiny">src/app/facilitator/participants/ParticipantsTable.tsx:168</span></div>
+      <div class="ie"><span class="msg">No participants match your filters.</span><span class="src tiny">src/app/dashboard/components/AllParticipantsTab.tsx:296</span></div>
+      <div class="ie"><span class="msg">No participants have consented to map display in this view.</span><span class="src tiny">src/app/dashboard/components/ParticipantMap.tsx:94</span></div>
+      <div class="ie"><span class="msg">You&rsquo;re connected! Say hello to David.</span><span class="src tiny">src/app/connections/components/ConnectionChat.tsx:322 · <code>Say hello to &#123;partner.first_name&#125;.</code></span></div>
+      <div class="ie"><span class="msg">Select a module from the sidebar to begin.</span><span class="src tiny">src/app/learn/components/LearningLayout.tsx:243</span></div>
+      <div class="ie"><span class="msg">No notifications yet</span><span class="src tiny">src/components/notification-center.tsx:149</span></div>
+    </div>
+  </section>
+
+  <nav class="spec-nav" aria-label="Catalog navigation" style="margin-top:56px;">
+    <a href="index.html">All mocks</a>
+    <a href="states-toasts.html">Toasts</a>
+    <a class="here" href="states-feedback.html" aria-current="page">Feedback &amp; states</a>
+  </nav>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chat · Matched — Reconciliation Through Relationships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<!--
+  Mirrors: /connections/[id] (src/app/connections/components/ConnectionChat.tsx)
+  State: matched, NEITHER party has connected yet (status "pending",
+  iHaveConnected = false, isActive = false).
+  Shows the "RTR has matched you with…" prompt + Connect button; message
+  input disabled. Absorbs the old dialog-connection-request mock.
+  Other chat states: page-20 (waiting), page-21 (review), page-22 (active).
+-->
+<style>
+  .chat-shell { display: flex; flex-direction: column; }
+  .chat-subhead { background: var(--parchment); border-bottom: 1px solid var(--border); padding: 12px 16px; }
+  .subhead-inner { max-width: 768px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
+  .partner-btn { display: flex; flex: 1; align-items: center; gap: 12px; padding: 4px; border: 0; border-radius: 8px; background: none; color: inherit; text-align: left; cursor: pointer; }
+  .partner-btn:hover { background: rgb(90 106 97 / 8%); }
+  .partner-btn .name { display: block; font-size: 14px; font-weight: 500; margin: 0; }
+  .partner-btn .loc { display: block; font-size: 12px; color: var(--muted-foreground); margin: 0; }
+  .chat-col { display: flex; flex-direction: column; width: 100%; max-width: 768px; margin: 0 auto; }
+  .connect-prompt { background: rgb(42 81 72 / 5%); border-bottom: 1px solid var(--border); padding: 16px; text-align: center; }
+  .connect-prompt p { margin: 0; }
+  .connect-prompt .lead-line { font-size: 14px; font-weight: 500; margin-bottom: 8px; }
+  .connect-prompt .sub-line { font-size: 14px; color: var(--muted-foreground); margin-bottom: 12px; }
+  .thread-area { min-height: 60vh; padding: 16px; }
+  .composer { border-top: 1px solid var(--border); background: var(--card); padding: 12px; }
+  .composer-form { display: flex; gap: 8px; }
+  .composer-form .input { flex: 1; }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="container wide">
+    <div class="bar">
+      <a class="brand" href="page-12-dashboard-recommended.html">
+        <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+        </svg>
+        <span><span class="brand-name">Reconciliation</span><span class="brand-sub">Through Relationships</span></span>
+      </a>
+      <nav class="app-nav" aria-label="Main">
+        <a href="page-12-dashboard-recommended.html">Home</a>
+        <a href="page-09-learning-video.html">Learning</a>
+        <a href="page-18-connections.html" aria-current="page">Connections</a>
+        <a href="page-25-map.html">Regional map</a>
+      </nav>
+      <div class="actions" style="margin-left:auto;">
+        <button class="bell-btn" aria-label="Notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          <span class="bell-count">3</span>
+        </button>
+        <button aria-label="Open account menu" style="background:none;border:0;padding:0;cursor:pointer;border-radius:50%;">
+          <span class="avatar sm">MC</span>
+        </button>
+        <button class="menu-btn">Menu</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="chat-shell">
+  <div class="chat-subhead">
+    <div class="subhead-inner">
+      <a class="btn btn-quiet icon" href="page-18-connections.html" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+      </a>
+      <button type="button" class="partner-btn">
+        <span class="avatar sm">DT</span>
+        <span>
+          <span class="name">David Tremblay</span>
+          <span class="loc">Regina, Saskatchewan</span>
+        </span>
+      </button>
+      <!-- No "Schedule call" button: shown only when the connection is active. -->
+    </div>
+  </div>
+
+  <div class="chat-col">
+    <div class="connect-prompt">
+      <p class="lead-line">RTR has matched you with David!</p>
+      <p class="sub-line">Click connect to start your relationship journey. Both parties must connect to activate chat.</p>
+      <button type="button" class="btn btn-primary sm">Connect with David</button>
+    </div>
+
+    <div class="thread-area" aria-label="Messages"><!-- No messages yet; the "Say hello" prompt appears only once the chat is active. --></div>
+
+    <div class="composer">
+      <form class="composer-form" onsubmit="return false;">
+        <input class="input" type="text" placeholder="Connect first to start chatting" disabled aria-label="Message">
+        <button type="submit" class="btn btn-primary icon" disabled aria-label="Send">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
