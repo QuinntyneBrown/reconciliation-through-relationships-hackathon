@@ -59,11 +59,6 @@ const SLIDES: Slide[] = [
         </h2>
         <div className="text-ink max-w-4xl space-y-5 text-xl leading-relaxed">
           <p>
-            <strong>Reconciliation Through Relationships (RTR)</strong> was founded in
-            direct response to the TRC&apos;s 94 Calls to Action — specifically the
-            call for meaningful, human contact across cultural divides.
-          </p>
-          <p>
             Today, the work is done through spreadsheets, email chains, and phone
             calls. It doesn&apos;t scale. It doesn&apos;t protect participants&apos;
             time or safety. And it can&apos;t answer basic questions like:{" "}
