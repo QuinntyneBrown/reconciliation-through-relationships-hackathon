@@ -1,5 +1,5 @@
 // Acceptance Test
-// Traces to: L2-051, L2-052, L2-053
+// Traces to: L2-COHRT-051, L2-COHRT-052, L2-COHRT-053
 // Description: Regional aggregation limited to eligible, consenting participants with cohort readiness
 import { test, expect } from "../support/fixtures";
 
