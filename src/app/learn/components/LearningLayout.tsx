@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createSupabaseBrowserClient } from "@/data/supabase/browser-client";
 import { Progress } from "@/components/ui/progress";
@@ -36,6 +36,12 @@ export default function LearningLayout({ modules, progress, userId, isIndigenous
   const [localProgress, setLocalProgress] = useState<LearningProgress[]>(progress);
   const [completing, setCompleting] = useState(false);
   const router = useRouter();
+
+  // Scroll to top whenever the active module changes so the new content is visible
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [activeModuleId]);
 
   const activeModule = modules.find((m) => m.id === activeModuleId);
   const completedCount = localProgress.filter((p) => p.completed).length;
