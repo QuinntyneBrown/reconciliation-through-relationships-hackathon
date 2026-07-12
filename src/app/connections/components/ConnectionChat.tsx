@@ -439,6 +439,14 @@ export default function ConnectionChat({
               </div>
             )}
             <div className="grid grid-cols-2 gap-4">
+              {partner.age != null && (
+                <div>
+                  <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wide mb-1">
+                    Age
+                  </p>
+                  <p>{partner.age}</p>
+                </div>
+              )}
               {partner.faith_tradition && (
                 <div>
                   <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wide mb-1">
