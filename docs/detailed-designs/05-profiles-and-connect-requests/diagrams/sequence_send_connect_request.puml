@@ -1,0 +1,25 @@
+@startuml sequence_send_connect_request
+!theme plain
+skinparam sequenceMessageAlign center
+title Send (and cancel) a connect request
+
+actor "Participant A" as A
+participant "Next.js Server\n(ProfilePage)" as Server
+participant "ConnectButton\n(browser)" as Button
+database "Supabase\n(RLS-enforced)" as DB
+
+A -> Server : GET /profile/{B}
+Server -> DB : select viewer + subject profile;\nselect existing connection (either direction)
+DB --> Server : profile rows; no connection
+Server --> A : profile page + Connect button (no connection)
+
+A -> Button : Click "Connect with B"
+Button -> DB : insert connections\n(match_id=null, a_connected=true, b_connected=false)
+DB --> Button : connection row (status='pending')
+Button -> DB : insert notifications\n(user_id=B, type='connect_request', data.connection_id)
+Button --> A : Toast "Request sent" -> "Request pending" + Cancel
+
+alt A cancels the pending request
+  Button -> DB : delete connections where id\n(RLS allows delete only while status='pending')
+end
+@enduml

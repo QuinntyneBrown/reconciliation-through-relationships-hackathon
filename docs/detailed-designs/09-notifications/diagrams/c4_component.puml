@@ -1,0 +1,26 @@
+@startuml c4_component
+!theme plain
+!include <C4/C4_Component>
+title Notifications - Components (delivery mechanism + external producers)
+
+ContainerDb(supabase, "Supabase", "Postgres + Realtime", "notifications table, RLS + supabase_realtime publication")
+
+Container_Boundary(browser, "Web Browser (React 19 client components)") {
+  Component(mount, "App header mount", "DashboardNav / FacilitatorNav -> AppHeader actions", "Renders NotificationCenter with the signed-in userId")
+  Component(center, "NotificationCenter", "src/components/notification-center.tsx", "Unread fetch, Realtime subscription, bell badge, dropdown list, sonner toast, click-through + mark-read")
+}
+
+Container_Boundary(producers, "Notification producers (documented in sibling features)") {
+  Component_Ext(connect, "Profile ConnectButton", "doc 05", "Inserts connect_request { connection_id }")
+  Component_Ext(chatmeet, "Connections chat + Zoom route", "doc 06", "Inserts connect_request / new_message / meeting_scheduled { connection_id (+ meeting_id) }")
+  Component_Ext(matching, "Facilitator MatchingClient", "doc 07", "Inserts match_approved { match_id | connection_id }")
+}
+
+Rel(mount, center, "Mounts with userId")
+Rel(center, supabase, "Fetch unread, subscribe INSERT, UPDATE read")
+Rel(supabase, center, "Realtime INSERT event -> badge + toast")
+Rel(connect, supabase, "notifications.insert")
+Rel(chatmeet, supabase, "notifications.insert")
+Rel(matching, supabase, "notifications.insert")
+
+@enduml

@@ -1,0 +1,18 @@
+@startuml sequence_manual_match
+!theme plain
+skinparam sequenceMessageAlign center
+title Manual Match Creation - MatchingClient.createManualMatch
+
+actor "Facilitator" as F
+participant "MatchingClient" as MC
+participant "profile-matching" as PM
+database "Supabase\n(RLS)" as SB
+
+F -> MC : Select Indigenous + Non-Indigenous, click "Create match"
+MC -> PM : computeMatches(indProfile, [nonIndProfile])
+PM --> MC : [{ score, criteria }]  (results[0])
+MC -> SB : matches.insert({match_score, match_criteria,\nstatus:'suggested', auto_generated:false,\ncreated_by=facilitatorId}).select().single()
+SB --> MC : newMatch  (RLS: facilitators manage all matches)
+MC --> F : prepend to list; toast "Manual match created"
+note over MC : Inserted as 'suggested' - not auto-approved
+@enduml

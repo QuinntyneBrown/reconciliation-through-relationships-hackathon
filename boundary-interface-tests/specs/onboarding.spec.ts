@@ -1,3 +1,6 @@
+// Acceptance Test
+// Traces to: L2-014, L2-015, L2-016, L2-017, L2-018, L2-019, L2-073
+// Description: Five-step onboarding wizard validation, persistence, failure handling, and the accessible error pattern
 import { test, expect } from "../support/fixtures";
 
 test.describe("onboarding", () => {

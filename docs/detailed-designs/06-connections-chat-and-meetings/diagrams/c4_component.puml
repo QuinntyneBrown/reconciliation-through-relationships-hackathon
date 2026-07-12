@@ -1,0 +1,28 @@
+@startuml c4_component
+!theme plain
+!include <C4/C4_Component>
+title Connections: Chat & Meetings - Components
+
+Container(browser, "Web Browser", "React 19 client components")
+ContainerDb(supabase, "Supabase", "Postgres + Auth + Realtime, RLS-enforced")
+System_Ext(zoom, "Zoom API", "Server-to-Server OAuth")
+
+Container_Boundary(app, "Next.js Server (App Router)") {
+  Component(listPage, "Connections List Page", "server component", "src/app/connections/page.tsx - lists the user's connections with partner + status")
+  Component(threadPage, "Connection Thread Page", "server component", "src/app/connections/[connectionId]/page.tsx - membership check, parallel fetch of profiles/messages/meetings")
+  Component(chat, "ConnectionChat", "client component", "Realtime chat, mutual-connect handshake, meeting banner")
+  Component(modal, "ScheduleMeetingModal", "client component", "Collects date/time/topic, POSTs to the zoom route")
+  Component(zoomRoute, "Zoom Route Handler", "route handler", "src/app/api/zoom/create-meeting/route.ts - auth, membership, Zoom, persist")
+}
+
+Rel(browser, listPage, "GET /connections")
+Rel(browser, threadPage, "GET /connections/{id}")
+Rel(threadPage, chat, "Renders with server-fetched props")
+Rel(chat, modal, "Opens on Schedule call")
+Rel(listPage, supabase, "Read connections + partner profiles")
+Rel(threadPage, supabase, "Read connection, profiles, messages, meetings")
+Rel(chat, supabase, "Insert messages, update connection, subscribe Realtime")
+Rel(modal, zoomRoute, "POST /api/zoom/create-meeting")
+Rel(zoomRoute, supabase, "Verify membership; insert meeting + notification")
+Rel(zoomRoute, zoom, "Create meeting")
+@enduml

@@ -1,0 +1,72 @@
+@startuml class_diagram
+!theme plain
+skinparam classAttributeIconSize 0
+
+title Regional Map & Cohorts - Seam-Local Domain Model (src/domain)
+
+class ParticipantProfile {
+  +id : string
+  +name : string
+  +email : string
+  +categories : ParticipationCategory[]
+  +faithTradition : FaithTradition
+  +interests : string[]
+  +preferredFormat : ParticipationFormat
+  +languages : string[]
+  +consentToMap : boolean
+  +learningStatus : LearningStatus
+  +createdAt : string
+  --
+  isEligible(p) : boolean  // learningStatus === "completed"
+}
+
+class GeoLocation {
+  +city : string
+  +province : Province
+  +treatyArea? : string
+  +lat? : number
+  +lng? : number
+}
+
+class Availability {
+  +weekdays? : boolean
+  +weekends? : boolean
+  +evenings? : boolean
+  +notes? : string
+}
+
+class Region {
+  +key : string   // "<province>:<city lowercased>"
+  +province : Province
+  +city : string
+  +eligibleCount : number
+  +canFormCohort : boolean  // eligibleCount >= COHORT_MIN_PARTICIPANTS (5)
+}
+
+class ParticipantIntake <<zod schema>> {
+  participantIntakeSchema
+  // validates POST /api/participants body;
+  // omits id / learningStatus / createdAt
+}
+
+ParticipantProfile "1" *-- "1" GeoLocation
+ParticipantProfile "1" *-- "1" Availability
+ParticipantIntake ..> ParticipantProfile : createParticipant()\nyields
+ParticipantProfile "many" --> "1" Region : aggregated into\n(by city, eligible+consented)
+
+note bottom of Region
+  Region is a computed aggregate, not a table.
+  MockRepository.listRegions() groups mappable
+  participants by city and counts them.
+end note
+
+note top of ParticipantProfile
+  Distinct from the Supabase model in
+  src/data/supabase/database.types.ts:
+  camelCase here vs snake_case ProfileRow
+  (map_consent, learning_completed:boolean,
+  first_name/last_name). The two models are
+  parallel and NOT kept in sync.
+end note
+
+@enduml

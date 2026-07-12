@@ -1,0 +1,41 @@
+@startuml c4_component
+!theme plain
+!include <C4/C4_Component>
+title Authentication & Access - Components
+
+Person(user, "Visitor / Participant / Facilitator")
+System_Ext(supabase, "Supabase", "Auth + profiles (RLS)")
+
+Container_Boundary(browser, "Web Browser (React client)") {
+  Component(landing, "Landing Page", "server component, src/app/page.tsx", "Public marketing page with CTAs into auth")
+  Component(login, "Login Page", "client component, src/app/auth/login/page.tsx", "Password sign-in, then gate-based redirect")
+  Component(signup, "Signup Page", "client component, src/app/auth/signup/page.tsx", "Password sign-up, then redirect to /onboarding")
+  Component(browserClient, "Browser Client Factory", "src/data/supabase/browser-client.ts", "createSupabaseBrowserClient()")
+}
+
+Container_Boundary(server, "Next.js Server") {
+  Component(proxy, "proxy middleware", "src/proxy.ts", "Runs on every matched request; delegates to updateSession")
+  Component(updateSession, "updateSession", "src/data/supabase/session-proxy.ts", "Session + role + completion gating cascade")
+  Component(callback, "Callback Route", "src/app/auth/callback/route.ts", "GET /auth/callback: exchangeCodeForSession + gate redirect")
+  Component(serverClient, "Server Client Factory", "src/data/supabase/server-client.ts", "createSupabaseServerClient()")
+  Component(envmod, "env module", "src/lib/env.ts", "Supabase URL / anon key access")
+}
+
+Rel(user, landing, "Views /")
+Rel(user, login, "Submits credentials")
+Rel(user, signup, "Submits credentials")
+Rel(landing, login, "CTA link")
+Rel(landing, signup, "CTA link")
+
+Rel(login, browserClient, "creates client")
+Rel(signup, browserClient, "creates client")
+Rel(browserClient, supabase, "signIn / signUp / read gates")
+
+Rel(user, proxy, "Every navigation")
+Rel(proxy, updateSession, "delegates")
+Rel(updateSession, supabase, "getUser + read gates")
+Rel(callback, serverClient, "creates client")
+Rel(serverClient, supabase, "exchangeCodeForSession + read gates")
+Rel(updateSession, envmod, "reads keys")
+Rel(serverClient, envmod, "reads keys")
+@enduml

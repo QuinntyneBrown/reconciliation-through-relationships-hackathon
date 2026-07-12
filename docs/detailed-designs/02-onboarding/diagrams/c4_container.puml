@@ -1,0 +1,18 @@
+@startuml c4_container
+!theme plain
+!include <C4/C4_Container>
+title Onboarding - Containers
+
+Person(participant, "Participant", "Completing the profile intake wizard")
+
+System_Boundary(rtr, "Reconciliation Through Relationships") {
+  Container(browser, "Web Browser", "React 19 client components", "The /onboarding wizard: orchestrator page + 5 step components + validation")
+  Container(server, "Next.js Server", "App Router - server components, route handlers, proxy middleware", "Serves the /onboarding client page")
+}
+
+ContainerDb(supabase, "Supabase", "Postgres + Auth + Realtime, RLS-enforced", "profiles table and auth session")
+
+Rel(participant, browser, "Enters profile details, clicks Continue / Complete")
+Rel(browser, server, "Loads the /onboarding route", "HTTPS")
+Rel(browser, supabase, "auth.getUser(); UPDATE profiles (own row)", "@supabase/ssr")
+@enduml

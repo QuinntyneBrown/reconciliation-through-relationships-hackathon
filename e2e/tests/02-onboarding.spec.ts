@@ -1,3 +1,6 @@
+// Acceptance Test
+// Traces to: L2-015
+// Description: Full five-step onboarding journey with persistence against real Supabase
 import { expect, test } from "@playwright/test";
 
 import { LoginPage } from "../pages/login.page";

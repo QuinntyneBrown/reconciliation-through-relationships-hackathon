@@ -1,0 +1,28 @@
+@startuml sequence_load_recommendations
+!theme plain
+skinparam sequenceMessageAlign center
+title Load Dashboard - fetch data + compute recommendations
+
+actor "Participant" as U
+participant "DashboardPage\n(page.tsx)" as PG
+participant "profile-matching\n(computeMatches)" as PM
+participant "DashboardClient\n+ tabs" as UI
+database "Supabase\n(RLS)" as SB
+
+U -> PG : GET /dashboard
+PG -> SB : auth.getUser() + select own profile
+SB --> PG : profile (redirect to /onboarding or /learn if gates unmet)
+PG -> SB : select participants (learning + onboarding complete, role=participant, not self)
+SB --> PG : eligible participants
+PG -> SB : select matches (approved|connected) + own connections + cohort_members
+SB --> PG : matches, connections, cohort
+PG -> PM : computeMatches(profile, participants)
+PM --> PG : scored MatchResult[] (filter matched OR score>=40, top 5)
+PG -> UI : render(currentUser, recommendedMatches, participants, connections, cohort)
+UI --> U : tabs (Recommended / Connections / All participants)
+
+note over UI
+  The "Connect" action lives on the profile page,
+  not here. See ../05-profiles-and-connect-requests/README.md.
+end note
+@enduml

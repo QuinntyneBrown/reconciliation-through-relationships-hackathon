@@ -1,0 +1,14 @@
+@startuml c4_context
+!theme plain
+!include <C4/C4_Context>
+title Learning Journey - System Context
+
+Person(participant, "Participant", "Indigenous or non-Indigenous user completing required learning before the dashboard unlocks")
+System(rtr, "Reconciliation Through Relationships", "Web platform connecting Indigenous and non-Indigenous participants for relationship building")
+System_Ext(supabase, "Supabase", "Postgres + Auth + Realtime, RLS-enforced")
+System_Ext(youtube, "YouTube", "Embedded video player for video learning modules")
+
+Rel(participant, rtr, "Views modules, marks them complete")
+Rel(rtr, supabase, "Reads modules by audience + own progress; writes progress and learning_completed")
+Rel(participant, youtube, "Watches embedded module videos", "iframe")
+@enduml

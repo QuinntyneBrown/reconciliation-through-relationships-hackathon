@@ -1,0 +1,22 @@
+@startuml c4_context
+!theme plain
+!include <C4/C4_Context>
+
+title Regional Map & Cohorts - System Context
+
+Person(participant, "Participant", "Views regional cohorts they may belong to")
+Person(facilitator, "Facilitator", "Views the same regions; nav differs by role")
+
+System_Boundary(rtr_boundary, "Reconciliation Through Relationships") {
+  System(rtr, "RTR Web Platform", "Next.js App Router. The /map feature reads regional discovery data from an in-process mock store, not from Supabase")
+  SystemDb(mock, "Mock Data Store", "In-process synthetic participants held in module memory; resets on server restart. The live source for map & cohort data")
+}
+
+System_Ext(supabase, "Supabase", "Auth session + profile role lookup ONLY for /map (RLS Postgres). Does NOT supply the region data")
+
+Rel(participant, rtr, "Views regional map", "HTTPS")
+Rel(facilitator, rtr, "Views regional map", "HTTPS")
+Rel(rtr, supabase, "Verifies session, reads profile.role", "@supabase/ssr")
+Rel(rtr, mock, "Reads eligible + consented participants, aggregates regions", "in-process")
+
+@enduml

@@ -1,0 +1,23 @@
+@startuml sequence_module_completion
+!theme plain
+skinparam sequenceMessageAlign center
+title Learning Journey - Module Completion
+
+actor Participant
+participant "LearnPage\n(server component)" as Server
+participant "LearningLayout\n(client component)" as Browser
+database Supabase
+
+Participant -> Server : GET /learn
+Server -> Supabase : select learning_modules (audience) + learning_progress (own)
+Supabase --> Server : modules + progress
+Server --> Browser : render with modules, progress, profile
+Participant -> Browser : Mark complete
+Browser -> Supabase : upsert learning_progress {completed: true}
+alt last required module now complete
+  Browser -> Supabase : update profiles.learning_completed = true
+  Browser --> Participant : toast + redirect /dashboard (gate released)
+else more required modules remain
+  Browser --> Participant : toast + advance to next module
+end
+@enduml

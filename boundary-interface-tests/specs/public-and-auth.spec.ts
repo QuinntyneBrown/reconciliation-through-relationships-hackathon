@@ -1,3 +1,6 @@
+// Acceptance Test
+// Traces to: L2-001, L2-002, L2-003, L2-004, L2-005, L2-007, L2-008, L2-010, L2-011, L2-013, L2-074, L2-075, L2-076
+// Description: Landing page content, sign-in and journey-stage routing, protected-route redirects, navigation, contrast, and responsive behavior
 import { test, expect } from "../support/fixtures";
 
 test.describe("public journey and authentication", () => {
