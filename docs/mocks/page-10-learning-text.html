@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning · Text module — Reconciliation Through Relationships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<!--
+  Mirrors: /learn (src/app/learn/components/LearningLayout.tsx + ModuleContent.tsx)
+  State: Learning reader, Non-Indigenous track, mid-journey. A TEXT module
+  ("Understanding Truth and Reconciliation") is active AND already completed —
+  the participant is revisiting it. Modules 1-3 complete (3/4 required); the
+  reader shows the "Completed" badge next to the type badge and the completed
+  confirmation ("You've completed this module") in the bottom card.
+  Module titles/durations are the real seed content (supabase/migrations/002_seed_data.sql).
+  Module 5 "Voices of Reconciliation" is SYNTHETIC (see page-09 note) — catalogs the
+  "Optional" badge.
+  Markdown card: the body prose is the module's real seed content; light markdown
+  structure (an h2, an h3, a bullet list, and a blockquote) is composed from the
+  seed's own sentences to exercise ModuleContent's ReactMarkdown renderer for the
+  catalog. Marked "normalized: ..." below.
+  Persona: David Tremblay (avatar DT). Sidebar module items cross-link to page-09.
+-->
+<style>
+  /* ---- Learning journey chrome (LearningLayout.tsx) ---------------------- */
+  .learn-shell { min-height: 100vh; display: flex; flex-direction: column; }
+
+  .learn-topbar {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+  }
+  .learn-topbar .inner {
+    max-width: 1280px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .learn-brand { display: flex; align-items: center; gap: 8px; text-decoration: none; color: inherit; }
+  .learn-brand svg { color: var(--primary); flex: none; }
+  .learn-brand .label { font-weight: 600; font-size: 14px; color: var(--foreground); }
+  .learn-brand:hover .label { color: var(--spruce-800); }
+  .tag.tag-xs { min-height: 0; padding: 2px 10px; font-size: 12px; }
+
+  .learn-progress { display: flex; align-items: center; gap: 12px; flex: 1; max-width: 320px; }
+  .learn-progress .progress { flex: 1; height: 8px; }
+  .learn-progress .count { font-size: 12px; color: var(--muted-foreground); white-space: nowrap; }
+
+  .avatar-trigger { background: none; border: 0; padding: 0; border-radius: 50%; cursor: pointer; flex: none; }
+  .avatar-trigger:focus-visible { outline: 2px solid var(--ochre-600); outline-offset: 2px; }
+
+  /* ---- Two-pane body ----------------------------------------------------- */
+  .learn-body { display: flex; flex: 1; max-width: 1280px; margin: 0 auto; width: 100%; }
+
+  .learn-sidebar {
+    width: 288px; flex: none;
+    border-right: 1px solid var(--border);
+    background: var(--card);
+    display: flex; flex-direction: column;
+  }
+  .learn-sidebar .sidebar-head { padding: 16px; border-bottom: 1px solid var(--border); }
+  .learn-sidebar .sidebar-head h2 {
+    margin: 0; font-family: var(--font-body);
+    font-size: 14px; font-weight: 600; letter-spacing: .04em;
+    text-transform: uppercase; color: var(--muted-foreground);
+  }
+  .module-nav { padding: 8px; display: flex; flex-direction: column; gap: 4px; }
+  .module-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    width: 100%; padding: 12px;
+    border-radius: 10px; border: 1px solid transparent;
+    background: none; text-align: left; text-decoration: none; color: inherit;
+    cursor: pointer;
+  }
+  .module-item:hover { background: rgb(239 231 215 / 50%); }
+  .module-item.active { background: rgb(42 81 72 / 10%); border-color: rgb(42 81 72 / 20%); }
+  .module-item .m-icon { flex: none; margin-top: 2px; }
+  /* Code uses text-accent for the done check; accent (river-100) renders very
+     faint, so the mock shows it in the legible accent-foreground (river-700). */
+  .module-item .m-icon.done { color: var(--accent-foreground); }   /* normalized: legible accent tone */
+  .module-item .m-icon.idle { color: var(--muted-foreground); }
+  .module-item.active .m-icon.idle { color: var(--primary); }
+  .module-item .m-main { flex: 1; min-width: 0; }
+  .module-item .m-title {
+    margin: 0; font-size: 14px; font-weight: 500;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .module-item.active .m-title { color: var(--primary); }
+  .module-item .m-meta { display: flex; align-items: center; gap: 4px; margin-top: 2px; }
+  .module-item .m-meta svg { color: var(--muted-foreground); flex: none; }
+  .module-item .m-meta .dur { font-size: 12px; color: var(--muted-foreground); }
+  .badge-optional {
+    margin-left: 4px; height: 16px; padding: 0 6px;
+    display: inline-flex; align-items: center;
+    font-size: 11px; font-weight: 600; line-height: 1;
+    color: var(--primary);
+    border: 1px solid var(--input); border-radius: var(--r-pill);
+    background: var(--card);
+  }
+  .module-item .m-chevron { flex: none; color: var(--primary); margin-top: 2px; }
+
+  /* ---- Reader (ModuleContent.tsx) ---------------------------------------- */
+  .learn-main { flex: 1; padding: 32px; }
+  .module-content { max-width: 768px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+
+  .module-head .type-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .module-head .type-row > svg { color: var(--muted-foreground); flex: none; }
+  .tag.type-badge { text-transform: capitalize; }
+  .tag.completed-badge { gap: 4px; }
+  .module-head .dur-inline { display: flex; align-items: center; gap: 4px; color: var(--muted-foreground); }
+  .module-head .dur-inline svg { flex: none; }
+  .module-head .dur-inline span { font-size: 12px; }
+  .module-head h1 { font-size: clamp(24px, 3vw, 30px); font-weight: 700; margin: 0; }
+  .module-head .desc { margin: 8px 0 0; color: var(--muted-foreground); line-height: 1.6; }
+
+  /* Rendered markdown card (ReactMarkdown component overrides in ModuleContent.tsx) */
+  .md-card { border: 1px solid var(--border); border-radius: 12px; background: var(--card); padding: 32px; }
+  .md-card > :first-child { margin-top: 0; }
+  .md-card > :last-child { margin-bottom: 0; }
+  .md-card h2 { font-family: var(--font-body); font-size: 18px; font-weight: 600; color: var(--foreground); margin: 24px 0 12px; letter-spacing: 0; line-height: 1.3; }
+  .md-card h3 { font-family: var(--font-body); font-size: 16px; font-weight: 600; color: var(--foreground); margin: 16px 0 8px; letter-spacing: 0; line-height: 1.3; }
+  .md-card p { margin: 0 0 16px; line-height: 1.625; color: var(--foreground); }
+  .md-card ul { margin: 0 0 16px; padding-left: 16px; list-style: disc; color: var(--foreground); }
+  .md-card li { margin-bottom: 4px; line-height: 1.625; }
+  .md-card blockquote {
+    border-left: 4px solid rgb(42 81 72 / 40%);
+    padding-left: 16px; margin: 16px 0;
+    font-style: italic; color: var(--muted-foreground);
+  }
+
+  .continue-card {
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    padding: 24px; border: 1px solid var(--border); border-radius: 12px; background: var(--card);
+  }
+  .continue-card.done { gap: 8px; color: var(--accent-foreground); }
+  .continue-card.done svg { color: var(--accent-foreground); flex: none; }   /* normalized: legible accent tone */
+  .continue-card.done .msg { font-weight: 500; }
+
+  @media (max-width: 720px) {
+    .learn-sidebar { display: none; }
+    .learn-main { padding: 16px; }
+    .md-card { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="learn-shell">
+
+  <header class="learn-topbar">
+    <div class="inner">
+      <a class="learn-brand" href="page-12-dashboard-recommended.html">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        <span class="label">Learning Journey</span>
+        <span class="tag ochre tag-xs">Non-Indigenous track</span>
+      </a>
+
+      <div class="learn-progress">
+        <div class="progress" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" aria-label="Learning progress"><div class="bar" style="width:75%;"></div></div>
+        <span class="count">3/4 complete</span>
+      </div>
+
+      <button class="avatar-trigger" aria-label="Open account menu" aria-haspopup="menu">
+        <span class="avatar sm dark">DT</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="learn-body">
+
+    <aside class="learn-sidebar">
+      <div class="sidebar-head">
+        <h2>Modules</h2>
+      </div>
+      <nav class="module-nav" aria-label="Modules">
+
+        <a class="module-item" href="page-09-learning-video.html">
+          <span class="m-icon done" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+          </span>
+          <span class="m-main">
+            <p class="m-title">1. Welcome to RTR</p>
+            <span class="m-meta">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span class="dur">5 min</span>
+            </span>
+          </span>
+        </a>
+
+        <a class="module-item active" href="page-10-learning-text.html" aria-current="true">
+          <span class="m-icon done" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+          </span>
+          <span class="m-main">
+            <p class="m-title">2. Understanding Truth and Reconciliation</p>
+            <span class="m-meta">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span class="dur">15 min</span>
+            </span>
+          </span>
+          <span class="m-chevron" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+          </span>
+        </a>
+
+        <a class="module-item" href="page-10-learning-text.html">
+          <span class="m-icon done" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+          </span>
+          <span class="m-main">
+            <p class="m-title">3. The Residential School System</p>
+            <span class="m-meta">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span class="dur">20 min</span>
+            </span>
+          </span>
+        </a>
+
+        <a class="module-item" href="page-10-learning-text.html">
+          <span class="m-icon idle" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>
+          </span>
+          <span class="m-main">
+            <p class="m-title">4. How Matching and Connection Works</p>
+            <span class="m-meta">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span class="dur">10 min</span>
+            </span>
+          </span>
+        </a>
+
+        <!-- SYNTHETIC optional module (see page-09 note). -->
+        <a class="module-item" href="page-10-learning-text.html">
+          <span class="m-icon idle" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>
+          </span>
+          <span class="m-main">
+            <p class="m-title">5. Voices of Reconciliation</p>
+            <span class="m-meta">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span class="dur">12 min</span>
+              <span class="badge-optional">Optional</span>
+            </span>
+          </span>
+        </a>
+
+      </nav>
+    </aside>
+
+    <main class="learn-main">
+      <article class="module-content">
+
+        <div class="module-head">
+          <div class="type-row">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
+            <span class="tag ochre tag-xs type-badge">text</span>
+            <span class="dur-inline">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span>15 min</span>
+            </span>
+            <span class="tag river tag-xs completed-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+              Completed
+            </span>
+          </div>
+          <h1>Understanding Truth and Reconciliation</h1>
+          <p class="desc">Learn about the Truth and Reconciliation Commission of Canada and the 94 Calls to Action that guide this work.</p>
+        </div>
+
+        <!-- normalized: prose is the module's real seed body; the h2/h3/list/blockquote
+             structure is composed from the seed's own sentences to exercise the
+             ReactMarkdown renderer defined in ModuleContent.tsx. -->
+        <div class="md-card">
+          <p>The Truth and Reconciliation Commission of Canada (TRC) concluded its six-year mandate in 2015, having gathered testimony from more than 6,000 residential school survivors.</p>
+
+          <h2>The 94 Calls to Action</h2>
+          <p>The TRC&apos;s final report documents the history and ongoing impacts of the residential school system. Its 94 Calls to Action call on governments, institutions, faith communities, and Canadians in all walks of life to do their part in advancing reconciliation.</p>
+          <ul>
+            <li>Governments</li>
+            <li>Institutions</li>
+            <li>Faith communities</li>
+            <li>Canadians in all walks of life</li>
+          </ul>
+
+          <h3>Why RTR exists</h3>
+          <p>RTR was founded in direct response to these calls — specifically to create meaningful opportunities for Indigenous and non-Indigenous Canadians to know one another as people, not just as statistics or news stories.</p>
+
+          <blockquote>We ask you to approach this work with humility, openness, and a willingness to be changed by what you hear.</blockquote>
+
+          <p>As a non-Indigenous participant, your journey of learning is one of the most important steps you can take.</p>
+        </div>
+
+        <div class="continue-card done">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+          <span class="msg">You&apos;ve completed this module</span>
+        </div>
+
+      </article>
+    </main>
+
+  </div>
+</div>
+
+</body>
+</html>

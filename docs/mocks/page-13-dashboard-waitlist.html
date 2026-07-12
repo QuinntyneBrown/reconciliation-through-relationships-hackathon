@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard · Waitlist — Reconciliation Through Relationships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<!--
+  Mirrors: /dashboard (src/app/dashboard/components/DashboardClient.tsx + RecommendedTab.tsx)
+  State: Waitlist — non-Indigenous participant (David Tremblay) with 0 recommendations.
+  The info Alert and the empty state both render when isOnWaitlist:
+  !currentUser.is_indigenous && recommendedMatches.length === 0. The Recommended
+  tab shows no count badge because recommendedMatches.length === 0.
+  Other states: page-12 (recommended), page-14 (cohort banner), page-15/16 (all
+  participants list/map), page-17 (connections tab).
+-->
+<style>
+  .app-main { padding-top: 32px; padding-bottom: 32px; }
+  .app-main > * + * { margin-top: 32px; }
+  .page-intro { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+  .page-intro .intro-copy { max-width: 768px; }
+  .page-intro h1 { margin-bottom: 4px; }
+  .page-intro .lead { margin: 0 0 16px; }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="container wide">
+    <div class="bar">
+      <a class="brand" href="page-12-dashboard-recommended.html">
+        <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+        </svg>
+        <span><span class="brand-name">Reconciliation</span><span class="brand-sub">Through Relationships</span></span>
+      </a>
+      <nav class="app-nav" aria-label="Main">
+        <a href="page-12-dashboard-recommended.html" aria-current="page">Home</a>
+        <a href="page-09-learning-video.html">Learning</a>
+        <a href="page-18-connections.html">Connections</a>
+        <a href="page-25-map.html">Regional map</a>
+      </nav>
+      <div class="actions" style="margin-left:auto;">
+        <button class="bell-btn" aria-label="Notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          <span class="bell-count">3</span>
+        </button>
+        <button aria-label="Open account menu" style="background:none;border:0;padding:0;cursor:pointer;border-radius:50%;">
+          <span class="avatar sm">DT</span>
+        </button>
+        <button class="menu-btn">Menu</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="app-main container wide">
+  <div class="page-intro">
+    <div class="intro-copy">
+      <span class="eyebrow">Your relationship journey</span>
+      <h1>Welcome, David</h1>
+      <p class="lead">Discover thoughtful recommendations, connect at your own pace, and see reconciliation circles forming near you.</p>
+      <div class="weave short" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <div class="alert info" role="alert">
+    <p><strong>You're on the waitlist.</strong> We'll notify you as soon as an Indigenous participant is matched with you. In the meantime, explore the participant community below.</p>
+  </div>
+
+  <div>
+    <nav class="tabs" aria-label="Dashboard sections">
+      <a href="page-12-dashboard-recommended.html" aria-current="true">Recommended</a>
+      <a href="page-17-dashboard-connections.html">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+        Connections
+      </a>
+      <a href="page-15-dashboard-participants-list.html">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        All participants
+      </a>
+    </nav>
+
+    <div style="margin-top:24px;">
+      <!-- RecommendedTab renders EmptyState when matches.length === 0 -->
+      <div class="empty">
+        <svg class="empty-mark" viewBox="0 0 32 32" width="64" aria-hidden="true">
+          <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#C9BCA3" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#C9BCA3" stroke-width="3.4" stroke-linecap="round" stroke-dasharray="2 7"/>
+        </svg>
+        <h3>No recommendations yet</h3>
+        <p>A facilitator is reviewing potential matches for you. Check back soon.</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="app-footer panel-on-dark">
+  <div class="container wide">
+    <div class="row between" style="align-items:center;">
+      <div>
+        <h4>Reconciliation Through Relationships</h4>
+        <p style="margin:0;">Building meaningful relationships between Indigenous and non-Indigenous people.</p>
+        <p style="margin:4px 0 0;"><a href="https://rightrelationship.ca">rightrelationship.ca</a></p>
+      </div>
+      <div class="weave on-dark" style="width:240px;" aria-hidden="true"></div>
+    </div>
+    <p class="acknowledgment">Each gathering begins by acknowledging the treaty territory and traditional lands on which it takes place. Region-specific acknowledgments are confirmed with local Indigenous partners.</p>
+  </div>
+</footer>
+
+</body>
+</html>

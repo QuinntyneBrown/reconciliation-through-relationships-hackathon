@@ -3,11 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RTR Design System — Components</title>
+<title>Design system — Reconciliation Through Relationships</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="rtr.css">
+<!--
+  Component catalog for the IMPLEMENTED app (src/app, src/components/ui/*).
+  Every specimen uses the reconciled classes in rtr.css, which mirror
+  src/app/globals.css + src/components/ui/*. When a component changes in the
+  app, update rtr.css and this page together.
+  Cross-links: index.html, states-toasts.html, states-feedback.html,
+  dialog-schedule-call.html, overlay-notifications.html, overlay-mobile-nav.html.
+-->
 <style>
   /* Local styles for the specimen page only */
   .spec-section { padding: var(--s6) 0; border-bottom: 1px solid var(--border); }
@@ -23,13 +31,29 @@
   .swatch .info b { display: block; font-size: 14px; }
   .swatch .info code { color: var(--ink-soft); font-size: 12.5px; }
   .type-row { display: flex; align-items: baseline; gap: var(--s5); padding: var(--s3) 0; border-bottom: 1px dashed var(--border); }
-  .type-row .type-meta { flex: none; width: 220px; font-size: 12.5px; color: var(--ink-faint); }
+  .type-row .type-meta { flex: none; width: 230px; font-size: 12.5px; color: var(--ink-faint); }
+  @media (max-width: 620px) {
+    .type-row { flex-wrap: wrap; gap: var(--s1); }
+    .type-row .type-meta { width: 100%; }
+  }
   .demo-row { display: flex; flex-wrap: wrap; gap: var(--s3); align-items: center; }
   .demo-box {
     background: var(--parchment); border: 1px solid var(--border);
     border-radius: var(--r-lg); padding: var(--s5);
   }
+  .demo-dark {
+    background: var(--spruce-800); color: var(--on-dark);
+    border-radius: var(--r-lg); padding: var(--s5);
+  }
+  .nav-frame { border-radius: var(--r-md); overflow: hidden; border: 1px solid var(--border); }
   .toc a { text-decoration: none; font-weight: 600; }
+  .toc .toc-group { display: block; font-size: 11.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); margin: var(--s3) 0 4px; }
+  /* Sheet/menu/notification specimens render inline (not fixed/portalled) */
+  .overlay-demo { background: var(--spruce-100); border-radius: var(--r-lg); padding: var(--s5); display: grid; place-items: start center; gap: var(--s4); overflow-x: auto; }
+  .overlay-demo.dark { background: var(--spruce-800); }
+  .sheet-demo .sheet-panel { position: relative; inset: auto; width: 300px; max-width: 100%; box-shadow: var(--shadow-2); }
+  code.mono { font-family: ui-monospace, "SF Mono", "Geist Mono", monospace; font-size: 13.5px; background: var(--sand); padding: 2px 7px; border-radius: 6px; color: var(--spruce-800); }
+
 </style>
 </head>
 <body>
@@ -39,10 +63,9 @@
     <div class="bar">
       <a class="brand" href="index.html">
         <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
-          <path d="M16 4 a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
-          <path d="M16 28 a12 12 0 0 1 0 -24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
-          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/>
-          <circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+          <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
         </svg>
         <span>
           <span class="brand-name">Reconciliation</span>
@@ -53,7 +76,7 @@
         <a href="index.html">All mocks</a>
         <a href="design-system.html" aria-current="page">Components</a>
       </nav>
-      <div class="actions"><span class="role-tag">Specimen</span></div>
+      <div class="actions" style="margin-left:auto;"><span class="role-tag">Specimen</span></div>
       <button class="menu-btn" type="button">Menu</button>
     </div>
   </div>
@@ -64,29 +87,46 @@
   <div class="page-title">
     <span class="eyebrow">Reconciliation Through Relationships</span>
     <h1>Design system &amp; component library</h1>
-    <p class="lead">Every component used across the Reconciliation Through Relationships mocks, in one place. The direction is <em>“two strands, one circle”</em> — warm, land-grounded, and built for readability first.</p>
+    <p class="lead">Every component in the built application, in one place. Each specimen uses the same classes the app ships (<code class="mono">rtr.css</code> mirrors <code class="mono">src/app/globals.css</code> and <code class="mono">src/components/ui/*</code>). The direction is <em>“two strands, one circle”</em> — warm, land-grounded, and built for readability first.</p>
     <div class="weave short mt-4" role="presentation"></div>
   </div>
 
   <div class="card card-pad toc mb-5">
     <strong>On this page:</strong>
+    <span class="toc-group">Foundations</span>
     <a href="#principles">Principles</a> ·
     <a href="#color">Color</a> ·
-    <a href="#type">Typography</a> ·
+    <a href="#type">Typography</a>
+    <span class="toc-group">Brand &amp; motifs</span>
     <a href="#brand">Brand &amp; motifs</a> ·
+    <a href="#panel">Panel-on-dark</a> ·
+    <a href="#cohort">Cohort circle</a>
+    <span class="toc-group">Actions &amp; controls</span>
     <a href="#buttons">Buttons</a> ·
-    <a href="#forms">Forms</a> ·
-    <a href="#chips">Tags &amp; status</a> ·
+    <a href="#forms">Forms &amp; inputs</a> ·
+    <a href="#switch">Switches</a> ·
+    <a href="#status">Badges &amp; status</a>
+    <span class="toc-group">Data display</span>
     <a href="#avatars">Avatars</a> ·
     <a href="#cards">Cards</a> ·
-    <a href="#cohort">Cohort circle</a> ·
+    <a href="#lists">List rows</a> ·
     <a href="#progress">Progress</a> ·
-    <a href="#nav">Navigation</a> ·
+    <a href="#stepper">Stepper</a> ·
+    <a href="#stepchips">Wizard step chips</a> ·
+    <a href="#tables">Tables</a>
+    <span class="toc-group">Navigation</span>
+    <a href="#nav">App headers</a> ·
+    <a href="#tabs">Tabs</a>
+    <span class="toc-group">Overlays &amp; feedback</span>
     <a href="#alerts">Alerts</a> ·
-    <a href="#tables">Tables</a> ·
-    <a href="#messages">Messages</a> ·
-    <a href="#modal">Dialogs</a> ·
+    <a href="#toasts">Toasts</a> ·
+    <a href="#menu">Dropdown menu</a> ·
+    <a href="#notifications">Notifications</a> ·
+    <a href="#dialogs">Dialogs</a> ·
+    <a href="#sheet">Sheet (mobile nav)</a> ·
     <a href="#empty">Empty states</a> ·
+    <a href="#messages">Messages</a>
+    <span class="toc-group">Principles in practice</span>
     <a href="#a11y">Accessibility</a>
   </div>
 
@@ -112,7 +152,7 @@
   <!-- ============================ COLOR ============================ -->
   <section class="spec-section" id="color">
     <h2>Color</h2>
-    <p class="muted">Drawn from the land: spruce forest, birchbark, prairie ochre, river water, wild berry. Spruce carries structure and action; ochre and river are the two relationship strands; berry is reserved for warnings.</p>
+    <p class="muted">Drawn from the land: spruce forest, birchbark, prairie ochre, river water, wild berry. Spruce carries structure and action; ochre and river are the two relationship strands; berry is reserved for warnings. Token values live in <code class="mono">src/styles/design-tokens.css</code> and are shared with the app.</p>
 
     <p class="spec-label">Core palette</p>
     <div class="grid cols-4">
@@ -120,32 +160,33 @@
       <div class="swatch"><div class="chip" style="background:#2A5148"></div><div class="info"><b>Spruce 700</b><code>#2A5148</code> · primary actions</div></div>
       <div class="swatch"><div class="chip" style="background:#396B5E"></div><div class="info"><b>Spruce 600</b><code>#396B5E</code> · progress, filled seats</div></div>
       <div class="swatch"><div class="chip" style="background:#E0EAE2"></div><div class="info"><b>Spruce 100</b><code>#E0EAE2</code> · tints, tags</div></div>
-      <div class="swatch"><div class="chip" style="background:#D89543"></div><div class="info"><b>Ochre 500</b><code>#D89543</code> · accent strand, highlights</div></div>
-      <div class="swatch"><div class="chip" style="background:#9A5B14"></div><div class="info"><b>Ochre 700</b><code>#9A5B14</code> · accent text</div></div>
+      <div class="swatch"><div class="chip" style="background:#D89543"></div><div class="info"><b>Ochre 500</b><code>#D89543</code> · accent strand, on-dark fill</div></div>
+      <div class="swatch"><div class="chip" style="background:#9A5B14"></div><div class="info"><b>Ochre 700</b><code>#9A5B14</code> · accent text, active tab</div></div>
       <div class="swatch"><div class="chip" style="background:#37767C"></div><div class="info"><b>River 600</b><code>#37767C</code> · second strand</div></div>
-      <div class="swatch"><div class="chip" style="background:#2C5F66"></div><div class="info"><b>River 700</b><code>#2C5F66</code> · links</div></div>
+      <div class="swatch"><div class="chip" style="background:#2C5F66"></div><div class="info"><b>River 700</b><code>#2C5F66</code> · links, quiet buttons</div></div>
       <div class="swatch"><div class="chip" style="background:#8C3130"></div><div class="info"><b>Berry 700</b><code>#8C3130</code> · destructive, errors</div></div>
       <div class="swatch"><div class="chip" style="background:#F9F5EB; border-bottom:1px solid #E0D6C2"></div><div class="info"><b>Birch</b><code>#F9F5EB</code> · page background</div></div>
       <div class="swatch"><div class="chip" style="background:#FFFDF7; border-bottom:1px solid #E0D6C2"></div><div class="info"><b>Parchment</b><code>#FFFDF7</code> · cards, inputs</div></div>
-      <div class="swatch"><div class="chip" style="background:#EFE7D7"></div><div class="info"><b>Sand</b><code>#EFE7D7</code> · subtle fills</div></div>
+      <div class="swatch"><div class="chip" style="background:#EFE7D7"></div><div class="info"><b>Sand</b><code>#EFE7D7</code> · progress track, subtle fills</div></div>
     </div>
   </section>
 
   <!-- ============================ TYPOGRAPHY ============================ -->
   <section class="spec-section" id="type">
     <h2>Typography</h2>
-    <p class="muted"><strong>Fraunces</strong> carries the voice — warm, human, a little old-growth. <strong>Atkinson Hyperlegible</strong> carries the reading — designed by the Braille Institute for maximum legibility, chosen because accessibility is a stated goal of this platform, not an afterthought.</p>
+    <p class="muted"><strong>Fraunces</strong> carries the voice — warm, human, a little old-growth. <strong>Atkinson Hyperlegible</strong> carries the reading — designed by the Braille Institute for maximum legibility, chosen because accessibility is a stated goal of this platform, not an afterthought. Headings weight 560; the <code class="mono">display</code> face steps down to 520.</p>
 
-    <div class="type-row"><div class="type-meta">Display · Fraunces 520</div><div class="display">Walking together</div></div>
-    <div class="type-row"><div class="type-meta">Heading 1 · Fraunces 560</div><h1 class="mb-0">Your learning journey</h1></div>
-    <div class="type-row"><div class="type-meta">Heading 2 · Fraunces 560</div><h2 class="mb-0">Recommended connections</h2></div>
-    <div class="type-row"><div class="type-meta">Heading 3 · Fraunces 560</div><h3 class="mb-0">Regional cohorts</h3></div>
-    <div class="type-row"><div class="type-meta">Heading 4 · Atkinson 700</div><h4 class="mb-0">Availability and format</h4></div>
-    <div class="type-row"><div class="type-meta">Lead · Atkinson 400 / 19px</div><p class="lead mb-0">A gentle introduction that sets the tone of a page.</p></div>
-    <div class="type-row"><div class="type-meta">Body · Atkinson 400 / 16.5px</div><p class="mb-0">Reconciliation begins with a relationship — one conversation, one shared meal, one community at a time.</p></div>
-    <div class="type-row"><div class="type-meta">Eyebrow · caps, ochre</div><span class="eyebrow mb-0">Step 2 of 5</span></div>
+    <div class="type-row"><div class="type-meta">Display · Fraunces 520 · clamp 34–48px</div><div class="display">Walking together</div></div>
+    <div class="type-row"><div class="type-meta">Heading 1 · Fraunces 560 · clamp 28–34px</div><h1 class="mb-0">Your learning journey</h1></div>
+    <div class="type-row"><div class="type-meta">Heading 2 · Fraunces 560 · 25px</div><h2 class="mb-0">Recommended connections</h2></div>
+    <div class="type-row"><div class="type-meta">Heading 3 · Fraunces 560 · 20px</div><h3 class="mb-0">Regional cohorts</h3></div>
+    <div class="type-row"><div class="type-meta">Heading 4 · Atkinson 700 · 17px</div><h4 class="mb-0">Availability and format</h4></div>
+    <div class="type-row"><div class="type-meta">Lead · Atkinson 400 · 19px</div><p class="lead mb-0">A gentle introduction that sets the tone of a page.</p></div>
+    <div class="type-row"><div class="type-meta">Body · Atkinson 400 · 16.5px</div><p class="mb-0">Reconciliation begins with a relationship — one conversation, one shared meal, one community at a time.</p></div>
+    <div class="type-row"><div class="type-meta">Eyebrow · caps, ochre-700 · 12.5px</div><span class="eyebrow mb-0">Step 2 of 5</span></div>
     <div class="type-row"><div class="type-meta">Small · 14px, muted</div><p class="small muted mb-0">Shown only to facilitators. Participants see their region, never an address.</p></div>
-    <div class="type-row"><div class="type-meta">Quote · Fraunces italic</div><p class="quote mb-0">“We were told the truth. Now we choose the relationship.”</p></div>
+    <div class="type-row"><div class="type-meta">Quote · Fraunces italic · 22px</div><p class="quote mb-0">“We were told the truth. Now we choose the relationship.”</p></div>
+    <div class="type-row"><div class="type-meta">Mono · Geist Mono (<code class="mono">--font-mono</code>)</div><div class="mb-0"><code class="mono">match_score = 85</code> <span class="small muted" style="margin-left:8px">— available for code, IDs, and tabular figures</span></div></div>
   </section>
 
   <!-- ============================ BRAND & MOTIFS ============================ -->
@@ -154,252 +195,45 @@
     <div class="grid cols-3 mt-4">
       <div class="demo-box text-center">
         <svg viewBox="0 0 32 32" width="72" height="72" aria-hidden="true" style="margin:0 auto var(--s3)">
-          <path d="M16 4 a12 12 0 0 1 0 24" fill="none" stroke="#C07A22" stroke-width="3.2" stroke-linecap="round"/>
-          <path d="M16 28 a12 12 0 0 1 0 -24" fill="none" stroke="#37767C" stroke-width="3.2" stroke-linecap="round"/>
-          <circle cx="12.4" cy="16" r="2.1" fill="#C07A22"/>
-          <circle cx="19.6" cy="16" r="2.1" fill="#37767C"/>
+          <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/>
+          <circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
         </svg>
         <h3 class="h4 mb-2">The mark</h3>
-        <p class="small muted mb-0">Two arcs — ochre and river — form one circle around two people. The circle is open at top and bottom: the relationship is never closed to others.</p>
+        <p class="small muted mb-0"><code class="mono">BrandMark</code> — two arcs, ochre and river, forming one circle around two people. Open at top and bottom: the relationship is never closed to others.</p>
+      </div>
+      <div class="demo-box text-center">
+        <svg viewBox="0 0 32 32" width="72" height="72" aria-hidden="true" style="margin:0 auto var(--s3)">
+          <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#C9BCA3" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#C9BCA3" stroke-width="3.4" stroke-linecap="round" stroke-dasharray="2 7"/>
+        </svg>
+        <h3 class="h4 mb-2">The muted mark</h3>
+        <p class="small muted mb-0"><code class="mono">BrandMark muted</code> — birch-grey, dots removed, one strand dashed. Used inside empty states while a circle is still waiting to form.</p>
       </div>
       <div class="demo-box">
         <div class="weave" role="presentation" style="margin: 28px 0"></div>
         <h3 class="h4 mb-2">The woven strand</h3>
-        <p class="small muted mb-0">Two strands interlacing — used as a section divider and under page titles. Use once per view, never as wallpaper.</p>
-      </div>
-      <div class="demo-box text-center">
-        <div class="cohort-circle" style="margin: 6px auto var(--s3)">
-          <span class="seat filled"></span><span class="seat filled"></span><span class="seat filled"></span><span class="seat"></span><span class="seat"></span>
-          <span class="count">3<small>of 5</small></span>
-        </div>
-        <h3 class="h4 mb-2">The cohort circle</h3>
-        <p class="small muted mb-0">The signature component — a circle of seats that fills as a region approaches cohort readiness. See <a href="#cohort">states below</a>.</p>
+        <p class="small muted mb-0"><code class="mono">Weave</code> — two strands interlacing, used as a divider and under page titles. Once per view, never as wallpaper. An <code class="mono">on-dark</code> variant lightens both strands for spruce panels.</p>
       </div>
     </div>
   </section>
 
-  <!-- ============================ BUTTONS ============================ -->
-  <section class="spec-section" id="buttons">
-    <h2>Buttons</h2>
-
-    <p class="spec-label">Variants</p>
-    <div class="demo-row">
-      <button class="btn btn-primary">Begin your journey</button>
-      <button class="btn btn-secondary">View profile</button>
-      <button class="btn btn-soft">Save for later</button>
-      <button class="btn btn-quiet">Skip this step</button>
-      <button class="btn btn-danger">Remove participant</button>
-      <button class="btn btn-danger-quiet">Decline</button>
-      <button class="btn btn-primary" disabled>Continue</button>
-    </div>
-
-    <p class="spec-label">Sizes</p>
-    <div class="demo-row">
-      <button class="btn btn-primary lg">Start learning</button>
-      <button class="btn btn-primary">Save changes</button>
-      <button class="btn btn-primary sm">Approve</button>
-    </div>
-
-    <p class="spec-label">With icon · on dark</p>
-    <div class="demo-row">
-      <button class="btn btn-secondary">
-        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        Add interest
-      </button>
-      <span style="background: var(--spruce-800); padding: 14px 18px; border-radius: var(--r-md); display:inline-flex; gap:12px">
-        <button class="btn on-dark">Sign in</button>
-      </span>
-    </div>
-
-    <p class="small muted mt-4 mb-0">Rules: one primary button per view. “Decline” and other reversible refusals use the quiet danger outline; solid berry is reserved for destructive, hard-to-undo actions. Buttons name the action’s result: “Send invitation,” not “Submit.”</p>
-  </section>
-
-  <!-- ============================ FORMS ============================ -->
-  <section class="spec-section" id="forms">
-    <h2>Forms</h2>
-    <div class="grid cols-2 mt-4">
-      <div class="demo-box">
-        <div class="field">
-          <label for="ds-name">Full name <span class="req">*</span></label>
-          <input class="input" id="ds-name" type="text" placeholder="e.g. Marie Cardinal">
-          <p class="hint">Shown to facilitators and, after you both agree, to your connection.</p>
-        </div>
-        <div class="field">
-          <label for="ds-province">Province or territory <span class="req">*</span></label>
-          <select class="select" id="ds-province">
-            <option>Saskatchewan</option>
-            <option>Alberta</option>
-            <option>Manitoba</option>
-            <option>Ontario</option>
-          </select>
-        </div>
-        <div class="field error">
-          <label for="ds-city">City, town, or county <span class="req">*</span></label>
-          <input class="input" id="ds-city" type="text" value="">
-          <p class="error-msg">⚠ Enter your city or town so we can find participants near you.</p>
-        </div>
-        <div class="field mb-0">
-          <label for="ds-bio">A little about you</label>
-          <textarea class="textarea" id="ds-bio" placeholder="What brings you to this journey?"></textarea>
-        </div>
-      </div>
-      <div class="demo-box">
-        <div class="field">
-          <span class="label">Search</span>
-          <div class="search"><input class="input" type="search" placeholder="Search participants…"></div>
-        </div>
-        <div class="field">
-          <span class="label">Preferred connection format</span>
-          <label class="choice"><input type="radio" name="ds-fmt" checked> In person <span class="choice-hint" style="margin-left:4px"></span></label>
-          <label class="choice"><input type="radio" name="ds-fmt"> Video call</label>
-          <label class="choice"><input type="radio" name="ds-fmt"> Either works for me</label>
-        </div>
-        <div class="field">
-          <span class="label">Availability</span>
-          <label class="choice"><input type="checkbox" checked> Weekday evenings</label>
-          <label class="choice"><input type="checkbox" checked> Weekends</label>
-          <label class="choice"><input type="checkbox"> Weekday daytime</label>
-        </div>
-        <div class="field mb-0">
-          <span class="label">Visibility</span>
-          <div class="row between" style="padding: 6px 0">
-            <span class="small">Show my region on the participant map</span>
-            <span class="switch"><input type="checkbox" checked aria-label="Show my region on the participant map"><span class="track"></span></span>
-          </div>
-          <div class="row between" style="padding: 6px 0">
-            <span class="small">Email me when I have a new recommendation</span>
-            <span class="switch"><input type="checkbox" aria-label="Email me when I have a new recommendation"><span class="track"></span></span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <p class="spec-label">Choice cards — participation categories</p>
-    <div class="grid cols-3">
-      <label class="choice-card selected"><input type="checkbox" checked>
-        <span><b>Indigenous leader</b><span>Community, cultural, or organizational leadership</span></span>
-      </label>
-      <label class="choice-card"><input type="checkbox">
-        <span><b>Non-Indigenous individual</b><span>Here to listen, learn, and build a relationship</span></span>
-      </label>
-      <label class="choice-card"><input type="checkbox">
-        <span><b>Artist</b><span>Musician, writer, visual artist, storyteller</span></span>
-      </label>
-    </div>
-  </section>
-
-  <!-- ============================ CHIPS & STATUS ============================ -->
-  <section class="spec-section" id="chips">
-    <h2>Tags, filters &amp; status</h2>
-
-    <p class="spec-label">Interest tags</p>
-    <div class="demo-row">
-      <span class="tag">Beading</span>
-      <span class="tag">Youth mentorship</span>
-      <span class="tag ochre">Gospel music</span>
-      <span class="tag river">Land-based learning</span>
-      <span class="tag">Hockey</span>
-      <span class="tag">Community gardens <a class="x" href="#" aria-label="Remove Community gardens">✕</a></span>
-    </div>
-
-    <p class="spec-label">Discovery filter chips</p>
-    <div class="demo-row">
-      <a class="filter-chip active" href="#">Recommended for you</a>
-      <a class="filter-chip" href="#">Indigenous participants</a>
-      <a class="filter-chip" href="#">Non-Indigenous participants</a>
-      <a class="filter-chip" href="#">All eligible</a>
-    </div>
-
-    <p class="spec-label">Status pills — the participant journey</p>
-    <div class="demo-row">
-      <span class="pill pending">Pending approval</span>
-      <span class="pill learning">In learning</span>
-      <span class="pill eligible">Eligible</span>
-      <span class="pill matched">Matched</span>
-      <span class="pill waitlist">Waitlist</span>
-      <span class="pill alert">Needs attention</span>
-    </div>
-  </section>
-
-  <!-- ============================ AVATARS ============================ -->
-  <section class="spec-section" id="avatars">
-    <h2>Avatars</h2>
-    <p class="muted">Initials only, by design — photos are shared in conversation after both people agree to connect, never displayed by the system beforehand.</p>
-    <div class="demo-row">
-      <span class="avatar xl">MC</span>
-      <span class="avatar lg river">DT</span>
-      <span class="avatar ochre">JO</span>
-      <span class="avatar berry">AS</span>
-      <span class="avatar dark">RB</span>
-      <span class="avatar sm">LP</span>
-      <span class="avatar-group">
-        <span class="avatar">MC</span><span class="avatar river">DT</span><span class="avatar ochre">JO</span><span class="avatar berry">+4</span>
-      </span>
-    </div>
-  </section>
-
-  <!-- ============================ CARDS ============================ -->
-  <section class="spec-section" id="cards">
-    <h2>Cards</h2>
-    <div class="grid cols-3 mt-4">
-
-      <div class="card participant-card">
-        <div class="top">
-          <span class="avatar lg">MC</span>
-          <div>
-            <div class="name">Marie Cardinal</div>
-            <div class="meta">Regina, SK · Treaty 4</div>
-            <span class="pill eligible" style="margin-top:4px">Eligible</span>
-          </div>
-        </div>
-        <div class="tags">
-          <span class="tag">Beading</span><span class="tag">Youth mentorship</span><span class="tag river">Cree</span>
-        </div>
-        <div class="card-footer">
-          <button class="btn btn-secondary sm">View profile</button>
-          <span class="tiny">Recommended · 92% match</span>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header"><h4>Module 2 · Treaties and the land</h4><span class="pill learning">In progress</span></div>
-        <div class="card-pad">
-          <div class="video-thumb mb-4"><span class="duration">18 min</span></div>
-          <div class="progress-label"><span>Progress</span><span>60%</span></div>
-          <div class="progress"><div class="bar" style="width:60%"></div></div>
-        </div>
-        <div class="card-footer"><button class="btn btn-primary sm">Continue watching</button></div>
-      </div>
-
-      <div class="card">
-        <div class="card-pad" style="display:flex; gap:var(--s4)">
-          <div class="date-block national"><div class="month">Sep</div><div class="day">30</div></div>
-          <div>
-            <span class="tiny" style="color:var(--ochre-700); font-weight:700">NATIONAL DAY FOR TRUTH AND RECONCILIATION</span>
-            <h3 class="h4" style="margin:2px 0 4px">Blanket exercise &amp; shared meal</h3>
-            <p class="small muted mb-0">Regina cohort · Knox-Metropolitan Hall</p>
-          </div>
-        </div>
-        <div class="card-footer">
-          <button class="btn btn-primary sm">Register</button>
-          <span class="tiny">12 registered</span>
-        </div>
-      </div>
-    </div>
-
-    <p class="spec-label">Stat tiles (facilitator dashboards)</p>
-    <div class="grid cols-4">
-      <div class="card stat"><div class="stat-num">14</div><div class="stat-label">Pending registrations</div><div class="stat-note">4 waiting more than a week</div></div>
-      <div class="card stat"><div class="stat-num">9</div><div class="stat-label">Matches to review</div><div class="stat-note">Oldest: 3 days</div></div>
-      <div class="card stat"><div class="stat-num">3</div><div class="stat-label">Cohorts forming</div><div class="stat-note">Regina is 1 away</div></div>
-      <div class="card stat"><div class="stat-num">78%</div><div class="stat-label">Learning completion</div><div class="stat-note">Up 6% this month</div></div>
+  <!-- ============================ PANEL ON DARK ============================ -->
+  <section class="spec-section" id="panel">
+    <h2>Panel-on-dark motif</h2>
+    <p class="muted"><code class="mono">.rtr-panel-on-dark</code> lays a faint figure — two facing profile silhouettes joined by an open circle — behind spruce-800/900 surfaces at 5% opacity. It appears on the landing hero, the signup aside, and the footer. Tune per panel with <code class="mono">--rtr-figure-position</code> / <code class="mono">--rtr-figure-size</code>.</p>
+    <div class="panel-on-dark demo-dark mt-4" style="min-height:200px; display:flex; flex-direction:column; justify-content:flex-end; --figure-position: right 32px bottom;">
+      <span class="eyebrow" style="color:var(--ochre-500)">Reconciliation Through Relationships</span>
+      <h3 style="color:var(--on-dark); margin:0 0 6px; max-width:20ch;">The relationship is the work.</h3>
+      <p class="mb-0" style="color:var(--on-dark-soft); max-width:44ch;">The silhouettes sit just at the threshold of visible — present, never decorative.</p>
     </div>
   </section>
 
   <!-- ============================ COHORT CIRCLE ============================ -->
   <section class="spec-section" id="cohort">
     <h2>Cohort circle</h2>
-    <p class="muted">Each seat is an eligible participant in a region. When the fifth seat fills, the circle turns ochre and gains its gathering ring — the region is ready to form a reconciliation cohort. (Threshold of five to be confirmed with RTR.)</p>
+    <p class="muted">The signature component (<code class="mono">CohortCircle</code>). Each seat is an eligible participant in a region. When the circle reaches its threshold, it turns ochre and gains its gathering ring — the region is ready to form a reconciliation cohort. The threshold is <strong>configurable per deployment</strong>; the facilitator settings page exposes a range of 3–20 (default 5, shown here).</p>
     <div class="demo-row" style="gap: var(--s7); margin-top: var(--s5)">
       <div class="text-center">
         <div class="cohort-circle">
@@ -439,85 +273,425 @@
     </div>
   </section>
 
+  <!-- ============================ BUTTONS ============================ -->
+  <section class="spec-section" id="buttons">
+    <h2>Buttons</h2>
+    <p class="muted">Nine variants (<code class="mono">src/components/ui/button.tsx</code>). <code class="mono">outline</code> and <code class="mono">secondary</code> render identically today (spruce outline), as do <code class="mono">ghost</code> and <code class="mono">quiet</code> (river) — kept as separate names so their meanings can diverge without touching call sites.</p>
+
+    <p class="spec-label">Variants</p>
+    <div class="demo-row">
+      <button class="btn btn-primary">Begin your journey</button>
+      <button class="btn btn-secondary">View profile</button>
+      <button class="btn btn-soft">Save for later</button>
+      <button class="btn btn-quiet">Skip this step</button>
+      <button class="btn btn-danger">Remove participant</button>
+      <button class="btn btn-danger-quiet">Decline</button>
+      <button class="btn btn-link">Read the full story</button>
+      <button class="btn btn-primary" disabled>Continue</button>
+    </div>
+    <p class="tiny mt-2 mb-0"><b>default</b> · <b>outline / secondary</b> · <b>soft</b> · <b>ghost / quiet</b> · <b>destructive</b> · <b>danger-quiet</b> · <b>link</b> · disabled</p>
+
+    <p class="spec-label">Sizes</p>
+    <div class="demo-row">
+      <button class="btn btn-primary lg">Start learning</button>
+      <button class="btn btn-primary">Save changes</button>
+      <button class="btn btn-primary sm">Approve</button>
+    </div>
+    <p class="tiny mt-2 mb-0"><b>lg</b> 52px · <b>default</b> 44px · <b>sm</b> 36px. An even smaller <code class="mono">xs</code> (32px) exists in code for dense rows.</p>
+
+    <p class="spec-label">Icon sizes</p>
+    <div class="demo-row">
+      <button class="btn btn-secondary icon" aria-label="Add interest">
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <button class="btn btn-quiet icon-sm" aria-label="More options">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+      </button>
+      <button class="btn btn-secondary">
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        Add interest
+      </button>
+    </div>
+    <p class="tiny mt-2 mb-0"><b>icon</b> 44px square · <b>icon-sm</b> 36px square (matching <code class="mono">icon-xs</code>/<code class="mono">icon-lg</code> also in code) · icon + label.</p>
+
+    <p class="spec-label">On dark</p>
+    <div class="demo-dark">
+      <div class="demo-row">
+        <button class="btn on-dark">Join RTR</button>
+        <button class="btn btn-quiet" style="color:var(--on-dark-soft)">Sign in</button>
+      </div>
+    </div>
+    <p class="tiny mt-2 mb-0"><code class="mono">on-dark</code> — ochre-500 fill, spruce-900 text. The primary call to action on spruce headers and hero panels.</p>
+
+    <p class="small muted mt-4 mb-0">Rules: one primary button per view. Buttons name the action’s result — “Schedule call,” not “Submit.” Reversible refusals use the quiet danger outline; solid berry (<code class="mono">destructive</code>) is reserved for hard-to-undo actions.</p>
+  </section>
+
+  <!-- ============================ FORMS ============================ -->
+  <section class="spec-section" id="forms">
+    <h2>Forms &amp; inputs</h2>
+    <div class="grid cols-2 mt-4">
+      <div class="demo-box">
+        <div class="field">
+          <label for="ds-name">Full name <span class="req">*</span></label>
+          <input class="input" id="ds-name" type="text" placeholder="e.g. Marie Cardinal">
+          <p class="hint">Shown to facilitators and, after you both agree, to your connection.</p>
+        </div>
+        <div class="field">
+          <label for="ds-province">Province or territory <span class="req">*</span></label>
+          <select class="select" id="ds-province">
+            <option>Saskatchewan</option>
+            <option>Alberta</option>
+            <option>Manitoba</option>
+            <option>Ontario</option>
+          </select>
+        </div>
+        <div class="field error">
+          <label for="ds-city">City, town, or county <span class="req">*</span></label>
+          <input class="input" id="ds-city" type="text" value="">
+          <p class="error-msg">⚠ Enter your city or town so we can find participants near you.</p>
+        </div>
+        <div class="field mb-0">
+          <label for="ds-bio">A little about you</label>
+          <textarea class="textarea" id="ds-bio" placeholder="What brings you to this journey?"></textarea>
+        </div>
+      </div>
+      <div class="demo-box">
+        <div class="field">
+          <span class="label">Search</span>
+          <div class="search"><input class="input" type="search" placeholder="Search participants…"></div>
+        </div>
+        <div class="field">
+          <span class="label">Preferred connection format</span>
+          <label class="choice"><input type="radio" name="ds-fmt" checked> In person</label>
+          <label class="choice"><input type="radio" name="ds-fmt"> Video call</label>
+          <label class="choice"><input type="radio" name="ds-fmt"> Either works for me</label>
+        </div>
+        <div class="field mb-0">
+          <span class="label">Availability</span>
+          <label class="choice"><input type="checkbox" checked> Weekday evenings</label>
+          <label class="choice"><input type="checkbox" checked> Weekends</label>
+          <label class="choice"><input type="checkbox"> Weekday daytime</label>
+        </div>
+      </div>
+    </div>
+
+    <p class="spec-label">Choice cards — participation categories</p>
+    <div class="grid cols-3">
+      <label class="choice-card selected"><input type="checkbox" checked>
+        <span><b>Indigenous participant</b><span>Community, cultural, or organizational connection</span></span>
+      </label>
+      <label class="choice-card"><input type="checkbox">
+        <span><b>Non-Indigenous participant</b><span>Here to listen, learn, and build a relationship</span></span>
+      </label>
+      <label class="choice-card"><input type="checkbox">
+        <span><b>Faith or community leader</b><span>Bringing a congregation or group along</span></span>
+      </label>
+    </div>
+    <p class="tiny mt-2 mb-0">The required-field marker is a berry <code class="mono">*</code>. Full validation copy lives in <a href="states-feedback.html">the feedback catalog</a>.</p>
+  </section>
+
+  <!-- ============================ SWITCH ============================ -->
+  <section class="spec-section" id="switch">
+    <h2>Switches</h2>
+    <p class="muted"><code class="mono">Switch</code> (<code class="mono">src/components/ui/switch.tsx</code>) — a 46×26px toggle, sand track off, spruce-600 on, with an ochre focus ring. Used for the facilitator auto-matching toggle and participant visibility rows. A smaller <code class="mono">sm</code> size (36×20px) is also available.</p>
+    <div class="demo-box mt-4" style="max-width:520px">
+      <div class="row between" style="padding: 8px 0">
+        <span class="small">Show my region on the participant map</span>
+        <span class="switch"><input type="checkbox" checked aria-label="Show my region on the participant map"><span class="track"></span></span>
+      </div>
+      <hr class="divider" style="margin:8px 0">
+      <div class="row between" style="padding: 8px 0">
+        <span class="small">Automatically match eligible participants</span>
+        <span class="switch"><input type="checkbox" aria-label="Automatically match eligible participants"><span class="track"></span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ BADGES & STATUS ============================ -->
+  <section class="spec-section" id="status">
+    <h2>Badges &amp; status</h2>
+    <p class="muted">Two families (<code class="mono">src/components/ui/badge.tsx</code>): soft <em>caption</em> badges (13.5px, no dot) for descriptive labels and filters, and <em>status</em> pills (12.5px, 7px leading dot) for the participant journey. Status is never carried by color alone — every pill states its meaning in words.</p>
+
+    <p class="spec-label">Badges — caption 13.5px</p>
+    <div class="demo-row">
+      <span class="tag">Indigenous</span>
+      <span class="tag ochre">Non-Indigenous</span>
+      <span class="tag river">Facilitator note</span>
+      <span class="tag outline">Location <b style="color:var(--primary);font-weight:500;">+30</b></span>
+      <a class="filter-chip active" href="#">Recommended for you</a>
+      <a class="filter-chip" href="#">All eligible</a>
+    </div>
+    <p class="tiny mt-2 mb-0"><b>default</b> (success/green) · <b>secondary</b> (warning/ochre) · <b>ghost</b> (info/river) · <b>outline</b> · <b>filter-active</b> + resting filter chip. A borderless <code class="mono">link</code> variant is also available.</p>
+
+    <p class="spec-label">Status pills — status 12.5px, leading dot</p>
+    <div class="demo-row">
+      <span class="pill eligible">Eligible</span>
+      <span class="pill learning">In learning</span>
+      <span class="pill pending">Pending approval</span>
+      <span class="pill matched">Matched</span>
+      <span class="pill waitlist">Waitlist</span>
+      <span class="pill alert">Needs attention</span>
+      <span class="pill destructive">Rejected</span>
+    </div>
+    <p class="tiny mt-2 mb-0"><b>eligible</b> / <b>learning</b> / <b>pending</b> / <b>matched</b> / <b>waitlist</b> / <b>alert</b> / <b>destructive</b> — each a named variant even where two currently share styling.</p>
+
+    <p class="spec-label">Interest tags (removable)</p>
+    <div class="demo-row">
+      <span class="tag ochre">Beading</span>
+      <span class="tag ochre">Youth mentorship</span>
+      <span class="tag ochre">Gospel music</span>
+      <span class="tag ochre">Land-based learning</span>
+      <span class="tag">Community gardens <a class="x" href="#" aria-label="Remove Community gardens">✕</a></span>
+    </div>
+  </section>
+
+  <!-- ============================ AVATARS ============================ -->
+  <section class="spec-section" id="avatars">
+    <h2>Avatars</h2>
+    <p class="muted">Initials only, by design (<code class="mono">src/components/ui/avatar.tsx</code>) — photos are shared in conversation after both people agree to connect, never displayed by the system beforehand. Four sizes, five tints.</p>
+    <div class="demo-row" style="gap: var(--s5); align-items:flex-end;">
+      <div class="text-center"><span class="avatar xl">MC</span><p class="tiny mt-2 mb-0">xl · 88px</p></div>
+      <div class="text-center"><span class="avatar lg river">DT</span><p class="tiny mt-2 mb-0">lg · 64px</p></div>
+      <div class="text-center"><span class="avatar ochre">JO</span><p class="tiny mt-2 mb-0">default · 44px</p></div>
+      <div class="text-center"><span class="avatar sm dark">RB</span><p class="tiny mt-2 mb-0">sm · 32px</p></div>
+    </div>
+    <p class="spec-label">Tints &amp; group</p>
+    <div class="demo-row">
+      <span class="avatar">MC</span>
+      <span class="avatar river">DT</span>
+      <span class="avatar ochre">JO</span>
+      <span class="avatar berry">AS</span>
+      <span class="avatar dark">RB</span>
+      <span class="avatar-group" style="margin-left:var(--s3)">
+        <span class="avatar">MC</span><span class="avatar river">DT</span><span class="avatar ochre">JO</span><span class="avatar berry">+4</span>
+      </span>
+    </div>
+    <p class="tiny mt-2 mb-0"><b>default</b> (spruce) · <b>river</b> (info) · <b>ochre</b> (warning) · <b>berry</b> (danger) · <b>dark</b> (inverse), plus an overflow count in groups.</p>
+  </section>
+
+  <!-- ============================ CARDS ============================ -->
+  <section class="spec-section" id="cards">
+    <h2>Cards</h2>
+    <p class="muted">Parchment surface, 1px border, <code class="mono">shadow-rtr-1</code>, 16px radius. Match and participant cards lead with the person; on hover the border warms to spruce.</p>
+    <div class="grid cols-3 mt-4">
+
+      <article class="card participant-card">
+        <div class="top">
+          <span class="avatar lg">MC</span>
+          <div>
+            <div class="name">Marie Cardinal</div>
+            <div class="meta">Regina, Saskatchewan · Treaty 4</div>
+            <span class="pill eligible" style="margin-top:4px">Eligible</span>
+          </div>
+        </div>
+        <div class="tags">
+          <span class="tag ochre">Beading</span><span class="tag ochre">Youth mentorship</span><span class="tag river">Cree</span>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-secondary sm">View profile</button>
+          <span class="tiny">92% match</span>
+        </div>
+      </article>
+
+      <div class="card">
+        <div class="card-header"><h4>Module 2 · Treaties and the land</h4><span class="pill learning">In progress</span></div>
+        <div class="card-pad">
+          <div class="progress-label"><span>Progress</span><span>60%</span></div>
+          <div class="progress"><div class="bar" style="width:60%"></div></div>
+          <p class="small muted mt-4 mb-0">A short reading on the treaty relationship and the land you live on.</p>
+        </div>
+        <div class="card-footer"><button class="btn btn-primary sm">Continue</button></div>
+      </div>
+
+      <div class="card spruce-tint card-pad">
+        <span class="eyebrow">Regina, Saskatchewan</span>
+        <h3 class="h4 mb-2">A circle is forming near you</h3>
+        <p class="small muted">Four eligible participants are one away from a reconciliation cohort.</p>
+        <button class="btn btn-soft sm">See the region</button>
+      </div>
+    </div>
+
+    <p class="spec-label">Stat tiles (facilitator overview)</p>
+    <div class="grid cols-4">
+      <div class="card stat"><div class="stat-num">14</div><div class="stat-label">Pending registrations</div><div class="stat-note">4 waiting more than a week</div></div>
+      <div class="card stat"><div class="stat-num">9</div><div class="stat-label">Matches to review</div><div class="stat-note">Oldest: 3 days</div></div>
+      <div class="card stat"><div class="stat-num">3</div><div class="stat-label">Cohorts forming</div><div class="stat-note">Regina is 1 away</div></div>
+      <div class="card stat"><div class="stat-num">78%</div><div class="stat-label">Learning completion</div><div class="stat-note">Up 6% this month</div></div>
+    </div>
+    <p class="tiny mt-2 mb-0">Stat numbers are set in Fraunces for a warmer, less clinical read.</p>
+  </section>
+
+  <!-- ============================ LIST ROWS ============================ -->
+  <section class="spec-section" id="lists">
+    <h2>List rows</h2>
+    <p class="muted"><code class="mono">.list-row</code> — a rounded-2xl parchment row used for connections and facilitator quick actions. Whole-row links; the border warms to spruce on hover.</p>
+    <div class="stack mt-4" style="max-width:640px">
+      <a class="list-row" href="#">
+        <span class="avatar">DT</span>
+        <div class="flex-1">
+          <b>David Tremblay</b>
+          <div class="tiny">Regina, Saskatchewan · Last message 2 days ago</div>
+        </div>
+        <span class="pill matched">Active</span>
+      </a>
+      <a class="list-row" href="#">
+        <span class="avatar river">HM</span>
+        <div class="flex-1">
+          <b>Helen McKay</b>
+          <div class="tiny">Regina, Saskatchewan · You requested to connect</div>
+        </div>
+        <span class="pill pending">Pending</span>
+      </a>
+      <a class="list-row" href="#">
+        <span class="avatar ochre">JB</span>
+        <div class="flex-1">
+          <b>Review a new match</b>
+          <div class="tiny">Jonas Braun · Moose Jaw, Saskatchewan</div>
+        </div>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink-faint)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      </a>
+    </div>
+  </section>
+
   <!-- ============================ PROGRESS ============================ -->
   <section class="spec-section" id="progress">
-    <h2>Progress &amp; steppers</h2>
-
-    <p class="spec-label">Learning progress</p>
-    <div class="demo-box" style="max-width:520px">
+    <h2>Progress</h2>
+    <p class="muted"><code class="mono">Progress</code> — a 10px sand track with a spruce-600 bar (<code class="mono">src/components/ui/progress.tsx</code>). An ochre bar marks in-progress learning; a slimmer 6px bar appears inside match cards.</p>
+    <div class="demo-box mt-4" style="max-width:520px">
       <div class="progress-label"><span>Learning journey</span><span>2 of 4 modules</span></div>
       <div class="progress"><div class="bar" style="width:50%"></div></div>
       <div class="progress-label mt-4"><span>Module 3 · Listening and cultural humility</span><span>35%</span></div>
       <div class="progress ochre"><div class="bar" style="width:35%"></div></div>
+      <div class="progress-label mt-4"><span>Match score</span><span>85%</span></div>
+      <div class="progress" style="height:6px"><div class="bar" style="width:85%"></div></div>
     </div>
+  </section>
 
-    <p class="spec-label">Onboarding stepper</p>
-    <div class="demo-box">
+  <!-- ============================ STEPPER ============================ -->
+  <section class="spec-section" id="stepper">
+    <h2>Stepper</h2>
+    <p class="muted">A numbered progress rail. Completed steps show a spruce check, the current step is ochre, upcoming steps are muted. The connecting line fills as you advance.</p>
+    <div class="demo-box mt-4">
       <div class="stepper">
-        <div class="step done">Account</div>
-        <div class="step done">About you</div>
-        <div class="step current">Location &amp; treaty</div>
-        <div class="step">Interests</div>
-        <div class="step">Boundaries</div>
+        <div class="step done">Basic info</div>
+        <div class="step done">Location</div>
+        <div class="step current">Faith &amp; interests</div>
+        <div class="step">Availability</div>
+        <div class="step">Matching</div>
       </div>
+    </div>
+  </section>
+
+  <!-- ============================ WIZARD STEP CHIPS ============================ -->
+  <section class="spec-section" id="stepchips">
+    <h2>Wizard step chips</h2>
+    <p class="muted"><code class="mono">.step-chips</code> — the compact indicator in the onboarding header bar. The current step is solid primary, completed steps carry the river accent, upcoming steps are muted. Pairs with a Progress bar above it.</p>
+    <div class="demo-box mt-4" style="max-width:560px">
+      <div class="progress-label"><span>Create your profile</span><span>Step 3 of 5</span></div>
+      <div class="progress ochre" style="margin-bottom:var(--s4)"><div class="bar" style="width:60%"></div></div>
+      <div class="step-chips">
+        <span class="step-chip done">Basics</span>
+        <span class="step-chip done">Location</span>
+        <span class="step-chip current">Faith &amp; interests</span>
+        <span class="step-chip">Availability</span>
+        <span class="step-chip">Matching</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ TABLES ============================ -->
+  <section class="spec-section" id="tables">
+    <h2>Tables</h2>
+    <p class="muted">Facilitator views only (<code class="mono">.rtr-table</code>). Uppercase 12.5px birch headers; rows lead with the person, not the record, and scroll horizontally on narrow screens.</p>
+    <div class="table-wrap mt-4">
+      <table class="table">
+        <thead><tr><th>Participant</th><th>Location</th><th>Background</th><th>Journey</th><th>Joined</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="row nowrap"><span class="avatar sm">MC</span><div><b>Marie Cardinal</b><div class="tiny">Indigenous</div></div></div></td>
+            <td>Regina, Saskatchewan · Treaty 4</td>
+            <td>Community leader</td>
+            <td><div class="row nowrap"><div class="progress" style="width:90px;height:6px"><div class="bar" style="width:100%"></div></div><span class="pill eligible">Ready</span></div></td>
+            <td class="tiny">Mar 4, 2026</td>
+          </tr>
+          <tr>
+            <td><div class="row nowrap"><span class="avatar sm river">DT</span><div><b>David Tremblay</b><div class="tiny">Non-Indigenous</div></div></div></td>
+            <td>Regina, Saskatchewan · Treaty 4</td>
+            <td>Retired teacher</td>
+            <td><div class="row nowrap"><div class="progress" style="width:90px;height:6px"><div class="bar" style="width:50%"></div></div><span class="pill learning">Learning</span></div></td>
+            <td class="tiny">Apr 18, 2026</td>
+          </tr>
+          <tr>
+            <td><div class="row nowrap"><span class="avatar sm ochre">AS</span><div><b>Amara Singh</b><div class="tiny">Non-Indigenous</div></div></div></td>
+            <td>Saskatoon, Saskatchewan · Treaty 6</td>
+            <td>Faith leader</td>
+            <td><div class="row nowrap"><div class="progress" style="width:90px;height:6px"><div class="bar" style="width:15%"></div></div><span class="pill pending">Onboarding</span></div></td>
+            <td class="tiny">Jun 2, 2026</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
   <!-- ============================ NAVIGATION ============================ -->
   <section class="spec-section" id="nav">
-    <h2>Navigation</h2>
+    <h2>App headers</h2>
+    <p class="muted">A sticky spruce-800 bar with a 3px ochre bottom strand and a two-line wordmark. The nav collapses into a mobile <a href="#sheet">Sheet</a> below 860px. There are two role variants — no administrator role exists.</p>
 
-    <p class="spec-label">App header — participant</p>
-    <div style="border-radius: var(--r-md); overflow:hidden; border:1px solid var(--border)">
+    <p class="spec-label">Participant — DashboardNav</p>
+    <div class="nav-frame">
       <header class="app-header">
         <div class="container wide">
           <div class="bar">
             <a class="brand" href="#">
               <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
-                <path d="M16 4 a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
-                <path d="M16 28 a12 12 0 0 1 0 -24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+                <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+                <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
                 <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
               </svg>
               <span><span class="brand-name">Reconciliation</span><span class="brand-sub">Through Relationships</span></span>
             </a>
             <nav class="app-nav" aria-label="Main">
-              <a href="#" aria-current="page">Home</a><a href="#">Learning</a><a href="#">Connections</a><a href="#">Messages</a><a href="#">Events</a>
+              <a href="#" aria-current="page">Home</a><a href="#">Learning</a><a href="#">Connections</a><a href="#">Regional map</a>
             </nav>
-            <div class="actions"><span class="avatar sm dark">MC</span></div>
+            <div class="actions" style="margin-left:auto;">
+              <button class="bell-btn" aria-label="Notifications">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                <span class="bell-count">3</span>
+              </button>
+              <span class="avatar sm">MC</span>
+            </div>
             <button class="menu-btn" type="button">Menu</button>
           </div>
         </div>
       </header>
     </div>
 
-    <p class="spec-label">App header — facilitator (role tag, extended nav)</p>
-    <div style="border-radius: var(--r-md); overflow:hidden; border:1px solid var(--border)">
+    <p class="spec-label">Facilitator — FacilitatorNav (role pill, extended nav)</p>
+    <div class="nav-frame">
       <header class="app-header">
         <div class="container wide">
           <div class="bar">
             <a class="brand" href="#">
               <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
-                <path d="M16 4 a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
-                <path d="M16 28 a12 12 0 0 1 0 -24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+                <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+                <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
                 <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
               </svg>
-              <span><span class="brand-name">Reconciliation</span><span class="brand-sub">Through Relationships · Facilitator</span></span>
+              <span><span class="brand-name">Reconciliation</span><span class="brand-sub">Through Relationships</span></span>
             </a>
             <nav class="app-nav" aria-label="Main">
-              <a href="#">Overview</a><a href="#" aria-current="page">Participants</a><a href="#">Matches</a><a href="#">Map</a><a href="#">Events</a>
+              <a href="#">Overview</a><a href="#" aria-current="page">Participants</a><a href="#">Matches</a><a href="#">Cohorts</a><a href="#">Settings</a>
             </nav>
-            <div class="actions"><span class="role-tag">Facilitator</span><span class="avatar sm dark">JO</span></div>
+            <div class="actions" style="margin-left:auto;"><span class="role-tag">Facilitator</span><span class="avatar sm">JO</span></div>
             <button class="menu-btn" type="button">Menu</button>
           </div>
         </div>
       </header>
     </div>
 
-    <p class="spec-label">Tabs · breadcrumb · pagination</p>
+    <p class="spec-label">Breadcrumb · pagination</p>
     <div class="demo-box stack loose">
-      <nav class="tabs" aria-label="Events">
-        <a href="#" aria-current="true">Upcoming</a><a href="#">My events</a><a href="#">Past</a>
-      </nav>
       <nav class="breadcrumb" aria-label="Breadcrumb">
         <a href="#">Participants</a><span class="sep">›</span><a href="#">Regina region</a><span class="sep">›</span><span>Marie Cardinal</span>
       </nav>
@@ -527,57 +701,227 @@
     </div>
   </section>
 
-  <!-- ============================ ALERTS ============================ -->
-  <section class="spec-section" id="alerts">
-    <h2>Alerts, banners &amp; toasts</h2>
-    <div class="stack mt-4" style="max-width:680px">
-      <div class="alert info"><span class="alert-icon">ℹ</span><div><b>A facilitator is reviewing your match.</b><p>You’ll get an email when it’s ready — usually within a few days.</p></div></div>
-      <div class="alert success"><span class="alert-icon">✓</span><div><b>Learning journey complete.</b><p>You’re now eligible for matching and cohort invitations.</p></div></div>
-      <div class="alert caution"><span class="alert-icon">◔</span><div><b>One module left.</b><p>Finish “Beginning the relationship” to become eligible for matching.</p></div></div>
-      <div class="alert danger"><span class="alert-icon">⚠</span><div><b>We couldn’t send your sign-in link.</b><p>Check that the email address is correct, then try again.</p></div></div>
+  <!-- ============================ TABS ============================ -->
+  <section class="spec-section" id="tabs">
+    <h2>Tabs</h2>
+    <p class="muted">Underline tabs (<code class="mono">src/components/ui/tabs.tsx</code>): the active tab draws an ochre-700 border and a heading-weight label. Count chips carry a running total; some tabs pair with a small icon.</p>
+    <div class="demo-box mt-4">
+      <nav class="tabs" aria-label="Dashboard sections">
+        <a href="#" aria-current="true">Recommended <span class="count">3</span></a>
+        <a href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+          Connections <span class="count">2</span>
+        </a>
+        <a href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          All participants
+        </a>
+      </nav>
     </div>
-    <p class="spec-label">Toast</p>
-    <div class="toast"><span class="tick">✓</span> Invitation sent to 11 participants</div>
   </section>
 
-  <!-- ============================ TABLES ============================ -->
-  <section class="spec-section" id="tables">
-    <h2>Tables</h2>
-    <p class="muted">Facilitator and administrator views only. Rows lead with the person, not the record.</p>
-    <div class="table-wrap mt-4">
-      <table class="table">
-        <thead><tr><th>Participant</th><th>Region</th><th>Learning</th><th>Status</th><th></th></tr></thead>
-        <tbody>
-          <tr>
-            <td><div class="row nowrap"><span class="avatar sm">MC</span><div><b>Marie Cardinal</b><div class="tiny">Indigenous leader</div></div></div></td>
-            <td>Regina, SK · Treaty 4</td>
-            <td>4 of 4 modules</td>
-            <td><span class="pill eligible">Eligible</span></td>
-            <td><button class="btn btn-quiet sm">Review</button></td>
-          </tr>
-          <tr>
-            <td><div class="row nowrap"><span class="avatar sm river">DT</span><div><b>David Tremblay</b><div class="tiny">Non-Indigenous individual</div></div></div></td>
-            <td>Regina, SK · Treaty 4</td>
-            <td>2 of 4 modules</td>
-            <td><span class="pill learning">In learning</span></td>
-            <td><button class="btn btn-quiet sm">Remind</button></td>
-          </tr>
-          <tr>
-            <td><div class="row nowrap"><span class="avatar sm ochre">AS</span><div><b>Amara Singh</b><div class="tiny">Religious leader</div></div></div></td>
-            <td>Saskatoon, SK · Treaty 6</td>
-            <td>—</td>
-            <td><span class="pill pending">Pending approval</span></td>
-            <td><button class="btn btn-primary sm">Approve</button></td>
-          </tr>
-        </tbody>
-      </table>
+  <!-- ============================ ALERTS ============================ -->
+  <section class="spec-section" id="alerts">
+    <h2>Alerts</h2>
+    <p class="muted">Inline banners (<code class="mono">src/components/ui/alert.tsx</code>), rounded-xl, one border-and-tint per meaning. Five variants: <code class="mono">default</code>/<code class="mono">info</code> (river), <code class="mono">success</code> (spruce), <code class="mono">caution</code> (ochre), and <code class="mono">destructive</code>/<code class="mono">danger</code> (berry).</p>
+    <div class="stack mt-4" style="max-width:680px">
+      <div class="alert info"><span class="alert-icon">ℹ</span><div><b>You’re on the waitlist.</b><p>A facilitator reviews every match personally. We’ll email you when a recommendation is ready.</p></div></div>
+      <div class="alert success"><span class="alert-icon">✓</span><div><b>Learning journey complete.</b><p>You’re now eligible for matching and cohort invitations.</p></div></div>
+      <div class="alert caution"><span class="alert-icon">△</span><div><b>One module left.</b><p>Finish “Beginning the relationship” to become eligible for matching.</p></div></div>
+      <div class="alert danger"><span class="alert-icon">⊘</span><div><b>This connection is under review.</b><p>A facilitator is taking a closer look. You’ll hear back soon.</p></div></div>
     </div>
+    <p class="tiny mt-2 mb-0">Transient confirmations use <a href="#toasts">toasts</a>, not alerts. The full string catalog is in <a href="states-feedback.html">states-feedback.html</a>.</p>
+  </section>
+
+  <!-- ============================ TOASTS ============================ -->
+  <section class="spec-section" id="toasts">
+    <h2>Toasts</h2>
+    <p class="muted">Transient confirmations (<code class="mono">src/components/ui/sonner.tsx</code>) render on a dark inverse surface with an ochre-tinted icon per type. A notification toast adds a description and a “View” action button.</p>
+    <div class="overlay-demo dark mt-4" style="gap:var(--s3); place-items:start;">
+      <div class="toast"><span class="toast-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></span> Connection request sent.</div>
+      <div class="toast"><span class="toast-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></span> Your profile is saved.</div>
+      <div class="toast"><span class="toast-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></span> Please select a date and time.</div>
+      <div class="toast">
+        <span class="toast-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.49 4.04 3 5.5l7 7Z"/></svg></span>
+        <span class="toast-body">David wants to connect
+          <span class="toast-desc">“I’d love to hear about the youth beading circle.”</span>
+        </span>
+        <button class="toast-action">View</button>
+      </div>
+    </div>
+    <p class="tiny mt-2 mb-0">Per-type icons: <b>success</b> CircleCheck · <b>info</b> Info · <b>warning</b> TriangleAlert · <b>error</b> OctagonX · <b>loading</b> Loader2 — all tinted ochre. Every implemented toast string is catalogued in <a href="states-toasts.html">states-toasts.html</a>.</p>
+  </section>
+
+  <!-- ============================ DROPDOWN MENU ============================ -->
+  <section class="spec-section" id="menu">
+    <h2>Dropdown menu</h2>
+    <p class="muted"><code class="mono">.menu-panel</code> mirrors <code class="mono">src/components/ui/dropdown-menu.tsx</code> — a parchment popup with 4px padding, a labeled header, a separator, and items that highlight on focus. The <code class="mono">destructive</code> item (Sign out) reads in berry.</p>
+    <div class="overlay-demo mt-4">
+      <div class="menu-panel" role="menu" aria-label="Account">
+        <div class="menu-label">Signed in as<b>Marie Cardinal</b>Indigenous participant</div>
+        <hr class="menu-sep">
+        <a class="menu-item" role="menuitem" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          My profile
+        </a>
+        <a class="menu-item" role="menuitem" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/></svg>
+          Dashboard
+        </a>
+        <hr class="menu-sep">
+        <a class="menu-item destructive" role="menuitem" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sign out
+        </a>
+      </div>
+    </div>
+    <p class="tiny mt-2 mb-0">Account-menu role variants (participant, facilitator, learning) sit side by side in <a href="index.html">the overlay catalog</a>.</p>
+  </section>
+
+  <!-- ============================ NOTIFICATIONS ============================ -->
+  <section class="spec-section" id="notifications">
+    <h2>Notifications</h2>
+    <p class="muted">A bell button with an ochre unread count opens a scrollable list (<code class="mono">src/components/notification-center.tsx</code>). Unread rows are bold with a spruce dot and a faint tint; each type carries its own icon.</p>
+    <div class="overlay-demo mt-4" style="place-items:start;">
+      <div class="row" style="gap:var(--s5)">
+        <button class="bell-btn" style="background:var(--spruce-800);" aria-label="Notifications, 3 unread">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          <span class="bell-count">3</span>
+        </button>
+        <button class="bell-btn" style="background:var(--spruce-800);" aria-label="Notifications, 9 or more unread">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          <span class="bell-count">9+</span>
+        </button>
+      </div>
+      <div class="menu-panel notif-panel">
+        <div class="notif-head"><span>Notifications</span><a href="#">Mark all read</a></div>
+        <a class="notif-item unread" href="#">
+          <span class="notif-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.49 4.04 3 5.5l7 7Z"/></svg></span>
+          <div class="flex-1">
+            <div class="notif-title">New connection request</div>
+            <div class="notif-body">David Tremblay would like to connect with you.</div>
+            <div class="notif-time">2 hours ago</div>
+          </div>
+          <span class="notif-dot"></span>
+        </a>
+        <a class="notif-item unread" href="#">
+          <span class="notif-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.8 10A10 10 0 1 1 17 3.34"/><path d="m9 11 3 3L22 4"/></svg></span>
+          <div class="flex-1">
+            <div class="notif-title">Your match was approved</div>
+            <div class="notif-body">A facilitator approved your connection with Helen McKay.</div>
+            <div class="notif-time">Yesterday</div>
+          </div>
+          <span class="notif-dot"></span>
+        </a>
+        <a class="notif-item" href="#">
+          <span class="notif-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span>
+          <div class="flex-1">
+            <div class="notif-title">New message from Helen</div>
+            <div class="notif-body">“Would Thursday evening work for a call?”</div>
+            <div class="notif-time">2 days ago</div>
+          </div>
+        </a>
+        <a class="notif-item" href="#">
+          <span class="notif-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2"/></svg></span>
+          <div class="flex-1">
+            <div class="notif-title">Call scheduled</div>
+            <div class="notif-body">Your Zoom call with Helen is set for Saturday at 2:00 pm.</div>
+            <div class="notif-time">3 days ago</div>
+          </div>
+        </a>
+      </div>
+      <div class="menu-panel notif-panel">
+        <div class="notif-head"><span>Notifications</span></div>
+        <div class="notif-empty">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          No notifications yet
+        </div>
+      </div>
+    </div>
+    <p class="tiny mt-2 mb-0">Types: <b>connect_request</b> Heart · <b>match_approved</b> CheckCircle2 · <b>new_message</b> MessageCircle · <b>meeting_scheduled</b> Video. Full variants: <a href="overlay-notifications.html">overlay-notifications.html</a>.</p>
+  </section>
+
+  <!-- ============================ DIALOGS ============================ -->
+  <section class="spec-section" id="dialogs">
+    <h2>Dialogs</h2>
+    <p class="muted">Every dialog (<code class="mono">src/components/ui/dialog.tsx</code>) is a rounded-2xl parchment popup with a 1px border and a 4px ochre-700 top strand. A ghost icon close sits top-right; the footer aligns buttons right, with an optional escape action pushed left via <code class="mono">.push-left</code>.</p>
+    <div style="background: var(--spruce-100); border-radius: var(--r-lg); padding: var(--s6); display:grid; place-items:center">
+      <div class="modal" role="dialog" aria-labelledby="ds-modal-title" style="max-width:480px">
+        <button class="close" aria-label="Close">✕</button>
+        <div class="modal-header">
+          <div class="kicker">Connection</div>
+          <h3 id="ds-modal-title">Schedule a call</h3>
+          <p class="modal-desc">A Zoom link will be created and shared with both of you.</p>
+        </div>
+        <div class="modal-body">
+          <div class="field">
+            <label for="ds-topic">Topic</label>
+            <input class="input" id="ds-topic" type="text" value="RTR Connection Call — Marie &amp; David">
+          </div>
+          <div class="field mb-0">
+            <label for="ds-when">Date &amp; time</label>
+            <input class="input" id="ds-when" type="text" value="Saturday, July 18 · 2:00 pm">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary">Cancel</button>
+          <button class="btn btn-primary">Schedule call</button>
+        </div>
+      </div>
+    </div>
+    <p class="tiny mt-2 mb-0">Live example with the full form: <a href="dialog-schedule-call.html">dialog-schedule-call.html</a>.</p>
+  </section>
+
+  <!-- ============================ SHEET ============================ -->
+  <section class="spec-section" id="sheet">
+    <h2>Sheet (mobile navigation)</h2>
+    <p class="muted">Below 860px the header nav collapses into a right-side Sheet (<code class="mono">src/components/app-header.tsx</code>) — a spruce-800 panel titled with the full brand name, holding the same links as the desktop nav.</p>
+    <div class="overlay-demo dark sheet-demo mt-4" style="place-items:start; align-items:stretch;">
+      <div class="sheet-panel">
+        <button class="sheet-close" aria-label="Close menu">✕</button>
+        <div class="sheet-title">Reconciliation Through Relationships</div>
+        <nav aria-label="Mobile">
+          <a href="#" aria-current="page">Home</a>
+          <a href="#">Learning</a>
+          <a href="#">Connections</a>
+          <a href="#">Regional map</a>
+        </nav>
+      </div>
+    </div>
+    <p class="tiny mt-2 mb-0">Participant and facilitator link-sets sit side by side in <a href="overlay-mobile-nav.html">overlay-mobile-nav.html</a>.</p>
+  </section>
+
+  <!-- ============================ EMPTY STATES ============================ -->
+  <section class="spec-section" id="empty">
+    <h2>Empty states</h2>
+    <p class="muted"><code class="mono">EmptyState</code> — a dashed birch panel led by the muted brand mark, a title, a plain-language description, and (optionally) one action. Used when a list has nothing yet rather than showing a bare screen.</p>
+    <div class="grid cols-2 mt-4">
+      <div class="empty">
+        <svg class="empty-mark" viewBox="0 0 32 32" width="56" aria-hidden="true">
+          <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#C9BCA3" stroke-width="3" stroke-linecap="round"/>
+          <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#C9BCA3" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 7"/>
+        </svg>
+        <h3>No recommendations yet</h3>
+        <p>Your facilitator reviews every match personally. While you wait, your profile does the work — the more you share, the better the match.</p>
+        <button class="btn btn-secondary">Complete your profile</button>
+      </div>
+      <div class="empty">
+        <svg class="empty-mark" viewBox="0 0 32 32" width="56" aria-hidden="true">
+          <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#C9BCA3" stroke-width="3" stroke-linecap="round"/>
+          <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#C9BCA3" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 7"/>
+        </svg>
+        <h3>No connections yet</h3>
+        <p>When you connect with someone, your conversation will live here. Start from a recommendation on your dashboard.</p>
+      </div>
+    </div>
+    <p class="tiny mt-2 mb-0">Every empty-state string, plus the inline empties inside filters and lists, is catalogued in <a href="states-feedback.html">states-feedback.html</a>.</p>
   </section>
 
   <!-- ============================ MESSAGES ============================ -->
   <section class="spec-section" id="messages">
     <h2>Message bubbles</h2>
-    <div class="demo-box" style="max-width:560px">
+    <p class="muted">Connection chat (<code class="mono">ConnectionChat</code>). Your messages sit right in spruce-100 with a squared bottom-right corner; theirs sit left in parchment. A day separator groups the thread.</p>
+    <div class="demo-box mt-4" style="max-width:560px">
       <div class="thread">
         <span class="day-sep">Tuesday</span>
         <div class="msg theirs">
@@ -586,56 +930,8 @@
         </div>
         <div class="msg mine">
           <div class="bubble">Happy to! We meet Thursday evenings at the Friendship Centre. Would a call this weekend work to talk more?</div>
-          <div class="msg-meta">You · 2:31 pm</div>
+          <div class="msg-meta">You · 2:31 pm · Read</div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================ MODAL ============================ -->
-  <section class="spec-section" id="modal">
-    <h2>Dialogs</h2>
-    <p class="muted">Every dialog opens with an ochre strand at its top edge, names one decision, and offers a way out. Full dialog mocks: see the <a href="index.html#dialogs">index</a>.</p>
-    <div style="background: var(--spruce-100); border-radius: var(--r-lg); padding: var(--s6); display:grid; place-items:center">
-      <div class="modal" role="dialog" aria-labelledby="ds-modal-title" style="max-width:480px">
-        <div class="modal-header">
-          <div>
-            <div class="kicker">Connection request</div>
-            <h3 id="ds-modal-title">Decline this recommendation?</h3>
-          </div>
-          <button class="close" aria-label="Close">✕</button>
-        </div>
-        <div class="modal-body">
-          <p class="mb-0">No one is notified when you decline, and it won’t affect future recommendations. If something felt wrong, you can also <a href="#">tell your facilitator</a>.</p>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-quiet">Keep thinking</button>
-          <button class="btn btn-danger-quiet">Decline recommendation</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================ EMPTY STATES ============================ -->
-  <section class="spec-section" id="empty">
-    <h2>Empty states</h2>
-    <div class="grid cols-2 mt-4">
-      <div class="empty">
-        <svg class="empty-mark" viewBox="0 0 32 32" width="56" aria-hidden="true">
-          <path d="M16 4 a12 12 0 0 1 0 24" fill="none" stroke="#C9BCA3" stroke-width="3" stroke-linecap="round"/>
-          <path d="M16 28 a12 12 0 0 1 0 -24" fill="none" stroke="#C9BCA3" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 7"/>
-        </svg>
-        <h3>No recommendations yet</h3>
-        <p>Your facilitator reviews every match personally. While you wait, your profile does the work — the more you share, the better the match.</p>
-        <button class="btn btn-secondary">Complete your profile</button>
-      </div>
-      <div class="empty">
-        <svg class="empty-mark" viewBox="0 0 32 32" width="56" aria-hidden="true">
-          <circle cx="16" cy="16" r="12" fill="none" stroke="#C9BCA3" stroke-width="3" stroke-dasharray="5 6" stroke-linecap="round"/>
-        </svg>
-        <h3>No cohort in your region yet</h3>
-        <p>Circles take time. Invite someone you know to join the journey — every seat filled brings a gathering closer.</p>
-        <button class="btn btn-secondary">Share an invitation</button>
       </div>
     </div>
   </section>
@@ -651,7 +947,7 @@
         <p class="mb-0">✓ Touch targets are at least 44px; base text is 16.5px.</p>
       </div>
       <div class="card card-pad stack tight">
-        <p class="mb-0">✓ <code>prefers-reduced-motion</code> disables all transitions.</p>
+        <p class="mb-0">✓ <code class="mono">prefers-reduced-motion</code> disables all transitions.</p>
         <p class="mb-0">✓ Status is never conveyed by color alone — pills carry text, seats carry counts.</p>
         <p class="mb-0">✓ Layouts collapse to a single column below 620px; nav collapses at 860px.</p>
         <p class="mb-0">✓ Plain language throughout; reading level checked with RTR staff.</p>
@@ -661,16 +957,17 @@
 
 </main>
 
-<footer class="app-footer">
+<footer class="app-footer panel-on-dark">
   <div class="container wide">
-    <div class="row between">
+    <div class="row between" style="align-items:center;">
       <div>
-        <h4>Reconciliation Through Relationships — design mocks</h4>
-        <p class="mb-0">Synthetic data only. Motifs pending review with RTR Indigenous leadership.</p>
+        <h4>Reconciliation Through Relationships — design system</h4>
+        <p style="margin:0;">Specimens mirror the built application. Synthetic data only; motifs pending review with RTR Indigenous leadership.</p>
+        <p style="margin:4px 0 0;"><a href="https://rightrelationship.ca">rightrelationship.ca</a></p>
       </div>
-      <div class="weave on-dark short" role="presentation"></div>
+      <div class="weave on-dark" style="width:240px;" aria-hidden="true"></div>
     </div>
-    <p class="acknowledgment">Each gathering begins by acknowledging the treaty territory and traditional lands on which it takes place. The portal shows a region-appropriate acknowledgment here, confirmed with local Indigenous partners.</p>
+    <p class="acknowledgment">Each gathering begins by acknowledging the treaty territory and traditional lands on which it takes place. Region-specific acknowledgments are confirmed with local Indigenous partners.</p>
   </div>
 </footer>
 

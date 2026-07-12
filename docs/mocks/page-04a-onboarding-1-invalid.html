@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onboarding · Step 1 (invalid) — Reconciliation Through Relationships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<!--
+  Mirrors: /onboarding — step 1, submitted-invalid (src/app/onboarding/components/StepBasicInfo.tsx
+           + OnboardingErrors.tsx + validation.ts + useStepValidation.ts)
+  State: Step 1 of 5 · empty form after the user clicked Continue. ErrorSummary lists all 6
+         step-1 errors; each required field is aria-invalid with an inline FieldErrorMessage.
+         Submission stays enabled — the wizard validates on click, never disables Continue.
+  Mirrors the submitted-invalid state; interactive walkthrough of all four steps lives in pattern-onboarding-validation.html.
+  Note: the onboarding wizard uses its own top bar (not the app header).
+-->
+<style>
+  /* Onboarding wizard chrome — layout only; components come from rtr.css */
+  body { background: var(--birch); }
+
+  .ob-topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 16px; }
+  .ob-shell { max-width: 672px; margin: 0 auto; }
+  .ob-bar-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .ob-brand { margin: 0; font-size: 14px; font-weight: 500; color: var(--primary); }
+  .ob-signout { font-size: 12px; color: var(--muted-foreground); text-decoration: none; }
+  .ob-signout:hover { color: var(--foreground); }
+  .ob-progress-row { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+  .ob-progress { flex: 1; height: 8px; }
+  .ob-chips { margin-top: 8px; }
+  .ob-step-count { font-size: 12px; color: var(--muted-foreground); white-space: nowrap; }
+
+  .ob-main { padding: 32px 16px; }
+  .ob-form > * + * { margin-top: 32px; }
+
+  .ob-h h2 { margin: 0 0 4px; }
+  .ob-h p { margin: 0; }
+
+  .ob-form .field { margin-bottom: 0; }
+  .ob-namegrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .ob-fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .ob-fieldset > * + * { margin-top: 12px; }
+  .ob-legend { display: block; font-size: 16px; font-weight: 500; color: var(--spruce-800); margin: 0; padding: 0; font-family: var(--font-body); }
+  .ob-help { font-size: 14px; color: var(--muted-foreground); margin: 0; }
+
+  .ob-radio-row { display: flex; gap: 24px; }
+  .ob-radio-row.wrap { flex-wrap: wrap; }
+
+  .ob-card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .choice-card .cc-text { font-size: 14px; font-weight: 500; color: var(--ink); }
+
+  /* Submitted-invalid: ErrorSummary (Alert variant="destructive") + FieldErrorMessage */
+  .ob-error-summary { flex-direction: column; gap: 0; }
+  .ob-error-title { font-family: var(--font-body); font-size: 16px; font-weight: 700; color: currentColor; margin: 0; }
+  .ob-error-list { margin: 8px 0 0; padding-left: 20px; list-style: disc; }
+  .ob-error-list li + li { margin-top: 4px; }
+  .ob-error-list a { color: currentColor; text-decoration: underline; text-underline-offset: 3px; }
+  .ob-error-msg { font-size: 14px; font-weight: 500; color: var(--berry-700); margin: 6px 0 0; }
+  /* berry field border comes from rtr.css .field.error .input */
+
+  .ob-btn-row { display: flex; gap: 12px; }
+
+  @media (max-width: 620px) {
+    .ob-card-grid, .ob-namegrid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="ob-topbar">
+  <div class="ob-shell">
+    <div class="ob-bar-row">
+      <p class="ob-brand">RTR · Create your profile</p>
+      <a class="ob-signout" href="page-02-login.html">Sign out</a>
+    </div>
+    <div class="ob-progress-row">
+      <div class="progress ob-progress"><div class="bar" style="width:20%;"></div></div>
+      <span class="ob-step-count">Step 1 of 5</span>
+    </div>
+    <div class="step-chips ob-chips" aria-label="Onboarding steps">
+      <span class="step-chip current" aria-current="step">Basic Info</span>
+      <span class="step-chip">Location &amp; Treaty</span>
+      <span class="step-chip">Faith &amp; Interests</span>
+      <span class="step-chip">Availability &amp; Format</span>
+      <span class="step-chip">Matching Preferences</span>
+    </div>
+  </div>
+</header>
+
+<main class="ob-main">
+  <div class="ob-shell">
+    <form class="ob-form" novalidate>
+
+      <div class="ob-h">
+        <h2>Tell us about yourself</h2>
+        <p class="muted">This information helps us create your profile and find the right connections for you.</p>
+      </div>
+
+      <!-- ErrorSummary: Alert variant="destructive", focused on submit -->
+      <div class="alert danger ob-error-summary" role="alert" tabindex="-1" aria-labelledby="onboarding-error-summary-title">
+        <h3 id="onboarding-error-summary-title" class="ob-error-title">Please fix 6 errors to continue</h3>
+        <ul class="ob-error-list">
+          <li><a href="#first_name">Enter your first name.</a></li>
+          <li><a href="#last_name">Enter your last name.</a></li>
+          <li><a href="#age">Enter an age from 13 to 120.</a></li>
+          <li><a href="#indigenous_group">Choose whether you are Indigenous.</a></li>
+          <li><a href="#sex_group">Choose your sex.</a></li>
+          <li><a href="#participation_categories">Choose at least one required participation category.</a></li>
+        </ul>
+      </div>
+
+      <!-- Name -->
+      <div class="ob-namegrid">
+        <div class="field error">
+          <label for="first_name">First name <span class="req">*</span></label>
+          <input class="input" id="first_name" type="text" value="" placeholder="Jane" aria-invalid="true" aria-describedby="first_name-error">
+          <p class="ob-error-msg" id="first_name-error">Enter your first name.</p>
+        </div>
+        <div class="field error">
+          <label for="last_name">Last name <span class="req">*</span></label>
+          <input class="input" id="last_name" type="text" value="" placeholder="Smith" aria-invalid="true" aria-describedby="last_name-error">
+          <p class="ob-error-msg" id="last_name-error">Enter your last name.</p>
+        </div>
+      </div>
+
+      <!-- Age -->
+      <div class="field error">
+        <label for="age">Age <span class="req">*</span></label>
+        <input class="input" id="age" type="number" value="" min="13" max="120" placeholder="25" aria-invalid="true" aria-describedby="age-error">
+        <p class="ob-error-msg" id="age-error">Enter an age from 13 to 120.</p>
+      </div>
+
+      <!-- Bio (optional — no error) -->
+      <div class="field">
+        <label for="bio">Bio</label>
+        <textarea class="textarea" id="bio" rows="4" placeholder="Share a little about who you are — your story, what you care about, and what brings you to RTR."></textarea>
+      </div>
+
+      <!-- Additional matching info (optional — no error) -->
+      <div class="field">
+        <label for="additional_matching_info">Additional matching information</label>
+        <textarea class="textarea" id="additional_matching_info" rows="3" placeholder="Anything else you'd like a potential match to know about you before connecting."></textarea>
+      </div>
+
+      <!-- Are you Indigenous -->
+      <fieldset class="ob-fieldset" id="indigenous_group" tabindex="-1" aria-describedby="indigenous_group-error">
+        <legend class="ob-legend">Are you Indigenous? <span class="req">*</span></legend>
+        <div class="ob-radio-row">
+          <label class="choice"><input type="radio" name="is_indigenous" aria-invalid="true" aria-describedby="indigenous_group-error"> Yes</label>
+          <label class="choice"><input type="radio" name="is_indigenous" aria-invalid="true" aria-describedby="indigenous_group-error"> No</label>
+        </div>
+        <p class="ob-error-msg" id="indigenous_group-error">Choose whether you are Indigenous.</p>
+      </fieldset>
+
+      <!-- Sex -->
+      <fieldset class="ob-fieldset" id="sex_group" tabindex="-1" aria-describedby="sex_group-error">
+        <legend class="ob-legend">Sex <span class="req">*</span></legend>
+        <div class="ob-radio-row wrap">
+          <label class="choice"><input type="radio" name="sex" aria-invalid="true" aria-describedby="sex_group-error"> Male</label>
+          <label class="choice"><input type="radio" name="sex" aria-invalid="true" aria-describedby="sex_group-error"> Female</label>
+          <label class="choice"><input type="radio" name="sex" aria-invalid="true" aria-describedby="sex_group-error"> Prefer not to say</label>
+        </div>
+        <p class="ob-error-msg" id="sex_group-error">Choose your sex.</p>
+      </fieldset>
+
+      <!-- Participation categories -->
+      <fieldset class="ob-fieldset" id="participation_categories" tabindex="-1" aria-describedby="participation_categories-error">
+        <legend class="ob-legend">Participation categories <span class="req">*</span></legend>
+        <p class="ob-help">Select all that apply. At least one of Indigenous Leader, Indigenous Individual, or Non-Indigenous Individual is required.</p>
+        <div class="ob-card-grid">
+          <label class="choice-card"><input type="checkbox" aria-invalid="true" aria-describedby="participation_categories-error"><span class="cc-text">Indigenous Leader</span></label>
+          <label class="choice-card"><input type="checkbox" aria-invalid="true" aria-describedby="participation_categories-error"><span class="cc-text">Indigenous Individual</span></label>
+          <label class="choice-card"><input type="checkbox" aria-invalid="true" aria-describedby="participation_categories-error"><span class="cc-text">Non-Indigenous Individual</span></label>
+          <label class="choice-card"><input type="checkbox" aria-invalid="true" aria-describedby="participation_categories-error"><span class="cc-text">Elected Leader</span></label>
+          <label class="choice-card"><input type="checkbox" aria-invalid="true" aria-describedby="participation_categories-error"><span class="cc-text">Religious Leader</span></label>
+          <label class="choice-card"><input type="checkbox" aria-invalid="true" aria-describedby="participation_categories-error"><span class="cc-text">Artist</span></label>
+          <label class="choice-card"><input type="checkbox" aria-invalid="true" aria-describedby="participation_categories-error"><span class="cc-text">Other</span></label>
+        </div>
+        <p class="ob-error-msg" id="participation_categories-error">Choose at least one required participation category.</p>
+      </fieldset>
+
+      <button class="btn btn-primary lg block" type="submit">Continue</button>
+
+    </form>
+  </div>
+</main>
+
+</body>
+</html>

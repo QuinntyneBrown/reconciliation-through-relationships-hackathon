@@ -11,6 +11,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { OnboardingData } from "../page";
+import { findError, validateLocation } from "../validation";
+import { ErrorSummary, FieldErrorMessage } from "./OnboardingErrors";
+import { useStepValidation } from "./useStepValidation";
 
 const PROVINCES = [
   "Alberta",
@@ -36,10 +39,16 @@ type Props = {
 };
 
 export default function StepLocation({ data, onChange, onNext, onBack }: Props) {
-  const canContinue = data.city.trim() && data.province;
+  const { errors, onSubmit, summaryRef } = useStepValidation({
+    data,
+    validate: validateLocation,
+    onValidSubmit: onNext,
+  });
+  const cityError = findError(errors, "city");
+  const provinceError = findError(errors, "province");
 
   return (
-    <div className="space-y-8">
+    <form noValidate onSubmit={onSubmit} className="space-y-8">
       <div>
         <h2 className="text-2xl font-semibold">Where are you located?</h2>
         <p className="text-muted-foreground mt-1">
@@ -48,6 +57,8 @@ export default function StepLocation({ data, onChange, onNext, onBack }: Props) 
         </p>
       </div>
 
+      <ErrorSummary errors={errors} summaryRef={summaryRef} />
+
       <div className="space-y-2">
         <Label htmlFor="city">City / Town / County *</Label>
         <Input
@@ -55,13 +66,20 @@ export default function StepLocation({ data, onChange, onNext, onBack }: Props) 
           value={data.city}
           onChange={(e) => onChange({ city: e.target.value })}
           placeholder="e.g. Saskatoon"
+          aria-invalid={!!cityError}
+          aria-describedby={cityError?.errorId}
         />
+        <FieldErrorMessage error={cityError} />
       </div>
 
       <div className="space-y-2">
-        <Label>Province / Territory *</Label>
+        <Label htmlFor="province">Province / Territory *</Label>
         <Select value={data.province} onValueChange={(v) => onChange({ province: v ?? "" })}>
-          <SelectTrigger>
+          <SelectTrigger
+            id="province"
+            aria-invalid={!!provinceError}
+            aria-describedby={provinceError?.errorId}
+          >
             <SelectValue placeholder="Select province or territory" />
           </SelectTrigger>
           <SelectContent>
@@ -72,6 +90,7 @@ export default function StepLocation({ data, onChange, onNext, onBack }: Props) 
             ))}
           </SelectContent>
         </Select>
+        <FieldErrorMessage error={provinceError} />
       </div>
 
       <div className="space-y-2">
@@ -97,13 +116,13 @@ export default function StepLocation({ data, onChange, onNext, onBack }: Props) 
       </div>
 
       <div className="flex gap-3">
-        <Button variant="outline" onClick={onBack} className="flex-1">
+        <Button type="button" variant="outline" onClick={onBack} className="flex-1">
           Back
         </Button>
-        <Button onClick={onNext} disabled={!canContinue} className="flex-1">
+        <Button type="submit" className="flex-1">
           Continue
         </Button>
       </div>
-    </div>
+    </form>
   );
 }

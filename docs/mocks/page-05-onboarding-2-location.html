@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onboarding · Step 2 — Reconciliation Through Relationships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<!--
+  Mirrors: /onboarding — step 2 (src/app/onboarding/page.tsx + components/StepLocation.tsx)
+  State: Step 2 of 5 · Location & Treaty, filled (Regina, Saskatchewan, Treaty 4 Territory).
+  Other steps: page-04 (basics), page-06 (faith & interests), page-07 (availability),
+  page-08 (matching preferences).
+  Note: the onboarding wizard uses its own top bar (not the app header).
+-->
+<style>
+  /* Onboarding wizard chrome — layout only; components come from rtr.css */
+  body { background: var(--birch); }
+
+  .ob-topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 16px; }
+  .ob-shell { max-width: 672px; margin: 0 auto; }
+  .ob-bar-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .ob-brand { margin: 0; font-size: 14px; font-weight: 500; color: var(--primary); }
+  .ob-signout { font-size: 12px; color: var(--muted-foreground); text-decoration: none; }
+  .ob-signout:hover { color: var(--foreground); }
+  .ob-progress-row { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+  .ob-progress { flex: 1; height: 8px; }
+  .ob-chips { margin-top: 8px; }
+  .ob-step-count { font-size: 12px; color: var(--muted-foreground); white-space: nowrap; }
+
+  .ob-main { padding: 32px 16px; }
+  .ob-form > * + * { margin-top: 32px; }
+
+  .ob-h h2 { margin: 0 0 4px; }
+  .ob-h p { margin: 0; }
+
+  .ob-form .field { margin-bottom: 0; }
+  .ob-help { font-size: 14px; color: var(--muted-foreground); margin: 0; }
+  .field .ob-help { margin: 0 0 8px; }
+
+  .ob-btn-row { display: flex; gap: 12px; }
+</style>
+</head>
+<body>
+
+<header class="ob-topbar">
+  <div class="ob-shell">
+    <div class="ob-bar-row">
+      <p class="ob-brand">RTR · Create your profile</p>
+      <a class="ob-signout" href="page-02-login.html">Sign out</a>
+    </div>
+    <div class="ob-progress-row">
+      <div class="progress ob-progress"><div class="bar" style="width:40%;"></div></div>
+      <span class="ob-step-count">Step 2 of 5</span>
+    </div>
+    <div class="step-chips ob-chips" aria-label="Onboarding steps">
+      <span class="step-chip done">Basic Info</span>
+      <span class="step-chip current" aria-current="step">Location &amp; Treaty</span>
+      <span class="step-chip">Faith &amp; Interests</span>
+      <span class="step-chip">Availability &amp; Format</span>
+      <span class="step-chip">Matching Preferences</span>
+    </div>
+  </div>
+</header>
+
+<main class="ob-main">
+  <div class="ob-shell">
+    <form class="ob-form" novalidate>
+
+      <div class="ob-h">
+        <h2>Where are you located?</h2>
+        <p class="muted">Location helps us connect you with people in your region and identify local reconciliation cohorts. Only your city will be shown on the map — never your exact address.</p>
+      </div>
+
+      <!-- City -->
+      <div class="field">
+        <label for="city">City / Town / County <span class="req">*</span></label>
+        <input class="input" id="city" type="text" value="Regina" placeholder="e.g. Saskatoon">
+      </div>
+
+      <!-- Province / Territory -->
+      <div class="field">
+        <label for="province">Province / Territory <span class="req">*</span></label>
+        <select class="select" id="province">
+          <option value="">Select province or territory</option>
+          <option>Alberta</option>
+          <option>British Columbia</option>
+          <option>Manitoba</option>
+          <option>New Brunswick</option>
+          <option>Newfoundland and Labrador</option>
+          <option>Northwest Territories</option>
+          <option>Nova Scotia</option>
+          <option>Nunavut</option>
+          <option>Ontario</option>
+          <option>Prince Edward Island</option>
+          <option>Quebec</option>
+          <option selected>Saskatchewan</option>
+          <option>Yukon</option>
+        </select>
+      </div>
+
+      <!-- Nearest Treaty area -->
+      <div class="field">
+        <label for="treaty_area">Nearest Treaty area</label>
+        <p class="ob-help">The treaty area nearest to where you live, worship, or work. <a href="https://native-land.ca/" target="_blank" rel="noopener noreferrer">Use native-land.ca</a> to look it up.</p>
+        <input class="input" id="treaty_area" type="text" value="Treaty 4 Territory" placeholder="e.g. Treaty 6 Territory">
+      </div>
+
+      <div class="ob-btn-row">
+        <a class="btn btn-secondary flex-1" href="page-04-onboarding-1-basics.html">Back</a>
+        <a class="btn btn-primary flex-1" href="page-06-onboarding-3-faith-interests.html">Continue</a>
+      </div>
+
+    </form>
+  </div>
+</main>
+
+</body>
+</html>

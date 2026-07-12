@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { OnboardingData } from "../page";
+import { findError, validateAvailability } from "../validation";
+import { ErrorSummary, FieldErrorMessage } from "./OnboardingErrors";
+import { useStepValidation } from "./useStepValidation";
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const TIMES = ["Morning (6am–12pm)", "Afternoon (12pm–5pm)", "Evening (5pm–9pm)", "Weekends only"];
@@ -27,6 +30,14 @@ type Props = {
 };
 
 export default function StepAvailability({ data, onChange, onNext, onBack }: Props) {
+  const { errors, onSubmit, summaryRef } = useStepValidation({
+    data,
+    validate: validateAvailability,
+    onValidSubmit: onNext,
+  });
+  const formatError = findError(errors, "participation_format");
+  const languageError = findError(errors, "language_preferences");
+
   function toggleDay(day: string) {
     const current = data.availability.days;
     onChange({
@@ -65,16 +76,16 @@ export default function StepAvailability({ data, onChange, onNext, onBack }: Pro
     });
   }
 
-  const canContinue = data.participation_format.length > 0 && data.language_preferences.length > 0;
-
   return (
-    <div className="space-y-8">
+    <form noValidate onSubmit={onSubmit} className="space-y-8">
       <div>
         <h2 className="text-2xl font-semibold">Availability & Preferences</h2>
         <p className="text-muted-foreground mt-1">
           Help us find connections who are available when you are.
         </p>
       </div>
+
+      <ErrorSummary errors={errors} summaryRef={summaryRef} />
 
       {/* Days */}
       <div className="space-y-3">
@@ -123,8 +134,13 @@ export default function StepAvailability({ data, onChange, onNext, onBack }: Pro
       </div>
 
       {/* Participation format */}
-      <div className="space-y-3">
-        <Label className="text-base font-medium">Preferred participation format *</Label>
+      <fieldset
+        id="participation_format"
+        tabIndex={-1}
+        className="space-y-3"
+        aria-describedby={formatError?.errorId}
+      >
+        <legend className="text-base font-medium">Preferred participation format *</legend>
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
           {FORMATS.map(({ value, label }) => (
             <div
@@ -136,6 +152,8 @@ export default function StepAvailability({ data, onChange, onNext, onBack }: Pro
                 checked={data.participation_format.includes(value)}
                 onCheckedChange={() => toggleFormat(value)}
                 id={`fmt_${value}`}
+                aria-invalid={!!formatError}
+                aria-describedby={formatError?.errorId}
               />
               <Label htmlFor={`fmt_${value}`} className="cursor-pointer text-sm">
                 {label}
@@ -143,11 +161,17 @@ export default function StepAvailability({ data, onChange, onNext, onBack }: Pro
             </div>
           ))}
         </div>
-      </div>
+        <FieldErrorMessage error={formatError} />
+      </fieldset>
 
       {/* Language */}
-      <div className="space-y-3">
-        <Label className="text-base font-medium">Language preferences *</Label>
+      <fieldset
+        id="language_preferences"
+        tabIndex={-1}
+        className="space-y-3"
+        aria-describedby={languageError?.errorId}
+      >
+        <legend className="text-base font-medium">Language preferences *</legend>
         <div className="flex gap-3">
           {LANGUAGES.map(({ value, label }) => (
             <div
@@ -159,6 +183,8 @@ export default function StepAvailability({ data, onChange, onNext, onBack }: Pro
                 checked={data.language_preferences.includes(value)}
                 onCheckedChange={() => toggleLanguage(value)}
                 id={`lang_${value}`}
+                aria-invalid={!!languageError}
+                aria-describedby={languageError?.errorId}
               />
               <Label htmlFor={`lang_${value}`} className="cursor-pointer">
                 {label}
@@ -166,16 +192,17 @@ export default function StepAvailability({ data, onChange, onNext, onBack }: Pro
             </div>
           ))}
         </div>
-      </div>
+        <FieldErrorMessage error={languageError} />
+      </fieldset>
 
       <div className="flex gap-3">
-        <Button variant="outline" onClick={onBack} className="flex-1">
+        <Button type="button" variant="outline" onClick={onBack} className="flex-1">
           Back
         </Button>
-        <Button onClick={onNext} disabled={!canContinue} className="flex-1">
+        <Button type="submit" className="flex-1">
           Continue
         </Button>
       </div>
-    </div>
+    </form>
   );
 }

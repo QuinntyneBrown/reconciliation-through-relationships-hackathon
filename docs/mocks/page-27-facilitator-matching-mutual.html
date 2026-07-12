@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Match management · Mutual requests — Reconciliation Through Relationships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<!--
+  Mirrors: /facilitator/matching (src/app/facilitator/matching/MatchingClient.tsx)
+  State: "Mutual connect requests" tab active, 2 connections awaiting review.
+  Other tab states: page-28 (Approved / Rejected). Empty state for this tab:
+  "No mutual connect requests awaiting review."
+  Note: participant background badges in the request cards read "Non-Ind."
+  (abbreviated) — this is the exact source string here, unlike the participants
+  table which uses the full "Non-Indigenous".
+-->
+<style>
+  .app-main { padding-top: 32px; padding-bottom: 32px; }
+  .app-main > * + * { margin-top: 32px; }
+  .page-intro { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+  .page-intro .intro-copy { max-width: 768px; }
+  .page-intro h1 { margin-bottom: 4px; }
+  .page-intro .lead { margin: 0 0 16px; }
+
+  .automatch-card { display: flex; align-items: center; gap: 12px; border: 1px solid var(--border); background: var(--parchment); box-shadow: var(--shadow-1); border-radius: 12px; padding: 12px 16px; }
+  .automatch-card .zap { width: 16px; height: 16px; color: var(--spruce-600); flex: none; }
+  .automatch-card label { font-weight: 700; font-size: 15px; color: var(--spruce-800); }
+
+  .card-head { padding: 24px 24px 0; }
+  .card-title { display: flex; align-items: center; gap: 8px; font-family: var(--font-display); font-weight: 560; font-size: 16px; color: var(--spruce-800); margin: 0; }
+  .card-title svg { width: 16px; height: 16px; }
+  .card-content { padding: 24px; }
+
+  .manual-row { display: flex; flex-direction: column; gap: 12px; }
+  @media (min-width: 640px) { .manual-row { flex-direction: row; } }
+
+  .tab-panel { margin-top: 16px; }
+  .tab-panel > * + * { margin-top: 12px; }
+
+  .req-card .req-body { padding: 20px; display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+  @media (min-width: 640px) { .req-card .req-body { flex-direction: row; } }
+  .req-people { display: flex; flex: 1; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .person-btn { display: flex; align-items: center; gap: 8px; padding: 4px; border: 0; background: none; border-radius: 8px; text-align: left; cursor: pointer; color: inherit; }
+  .person-btn:hover { background: rgb(42 81 72 / 6%); }
+  .person-name { font-size: 14px; font-weight: 500; margin: 0; }
+  .person-city { font-size: 12px; color: var(--muted-foreground); margin: 2px 0 0; }
+  .chip-xs { min-height: 0; padding: 2px 10px; font-size: 12px; }
+  .req-actions { display: flex; gap: 8px; flex: none; }
+  @media (min-width: 640px) { .req-actions { flex-direction: column; } }
+  .req-actions .btn { min-height: 36px; }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="container wide">
+    <div class="bar">
+      <a class="brand" href="page-26-facilitator-overview.html">
+        <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+        </svg>
+        <span><span class="brand-name">Reconciliation</span><span class="brand-sub">Through Relationships</span></span>
+      </a>
+      <nav class="app-nav" aria-label="Main">
+        <a href="page-26-facilitator-overview.html">Overview</a>
+        <a href="page-29-facilitator-participants.html">Participants</a>
+        <a href="page-27-facilitator-matching-mutual.html" aria-current="page">Matches</a>
+        <a href="page-25-map.html">Cohorts</a>
+        <a href="page-30-facilitator-settings.html">Settings</a>
+      </nav>
+      <div class="actions" style="margin-left:auto;">
+        <span class="role-tag">Facilitator</span>
+        <button class="bell-btn" aria-label="Notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          <span class="bell-count">3</span>
+        </button>
+        <button aria-label="Open account menu" style="background:none;border:0;padding:0;cursor:pointer;border-radius:50%;">
+          <span class="avatar sm">JG</span>
+        </button>
+        <button class="menu-btn">Menu</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="app-main container wide">
+  <div class="page-intro">
+    <div class="intro-copy">
+      <span class="eyebrow">Facilitated introductions</span>
+      <h1>Match management</h1>
+      <p class="lead">Review, approve, or create matches between Indigenous and non-Indigenous participants.</p>
+      <div class="weave short" aria-hidden="true"></div>
+    </div>
+    <div class="automatch-card">
+      <svg class="zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      <label for="auto-matching">Auto-matching</label>
+      <label class="switch">
+        <input type="checkbox" id="auto-matching" checked aria-label="Auto-matching">
+        <span class="track"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Create manual match -->
+  <section class="card">
+    <div class="card-head">
+      <h3 class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+        Create manual match
+      </h3>
+    </div>
+    <div class="card-content">
+      <div class="manual-row">
+        <select class="select flex-1" aria-label="Select Indigenous participant">
+          <option>Select Indigenous participant</option>
+          <option>Sarah Cardinal — Regina</option>
+          <option>Michael Bear — Saskatoon</option>
+          <option>Rita Sanderson — Fort Qu'Appelle</option>
+        </select>
+        <select class="select flex-1" aria-label="Select Non-Indigenous participant">
+          <option>Select Non-Indigenous participant</option>
+          <option>David Tremblay — Regina</option>
+          <option>Helen McKay — Regina</option>
+          <option>Jonas Braun — Moose Jaw</option>
+        </select>
+        <button class="btn btn-primary disabled" disabled>Create match</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tabs -->
+  <div>
+    <nav class="tabs" aria-label="Match sections">
+      <a href="page-27-facilitator-matching-mutual.html" aria-current="true">Mutual connect requests <span class="count">2</span></a>
+      <a href="page-28-facilitator-matching-approved.html">Approved (3)</a>
+      <a href="page-28-facilitator-matching-approved.html">Rejected (1)</a>
+    </nav>
+
+    <div class="tab-panel">
+
+      <article class="card req-card">
+        <div class="req-body">
+          <div class="req-people">
+            <button type="button" class="person-btn">
+              <span class="avatar sm">SC</span>
+              <span>
+                <p class="person-name">Sarah Cardinal</p>
+                <span class="tag chip-xs">Indigenous</span>
+                <p class="person-city">Regina, Saskatchewan</p>
+              </span>
+            </button>
+            <button type="button" class="person-btn">
+              <span class="avatar sm river">DT</span>
+              <span>
+                <p class="person-name">David Tremblay</p>
+                <span class="tag ochre chip-xs">Non-Ind.</span>
+                <p class="person-city">Regina, Saskatchewan</p>
+              </span>
+            </button>
+          </div>
+          <div class="req-actions">
+            <button class="btn btn-primary sm">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Approve
+            </button>
+            <button class="btn btn-secondary sm">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+              Reject
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card req-card">
+        <div class="req-body">
+          <div class="req-people">
+            <button type="button" class="person-btn">
+              <span class="avatar sm">GN</span>
+              <span>
+                <p class="person-name">Grace Nightingale</p>
+                <span class="tag chip-xs">Indigenous</span>
+                <p class="person-city">Saskatoon, Saskatchewan</p>
+              </span>
+            </button>
+            <button type="button" class="person-btn">
+              <span class="avatar sm ochre">JB</span>
+              <span>
+                <p class="person-name">Jonas Braun</p>
+                <span class="tag ochre chip-xs">Non-Ind.</span>
+                <p class="person-city">Moose Jaw, Saskatchewan</p>
+              </span>
+            </button>
+          </div>
+          <div class="req-actions">
+            <button class="btn btn-primary sm">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Approve
+            </button>
+            <button class="btn btn-secondary sm">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+              Reject
+            </button>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</main>
+
+<footer class="app-footer panel-on-dark">
+  <div class="container wide">
+    <div class="row between" style="align-items:center;">
+      <div>
+        <h4>Reconciliation Through Relationships</h4>
+        <p style="margin:0;">Building meaningful relationships between Indigenous and non-Indigenous people.</p>
+        <p style="margin:4px 0 0;"><a href="https://rightrelationship.ca">rightrelationship.ca</a></p>
+      </div>
+      <div class="weave on-dark" style="width:240px;" aria-hidden="true"></div>
+    </div>
+    <p class="acknowledgment">Each gathering begins by acknowledging the treaty territory and traditional lands on which it takes place. Region-specific acknowledgments are confirmed with local Indigenous partners.</p>
+  </div>
+</footer>
+
+</body>
+</html>

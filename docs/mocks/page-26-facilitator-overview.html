@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community overview — Reconciliation Through Relationships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<!--
+  Mirrors: /facilitator (src/app/facilitator/page.tsx) — facilitator overview.
+  State: 5 live count tiles + Quick actions list. Facilitator chrome
+  (FacilitatorNav: Overview / Participants / Matches / Cohorts / Settings +
+  "Facilitator" role pill). Stat tiles and quick-action rows are Links.
+-->
+<style>
+  .app-main { padding-top: 32px; padding-bottom: 32px; }
+  .app-main > * + * { margin-top: 32px; }
+  .page-intro .intro-copy { max-width: 768px; }
+  .page-intro h1 { margin-bottom: 4px; }
+  .page-intro .lead { margin: 0 0 16px; }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+  .stat-card { text-decoration: none; color: inherit; display: block; transition: border-color var(--ease); }
+  .stat-card:hover { border-color: rgb(42 81 72 / 40%); color: inherit; }
+  .stat-card .stat { padding: 16px; }
+  .stat-card .stat-icon { width: 20px; height: 20px; color: var(--primary); margin-bottom: 8px; }
+  @media (max-width: 1020px) { .stat-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 620px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .action-list { overflow: hidden; border-radius: calc(var(--r-lg) + 4px); border: 1px solid var(--border); background: var(--card); }
+  .action-row { display: flex; align-items: center; gap: 16px; padding: 16px 20px; text-decoration: none; color: inherit; border-top: 1px solid var(--border); transition: background var(--ease); }
+  .action-row:first-child { border-top: 0; }
+  .action-row:hover { background: rgb(42 81 72 / 5%); color: inherit; }
+  .action-tile { display: grid; place-content: center; width: 40px; height: 40px; flex: none; border-radius: 12px; background: var(--spruce-100); color: var(--spruce-700); }
+  .action-tile svg { width: 20px; height: 20px; }
+  .action-copy { flex: 1; min-width: 0; }
+  .action-copy .a-label { font-weight: 600; color: var(--heading-foreground); margin: 0; }
+  .action-copy .a-desc { font-size: 14px; color: var(--muted-foreground); margin: 0; }
+  .action-chev { font-size: 18px; color: var(--muted-foreground); }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="container wide">
+    <div class="bar">
+      <a class="brand" href="page-26-facilitator-overview.html">
+        <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+        </svg>
+        <span><span class="brand-name">Reconciliation</span><span class="brand-sub">Through Relationships</span></span>
+      </a>
+      <nav class="app-nav" aria-label="Main">
+        <a href="page-26-facilitator-overview.html" aria-current="page">Overview</a>
+        <a href="page-29-facilitator-participants.html">Participants</a>
+        <a href="page-27-facilitator-matching-mutual.html">Matches</a>
+        <a href="page-25-map.html">Cohorts</a>
+        <a href="page-30-facilitator-settings.html">Settings</a>
+      </nav>
+      <div class="actions" style="margin-left:auto;">
+        <span class="role-tag">Facilitator</span>
+        <button class="bell-btn" aria-label="Notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          <span class="bell-count">3</span>
+        </button>
+        <button aria-label="Open account menu" style="background:none;border:0;padding:0;cursor:pointer;border-radius:50%;">
+          <span class="avatar sm">JG</span>
+        </button>
+        <button class="menu-btn">Menu</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="app-main container wide">
+  <div class="page-intro">
+    <div class="intro-copy">
+      <span class="eyebrow">Facilitator workspace</span>
+      <h1>Community overview</h1>
+      <p class="lead">Review the RTR participant community, learning progress, matches, and regional cohorts.</p>
+      <div class="weave short" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <div class="stat-grid">
+    <a class="card stat-card" href="page-29-facilitator-participants.html">
+      <div class="stat">
+        <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div class="stat-num">61</div>
+        <div class="stat-label">Total participants</div>
+      </div>
+    </a>
+    <a class="card stat-card" href="page-29-facilitator-participants.html">
+      <div class="stat">
+        <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        <div class="stat-num">48</div>
+        <div class="stat-label">Completed learning</div>
+      </div>
+    </a>
+    <a class="card stat-card" href="page-27-facilitator-matching-mutual.html">
+      <div class="stat">
+        <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/></svg>
+        <div class="stat-num">9</div>
+        <div class="stat-label">Pending matches</div>
+      </div>
+    </a>
+    <a class="card stat-card" href="page-29-facilitator-participants.html">
+      <div class="stat">
+        <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div class="stat-num">17</div>
+        <div class="stat-label">Active connections</div>
+      </div>
+    </a>
+    <a class="card stat-card" href="page-25-map.html">
+      <div class="stat">
+        <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        <div class="stat-num">4</div>
+        <div class="stat-label">Regional cohorts</div>
+      </div>
+    </a>
+  </div>
+
+  <div class="action-list">
+    <a class="action-row" href="page-27-facilitator-matching-mutual.html">
+      <span class="action-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/></svg></span>
+      <div class="action-copy">
+        <p class="a-label">Review pending matches</p>
+        <p class="a-desc">Approve or reject facilitator-suggested and mutual connect matches.</p>
+      </div>
+      <span class="action-chev" aria-hidden="true">›</span>
+    </a>
+    <a class="action-row" href="page-29-facilitator-participants.html">
+      <span class="action-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+      <div class="action-copy">
+        <p class="a-label">View all participants</p>
+        <p class="a-desc">Browse everyone in the program and their journey status.</p>
+      </div>
+      <span class="action-chev" aria-hidden="true">›</span>
+    </a>
+    <a class="action-row" href="page-25-map.html">
+      <span class="action-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>
+      <div class="action-copy">
+        <p class="a-label">Manage cohorts</p>
+        <p class="a-desc">Form and manage regional reconciliation cohorts.</p>
+      </div>
+      <span class="action-chev" aria-hidden="true">›</span>
+    </a>
+    <a class="action-row" href="page-30-facilitator-settings.html">
+      <span class="action-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></span>
+      <div class="action-copy">
+        <p class="a-label">Platform settings</p>
+        <p class="a-desc">Toggle auto-matching, cohort thresholds, and other options.</p>
+      </div>
+      <span class="action-chev" aria-hidden="true">›</span>
+    </a>
+  </div>
+</main>
+
+<footer class="app-footer panel-on-dark">
+  <div class="container wide">
+    <div class="row between" style="align-items:center;">
+      <div>
+        <h4>Reconciliation Through Relationships</h4>
+        <p style="margin:0;">Building meaningful relationships between Indigenous and non-Indigenous people.</p>
+        <p style="margin:4px 0 0;"><a href="https://rightrelationship.ca">rightrelationship.ca</a></p>
+      </div>
+      <div class="weave on-dark" style="width:240px;" aria-hidden="true"></div>
+    </div>
+    <p class="acknowledgment">Each gathering begins by acknowledging the treaty territory and traditional lands on which it takes place. Region-specific acknowledgments are confirmed with local Indigenous partners.</p>
+  </div>
+</footer>
+
+</body>
+</html>

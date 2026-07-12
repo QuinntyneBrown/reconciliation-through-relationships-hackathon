@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard · All participants — Reconciliation Through Relationships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<!--
+  Mirrors: /dashboard (src/app/dashboard/components/DashboardClient.tsx + AllParticipantsTab.tsx)
+  State: "All participants" tab, list view. Filter bar (search / province / background
+  / faith) + list⇄map toggle, 9-card grid, pagination (21 participants → 3 pages).
+  Other states: page-16 (map view), page-12 (recommended), page-13 (waitlist),
+  page-14 (cohort banner), page-17 (connections tab).
+-->
+<style>
+  .app-main { padding-top: 32px; padding-bottom: 32px; }
+  .app-main > * + * { margin-top: 32px; }
+  .page-intro { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+  .page-intro .intro-copy { max-width: 768px; }
+  .page-intro h1 { margin-bottom: 4px; }
+  .page-intro .lead { margin: 0 0 16px; }
+  .tab-body { margin-top: 24px; display: flex; flex-direction: column; gap: 16px; }
+  /* Filter bar: flex-col on mobile, flex-row on sm */
+  .filters { display: flex; flex-direction: column; gap: 12px; }
+  @media (min-width: 640px) { .filters { flex-direction: row; } }
+  .filters .search { flex: 1; min-width: 0; }
+  @media (min-width: 640px) {
+    .filters .f-province { width: 192px; }
+    .filters .f-bg { width: 160px; }
+    .filters .f-faith { width: 176px; }
+  }
+  .view-toggle { display: flex; gap: 4px; border: 1.5px solid var(--border); border-radius: 10px; padding: 4px; flex: none; }
+  /* Participant grid */
+  .participant-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
+  @media (max-width: 1020px) { .participant-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 620px) { .participant-grid { grid-template-columns: minmax(0, 1fr); } }
+  .participant-card { display: flex; flex-direction: column; }
+  .participant-card:hover { border-color: rgb(42 81 72 / 30%); }
+  .pcard-body { display: flex; flex-direction: column; flex: 1; gap: 12px; padding: 16px; }
+  .pcard-top { display: flex; align-items: flex-start; gap: 12px; }
+  .pcard-top .who { min-width: 0; flex: 1; }
+  .pcard-top .who .name { font-weight: 500; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pcard-top .who .loc { display: flex; align-items: center; gap: 4px; margin-top: 2px; }
+  .pcard-top .who .loc svg { flex: none; color: var(--muted-foreground); }
+  .pcard-top .who .loc span { font-size: 12px; color: var(--muted-foreground); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pcard-top > .tag { flex: none; }
+  .chips { display: flex; flex-wrap: wrap; gap: 4px; }
+  .chip-xs { min-height: 0; padding: 2px 10px; font-size: 12px; }
+  .pcard-actions { display: flex; gap: 8px; margin-top: auto; }
+  .pager { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 16px; }
+  .pager .pager-btns { display: flex; gap: 8px; }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="container wide">
+    <div class="bar">
+      <a class="brand" href="page-12-dashboard-recommended.html">
+        <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+        </svg>
+        <span><span class="brand-name">Reconciliation</span><span class="brand-sub">Through Relationships</span></span>
+      </a>
+      <nav class="app-nav" aria-label="Main">
+        <a href="page-12-dashboard-recommended.html" aria-current="page">Home</a>
+        <a href="page-09-learning-video.html">Learning</a>
+        <a href="page-18-connections.html">Connections</a>
+        <a href="page-25-map.html">Regional map</a>
+      </nav>
+      <div class="actions" style="margin-left:auto;">
+        <button class="bell-btn" aria-label="Notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          <span class="bell-count">3</span>
+        </button>
+        <button aria-label="Open account menu" style="background:none;border:0;padding:0;cursor:pointer;border-radius:50%;">
+          <span class="avatar sm">MC</span>
+        </button>
+        <button class="menu-btn">Menu</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="app-main container wide">
+  <div class="page-intro">
+    <div class="intro-copy">
+      <span class="eyebrow">Your relationship journey</span>
+      <h1>Welcome, Marie</h1>
+      <p class="lead">Discover thoughtful recommendations, connect at your own pace, and see reconciliation circles forming near you.</p>
+      <div class="weave short" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <div>
+    <nav class="tabs" aria-label="Dashboard sections">
+      <a href="page-12-dashboard-recommended.html">Recommended <span class="count">3</span></a>
+      <a href="page-17-dashboard-connections.html">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+        Connections <span class="count">3</span>
+      </a>
+      <a href="page-15-dashboard-participants-list.html" aria-current="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        All participants
+      </a>
+    </nav>
+
+    <div class="tab-body">
+      <div class="filters">
+        <div class="search">
+          <input class="input" type="search" placeholder="Search by name, city, or interest…" aria-label="Search participants">
+        </div>
+        <select class="select f-province" aria-label="Filter by province">
+          <option selected>All provinces</option>
+          <option>Alberta</option>
+          <option>British Columbia</option>
+          <option>Manitoba</option>
+          <option>New Brunswick</option>
+          <option>Newfoundland and Labrador</option>
+          <option>Northwest Territories</option>
+          <option>Nova Scotia</option>
+          <option>Nunavut</option>
+          <option>Ontario</option>
+          <option>Prince Edward Island</option>
+          <option>Quebec</option>
+          <option>Saskatchewan</option>
+          <option>Yukon</option>
+        </select>
+        <select class="select f-bg" aria-label="Filter by background">
+          <option selected>All backgrounds</option>
+          <option>Indigenous</option>
+          <option>Non-Indigenous</option>
+        </select>
+        <select class="select f-faith" aria-label="Filter by faith tradition">
+          <option selected>All faiths</option>
+          <option>Indigenous Traditional</option>
+          <option>Christian</option>
+          <option>Muslim</option>
+          <option>Jewish</option>
+          <option>Hindu</option>
+          <option>Buddhist</option>
+          <option>Atheist</option>
+          <option>Other</option>
+        </select>
+        <div class="view-toggle" role="group" aria-label="View mode">
+          <button class="btn btn-primary sm" aria-pressed="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            List
+          </button>
+          <a class="btn btn-quiet sm" href="page-16-dashboard-participants-map.html" aria-pressed="false">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3Z"/><path d="M9 3v15"/><path d="M15 6v15"/></svg>
+            Map
+          </a>
+        </div>
+      </div>
+
+      <p class="small muted" style="margin:0;">Showing 1–9 of 21</p>
+
+      <div class="participant-grid">
+
+        <article class="card participant-card">
+          <div class="pcard-body">
+            <div class="pcard-top">
+              <span class="avatar">DT</span>
+              <div class="who">
+                <p class="name">David Tremblay</p>
+                <div class="loc">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span>Regina, Saskatchewan</span>
+                </div>
+              </div>
+              <span class="tag ochre chip-xs">Non-Ind.</span>
+            </div>
+            <div class="chips">
+              <span class="tag outline chip-xs">music</span>
+              <span class="tag outline chip-xs">gardening</span>
+              <span class="tag outline chip-xs">history</span>
+            </div>
+            <div class="pcard-actions">
+              <a class="btn btn-secondary sm flex-1" href="page-23-profile-other.html">View</a>
+              <a class="btn btn-secondary sm flex-1" href="page-23-profile-other.html">Connect</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card participant-card">
+          <div class="pcard-body">
+            <div class="pcard-top">
+              <span class="avatar river">HM</span>
+              <div class="who">
+                <p class="name">Helen McKay</p>
+                <div class="loc">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span>Regina, Saskatchewan</span>
+                </div>
+              </div>
+              <span class="tag ochre chip-xs">Non-Ind.</span>
+            </div>
+            <div class="chips">
+              <span class="tag outline chip-xs">choir</span>
+              <span class="tag outline chip-xs">baking</span>
+              <span class="tag outline chip-xs">volunteering</span>
+            </div>
+            <div class="pcard-actions">
+              <a class="btn btn-secondary sm flex-1" href="page-23-profile-other.html">View</a>
+              <a class="btn btn-primary sm flex-1" href="page-22-chat-active.html">Chat</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card participant-card">
+          <div class="pcard-body">
+            <div class="pcard-top">
+              <span class="avatar ochre">JB</span>
+              <div class="who">
+                <p class="name">Jonas Braun</p>
+                <div class="loc">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span>Moose Jaw, Saskatchewan</span>
+                </div>
+              </div>
+              <span class="tag ochre chip-xs">Non-Ind.</span>
+            </div>
+            <div class="chips">
+              <span class="tag outline chip-xs">hockey</span>
+              <span class="tag outline chip-xs">farming</span>
+              <span class="tag outline chip-xs">woodworking</span>
+            </div>
+            <div class="pcard-actions">
+              <a class="btn btn-secondary sm flex-1" href="page-23-profile-other.html">View</a>
+              <a class="btn btn-primary sm flex-1" href="page-20-chat-waiting.html" title="Waiting for Jonas to accept">Pending</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card participant-card">
+          <div class="pcard-body">
+            <div class="pcard-top">
+              <span class="avatar">SW</span>
+              <div class="who">
+                <p class="name">Sarah Whitecalf</p>
+                <div class="loc">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span>Saskatoon, Saskatchewan</span>
+                </div>
+              </div>
+              <span class="tag chip-xs">Indigenous</span>
+            </div>
+            <div class="chips">
+              <span class="tag outline chip-xs">beadwork</span>
+              <span class="tag outline chip-xs">teaching</span>
+              <span class="tag outline chip-xs">drumming</span>
+            </div>
+            <div class="pcard-actions">
+              <a class="btn btn-secondary sm flex-1" href="page-23-profile-other.html">View</a>
+              <a class="btn btn-secondary sm flex-1" href="page-23-profile-other.html">Connect</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card participant-card">
+          <div class="pcard-body">
+            <div class="pcard-top">
+              <span class="avatar">RN</span>
+              <div class="who">
+                <p class="name">Robert Nighttraveller</p>
+                <div class="loc">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span>Prince Albert, Saskatchewan</span>
+                </div>
+              </div>
+              <span class="tag chip-xs">Indigenous</span>
+            </div>
+            <div class="chips">
+              <span class="tag outline chip-xs">fishing</span>
+              <span class="tag outline chip-xs">storytelling</span>
+              <span class="tag outline chip-xs">carving</span>
+            </div>
+            <div class="pcard-actions">
+              <a class="btn btn-secondary sm flex-1" href="page-23-profile-other.html">View</a>
+              <a class="btn btn-secondary sm flex-1" href="page-23-profile-other.html">Connect</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card participant-card">
+          <div class="pcard-body">
+            <div class="pcard-top">
+              <span class="avatar river">MB</span>
+              <div class="who">
+                <p class="name">Margaret Bear</p>
+                <div class="loc">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span>Fort Qu'Appelle, Saskatchewan</span>
+                </div>
+              </div>
+              <span class="tag chip-xs">Indigenous</span>
+            </div>
+            <div class="chips">
+              <span class="tag outline chip-xs">quilting</span>
+              <span class="tag outline chip-xs">language</span>
+              <span class="tag outline chip-xs">cooking</span>
+            </div>
+            <div class="pcard-actions">
+              <a class="btn btn-secondary sm flex-1" href="page-23-profile-other.html">View</a>
+              <a class="btn btn-secondary sm flex-1" href="page-23-profile-other.html">Connect</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card participant-card">
+          <div class="pcard-body">
+            <div class="pcard-top">
+              <span class="avatar">TF</span>
+              <div class="who">
+                <p class="name">Thomas Fiddler</p>
+                <div class="loc">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span>La Ronge, Saskatchewan</span>
+                </div>
+              </div>
+              <span class="tag chip-xs">Indigenous</span>
+            </div>
+            <div class="chips">
+              <span class="tag outline chip-xs">canoeing</span>
+              <span class="tag outline chip-xs">music</span>
+              <span class="tag outline chip-xs">trapping</span>
+            </div>
+            <div class="pcard-actions">
+              <a class="btn btn-secondary sm flex-1" href="page-23-profile-other.html">View</a>
+              <a class="btn btn-secondary sm flex-1" href="page-23-profile-other.html">Connect</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card participant-card">
+          <div class="pcard-body">
+            <div class="pcard-top">
+              <span class="avatar ochre">LA</span>
+              <div class="who">
+                <p class="name">Linda Anderson</p>
+                <div class="loc">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span>Yorkton, Saskatchewan</span>
+                </div>
+              </div>
+              <span class="tag ochre chip-xs">Non-Ind.</span>
+            </div>
+            <div class="chips">
+              <span class="tag outline chip-xs">reading</span>
+              <span class="tag outline chip-xs">walking</span>
+              <span class="tag outline chip-xs">painting</span>
+            </div>
+            <div class="pcard-actions">
+              <a class="btn btn-secondary sm flex-1" href="page-23-profile-other.html">View</a>
+              <a class="btn btn-secondary sm flex-1" href="page-23-profile-other.html">Connect</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card participant-card">
+          <div class="pcard-body">
+            <div class="pcard-top">
+              <span class="avatar">GS</span>
+              <div class="who">
+                <p class="name">Grace Sanderson</p>
+                <div class="loc">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span>Swift Current, Saskatchewan</span>
+                </div>
+              </div>
+              <span class="tag chip-xs">Indigenous</span>
+            </div>
+            <div class="chips">
+              <span class="tag outline chip-xs">gardening</span>
+              <span class="tag outline chip-xs">weaving</span>
+              <span class="tag outline chip-xs">elders</span>
+            </div>
+            <div class="pcard-actions">
+              <a class="btn btn-secondary sm flex-1" href="page-23-profile-other.html">View</a>
+              <a class="btn btn-secondary sm flex-1" href="page-23-profile-other.html">Connect</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="pager">
+        <span class="small muted">Page 1 of 3</span>
+        <div class="pager-btns">
+          <button class="btn btn-secondary sm" disabled>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            Previous
+          </button>
+          <a class="btn btn-secondary sm" href="page-15-dashboard-participants-list.html">
+            Next
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="app-footer panel-on-dark">
+  <div class="container wide">
+    <div class="row between" style="align-items:center;">
+      <div>
+        <h4>Reconciliation Through Relationships</h4>
+        <p style="margin:0;">Building meaningful relationships between Indigenous and non-Indigenous people.</p>
+        <p style="margin:4px 0 0;"><a href="https://rightrelationship.ca">rightrelationship.ca</a></p>
+      </div>
+      <div class="weave on-dark" style="width:240px;" aria-hidden="true"></div>
+    </div>
+    <p class="acknowledgment">Each gathering begins by acknowledging the treaty territory and traditional lands on which it takes place. Region-specific acknowledgments are confirmed with local Indigenous partners.</p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard · Connections — Reconciliation Through Relationships</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Atkinson+Hyperlegible+Next:wght@400..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="rtr.css">
+<!--
+  Mirrors: /dashboard (src/app/dashboard/components/DashboardClient.tsx + ConnectionsTab.tsx)
+  State: "Connections" tab with 3 connections (Active / Pending / Under review). Rows
+  link to /connections/[id], which renders the chat in the state matching the
+  connection — so each row links to its corresponding chat mock (active/waiting/review).
+  Filter empty state (no rows match the status filter): "No connections match this filter."
+  Other states: page-12 (recommended), page-13 (waitlist), page-14 (cohort banner),
+  page-15/16 (all participants list/map).
+-->
+<style>
+  .app-main { padding-top: 32px; padding-bottom: 32px; }
+  .app-main > * + * { margin-top: 32px; }
+  .page-intro { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+  .page-intro .intro-copy { max-width: 768px; }
+  .page-intro h1 { margin-bottom: 4px; }
+  .page-intro .lead { margin: 0 0 16px; }
+  .tab-body { margin-top: 24px; display: flex; flex-direction: column; gap: 16px; }
+  .conn-filter { display: flex; flex-direction: column; gap: 12px; }
+  @media (min-width: 640px) { .conn-filter { flex-direction: row; align-items: center; } }
+  .conn-filter .select { width: 100%; }
+  @media (min-width: 640px) { .conn-filter .select { width: 192px; } }
+  .conn-list { display: flex; flex-direction: column; gap: 8px; }
+  .conn-list .who { min-width: 0; flex: 1; }
+  .conn-list .who .name { margin: 0; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .conn-list .who .loc { margin: 0; font-size: 12px; color: var(--muted-foreground); }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="container wide">
+    <div class="bar">
+      <a class="brand" href="page-12-dashboard-recommended.html">
+        <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+          <path d="M16 4a12 12 0 0 1 0 24" fill="none" stroke="#E0A34E" stroke-width="3.4" stroke-linecap="round"/>
+          <path d="M16 28a12 12 0 0 1 0-24" fill="none" stroke="#7FB5AE" stroke-width="3.4" stroke-linecap="round"/>
+          <circle cx="12.4" cy="16" r="2.1" fill="#E0A34E"/><circle cx="19.6" cy="16" r="2.1" fill="#7FB5AE"/>
+        </svg>
+        <span><span class="brand-name">Reconciliation</span><span class="brand-sub">Through Relationships</span></span>
+      </a>
+      <nav class="app-nav" aria-label="Main">
+        <a href="page-12-dashboard-recommended.html" aria-current="page">Home</a>
+        <a href="page-09-learning-video.html">Learning</a>
+        <a href="page-18-connections.html">Connections</a>
+        <a href="page-25-map.html">Regional map</a>
+      </nav>
+      <div class="actions" style="margin-left:auto;">
+        <button class="bell-btn" aria-label="Notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          <span class="bell-count">3</span>
+        </button>
+        <button aria-label="Open account menu" style="background:none;border:0;padding:0;cursor:pointer;border-radius:50%;">
+          <span class="avatar sm">MC</span>
+        </button>
+        <button class="menu-btn">Menu</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="app-main container wide">
+  <div class="page-intro">
+    <div class="intro-copy">
+      <span class="eyebrow">Your relationship journey</span>
+      <h1>Welcome, Marie</h1>
+      <p class="lead">Discover thoughtful recommendations, connect at your own pace, and see reconciliation circles forming near you.</p>
+      <div class="weave short" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <div>
+    <nav class="tabs" aria-label="Dashboard sections">
+      <a href="page-12-dashboard-recommended.html">Recommended <span class="count">3</span></a>
+      <a href="page-17-dashboard-connections.html" aria-current="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+        Connections <span class="count">3</span>
+      </a>
+      <a href="page-15-dashboard-participants-list.html">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        All participants
+      </a>
+    </nav>
+
+    <div class="tab-body">
+      <div class="conn-filter">
+        <select class="select" aria-label="Filter by status">
+          <option selected>All statuses</option>
+          <option>Active</option>
+          <option>Pending</option>
+          <option>Under review</option>
+        </select>
+        <p class="small muted" style="margin:0;">Showing 1–3 of 3</p>
+      </div>
+
+      <!-- If a filter matched nothing, the list is replaced by: "No connections match this filter." -->
+      <div class="conn-list">
+
+        <a class="list-row" href="page-22-chat-active.html">
+          <span class="avatar">HM</span>
+          <div class="who">
+            <p class="name">Helen McKay</p>
+            <p class="loc">Regina, Saskatchewan</p>
+          </div>
+          <span class="pill matched">Active</span>
+        </a>
+
+        <a class="list-row" href="page-20-chat-waiting.html">
+          <span class="avatar ochre">JB</span>
+          <div class="who">
+            <p class="name">Jonas Braun</p>
+            <p class="loc">Moose Jaw, Saskatchewan</p>
+          </div>
+          <span class="tag ochre" style="gap:4px;font-size:12.5px;" title="Waiting for Jonas to accept">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Pending
+          </span>
+        </a>
+
+        <a class="list-row" href="page-21-chat-review.html">
+          <span class="avatar">RN</span>
+          <div class="who">
+            <p class="name">Robert Nighttraveller</p>
+            <p class="loc">Prince Albert, Saskatchewan</p>
+          </div>
+          <span class="tag ochre" style="gap:4px;font-size:12.5px;" title="Waiting for a facilitator to approve this match">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Under review
+          </span>
+        </a>
+
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="app-footer panel-on-dark">
+  <div class="container wide">
+    <div class="row between" style="align-items:center;">
+      <div>
+        <h4>Reconciliation Through Relationships</h4>
+        <p style="margin:0;">Building meaningful relationships between Indigenous and non-Indigenous people.</p>
+        <p style="margin:4px 0 0;"><a href="https://rightrelationship.ca">rightrelationship.ca</a></p>
+      </div>
+      <div class="weave on-dark" style="width:240px;" aria-hidden="true"></div>
+    </div>
+    <p class="acknowledgment">Each gathering begins by acknowledging the treaty territory and traditional lands on which it takes place. Region-specific acknowledgments are confirmed with local Indigenous partners.</p>
+  </div>
+</footer>
+
+</body>
+</html>
