@@ -6,11 +6,13 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 # Acceptance Test Driven Development (ATDD)
 
-Every change must be driven by acceptance tests. Follow this loop:
+Every change to source code behavior or a public code contract must be driven by acceptance tests. Follow this loop:
 
 1. **Write the acceptance test first.** Before touching implementation code, write (or update) a test that expresses the expected behavior from the perspective of the user or consuming code. Run it and watch it fail for the right reason.
 2. **Implement the smallest change** that makes the acceptance test pass.
 3. **Refactor** only while the suite is green.
+
+Documentation-only, repository metadata, configuration, and template changes do not require a new or intentionally failing acceptance test when they do not alter application behavior. Validate those changes with the smallest relevant checks, such as formatting, link validation, schema validation, or a configuration dry run. Add an acceptance test if a non-source change modifies a user-visible runtime contract.
 
 ## Boundary interface tests — the fast core of the suite
 

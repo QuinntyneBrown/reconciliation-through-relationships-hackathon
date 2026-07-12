@@ -1,88 +1,90 @@
-# Contributing
+# Contributing to Reconciliation Through Relationships
 
-Written for a mixed team (frontend, backend, PM, design) moving fast together. The goal: **everyone can push to the same repo without stepping on each other.**
+Thank you for helping improve Reconciliation Through Relationships (RTR). Contributions may include code, tests, design, documentation, issue triage, accessibility feedback, and product insight.
 
-## Golden rules
+By participating, you agree to follow the [Code of Conduct](CODE_OF_CONDUCT.md). For support or security concerns, use the channels in [SUPPORT.md](SUPPORT.md) and [SECURITY.md](SECURITY.md).
 
-1. **Never commit straight to `main`.** Always branch → PR.
-2. **Small PRs, merged often.** A 100-line PR reviewed in 5 min beats a 1,000-line PR nobody understands.
-3. **`main` must always run.** If your branch breaks `npm run build`, don't merge it.
-4. **Talk in the open** — drop a message when you start on a file others touch.
+## Before contributing
 
-## Git flow
+- Search existing issues and pull requests before starting work.
+- Open an issue for large features, schema changes, or changes affecting participant privacy, consent, Indigenous knowledge, safeguarding, or public positioning.
+- Never include real participant information, credentials, access tokens, or other secrets in issues, fixtures, screenshots, commits, or logs.
+- Use synthetic data in development and tests.
 
-```bash
-git checkout main && git pull            # start from latest
-git checkout -b feat/onboarding-form     # branch per task
-
-# ...work, commit small...
-git add -A && git commit -m "onboarding: add category checkboxes"
-
-git push -u origin feat/onboarding-form  # open a PR on GitHub
-```
-
-**Branch names:** `feat/…`, `fix/…`, `docs/…`, `chore/…`.
-
-**Before you open a PR**, run:
+## Development setup
 
 ```bash
-npm run typecheck && npm run lint && npm run build
+git clone https://github.com/QuinntyneBrown/reconciliation-through-relationships-hackathon.git
+cd reconciliation-through-relationships-hackathon
+npm ci
+cp .env.example .env.local
+npm run dev
 ```
 
-Get one teammate to approve. Squash-merge. Delete the branch.
+The default mock data source supports local work without production services. See the [README](README.md) for prerequisites and environment details.
 
-### Avoiding conflicts
+## Development workflow
 
-- Work stays inside your squad's folders as much as possible (see below).
-- Pull `main` into your branch at least once a day: `git merge main`.
-- Shared files (`src/domain/*`, `src/data/repository.ts`) change rarely and affect everyone — **ping the team before editing them.**
+1. Create a branch from the latest `main` using `feat/`, `fix/`, `docs/`, or `chore/` followed by a short description.
+2. Keep the change focused and avoid unrelated formatting or refactoring.
+3. For source behavior or public code-contract changes, follow acceptance test driven development: write or update an acceptance test, run it and confirm it fails for the expected reason, implement the smallest passing change, then refactor while green.
+4. Documentation-only, repository metadata, configuration, and template changes do not require an acceptance test unless they alter runtime behavior. Run the smallest relevant formatting, link, schema, or configuration check instead.
+5. Update user, architecture, operations, or changelog documentation when the public behavior or contributor workflow changes.
+6. Open a pull request using the repository template and respond to review feedback.
 
-## Who owns what
+Do not commit directly to `main`. Maintainers squash-merge approved pull requests after required checks pass.
 
-Each squad mainly lives in its own folders, so parallel work rarely collides.
+## Quality gates
 
-| Squad | Owns | Talks to |
-|-------|------|----------|
-| **Onboarding** | `app/onboarding`, `app/api/participants`, intake form | Backend (schema, repo) |
-| **Learning** | `app/learn`, learning progress | Backend (learningStatus) |
-| **Map** | `app/map`, map component | Backend (regions, privacy) |
-| **Matching** | `app/facilitator/*`, `domain/matching.ts` | Backend (matches) |
-| **Backend** | `data/`, `domain/`, Supabase, auth | Everyone |
-| **Design / PM** | `docs/DECISIONS.md`, synthetic data, tokens in `styles/design-tokens.css`, copy | Everyone |
-
-Design & PM can contribute directly: edit demo data in [`src/data/mock/participants.ts`](src/data/mock/participants.ts), tweak theme values in [`src/styles/design-tokens.css`](src/styles/design-tokens.css), and keep [`docs/DECISIONS.md`](docs/DECISIONS.md) current as RTR answers open questions. `src/app/globals.css` maps those shared values into Tailwind utilities.
-
-## The one rule that keeps us unblocked
-
-**Frontend never imports Supabase (or mock data) directly.** Everything goes through the repository:
-
-```ts
-import { getRepository } from "@/data";
-const repo = getRepository();
-const participants = await repo.listParticipants();
-```
-
-This means frontend builds against mock data on day one, and backend swaps in Supabase later **without touching a single page.** See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
-
-## Adding UI components
-
-Use shadcn/ui to scaffold accessible primitives:
+Install Chromium once before running the boundary suite on a new machine:
 
 ```bash
-npx shadcn@latest add <component>   # e.g. dropdown-menu, form, calendar
+npx playwright install chromium
 ```
 
-Files under `src/components/ui` are owned application code after scaffolding. Adapt them to the
-semantic tokens and component conventions already in the repository; do not overwrite customized
-components during a shadcn update without reviewing the diff. Public visual variants belong in CVA,
-component parts use `data-slot`, and repeated control styling belongs in a shared recipe.
+For changes to application behavior, run:
 
-The token values in `src/styles/design-tokens.css` are the single source of truth. Both the production
-Tailwind theme and `docs/mocks/rtr.css` consume that file. Use semantic roles such as `bg-primary`,
-`text-heading`, and `border-input` in components; reserve palette names such as `spruce` and `ochre`
-for token definitions and deliberately branded artwork.
+```bash
+npm run test:boundary
+npm run typecheck
+npm run lint
+npm run build
+```
 
-## Style
+Use `npm run test:e2e` for critical full-stack journeys when the change requires it. The end-to-end suite needs configured external services; the [boundary suite](boundary-interface-tests/README.md) uses deterministic local doubles.
 
-- Prettier + ESLint are configured. Run `npm run format` before committing.
-- TypeScript strict mode is on. Prefer types from `src/domain` over redefining shapes.
+For non-behavior changes, run only the checks relevant to the files changed. Continuous integration runs type checking and a production build; contributors should also run lint locally for source changes.
+
+## Architecture boundaries
+
+Read [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) before changing module boundaries or data flow. Key conventions include:
+
+- Routes and feature-specific components live under `src/app`.
+- Shared domain types, schemas, and matching rules live under `src/domain`.
+- Data access goes through repository or Supabase client boundaries under `src/data`; user interface components do not import mock datasets directly.
+- External services must be replaceable with deterministic test doubles at the public boundary.
+- Database changes require a forward migration under `supabase/migrations` and an update to [docs/DB_SCHEMA.md](docs/DB_SCHEMA.md).
+
+## User interface contributions
+
+Use the existing accessible primitives in `src/components/ui` and Lucide icons where available. Files scaffolded with shadcn/ui are owned application code; review diffs carefully instead of overwriting custom behavior during updates.
+
+The values in `src/styles/design-tokens.css` are the shared design source of truth. Prefer semantic roles such as `bg-primary`, `text-heading`, and `border-input`. Public visual variants belong in CVA, component parts use `data-slot`, and repeated control styling belongs in a shared recipe.
+
+Test keyboard interaction, focus visibility, responsive layouts, loading and error states, and text fitting for affected interfaces.
+
+## Commits and pull requests
+
+Write concise imperative commit subjects, for example `docs: clarify mock setup` or `onboarding: validate required location`. A pull request should:
+
+- Explain the user or contributor problem and the resulting behavior
+- Link related issues and architecture decisions
+- Include acceptance evidence appropriate to the change
+- Call out privacy, consent, accessibility, migration, deployment, and rollback implications
+- Keep generated files and unrelated changes out of the diff
+
+At least one maintainer approval is required. Maintainers may request additional stakeholder review for sensitive product, community, privacy, or data-governance changes.
+
+## Recognition
+
+Merged human contributions are recognized in [CONTRIBUTORS.md](CONTRIBUTORS.md) and the repository's contributors graph. Notable user-facing changes should also be added under `Unreleased` in [CHANGELOG.md](CHANGELOG.md).

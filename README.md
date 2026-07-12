@@ -1,72 +1,123 @@
-# Reconciliation Through Relationships (RTR)
+<div align="center">
+  <img src="public/rtr-logo.png" alt="Reconciliation Through Relationships" width="220">
 
-A welcoming digital platform that moves participants from **registration → learning → local relationship-building**, in partnership with [Reconciliation Through Relationships](https://rightrelationship.ca/).
+# Reconciliation Through Relationships
 
-> Hackathon build. Uses synthetic data and lightweight auth. See [`docs/challenge.txt`](docs/challenge.txt) for the full brief.
+A digital platform for learning, listening, and building meaningful relationships between Indigenous and non-Indigenous people.
 
-📖 **New to the app?** The [plain-language user guide](docs/guide/README.md) walks participants and facilitators through every screen, with screenshots.
+[![Build](https://github.com/QuinntyneBrown/reconciliation-through-relationships-hackathon/actions/workflows/ci.yml/badge.svg)](https://github.com/QuinntyneBrown/reconciliation-through-relationships-hackathon/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-107C10.svg)](LICENSE)
+[![Next.js 16](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Code style: Prettier](https://img.shields.io/badge/code_style-Prettier-F7B93E?logo=prettier&logoColor=black)](https://prettier.io/)
+[![Contributions welcome](https://img.shields.io/badge/contributions-welcome-0078D4.svg)](CONTRIBUTING.md)
 
-## Quick start
+[User guide](docs/guide/README.md) | [Architecture](docs/ARCHITECTURE.md) | [Contributing](CONTRIBUTING.md) | [Deployment](docs/deployment/README.md)
+</div>
+
+## About the project
+
+Reconciliation Through Relationships (RTR) helps participants move from registration and a shared learning journey to facilitator-supported, local relationship building. The application is developed in partnership with [Reconciliation Through Relationships](https://rightrelationship.ca/) in response to the Truth and Reconciliation Commission of Canada's Calls to Action.
+
+This repository began as a hackathon project. It uses synthetic data for development and demonstration; it must not be treated as a production system of record without an independent privacy, security, accessibility, and operational review. The original challenge is available in [docs/challenge.txt](docs/challenge.txt).
+
+## Features
+
+- Guided participant registration and five-step onboarding
+- Shared reconciliation learning journey with progress tracking
+- Facilitator-reviewed participant recommendations and mutual consent
+- Participant discovery, regional cohort map, and privacy controls
+- Connection requests, direct messaging, and meeting scheduling
+- Facilitator dashboards for participant progress, matching, and cohort settings
+- Mock data mode for local development without external services
+
+See the [illustrated user guide](docs/guide/README.md) for the complete participant and facilitator journeys.
+
+## Getting started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) 20 or later
+- npm (included with Node.js)
+- [Supabase](https://supabase.com/) credentials for authentication and persistent journeys
+
+### Local development
 
 ```bash
-npm install
-cp .env.example .env.local   # add Supabase credentials for the full journey
-npm run dev                  # http://localhost:3000
+git clone https://github.com/QuinntyneBrown/reconciliation-through-relationships-hackathon.git
+cd reconciliation-through-relationships-hackathon
+npm ci
+cp .env.example .env.local
+npm run dev
 ```
 
-No database is needed for the landing page and mock-backed routes. Add Supabase credentials to use authentication and the full participant/facilitator journey.
+Open [http://localhost:3000](http://localhost:3000). The landing page and mock-backed routes work with the default `DATA_SOURCE=mock`; authenticated participant and facilitator journeys require the Supabase values documented in [.env.example](.env.example) and migrations in [supabase/migrations](supabase/migrations).
 
-## What's here
+Never commit `.env.local`, service-role keys, access tokens, or participant data.
 
-| Route | What it is | Owner |
-|-------|-----------|-------|
-| `/auth/login` | Supabase magic-link sign-in | Authentication |
-| `/onboarding` | Five-step participant intake | Onboarding |
-| `/learn` | Required learning journey | Learning |
-| `/dashboard` | Recommendations, participants, and regional map | Participant experience |
-| `/connections` | Mutual connection, chat, and meeting scheduling | Participant experience |
-| `/map` | Mock-backed regional cohort map | Cohorts |
-| `/facilitator` | Facilitator overview, participants, matching, and settings | Facilitation |
+## Technology
 
-The landing page and mock-backed routes work without a database. The authenticated participant and facilitator journey requires the Supabase variables shown in `.env.example` and the migrations under `supabase/migrations`.
+| Area | Technologies |
+| --- | --- |
+| Application | Next.js 16 App Router, React 19, TypeScript |
+| Interface | Tailwind CSS 4, shadcn/ui, Base UI, Lucide |
+| Validation | Zod |
+| Data and authentication | Supabase, PostgreSQL, row-level security |
+| Integrations | Mapbox, Zoom |
+| Quality | Playwright, ESLint, Prettier, TypeScript |
 
-## Tech stack
+## Testing
 
-- **Next.js 16** (App Router) + **React 19** + **TypeScript**
-- **Tailwind CSS v4** + **shadcn/ui** components (`src/components/ui`)
-- **Zod** for shared validation (`src/domain/schema.ts`)
-- **Data layer**: the original repository seam remains available for mock-backed routes, while the authenticated journey uses generated database types and Supabase clients under `src/data/supabase`.
-- **Integrations**: Mapbox for participant maps and Zoom for scheduled calls.
-
-## Key commands
+Before opening a pull request that changes application behavior, run the complete local quality gate:
 
 ```bash
-npm run dev           # dev server
-npm run build         # production build
-npm run typecheck     # tsc --noEmit
-npm run lint          # eslint
-npm run format        # prettier --write
+npm run test:boundary
+npm run typecheck
+npm run lint
+npm run build
 ```
 
-## Where things live
+The boundary suite uses deterministic local doubles and does not call production services. See the [boundary test guide](boundary-interface-tests/README.md) for its coverage and one-time browser setup. The slower browser journeys are available through `npm run test:e2e` and require the environment described under [e2e](e2e).
 
+## Project structure
+
+```text
+src/app/                    Next.js routes and feature-specific components
+src/components/             Shared application and UI components
+src/domain/                 Domain types, validation, and matching rules
+src/data/                   Mock and Supabase data implementations
+src/styles/                 Shared design tokens
+supabase/                   Database migrations and seed tooling
+boundary-interface-tests/   Fast public-boundary acceptance suite
+e2e/                        Critical end-to-end browser journeys
+docs/                       Architecture, product, and operations documentation
 ```
-src/
-  app/            # routes (pages + /api). One folder per feature.
-  components/     # shared React components
-    ui/           # owned design-system primitives, initially scaffolded with shadcn/ui
-  styles/         # shared design tokens consumed by the app and static specimens
-  domain/         # the shared vocabulary: types, constants, zod schema, matching logic
-  data/           # repository seam plus typed Supabase access
-    mock/         # in-memory synthetic data (default)
-    supabase/     # Supabase clients + repository (backend team)
-  lib/            # small utilities (env, cn)
-docs/             # architecture, decisions, the challenge brief
-supabase/         # database migrations and synthetic seed data
-```
 
-## New here?
+## Documentation
 
-1. Read [`CONTRIBUTING.md`](CONTRIBUTING.md) — git flow + who owns what.
-2. Skim [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — how the pieces fit.
-3. Check [`docs/DECISIONS.md`](docs/DECISIONS.md) — open questions for RTR that affect your work.
+| Document | Purpose |
+| --- | --- |
+| [User guide](docs/guide/README.md) | Screen-by-screen participant and facilitator instructions |
+| [Architecture](docs/ARCHITECTURE.md) | Concise system layers and data flow |
+| [Architecture description](docs/SOFTWARE_ARCHITECTURE_DESCRIPTION.md) | Detailed ISO/IEC/IEEE 42010-aligned system description |
+| [Database schema](docs/DB_SCHEMA.md) | Tables, relationships, privacy safeguards, and open decisions |
+| [Architecture decisions](docs/DECISIONS.md) | Product and technical decisions requiring alignment |
+| [Deployment guide](docs/deployment/README.md) | Provider comparison, deployment options, and cost controls |
+
+## Contributing
+
+Contributions are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) for the acceptance-test-first workflow, branch conventions, quality gates, and project boundaries. Participation is governed by the [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+
+The people who have helped build the project are recognized in [CONTRIBUTORS.md](CONTRIBUTORS.md), and notable changes are recorded in [CHANGELOG.md](CHANGELOG.md).
+
+## Security
+
+Do not report vulnerabilities in a public issue. Follow [SECURITY.md](SECURITY.md) to submit a private report. For usage questions and non-sensitive problems, see [SUPPORT.md](SUPPORT.md).
+
+## Governance
+
+Maintainer responsibilities, decision making, and the path to becoming a maintainer are described in [GOVERNANCE.md](GOVERNANCE.md).
+
+## License
+
+Copyright (c) 2026 Reconciliation Through Relationships contributors. Released under the [MIT License](LICENSE).
