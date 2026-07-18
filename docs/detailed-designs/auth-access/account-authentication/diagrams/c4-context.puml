@@ -1,0 +1,41 @@
+@startuml
+title C4 system context view — Account authentication
+
+skinparam backgroundColor #FFFDF7
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #18352F
+skinparam ArrowColor #2F6F67
+skinparam packageBorderColor #477B73
+skinparam packageBackgroundColor #EEF6F3
+skinparam rectangleBorderColor #477B73
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam componentBorderColor #8A5A1F
+skinparam componentBackgroundColor #FFF6E6
+skinparam databaseBorderColor #4E668E
+skinparam databaseBackgroundColor #EEF3FB
+skinparam actorBorderColor #18352F
+skinparam actorBackgroundColor #FFFFFF
+skinparam classBorderColor #477B73
+skinparam classBackgroundColor #FFFFFF
+skinparam sequenceBoxBorderColor #477B73
+skinparam sequenceBoxBackgroundColor #F4F8F6
+skinparam ParticipantBorderColor #477B73
+skinparam ParticipantBackgroundColor #FFFFFF
+skinparam BoxPadding 10
+hide stereotype
+
+left to right direction
+actor "Account holder" as actor
+rectangle "Reconciliation Through Relationships platform" as rtr {
+  rectangle "Account authentication vertical slice\n[Entity of interest]" as auth_access_account_authentication
+}
+actor --> auth_access_account_authentication : creates password accounts, establishes sessions, exchanges authentication codes, and selects the first route after authentication
+cloud "Supabase Auth and PostgreSQL\nidentity, sessions, profile trigger, and profile gate" as ext0
+auth_access_account_authentication --> ext0 : uses
+legend bottom
+  Person = role that interacts with the feature
+  Box = entity of interest inside the RTR platform context
+  Cloud = external service or separately operated data platform
+endlegend
+@enduml

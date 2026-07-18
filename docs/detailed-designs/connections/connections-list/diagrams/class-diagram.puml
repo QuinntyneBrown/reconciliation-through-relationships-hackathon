@@ -1,0 +1,66 @@
+@startuml
+title Class view — Connections list
+
+skinparam backgroundColor #FFFDF7
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #18352F
+skinparam ArrowColor #2F6F67
+skinparam packageBorderColor #477B73
+skinparam packageBackgroundColor #EEF6F3
+skinparam rectangleBorderColor #477B73
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam componentBorderColor #8A5A1F
+skinparam componentBackgroundColor #FFF6E6
+skinparam databaseBorderColor #4E668E
+skinparam databaseBackgroundColor #EEF3FB
+skinparam actorBorderColor #18352F
+skinparam actorBackgroundColor #FFFFFF
+skinparam classBorderColor #477B73
+skinparam classBackgroundColor #FFFFFF
+skinparam sequenceBoxBorderColor #477B73
+skinparam sequenceBoxBackgroundColor #F4F8F6
+skinparam ParticipantBorderColor #477B73
+skinparam ParticipantBackgroundColor #FFFFFF
+skinparam BoxPadding 10
+hide stereotype
+
+left to right direction
+package "Reconciliation Through Relationships application" {
+  package "Connections list structure" {
+    class "ConnectionsPage" as type0 {
+      +render(): Promise<ReactNode>
+    }
+    
+    entity "Connection" as type1 {
+      +id
+      +participant_a_id
+      +participant_b_id
+      +status
+      +created_at
+    }
+    
+    entity "Profile" as type2 {
+      +id
+      +first_name
+      +last_name
+      +city
+      +province
+    }
+    
+    class "EmptyState" as type3 {
+      +title
+      +description
+      +action
+    }
+  }
+}
+type0 --> type1 : loads newest-first
+type1 --> type2 : resolves partner
+type0 --> type3 : renders when empty
+legend bottom
+  Class = implementation component or value shape
+  Interface = public TypeScript contract
+  Entity = persisted or domain data record
+endlegend
+@enduml

@@ -1,0 +1,60 @@
+@startuml
+title Class view — Public landing
+
+skinparam backgroundColor #FFFDF7
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #18352F
+skinparam ArrowColor #2F6F67
+skinparam packageBorderColor #477B73
+skinparam packageBackgroundColor #EEF6F3
+skinparam rectangleBorderColor #477B73
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam componentBorderColor #8A5A1F
+skinparam componentBackgroundColor #FFF6E6
+skinparam databaseBorderColor #4E668E
+skinparam databaseBackgroundColor #EEF3FB
+skinparam actorBorderColor #18352F
+skinparam actorBackgroundColor #FFFFFF
+skinparam classBorderColor #477B73
+skinparam classBackgroundColor #FFFFFF
+skinparam sequenceBoxBorderColor #477B73
+skinparam sequenceBoxBackgroundColor #F4F8F6
+skinparam ParticipantBorderColor #477B73
+skinparam ParticipantBackgroundColor #FFFFFF
+skinparam BoxPadding 10
+hide stereotype
+
+left to right direction
+package "Reconciliation Through Relationships application" {
+  package "Public landing structure" {
+    class "LandingPage" as type0 {
+      +render(): ReactNode
+    }
+    
+    class "AppHeader" as type1 {
+      +homeHref: string
+      +actions: ReactNode
+    }
+    
+    class "JourneyStep" as type2 {
+      +title: string
+      +description: string
+    }
+    
+    class "SuccessStory" as type3 {
+      +name: string
+      +role: string
+      +quote: string
+    }
+  }
+}
+type0 --> type1 : composes
+type0 --> type2 : renders 4
+type0 --> type3 : renders 3
+legend bottom
+  Class = implementation component or value shape
+  Interface = public TypeScript contract
+  Entity = persisted or domain data record
+endlegend
+@enduml

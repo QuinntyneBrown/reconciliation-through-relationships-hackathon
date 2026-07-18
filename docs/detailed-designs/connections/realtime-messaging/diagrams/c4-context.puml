@@ -1,0 +1,41 @@
+@startuml
+title C4 system context view — Authorized realtime messaging
+
+skinparam backgroundColor #FFFDF7
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #18352F
+skinparam ArrowColor #2F6F67
+skinparam packageBorderColor #477B73
+skinparam packageBackgroundColor #EEF6F3
+skinparam rectangleBorderColor #477B73
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam componentBorderColor #8A5A1F
+skinparam componentBackgroundColor #FFF6E6
+skinparam databaseBorderColor #4E668E
+skinparam databaseBackgroundColor #EEF3FB
+skinparam actorBorderColor #18352F
+skinparam actorBackgroundColor #FFFFFF
+skinparam classBorderColor #477B73
+skinparam classBackgroundColor #FFFFFF
+skinparam sequenceBoxBorderColor #477B73
+skinparam sequenceBoxBackgroundColor #F4F8F6
+skinparam ParticipantBorderColor #477B73
+skinparam ParticipantBackgroundColor #FFFFFF
+skinparam BoxPadding 10
+hide stereotype
+
+left to right direction
+actor "Connected participant" as actor
+rectangle "Reconciliation Through Relationships platform" as rtr {
+  rectangle "Authorized realtime messaging vertical slice\n[Entity of interest]" as connections_realtime_messaging
+}
+actor --> connections_realtime_messaging : authorizes conversation access, loads ordered history, persists trimmed messages, notifies the partner, and streams new messages into both open conversations
+cloud "Supabase Auth, PostgreSQL, and Realtime\nmembership, message history, persistence, events, and partner notification" as ext0
+connections_realtime_messaging --> ext0 : uses
+legend bottom
+  Person = role that interacts with the feature
+  Box = entity of interest inside the RTR platform context
+  Cloud = external service or separately operated data platform
+endlegend
+@enduml

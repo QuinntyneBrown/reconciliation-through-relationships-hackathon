@@ -1,0 +1,67 @@
+@startuml
+title Class view — Role and journey route gating
+
+skinparam backgroundColor #FFFDF7
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #18352F
+skinparam ArrowColor #2F6F67
+skinparam packageBorderColor #477B73
+skinparam packageBackgroundColor #EEF6F3
+skinparam rectangleBorderColor #477B73
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam componentBorderColor #8A5A1F
+skinparam componentBackgroundColor #FFF6E6
+skinparam databaseBorderColor #4E668E
+skinparam databaseBackgroundColor #EEF3FB
+skinparam actorBorderColor #18352F
+skinparam actorBackgroundColor #FFFFFF
+skinparam classBorderColor #477B73
+skinparam classBackgroundColor #FFFFFF
+skinparam sequenceBoxBorderColor #477B73
+skinparam sequenceBoxBackgroundColor #F4F8F6
+skinparam ParticipantBorderColor #477B73
+skinparam ParticipantBackgroundColor #FFFFFF
+skinparam BoxPadding 10
+hide stereotype
+
+left to right direction
+package "Reconciliation Through Relationships application" {
+  package "Role and journey route gating structure" {
+    class "Proxy" as type0 {
+      +proxy(request): Promise<NextResponse>
+      +config.matcher: string
+    }
+    
+    class "SessionGate" as type1 {
+      +updateSession(request): Promise<NextResponse>
+    }
+    
+    class "NextRequest" as type2 {
+      +nextUrl.pathname: string
+      +cookies
+    }
+    
+    class "NextResponse" as type3 {
+      +next()
+      +redirect(url)
+      +cookies
+    }
+    
+    entity "ProfileGate" as type4 {
+      +role
+      +onboarding_completed
+      +learning_completed
+    }
+  }
+}
+type0 --> type1 : delegates
+type1 --> type2 : reads
+type1 --> type4 : evaluates
+type1 --> type3 : returns
+legend bottom
+  Class = implementation component or value shape
+  Interface = public TypeScript contract
+  Entity = persisted or domain data record
+endlegend
+@enduml

@@ -1,0 +1,58 @@
+@startuml
+title Sequence view — Facilitator match management
+
+skinparam backgroundColor #FFFDF7
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #18352F
+skinparam ArrowColor #2F6F67
+skinparam packageBorderColor #477B73
+skinparam packageBackgroundColor #EEF6F3
+skinparam rectangleBorderColor #477B73
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam componentBorderColor #8A5A1F
+skinparam componentBackgroundColor #FFF6E6
+skinparam databaseBorderColor #4E668E
+skinparam databaseBackgroundColor #EEF3FB
+skinparam actorBorderColor #18352F
+skinparam actorBackgroundColor #FFFFFF
+skinparam classBorderColor #477B73
+skinparam classBackgroundColor #FFFFFF
+skinparam sequenceBoxBorderColor #477B73
+skinparam sequenceBoxBackgroundColor #F4F8F6
+skinparam ParticipantBorderColor #477B73
+skinparam ParticipantBackgroundColor #FFFFFF
+skinparam BoxPadding 10
+hide stereotype
+
+autonumber
+actor "Facilitator" as user
+box "Reconciliation Through Relationships application" #EEF6F3
+  box "Reconciliation Through Relationships — Frontend" #FFF6E6
+    boundary "Facilitator match management UI" as ui
+  end box
+  box "Reconciliation Through Relationships — Backend" #EEF3FB
+    control "Next.js or domain behavior" as server
+    database "Supabase or Repository" as data
+  end box
+end box
+
+user -> ui: Select pair and activate Create match
+ui -> ui: computeMatches(selected Indigenous, selected non-Indigenous)
+ui -> data: Insert suggested manual Match with score and criteria
+data --> ui: Persisted Match
+user -> ui: Approve proposal
+ui -> data: Update Match approved and insert Connection
+ui -> data: Insert 2 match_approved notifications
+alt Any required write fails
+  data --> ui: Error
+  ui --> user: Show failure
+else Writes succeed
+  data --> ui: Updated domain rows
+  ui --> user: Show approval success
+end
+legend bottom
+  Nested boxes identify the RTR application and separate frontend from backend behavior.
+  Solid arrows are calls or state changes; dashed arrows are results presented to a caller.
+endlegend
+@enduml

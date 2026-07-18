@@ -1,0 +1,75 @@
+@startuml
+title Class view — Facilitator match management
+
+skinparam backgroundColor #FFFDF7
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #18352F
+skinparam ArrowColor #2F6F67
+skinparam packageBorderColor #477B73
+skinparam packageBackgroundColor #EEF6F3
+skinparam rectangleBorderColor #477B73
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam componentBorderColor #8A5A1F
+skinparam componentBackgroundColor #FFF6E6
+skinparam databaseBorderColor #4E668E
+skinparam databaseBackgroundColor #EEF3FB
+skinparam actorBorderColor #18352F
+skinparam actorBackgroundColor #FFFFFF
+skinparam classBorderColor #477B73
+skinparam classBackgroundColor #FFFFFF
+skinparam sequenceBoxBorderColor #477B73
+skinparam sequenceBoxBackgroundColor #F4F8F6
+skinparam ParticipantBorderColor #477B73
+skinparam ParticipantBackgroundColor #FFFFFF
+skinparam BoxPadding 10
+hide stereotype
+
+left to right direction
+package "Reconciliation Through Relationships application" {
+  package "Facilitator match management structure" {
+    class "MatchingClient" as type0 {
+      -matchList: Match[]
+      -reviewList: Connection[]
+      +createManualMatch()
+      +updateMatchStatus(id,status)
+    }
+    
+    class "MatchResult" as type1 {
+      +score
+      +criteria
+    }
+    
+    entity "Match" as type2 {
+      +participant ids
+      +match_score
+      +match_criteria
+      +status
+      +auto_generated
+      +created_by
+    }
+    
+    entity "Connection" as type3 {
+      +participant ids
+      +status
+      +connected_at
+    }
+    
+    entity "Notification" as type4 {
+      +type: match_approved
+      +user_id
+      +data
+    }
+  }
+}
+type0 --> type1 : computes
+type1 --> type2 : persists as
+type2 --> type3 : approval creates
+type0 --> type3 : reviews
+type0 --> type4 : creates 2
+legend bottom
+  Class = implementation component or value shape
+  Interface = public TypeScript contract
+  Entity = persisted or domain data record
+endlegend
+@enduml

@@ -1,0 +1,75 @@
+@startuml
+title Class view — Authorized realtime messaging
+
+skinparam backgroundColor #FFFDF7
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #18352F
+skinparam ArrowColor #2F6F67
+skinparam packageBorderColor #477B73
+skinparam packageBackgroundColor #EEF6F3
+skinparam rectangleBorderColor #477B73
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam componentBorderColor #8A5A1F
+skinparam componentBackgroundColor #FFF6E6
+skinparam databaseBorderColor #4E668E
+skinparam databaseBackgroundColor #EEF3FB
+skinparam actorBorderColor #18352F
+skinparam actorBackgroundColor #FFFFFF
+skinparam classBorderColor #477B73
+skinparam classBackgroundColor #FFFFFF
+skinparam sequenceBoxBorderColor #477B73
+skinparam sequenceBoxBackgroundColor #F4F8F6
+skinparam ParticipantBorderColor #477B73
+skinparam ParticipantBackgroundColor #FFFFFF
+skinparam BoxPadding 10
+hide stereotype
+
+left to right direction
+package "Reconciliation Through Relationships application" {
+  package "Authorized realtime messaging structure" {
+    class "ConnectionPage" as type0 {
+      +params: Promise<{connectionId}>
+      +render()
+    }
+    
+    class "ConnectionChat" as type1 {
+      -messages: Message[]
+      -input: string
+      -sending: boolean
+      +sendMessage(event)
+    }
+    
+    entity "Connection" as type2 {
+      +id
+      +participant_a_id
+      +participant_b_id
+      +status
+    }
+    
+    entity "Message" as type3 {
+      +id
+      +connection_id
+      +sender_id
+      +content
+      +created_at
+      +read_at
+    }
+    
+    entity "Notification" as type4 {
+      +type: new_message
+      +body
+      +data.connection_id
+    }
+  }
+}
+type0 --> type2 : authorizes against
+type2 --> type3 : contains
+type1 --> type3 : inserts/subscribes
+type1 --> type4 : creates
+legend bottom
+  Class = implementation component or value shape
+  Interface = public TypeScript contract
+  Entity = persisted or domain data record
+endlegend
+@enduml

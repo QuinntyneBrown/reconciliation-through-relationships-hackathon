@@ -1,0 +1,41 @@
+@startuml
+title C4 system context view — Participant profile viewing
+
+skinparam backgroundColor #FFFDF7
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #18352F
+skinparam ArrowColor #2F6F67
+skinparam packageBorderColor #477B73
+skinparam packageBackgroundColor #EEF6F3
+skinparam rectangleBorderColor #477B73
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam componentBorderColor #8A5A1F
+skinparam componentBackgroundColor #FFF6E6
+skinparam databaseBorderColor #4E668E
+skinparam databaseBackgroundColor #EEF3FB
+skinparam actorBorderColor #18352F
+skinparam actorBackgroundColor #FFFFFF
+skinparam classBorderColor #477B73
+skinparam classBackgroundColor #FFFFFF
+skinparam sequenceBoxBorderColor #477B73
+skinparam sequenceBoxBackgroundColor #F4F8F6
+skinparam ParticipantBorderColor #477B73
+skinparam ParticipantBackgroundColor #FFFFFF
+skinparam BoxPadding 10
+hide stereotype
+
+left to right direction
+actor "Participant" as actor
+rectangle "Reconciliation Through Relationships platform" as rtr {
+  rectangle "Participant profile viewing vertical slice\n[Entity of interest]" as profiles_participant_profile
+}
+actor --> profiles_participant_profile : resolves the current or selected participant, enforces participant-only visibility, and renders the shareable relationship profile
+cloud "Supabase Auth and PostgreSQL\nsession identity, profile rows, and row-level security" as ext0
+profiles_participant_profile --> ext0 : uses
+legend bottom
+  Person = role that interacts with the feature
+  Box = entity of interest inside the RTR platform context
+  Cloud = external service or separately operated data platform
+endlegend
+@enduml
