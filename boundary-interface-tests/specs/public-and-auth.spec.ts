@@ -1,5 +1,5 @@
 // Acceptance Test
-// Traces to: L2-001, L2-002, L2-003, L2-004, L2-005, L2-007, L2-008, L2-010, L2-011, L2-013, L2-074, L2-075, L2-076
+// Traces to: L2-LAND-001, L2-LAND-002, L2-LAND-003, L2-LAND-004, L2-LAND-005, L2-AUTH-007, L2-AUTH-008, L2-AUTH-010, L2-AUTH-011, L2-SHELL-013, L2-DSGN-074, L2-DSGN-075, L2-DSGN-076
 // Description: Landing page content, sign-in and journey-stage routing, protected-route redirects, navigation, contrast, and responsive behavior
 import { test, expect } from "../support/fixtures";
 

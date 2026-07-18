@@ -1,5 +1,5 @@
 // Acceptance Test
-// Traces to: L2-012, L2-014, L2-048, L2-054, L2-055, L2-056, L2-057, L2-058, L2-059
+// Traces to: L2-AUTH-012, L2-SHELL-014, L2-NOTIF-048, L2-FACIL-054, L2-FACIL-055, L2-FACIL-056, L2-FACIL-057, L2-FACIL-058, L2-FACIL-059
 // Description: Facilitator overview, participants directory, match management, settings, and role protection
 import { test, expect } from "../support/fixtures";
 

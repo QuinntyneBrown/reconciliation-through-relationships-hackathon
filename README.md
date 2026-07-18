@@ -98,11 +98,13 @@ docs/                       Architecture, product, and operations documentation
 | Document | Purpose |
 | --- | --- |
 | [User guide](docs/guide/README.md) | Screen-by-screen participant and facilitator instructions |
+| [Design system](docs/design-system/README.md) | Foundations and UI component reference with screenshots |
 | [Architecture](docs/ARCHITECTURE.md) | Concise system layers and data flow |
 | [Architecture description](docs/SOFTWARE_ARCHITECTURE_DESCRIPTION.md) | Detailed ISO/IEC/IEEE 42010-aligned system description |
 | [Database schema](docs/DB_SCHEMA.md) | Tables, relationships, privacy safeguards, and open decisions |
 | [Architecture decisions](docs/DECISIONS.md) | Product and technical decisions requiring alignment |
 | [Deployment guide](docs/deployment/README.md) | Provider comparison, deployment options, and cost controls |
+| [Marketing materials](docs/marketing/README.md) | On-brand PDF one-sheets for the platform and each capability |
 
 ## Contributing
 

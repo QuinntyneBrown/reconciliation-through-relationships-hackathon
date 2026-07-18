@@ -516,6 +516,12 @@ export default function MatchingClient({
                 )}
 
                 <div className="grid grid-cols-2 gap-4">
+                  {profileDialog.age != null && (
+                    <div>
+                      <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wide mb-1">Age</p>
+                      <p>{profileDialog.age}</p>
+                    </div>
+                  )}
                   {profileDialog.faith_tradition && (
                     <div>
                       <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wide mb-1">Faith</p>

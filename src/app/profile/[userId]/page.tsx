@@ -129,6 +129,12 @@ export default async function ProfilePage({ params }: { params: Promise<{ userId
 
         {/* Details */}
         <div className="grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
+          {profile.age != null && (
+            <div>
+              <p className="text-muted-foreground mb-0.5 font-medium">Age</p>
+              <p>{profile.age}</p>
+            </div>
+          )}
           {profile.faith_tradition && (
             <div>
               <p className="text-muted-foreground mb-0.5 font-medium">Faith tradition</p>

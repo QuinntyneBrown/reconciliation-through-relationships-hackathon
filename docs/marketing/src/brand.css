@@ -1,0 +1,175 @@
+/*
+ * RTR marketing PDF stylesheet.
+ * Tokens mirror src/styles/design-tokens.css; motifs mirror src/app/globals.css.
+ * Fonts: Fraunces (voice) + Atkinson Hyperlegible (reading) — see
+ * docs/design-system/foundations/04-typography.md.
+ */
+
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal;
+  font-weight: 400 700;
+  src: url("fonts/Fraunces-var-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fraunces";
+  font-style: italic;
+  font-weight: 400 700;
+  src: url("fonts/Fraunces-var-italic.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  font-style: normal;
+  font-weight: 400;
+  src: url("fonts/AtkinsonHyperlegible-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  font-style: normal;
+  font-weight: 700;
+  src: url("fonts/AtkinsonHyperlegible-700-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  font-style: italic;
+  font-weight: 400;
+  src: url("fonts/AtkinsonHyperlegible-400-italic.woff2") format("woff2");
+}
+
+:root {
+  --spruce-900: #142823;
+  --spruce-800: #1e3d36;
+  --spruce-700: #2a5148;
+  --spruce-600: #396b5e;
+  --spruce-200: #c6d9ce;
+  --spruce-100: #e0eae2;
+  --river-700: #2c5f66;
+  --river-600: #37767c;
+  --river-200: #c4dcda;
+  --river-100: #dfecea;
+  --ochre-700: #9a5b14;
+  --ochre-600: #c07a22;
+  --ochre-500: #d89543;
+  --ochre-200: #efd9b4;
+  --ochre-100: #f7ead1;
+  --birch: #f9f5eb;
+  --parchment: #fffdf7;
+  --sand: #efe7d7;
+  --ink: #22322c;
+  --ink-soft: #5a6a61;
+  --ink-faint: #8a968e;
+  --on-dark: #f4efe3;
+  --on-dark-soft: #b9c6bc;
+  --strand-ochre: #e0a34e; /* lightened strands for dark surfaces */
+  --strand-river: #7fb5ae;
+  --border: #e0d6c2;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+body {
+  font-family: "Atkinson Hyperlegible", sans-serif;
+  font-optical-sizing: auto;
+  color: var(--ink);
+  background: var(--birch);
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+.display,
+.quote {
+  font-family: "Fraunces", serif;
+  font-optical-sizing: auto;
+  color: var(--spruce-800);
+  letter-spacing: -0.01em;
+}
+
+/* ---- Brand motifs ------------------------------------------------------ */
+
+/* Two interlacing strands — ochre and river (light surfaces). */
+.weave {
+  height: 12px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='12' viewBox='0 0 120 12'%3E%3Cpath d='M0 9 C15 9 15 3 30 3 S45 9 60 9 S75 3 90 3 S105 9 120 9' fill='none' stroke='%2337767C' stroke-width='2.4' stroke-linecap='round'/%3E%3Cpath d='M0 3 C15 3 15 9 30 9 S45 3 60 3 S75 9 90 9 S105 3 120 3' fill='none' stroke='%23D89543' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-position: left center;
+  background-repeat: repeat-x;
+}
+
+/* Lightened strands so the weave holds on spruce panels. */
+.weave-on-dark {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='12' viewBox='0 0 120 12'%3E%3Cpath d='M0 9 C15 9 15 3 30 3 S45 9 60 9 S75 3 90 3 S105 9 120 9' fill='none' stroke='%237FB5AE' stroke-width='2.4' stroke-linecap='round'/%3E%3Cpath d='M0 3 C15 3 15 9 30 9 S45 3 60 3 S75 9 90 9 S105 3 120 3' fill='none' stroke='%23E0A34E' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+/* Two facing silhouettes joined by an open circle, at 5% — never more. */
+.panel-on-dark {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.panel-on-dark::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='620' height='480' viewBox='0 0 620 480'%3E%3Cg fill='none' stroke='%23F4EFE3' stroke-width='5' stroke-linecap='round'%3E%3Cpath d='M334 30A138 138 0 0 1 334 302'/%3E%3Cpath d='M286 302A138 138 0 0 1 286 30'/%3E%3C/g%3E%3Cpath fill='%23F4EFE3' d='M148 24C192 26 222 58 226 100C227 112 224 118 228 124C244 138 250 148 244 154C240 160 233 160 233 166C241 172 241 180 234 185C243 193 241 203 228 210C219 219 208 224 201 227C200 243 206 254 215 262C240 282 259 303 265 338C270 372 272 424 272 480L60 480C60 424 58 372 66 336C72 306 86 278 104 258C95 240 92 226 94 208C80 190 72 162 74 128C76 72 106 22 148 24Z'/%3E%3Cpath fill='%23F4EFE3' transform='translate(620 0) scale(-1 1)' d='M148 24C192 26 222 58 226 100C227 112 224 118 228 124C244 138 250 148 244 154C240 160 233 160 233 166C241 172 241 180 234 185C243 193 241 203 228 210C219 219 208 224 201 227C200 243 206 254 215 262C240 282 259 303 265 338C270 372 272 424 272 480L60 480C60 424 58 372 66 336C72 306 86 278 104 258C95 240 92 226 94 208C80 190 72 162 74 128C76 72 106 22 148 24Z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: var(--figure-position, right 48px bottom);
+  background-size: var(--figure-size, auto min(70%, 460px));
+  opacity: 0.05;
+}
+
+.eyebrow {
+  display: inline-block;
+  color: var(--ochre-700);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.eyebrow.on-dark {
+  color: var(--strand-ochre);
+}
+
+.brand-row {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+.brand-mark {
+  flex: none;
+}
+.brand-name {
+  line-height: 1;
+}
+.brand-name .line1 {
+  display: block;
+  font-family: "Fraunces", serif;
+  font-weight: 600;
+  font-size: 19px;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  color: var(--on-dark);
+}
+.brand-name .line2 {
+  display: block;
+  margin-top: 3px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--on-dark-soft);
+}
