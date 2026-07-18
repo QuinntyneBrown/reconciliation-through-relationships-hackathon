@@ -28,6 +28,13 @@ file follows.
 | `province`             | `AB`, `BC`, `MB`, `NB`, `NL`, `NS`, `NT`, `NU`, `ON`, `PE`, `QC`, `SK`, `YT`                                   | `CANADIAN_PROVINCES`         |
 | `match_status`         | `suggested`, `approved`, `rejected`, `connected`                                                               | `MatchStatus`                |
 
+> **Deployed portal compatibility:** the current Supabase migrations store the
+> application role directly in `public.profiles.role` as constrained `text`.
+> Migration `007_add_admin_role.sql` permits `participant`, `facilitator`, and
+> `admin`. The dedicated admin API authorizes against this column. The normalized
+> `user_role`/`roles` design below remains the target domain model, not a claim
+> that those objects already exist in the migrated database.
+
 ---
 
 ## `participants`

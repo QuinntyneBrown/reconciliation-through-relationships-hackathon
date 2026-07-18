@@ -1,0 +1,73 @@
+@startuml
+title Class view — Connection meeting scheduling
+
+skinparam backgroundColor #FFFDF7
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #18352F
+skinparam ArrowColor #2F6F67
+skinparam packageBorderColor #477B73
+skinparam packageBackgroundColor #EEF6F3
+skinparam rectangleBorderColor #477B73
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam componentBorderColor #8A5A1F
+skinparam componentBackgroundColor #FFF6E6
+skinparam databaseBorderColor #4E668E
+skinparam databaseBackgroundColor #EEF3FB
+skinparam actorBorderColor #18352F
+skinparam actorBackgroundColor #FFFFFF
+skinparam classBorderColor #477B73
+skinparam classBackgroundColor #FFFFFF
+skinparam sequenceBoxBorderColor #477B73
+skinparam sequenceBoxBackgroundColor #F4F8F6
+skinparam ParticipantBorderColor #477B73
+skinparam ParticipantBackgroundColor #FFFFFF
+skinparam BoxPadding 10
+hide stereotype
+
+left to right direction
+package "Reconciliation Through Relationships application" {
+  package "Connection meeting scheduling structure" {
+    class "ScheduleMeetingModal" as type0 {
+      -date
+      -time
+      -duration
+      -topic
+      +handleSchedule()
+    }
+    
+    class "ZoomMeetingRoute" as type1 {
+      +POST(request)
+      -getZoomAccessToken()
+    }
+    
+    entity "Connection" as type2 {
+      +id
+      +participant_a_id
+      +participant_b_id
+    }
+    
+    entity "Meeting" as type3 {
+      +connection_id
+      +zoom_meeting_id
+      +zoom_join_url
+      +scheduled_at
+      +duration_minutes
+    }
+    
+    entity "Notification" as type4 {
+      +type: meeting_scheduled
+      +data.meeting_id
+    }
+  }
+}
+type0 --> type1 : POSTs to
+type1 --> type2 : authorizes against
+type2 --> type3 : has
+type1 --> type4 : creates
+legend bottom
+  Class = implementation component or value shape
+  Interface = public TypeScript contract
+  Entity = persisted or domain data record
+endlegend
+@enduml

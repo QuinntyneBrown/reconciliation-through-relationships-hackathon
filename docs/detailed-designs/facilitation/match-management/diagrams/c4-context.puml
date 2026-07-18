@@ -1,0 +1,41 @@
+@startuml
+title C4 system context view — Facilitator match management
+
+skinparam backgroundColor #FFFDF7
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #18352F
+skinparam ArrowColor #2F6F67
+skinparam packageBorderColor #477B73
+skinparam packageBackgroundColor #EEF6F3
+skinparam rectangleBorderColor #477B73
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam componentBorderColor #8A5A1F
+skinparam componentBackgroundColor #FFF6E6
+skinparam databaseBorderColor #4E668E
+skinparam databaseBackgroundColor #EEF3FB
+skinparam actorBorderColor #18352F
+skinparam actorBackgroundColor #FFFFFF
+skinparam classBorderColor #477B73
+skinparam classBackgroundColor #FFFFFF
+skinparam sequenceBoxBorderColor #477B73
+skinparam sequenceBoxBackgroundColor #F4F8F6
+skinparam ParticipantBorderColor #477B73
+skinparam ParticipantBackgroundColor #FFFFFF
+skinparam BoxPadding 10
+hide stereotype
+
+left to right direction
+actor "Facilitator" as actor
+rectangle "Reconciliation Through Relationships platform" as rtr {
+  rectangle "Facilitator match management vertical slice\n[Entity of interest]" as facilitation_match_management
+}
+actor --> facilitation_match_management : creates scored manual matches and approves or rejects proposed matches and mutual connection requests while notifying participants after approval
+cloud "Supabase PostgreSQL\neligible profiles, proposals, relationships, notifications, and facilitator policies" as ext0
+facilitation_match_management --> ext0 : uses
+legend bottom
+  Person = role that interacts with the feature
+  Box = entity of interest inside the RTR platform context
+  Cloud = external service or separately operated data platform
+endlegend
+@enduml

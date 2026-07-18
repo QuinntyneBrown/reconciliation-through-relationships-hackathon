@@ -1,0 +1,48 @@
+@startuml
+title C4 container view — Participant profile viewing
+
+skinparam backgroundColor #FFFDF7
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #18352F
+skinparam ArrowColor #2F6F67
+skinparam packageBorderColor #477B73
+skinparam packageBackgroundColor #EEF6F3
+skinparam rectangleBorderColor #477B73
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam componentBorderColor #8A5A1F
+skinparam componentBackgroundColor #FFF6E6
+skinparam databaseBorderColor #4E668E
+skinparam databaseBackgroundColor #EEF3FB
+skinparam actorBorderColor #18352F
+skinparam actorBackgroundColor #FFFFFF
+skinparam classBorderColor #477B73
+skinparam classBackgroundColor #FFFFFF
+skinparam sequenceBoxBorderColor #477B73
+skinparam sequenceBoxBackgroundColor #F4F8F6
+skinparam ParticipantBorderColor #477B73
+skinparam ParticipantBackgroundColor #FFFFFF
+skinparam BoxPadding 10
+hide stereotype
+
+left to right direction
+actor "Participant" as actor
+package "Reconciliation Through Relationships application" {
+  package "Frontend" {
+    rectangle "Web browser\n[React 19 Client Components]" as browser
+  }
+  package "Backend" {
+    rectangle "Next.js 16 application\n[Server Components, Route Handlers, Proxy]" as next
+    database "Supabase platform or Repository implementation\n[Auth, PostgreSQL, Realtime, or mock memory]" as store
+  }
+}
+actor --> browser : interacts with feature
+browser --> next : navigates and requests server-rendered content
+browser --> store : client-side reads or writes where applicable
+next --> store : server-side reads, writes, or rendering inputs
+
+legend bottom
+  Nested boxes identify the application and its frontend and backend execution contexts.
+  Arrows show possible feature paths; the component view identifies the exact caller.
+endlegend
+@enduml

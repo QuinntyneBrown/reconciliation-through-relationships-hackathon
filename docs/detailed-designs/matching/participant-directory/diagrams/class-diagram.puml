@@ -1,0 +1,74 @@
+@startuml
+title Class view — Participant directory
+
+skinparam backgroundColor #FFFDF7
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #18352F
+skinparam ArrowColor #2F6F67
+skinparam packageBorderColor #477B73
+skinparam packageBackgroundColor #EEF6F3
+skinparam rectangleBorderColor #477B73
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam componentBorderColor #8A5A1F
+skinparam componentBackgroundColor #FFF6E6
+skinparam databaseBorderColor #4E668E
+skinparam databaseBackgroundColor #EEF3FB
+skinparam actorBorderColor #18352F
+skinparam actorBackgroundColor #FFFFFF
+skinparam classBorderColor #477B73
+skinparam classBackgroundColor #FFFFFF
+skinparam sequenceBoxBorderColor #477B73
+skinparam sequenceBoxBackgroundColor #F4F8F6
+skinparam ParticipantBorderColor #477B73
+skinparam ParticipantBackgroundColor #FFFFFF
+skinparam BoxPadding 10
+hide stereotype
+
+left to right direction
+package "Reconciliation Through Relationships application" {
+  package "Participant directory structure" {
+    class "AllParticipantsTab" as type0 {
+      -viewMode: list|map
+      -search: string
+      -province: string
+      -faith: string
+      -background: string
+      -page: number
+    }
+    
+    class "ParticipantMap" as type1 {
+      +participants: Profile[]
+      -mapInstance: Map
+    }
+    
+    entity "Profile" as type2 {
+      +name and city
+      +interests
+      +faith_tradition
+      +map_consent
+      +lat
+      +lng
+    }
+    
+    entity "Connection" as type3 {
+      +participant ids
+      +status
+    }
+    
+    class "MapboxMap" as type4 {
+      +addControl()
+      +add marker
+    }
+  }
+}
+type0 --> type2 : filters
+type0 --> type3 : derives actions
+type0 --> type1 : renders in map mode
+type1 --> type4 : owns
+legend bottom
+  Class = implementation component or value shape
+  Interface = public TypeScript contract
+  Entity = persisted or domain data record
+endlegend
+@enduml

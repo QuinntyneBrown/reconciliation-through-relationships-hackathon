@@ -1,0 +1,67 @@
+@startuml
+title Class view — Profile connection action
+
+skinparam backgroundColor #FFFDF7
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #18352F
+skinparam ArrowColor #2F6F67
+skinparam packageBorderColor #477B73
+skinparam packageBackgroundColor #EEF6F3
+skinparam rectangleBorderColor #477B73
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam componentBorderColor #8A5A1F
+skinparam componentBackgroundColor #FFF6E6
+skinparam databaseBorderColor #4E668E
+skinparam databaseBackgroundColor #EEF3FB
+skinparam actorBorderColor #18352F
+skinparam actorBackgroundColor #FFFFFF
+skinparam classBorderColor #477B73
+skinparam classBackgroundColor #FFFFFF
+skinparam sequenceBoxBorderColor #477B73
+skinparam sequenceBoxBackgroundColor #F4F8F6
+skinparam ParticipantBorderColor #477B73
+skinparam ParticipantBackgroundColor #FFFFFF
+skinparam BoxPadding 10
+hide stereotype
+
+left to right direction
+package "Reconciliation Through Relationships application" {
+  package "Profile connection action structure" {
+    class "ConnectButton" as type0 {
+      -connection: Connection|null
+      -busy: boolean
+      +sendRequest(): Promise<void>
+      +cancelRequest(): Promise<void>
+    }
+    
+    entity "Connection" as type1 {
+      +participant_a_id
+      +participant_b_id
+      +participant_a_connected
+      +participant_b_connected
+      +status
+      +match_id
+    }
+    
+    entity "Notification" as type2 {
+      +user_id
+      +type: connect_request
+      +data.connection_id
+    }
+    
+    entity "Profile" as type3 {
+      +id
+      +first_name
+    }
+  }
+}
+type0 --> type1 : creates/deletes
+type1 --> type3 : relates 2 participants
+type0 --> type2 : creates after request
+legend bottom
+  Class = implementation component or value shape
+  Interface = public TypeScript contract
+  Entity = persisted or domain data record
+endlegend
+@enduml

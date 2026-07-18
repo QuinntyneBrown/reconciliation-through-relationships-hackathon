@@ -1,0 +1,72 @@
+@startuml
+title Class view — Participant intake wizard
+
+skinparam backgroundColor #FFFDF7
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #18352F
+skinparam ArrowColor #2F6F67
+skinparam packageBorderColor #477B73
+skinparam packageBackgroundColor #EEF6F3
+skinparam rectangleBorderColor #477B73
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam componentBorderColor #8A5A1F
+skinparam componentBackgroundColor #FFF6E6
+skinparam databaseBorderColor #4E668E
+skinparam databaseBackgroundColor #EEF3FB
+skinparam actorBorderColor #18352F
+skinparam actorBackgroundColor #FFFFFF
+skinparam classBorderColor #477B73
+skinparam classBackgroundColor #FFFFFF
+skinparam sequenceBoxBorderColor #477B73
+skinparam sequenceBoxBackgroundColor #F4F8F6
+skinparam ParticipantBorderColor #477B73
+skinparam ParticipantBackgroundColor #FFFFFF
+skinparam BoxPadding 10
+hide stereotype
+
+left to right direction
+package "Reconciliation Through Relationships application" {
+  package "Participant intake wizard structure" {
+    class "OnboardingPage" as type0 {
+      -step: number
+      -data: OnboardingData
+      +handleComplete(): Promise<void>
+    }
+    
+    class "OnboardingData" as type1 {
+      +identity fields
+      +location fields
+      +faith and interests
+      +availability and format
+      +matching preferences
+    }
+    
+    class "OnboardingFieldError" as type2 {
+      +fieldId: string
+      +message: string
+    }
+    
+    class "StepComponent" as type3 {
+      +data: OnboardingData
+      +onChange(data)
+      +onNext()
+      +onBack()
+    }
+    
+    entity "Profile" as type4 {
+      +intake fields
+      +onboarding_completed: boolean
+    }
+  }
+}
+type0 --> type1 : owns
+type0 --> type3 : renders one of 5
+type3 --> type2 : reports
+type1 --> type4 : updates
+legend bottom
+  Class = implementation component or value shape
+  Interface = public TypeScript contract
+  Entity = persisted or domain data record
+endlegend
+@enduml

@@ -1,0 +1,70 @@
+@startuml
+title Class view — Audience learning catalog
+
+skinparam backgroundColor #FFFDF7
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #18352F
+skinparam ArrowColor #2F6F67
+skinparam packageBorderColor #477B73
+skinparam packageBackgroundColor #EEF6F3
+skinparam rectangleBorderColor #477B73
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam componentBorderColor #8A5A1F
+skinparam componentBackgroundColor #FFF6E6
+skinparam databaseBorderColor #4E668E
+skinparam databaseBackgroundColor #EEF3FB
+skinparam actorBorderColor #18352F
+skinparam actorBackgroundColor #FFFFFF
+skinparam classBorderColor #477B73
+skinparam classBackgroundColor #FFFFFF
+skinparam sequenceBoxBorderColor #477B73
+skinparam sequenceBoxBackgroundColor #F4F8F6
+skinparam ParticipantBorderColor #477B73
+skinparam ParticipantBackgroundColor #FFFFFF
+skinparam BoxPadding 10
+hide stereotype
+
+left to right direction
+package "Reconciliation Through Relationships application" {
+  package "Audience learning catalog structure" {
+    class "LearnPage" as type0 {
+      +render(): Promise<ReactNode>
+    }
+    
+    class "LearningLayout" as type1 {
+      -activeModuleId: string
+      +modules: LearningModule[]
+      +progress: LearningProgress[]
+    }
+    
+    class "ModuleContent" as type2 {
+      +module: LearningModule
+      +isCompleted: boolean
+    }
+    
+    entity "LearningModule" as type3 {
+      +id
+      +audience
+      +order_index
+      +content_type
+      +is_required
+    }
+    
+    entity "LearningProgress" as type4 {
+      +user_id
+      +module_id
+      +completed
+    }
+  }
+}
+type0 --> type3 : loads
+type0 --> type4 : loads
+type1 --> type2 : renders
+type2 --> type3 : displays
+legend bottom
+  Class = implementation component or value shape
+  Interface = public TypeScript contract
+  Entity = persisted or domain data record
+endlegend
+@enduml

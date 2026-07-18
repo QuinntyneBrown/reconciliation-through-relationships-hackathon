@@ -1,0 +1,55 @@
+@startuml
+title Sequence view — Realtime notification center
+
+skinparam backgroundColor #FFFDF7
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #18352F
+skinparam ArrowColor #2F6F67
+skinparam packageBorderColor #477B73
+skinparam packageBackgroundColor #EEF6F3
+skinparam rectangleBorderColor #477B73
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam componentBorderColor #8A5A1F
+skinparam componentBackgroundColor #FFF6E6
+skinparam databaseBorderColor #4E668E
+skinparam databaseBackgroundColor #EEF3FB
+skinparam actorBorderColor #18352F
+skinparam actorBackgroundColor #FFFFFF
+skinparam classBorderColor #477B73
+skinparam classBackgroundColor #FFFFFF
+skinparam sequenceBoxBorderColor #477B73
+skinparam sequenceBoxBackgroundColor #F4F8F6
+skinparam ParticipantBorderColor #477B73
+skinparam ParticipantBackgroundColor #FFFFFF
+skinparam BoxPadding 10
+hide stereotype
+
+autonumber
+actor "Authenticated user" as user
+box "Reconciliation Through Relationships application" #EEF6F3
+  box "Reconciliation Through Relationships — Frontend" #FFF6E6
+    boundary "Realtime notification center UI" as ui
+  end box
+  box "Reconciliation Through Relationships — Backend" #EEF3FB
+    control "Next.js or domain behavior" as server
+    database "Supabase or Repository" as data
+  end box
+end box
+participant "Supabase Realtime" as external
+user -> ui: Open any authenticated page
+ui -> data: Load 20 newest own notifications
+data --> ui: Notification rows
+ui -> external: Subscribe to INSERT where user_id = caller
+external --> ui: New Notification event
+ui -> ui: Prepend once, cap at 20, update unread count
+ui --> user: Display dropdown row and toast
+user -> ui: Select notification
+ui -> data: Set read = true
+ui -> ui: targetHref(notification)
+ui --> user: Navigate to related route
+legend bottom
+  Nested boxes identify the RTR application and separate frontend from backend behavior.
+  Solid arrows are calls or state changes; dashed arrows are results presented to a caller.
+endlegend
+@enduml

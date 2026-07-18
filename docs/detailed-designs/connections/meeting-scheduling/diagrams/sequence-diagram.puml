@@ -1,0 +1,59 @@
+@startuml
+title Sequence view — Connection meeting scheduling
+
+skinparam backgroundColor #FFFDF7
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #18352F
+skinparam ArrowColor #2F6F67
+skinparam packageBorderColor #477B73
+skinparam packageBackgroundColor #EEF6F3
+skinparam rectangleBorderColor #477B73
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam componentBorderColor #8A5A1F
+skinparam componentBackgroundColor #FFF6E6
+skinparam databaseBorderColor #4E668E
+skinparam databaseBackgroundColor #EEF3FB
+skinparam actorBorderColor #18352F
+skinparam actorBackgroundColor #FFFFFF
+skinparam classBorderColor #477B73
+skinparam classBackgroundColor #FFFFFF
+skinparam sequenceBoxBorderColor #477B73
+skinparam sequenceBoxBackgroundColor #F4F8F6
+skinparam ParticipantBorderColor #477B73
+skinparam ParticipantBackgroundColor #FFFFFF
+skinparam BoxPadding 10
+hide stereotype
+
+autonumber
+actor "Connected participant" as user
+box "Reconciliation Through Relationships application" #EEF6F3
+  box "Reconciliation Through Relationships — Frontend" #FFF6E6
+    boundary "Connection meeting scheduling UI" as ui
+  end box
+  box "Reconciliation Through Relationships — Backend" #EEF3FB
+    control "Next.js or domain behavior" as server
+    database "Supabase or Repository" as data
+  end box
+end box
+participant "Zoom APIs" as external
+user -> ui: Submit schedule dialog
+ui -> server: POST /api/zoom/create-meeting
+server -> data: Validate session and connection membership
+data --> server: Authorized connection
+server -> external: Mint S2S token and create scheduled meeting
+alt Zoom rejects request
+  external --> server: Non-success response
+  server --> ui: 502 Failed to create Zoom meeting
+else Zoom succeeds
+  external --> server: Meeting id and URLs
+  server -> data: Insert Meeting and partner Notification
+  data --> server: Persisted Meeting
+  server --> ui: 200 Meeting
+  ui --> user: Show success and Join Zoom banner
+end
+legend bottom
+  Nested boxes identify the RTR application and separate frontend from backend behavior.
+  Solid arrows are calls or state changes; dashed arrows are results presented to a caller.
+endlegend
+@enduml

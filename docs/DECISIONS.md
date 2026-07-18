@@ -1,5 +1,15 @@
 # Open decisions to confirm with RTR
 
+## Accepted architecture decisions
+
+- **Dedicated administration application (2026-07-12):** administrator tooling
+  is implemented in the separate
+  [`reconciliation-through-relationships-admin`](https://github.com/QuinntyneBrown/reconciliation-through-relationships-admin)
+  repository. See its `docs/adr/0001-admin-dotnet-angular-app.md` for the .NET 8,
+  Angular, MediatR 12.5.0, and database-first rationale. This portal remains the
+  source of truth for Supabase migrations.
+
+
 These come straight from the brief's "Decisions to confirm with RTR." They affect real code — each row notes the current placeholder and where it lives. **PM/Design: keep this current as Joel Gordon / RTR answer.**
 
 | # | Question | Current placeholder in code | Where |

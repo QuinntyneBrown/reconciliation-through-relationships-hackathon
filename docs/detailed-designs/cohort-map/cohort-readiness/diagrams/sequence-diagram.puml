@@ -1,0 +1,55 @@
+@startuml
+title Sequence view — Regional cohort readiness
+
+skinparam backgroundColor #FFFDF7
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #18352F
+skinparam ArrowColor #2F6F67
+skinparam packageBorderColor #477B73
+skinparam packageBackgroundColor #EEF6F3
+skinparam rectangleBorderColor #477B73
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam componentBorderColor #8A5A1F
+skinparam componentBackgroundColor #FFF6E6
+skinparam databaseBorderColor #4E668E
+skinparam databaseBackgroundColor #EEF3FB
+skinparam actorBorderColor #18352F
+skinparam actorBackgroundColor #FFFFFF
+skinparam classBorderColor #477B73
+skinparam classBackgroundColor #FFFFFF
+skinparam sequenceBoxBorderColor #477B73
+skinparam sequenceBoxBackgroundColor #F4F8F6
+skinparam ParticipantBorderColor #477B73
+skinparam ParticipantBackgroundColor #FFFFFF
+skinparam BoxPadding 10
+hide stereotype
+
+autonumber
+actor "Participant or facilitator" as user
+box "Reconciliation Through Relationships application" #EEF6F3
+  box "Reconciliation Through Relationships — Frontend" #FFF6E6
+    boundary "Regional cohort readiness UI" as ui
+  end box
+  box "Reconciliation Through Relationships — Backend" #EEF3FB
+    control "Next.js or domain behavior" as server
+    database "Supabase or Repository" as data
+  end box
+end box
+
+user -> ui: Request /map
+ui -> server: Render MapPage
+server -> data: Read caller profile and Region aggregates
+data --> server: Role and sorted regions
+server -> server: Compare each count with threshold 5
+alt Regions exist
+  server --> ui: Role navigation and readiness cards
+else No regions
+  server --> ui: Role navigation and EmptyState
+end
+ui --> user: Display regional cohort readiness
+legend bottom
+  Nested boxes identify the RTR application and separate frontend from backend behavior.
+  Solid arrows are calls or state changes; dashed arrows are results presented to a caller.
+endlegend
+@enduml

@@ -1,0 +1,52 @@
+@startuml
+title C4 component view — Realtime notification center
+
+skinparam backgroundColor #FFFDF7
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontColor #18352F
+skinparam ArrowColor #2F6F67
+skinparam packageBorderColor #477B73
+skinparam packageBackgroundColor #EEF6F3
+skinparam rectangleBorderColor #477B73
+skinparam rectangleBackgroundColor #FFFFFF
+skinparam componentBorderColor #8A5A1F
+skinparam componentBackgroundColor #FFF6E6
+skinparam databaseBorderColor #4E668E
+skinparam databaseBackgroundColor #EEF3FB
+skinparam actorBorderColor #18352F
+skinparam actorBackgroundColor #FFFFFF
+skinparam classBorderColor #477B73
+skinparam classBackgroundColor #FFFFFF
+skinparam sequenceBoxBorderColor #477B73
+skinparam sequenceBoxBackgroundColor #F4F8F6
+skinparam ParticipantBorderColor #477B73
+skinparam ParticipantBackgroundColor #FFFFFF
+skinparam BoxPadding 10
+hide stereotype
+
+left to right direction
+package "Reconciliation Through Relationships application" {
+  package "Realtime notification center vertical slice" {
+    package "Frontend" {
+      component "NotificationCenter\n[React Client Component]" as cmp0
+      component "DashboardNav and FacilitatorNav\n[React Client Components]" as cmp2
+    }
+    package "Domain" {
+      component "targetHref\n[Pure function]" as cmp1
+    }
+    package "Data" {
+      component "notifications\n[PostgreSQL realtime table]" as cmp3
+      component "Supabase Realtime channel\n[Realtime subscription]" as cmp4
+    }
+  }
+}
+cmp0 --> cmp1 : collaborates
+cmp1 --> cmp2 : collaborates
+cmp2 --> cmp3 : collaborates
+cmp3 --> cmp4 : collaborates
+legend bottom
+  Component boxes use source-level names from the implementation.
+  Package nesting identifies the application, vertical slice, and execution or domain layer.
+endlegend
+@enduml
