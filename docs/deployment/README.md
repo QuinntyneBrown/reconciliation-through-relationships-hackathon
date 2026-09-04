@@ -10,6 +10,8 @@ Pricing checked **July 11, 2026**. All amounts are **USD per month**, before tax
 
 For this project, start with Azure for a hackathon/demo or DigitalOcean for a small public launch. Move from Supabase Free to Pro before relying on the service for production participant data.
 
+If you have already settled on Azure and only want the cheapest option within it, see [The cheapest way to deploy this app on Azure](AZURE_CHEAPEST.md). It compares Container Apps against App Service, Static Web Apps, and a plain VM with rates rechecked on September 4, 2026, and lists the configuration mistakes that turn the $0 estimate into a real bill.
+
 ## Cost comparison
 
 The prototype uses Supabase Free. The production baseline uses Supabase Pro at $25/month because it removes inactivity pausing and adds daily backups. Each option uses one application replica; it is not highly available.
