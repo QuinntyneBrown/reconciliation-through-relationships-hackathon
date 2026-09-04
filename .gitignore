@@ -30,6 +30,7 @@ e2e/test-results/
 e2e/playwright-report/
 boundary-interface-tests/test-results/
 boundary-interface-tests/playwright-report/
+.playwright-cli/
 
 # debug
 npm-debug.log*

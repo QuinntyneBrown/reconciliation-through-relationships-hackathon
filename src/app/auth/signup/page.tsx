@@ -70,7 +70,10 @@ export default function SignupPage() {
         </p>
       </aside>
 
-      <main className="grid place-items-center px-4 py-8 sm:px-6">
+      <section
+        className="grid place-items-center px-4 py-8 sm:px-6"
+        aria-labelledby="signup-heading"
+      >
         <div className="w-full max-w-[420px]">
           <Link
             href="/"
@@ -78,7 +81,7 @@ export default function SignupPage() {
           >
             ← Back to RTR
           </Link>
-          <h1>Join RTR</h1>
+          <h1 id="signup-heading">Join RTR</h1>
           <p className="text-ink-soft mt-2">
             Create your account to begin the reconciliation journey.
           </p>
@@ -98,6 +101,7 @@ export default function SignupPage() {
                     placeholder="you@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    autoComplete="email"
                     required
                     autoFocus
                   />
@@ -111,18 +115,23 @@ export default function SignupPage() {
                       placeholder="At least 8 characters"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
+                      autoComplete="new-password"
+                      aria-describedby="password-requirements"
                       required
-                      className="pr-10"
+                      className="pr-12"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword((v) => !v)}
-                      className="text-ink-soft hover:text-ink absolute top-1/2 right-3 -translate-y-1/2"
+                      className="text-ink-soft hover:text-ink focus-visible:outline-ring rounded-r-control absolute inset-y-0 right-0 flex w-11 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2"
                       aria-label={showPassword ? "Hide password" : "Show password"}
                     >
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
+                  <p id="password-requirements" className="text-ink-faint text-xs">
+                    Use at least 8 characters.
+                  </p>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="confirm">Confirm password</Label>
@@ -130,17 +139,20 @@ export default function SignupPage() {
                     <Input
                       id="confirm"
                       type={showConfirm ? "text" : "password"}
-                      placeholder="••••••••"
+                      placeholder="Re-enter your password"
                       value={confirm}
                       onChange={(e) => setConfirm(e.target.value)}
+                      autoComplete="new-password"
                       required
-                      className="pr-10"
+                      className="pr-12"
                     />
                     <button
                       type="button"
                       onClick={() => setShowConfirm((v) => !v)}
-                      className="text-ink-soft hover:text-ink absolute top-1/2 right-3 -translate-y-1/2"
-                      aria-label={showConfirm ? "Hide password" : "Show password"}
+                      className="text-ink-soft hover:text-ink focus-visible:outline-ring rounded-r-control absolute inset-y-0 right-0 flex w-11 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2"
+                      aria-label={
+                        showConfirm ? "Hide password confirmation" : "Show password confirmation"
+                      }
                     >
                       {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
@@ -166,7 +178,7 @@ export default function SignupPage() {
             Your email is used only for your RTR account and notifications.
           </p>
         </div>
-      </main>
+      </section>
     </div>
   );
 }

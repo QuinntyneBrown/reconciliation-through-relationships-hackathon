@@ -1,0 +1,28 @@
+# Build output and dependencies are produced inside the image.
+node_modules
+.next
+.next-boundary
+out
+build
+*.tsbuildinfo
+
+# Secrets must never enter the build context. Next.js would also read a copied
+# .env.local at build time and override the NEXT_PUBLIC_* build args.
+.env
+.env.*
+
+# Not needed at runtime.
+.git
+.github
+.vscode
+docs
+e2e
+boundary-interface-tests
+.playwright-cli
+supabase
+*.md
+!README.md
+
+# Local noise
+.DS_Store
+npm-debug.log*
