@@ -7,6 +7,9 @@ type Failure = { table: string; method: string; message?: string };
 let database = createDatabase();
 let authAccounts = { ...authUsers };
 let failures: Failure[] = [];
+// Hosted Supabase projects enable email confirmation by default, which local
+// `supabase start` does not. Toggle it to exercise that path.
+let requireEmailConfirmation = false;
 let sequence = 100;
 
 const portFlag = process.argv.indexOf("--port");
@@ -48,15 +51,20 @@ function accessToken(userId: string) {
   return `${base64Url({ alg: "HS256", typ: "JWT" })}.${base64Url({ sub: userId, role: "authenticated", exp: Math.floor(Date.now() / 1000) + 3600 })}.test-signature`;
 }
 
-function userFromId(id: string) {
+// Only accounts created while confirmation is required are pending; the seeded
+// accounts the login tests rely on stay usable.
+const unconfirmedAccounts = new Set<string>();
+
+function userFromId(id: string, options: { confirmed?: boolean } = {}) {
   const account = Object.values(authAccounts).find((item) => item.id === id);
+  const confirmed = options.confirmed ?? true;
   return account
     ? {
         id: account.id,
         aud: "authenticated",
         role: "authenticated",
         email: account.email,
-        email_confirmed_at: "2026-07-01T00:00:00.000Z",
+        email_confirmed_at: confirmed ? "2026-07-01T00:00:00.000Z" : null,
         phone: "",
         app_metadata: { provider: "email", providers: ["email"] },
         user_metadata: {},
@@ -222,6 +230,7 @@ async function handleAuth(req: IncomingMessage, res: ServerResponse, url: URL) {
 
     const id = `signup-user-${sequence++}`;
     authAccounts[body.email] = { id, email: body.email, password: body.password };
+    if (requireEmailConfirmation) unconfirmedAccounts.add(id);
     const createdAt = new Date().toISOString();
     database.profiles.push({
       id,
@@ -257,7 +266,12 @@ async function handleAuth(req: IncomingMessage, res: ServerResponse, url: URL) {
       created_at: createdAt,
       updated_at: createdAt,
     });
-    json(res, 200, { user: userFromId(id) });
+    // Real Auth returns the user with a null session when a confirmation email
+    // has been sent; the caller has no way to act as that user yet.
+    json(res, 200, {
+      user: userFromId(id, { confirmed: !requireEmailConfirmation }),
+      session: null,
+    });
     return;
   }
 
@@ -277,6 +291,16 @@ async function handleAuth(req: IncomingMessage, res: ServerResponse, url: URL) {
         code: "invalid_credentials",
         msg: "Invalid login credentials",
         error_description: "Invalid login credentials",
+      });
+      return;
+    }
+    if (unconfirmedAccounts.has(account.id)) {
+      // GoTrue puts the HTTP status in `code` and the machine-readable reason
+      // in `error_code`; supabase-js surfaces the latter as `error.code`.
+      json(res, 400, {
+        code: 400,
+        error_code: "email_not_confirmed",
+        msg: "Email not confirmed",
       });
       return;
     }
@@ -414,13 +438,21 @@ const server = createServer(async (req, res) => {
       database = createDatabase();
       authAccounts = { ...authUsers };
       failures = [];
+      requireEmailConfirmation = false;
+      unconfirmedAccounts.clear();
       sequence = 100;
       json(res, 200, { ok: true });
       return;
     }
     if (url.pathname === "/__mock/configure" && req.method === "POST") {
-      const body = (await readBody(req)) as { failures?: Failure[]; patch?: MockDatabase };
+      const body = (await readBody(req)) as {
+        failures?: Failure[];
+        patch?: MockDatabase;
+        requireEmailConfirmation?: boolean;
+      };
       failures.push(...(body.failures ?? []));
+      if (body.requireEmailConfirmation !== undefined)
+        requireEmailConfirmation = body.requireEmailConfirmation;
       for (const [table, rows] of Object.entries(body.patch ?? {})) database[table] = rows;
       json(res, 200, { ok: true });
       return;

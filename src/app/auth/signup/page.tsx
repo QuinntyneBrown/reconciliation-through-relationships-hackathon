@@ -36,7 +36,7 @@ export default function SignupPage() {
     setLoading(true);
     const supabase = createSupabaseBrowserClient();
 
-    const { error } = await supabase.auth.signUp({ email, password });
+    const { data, error } = await supabase.auth.signUp({ email, password });
 
     if (error) {
       toast.error(error.message);
@@ -44,12 +44,21 @@ export default function SignupPage() {
       return;
     }
 
-    // Sign in immediately after signup so middleware can read the session
-    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-    if (signInError) {
-      toast.error("Account created — please sign in.");
-      router.push("/auth/login");
-      return;
+    // Projects that confirm email addresses return no session here.
+    if (!data.session) {
+      // Sign in immediately after signup so middleware can read the session
+      const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+      if (signInError) {
+        // The account exists but Auth refuses it until the emailed link is
+        // clicked, so /auth/login would only bounce them back.
+        if (signInError.code === "email_not_confirmed") {
+          router.push(`/auth/verify?email=${encodeURIComponent(email)}`);
+          return;
+        }
+        toast.error("Account created — please sign in.");
+        router.push("/auth/login");
+        return;
+      }
     }
 
     router.push("/onboarding");
