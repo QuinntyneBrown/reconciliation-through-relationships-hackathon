@@ -98,6 +98,29 @@ test.describe("public journey and authentication", () => {
     await expect(page.getByText(/please sign in/i)).toHaveCount(0);
   });
 
+  test("sign-up tells Auth to send the confirmation link back to this site", async ({
+    page,
+    backend: _backend,
+  }) => {
+    // Without an explicit redirect, Auth builds the emailed link from the
+    // project's Site URL, which defaults to localhost — so a visitor who signs
+    // up on the deployed site gets a link pointing at their own machine.
+    const signUpUrls: string[] = [];
+    page.on("request", (request) => {
+      if (request.url().includes("/auth/v1/signup")) signUpUrls.push(request.url());
+    });
+
+    await page.goto("/auth/signup");
+    await page.getByLabel("Email address").fill("redirects@example.com");
+    await page.getByLabel("Password", { exact: true }).fill("password123");
+    await page.getByLabel("Confirm password").fill("password123");
+    await page.getByRole("button", { name: "Create account" }).click();
+
+    await expect.poll(() => signUpUrls.length).toBeGreaterThan(0);
+    const redirectTo = new URL(signUpUrls[0]).searchParams.get("redirect_to");
+    expect(redirectTo).toBe(`${new URL(page.url()).origin}/auth/callback`);
+  });
+
   test("the platform brands itself as Reconciliation Through Relationships", async ({
     landing,
   }) => {
