@@ -1,5 +1,8 @@
 -- Enable required extensions
-create extension if not exists "uuid-ossp";
+-- uuid-ossp is deliberately not used: hosted Supabase pre-installs it into the
+-- extensions schema, so `create extension if not exists` is a no-op there and
+-- an unqualified uuid_generate_v4() is then off the migration search_path.
+-- gen_random_uuid() is built into Postgres 13+ and needs no extension.
 create extension if not exists "pg_trgm";
 
 -- ============================================================
@@ -89,7 +92,7 @@ create trigger on_auth_user_created
 -- LEARNING MODULES
 -- ============================================================
 create table public.learning_modules (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   title text not null,
   description text,
   content_type text not null check (content_type in ('video', 'text')),
@@ -122,7 +125,7 @@ create policy "Facilitators can manage modules"
 -- LEARNING PROGRESS
 -- ============================================================
 create table public.learning_progress (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   user_id uuid not null references public.profiles(id) on delete cascade,
   module_id uuid not null references public.learning_modules(id) on delete cascade,
   completed boolean not null default false,
@@ -152,7 +155,7 @@ create policy "Facilitators can view all progress"
 -- MATCHES
 -- ============================================================
 create table public.matches (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   indigenous_participant_id uuid not null references public.profiles(id) on delete cascade,
   non_indigenous_participant_id uuid not null references public.profiles(id) on delete cascade,
   match_score numeric(5,2) check (match_score >= 0 and match_score <= 100),
@@ -190,7 +193,7 @@ create policy "Facilitators can manage all matches"
 -- CONNECTIONS
 -- ============================================================
 create table public.connections (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   match_id uuid not null references public.matches(id) on delete cascade,
   participant_a_id uuid not null references public.profiles(id) on delete cascade,
   participant_b_id uuid not null references public.profiles(id) on delete cascade,
@@ -236,7 +239,7 @@ create policy "System can insert connections"
 -- MESSAGES
 -- ============================================================
 create table public.messages (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   connection_id uuid not null references public.connections(id) on delete cascade,
   sender_id uuid not null references public.profiles(id) on delete cascade,
   content text not null,
@@ -264,7 +267,7 @@ create policy "Connection participants can send and read messages"
 -- MEETINGS
 -- ============================================================
 create table public.meetings (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   connection_id uuid not null references public.connections(id) on delete cascade,
   zoom_meeting_id text,
   zoom_join_url text,
@@ -296,7 +299,7 @@ create policy "Connection participants can view and create meetings"
 -- COHORTS
 -- ============================================================
 create table public.cohorts (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   name text not null,
   city text not null,
   province text not null,
@@ -324,7 +327,7 @@ create policy "Facilitators can manage cohorts"
 -- COHORT MEMBERS
 -- ============================================================
 create table public.cohort_members (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   cohort_id uuid not null references public.cohorts(id) on delete cascade,
   participant_id uuid not null references public.profiles(id) on delete cascade,
   joined_at timestamptz not null default now(),
@@ -380,7 +383,7 @@ insert into public.system_settings (key, value) values
 -- NOTIFICATIONS
 -- ============================================================
 create table public.notifications (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   user_id uuid not null references public.profiles(id) on delete cascade,
   type text not null check (type in ('connect_request', 'match_approved', 'new_message', 'meeting_scheduled')),
   title text not null,
