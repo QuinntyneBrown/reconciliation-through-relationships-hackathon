@@ -77,7 +77,7 @@ Do **not** deploy `SUPABASE_SERVICE_ROLE_KEY` to the web host. It is needed only
 ## Deployment procedure
 
 1. Create `/srv/rtr/releases/<git-sha>` and check out the exact commit there.
-2. Load `/etc/rtr.env`, then run `npm ci`, `npm run typecheck`, `npm run test:boundary`, and `npm run build`.
+2. Load `/etc/rtr.env`, then run `npm ci`, `npm run typecheck`, `npm run test:e2e`, and `npm run build`.
 3. Point `/srv/rtr/current` at the new release only after the build passes.
 4. Configure a systemd unit with:
 
@@ -133,4 +133,3 @@ Supabase Pro provides daily database backups retained for seven days. Test datab
 - [Lightsail Canada Central availability](https://docs.aws.amazon.com/lightsail/latest/userguide/understanding-regions-and-availability-zones-in-amazon-lightsail.html)
 - [Lightsail data transfer overage prices](https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-faq-data-transfer-allowance.html)
 - [Supabase pricing](https://supabase.com/pricing)
-

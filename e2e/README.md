@@ -16,7 +16,7 @@ repository with Mapbox disabled.
 ## Run
 
 ```sh
-npm run test:boundary
+npm run test:e2e
 ```
 
 Install the browser once on a new machine if needed:

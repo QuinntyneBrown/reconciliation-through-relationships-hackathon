@@ -101,7 +101,7 @@ Do **not** set `SUPABASE_SERVICE_ROLE_KEY` on App Platform. It is for controlled
 
 ## Deployment procedure
 
-1. On each pull request, run `npm ci`, `npm run typecheck`, `npm run lint`, `npm run test:boundary`, and `npm run build`.
+1. On each pull request, run `npm ci`, `npm run typecheck`, `npm run lint`, `npm run test:e2e`, and `npm run build`.
 2. Merge only after required checks pass. App Platform pulls the exact production-branch commit, installs with `npm ci`, builds, and starts a replacement deployment.
 3. App Platform checks the configured port/path and promotes only a healthy deployment. A failed health check returns traffic to the last healthy deployment.
 4. After promotion, smoke-test `/`, `/auth/login`, an authenticated participant flow, a facilitator flow, and Zoom meeting creation if enabled.
@@ -147,4 +147,3 @@ Because the app is stateless, a platform-region recovery consists of creating th
 - [Deployment history and rollback](https://docs.digitalocean.com/products/app-platform/how-to/manage-deployments/)
 - [App Platform regional availability](https://docs.digitalocean.com/products/app-platform/details/availability/)
 - [Supabase pricing](https://supabase.com/pricing)
-

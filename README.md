@@ -71,13 +71,13 @@ Never commit `.env.local`, service-role keys, access tokens, or participant data
 Before opening a pull request that changes application behavior, run the complete local quality gate:
 
 ```bash
-npm run test:boundary
+npm run test:e2e
 npm run typecheck
 npm run lint
 npm run build
 ```
 
-The boundary suite uses deterministic local doubles and does not call production services. See the [boundary test guide](boundary-interface-tests/README.md) for its coverage and one-time browser setup. The slower browser journeys are available through `npm run test:e2e` and require the environment described under [e2e](e2e).
+The end-to-end suite uses deterministic local doubles and does not call production services. See the [end-to-end test guide](e2e/README.md) for its coverage and one-time browser setup.
 
 ## Project structure
 
@@ -88,8 +88,7 @@ src/domain/                 Domain types, validation, and matching rules
 src/data/                   Mock and Supabase data implementations
 src/styles/                 Shared design tokens
 supabase/                   Database migrations and seed tooling
-boundary-interface-tests/   Fast public-boundary acceptance suite
-e2e/                        Critical end-to-end browser journeys
+e2e/                        Public-boundary acceptance suite with deterministic local doubles
 docs/                       Architecture, product, and operations documentation
 ```
 

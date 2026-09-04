@@ -17,7 +17,7 @@ build
 .vscode
 docs
 e2e
-boundary-interface-tests
+e2e
 .playwright-cli
 supabase
 *.md

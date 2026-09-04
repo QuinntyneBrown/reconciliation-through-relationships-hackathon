@@ -5,7 +5,7 @@ Describe the user or contributor outcome and the approach taken.
 ## Acceptance evidence
 
 - [ ] Acceptance test added or updated before implementation
-- [ ] `npm run test:boundary` passes when user-visible behaviour changed
+- [ ] `npm run test:e2e` passes when user-visible behaviour changed
 - [ ] `npm run typecheck` passes
 - [ ] `npm run lint` passes
 - [ ] `npm run build` passes

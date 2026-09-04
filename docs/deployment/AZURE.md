@@ -94,7 +94,7 @@ Store Zoom values as Container Apps secrets and reference them with `secretref`.
 
 ## Deployment procedure
 
-1. On a pull request, run `npm ci`, `npm run typecheck`, `npm run lint`, `npm run test:boundary`, and `npm run build`.
+1. On a pull request, run `npm ci`, `npm run typecheck`, `npm run lint`, `npm run test:e2e`, and `npm run build`.
 2. Build the image with the production `NEXT_PUBLIC_*` arguments and tag it `ghcr.io/<org>/rtr:<git-sha>`.
 3. Push the immutable image to GHCR.
 4. Authenticate GitHub Actions to Azure with OpenID Connect and least-privilege access to the deployment resource group; avoid a long-lived service-principal secret.
@@ -141,4 +141,3 @@ The container filesystem is ephemeral. This is intentional: all durable particip
 - [Free custom-domain managed certificates](https://learn.microsoft.com/en-us/azure/container-apps/custom-domains-managed-certificates)
 - [Deploying Container Apps from GitHub Actions and GHCR](https://learn.microsoft.com/en-us/azure/container-apps/github-actions)
 - [Supabase pricing](https://supabase.com/pricing)
-
