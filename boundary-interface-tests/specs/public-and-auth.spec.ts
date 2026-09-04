@@ -76,6 +76,28 @@ test.describe("public journey and authentication", () => {
     });
   });
 
+  test("sign-up that needs email confirmation sends the user somewhere real", async ({
+    page,
+    backend,
+  }) => {
+    // Hosted Supabase projects confirm email by default, so the immediate
+    // sign-in after sign-up fails and no session exists yet.
+    await backend.configure({ requireEmailConfirmation: true });
+
+    await page.goto("/auth/signup");
+    await page.getByLabel("Email address").fill("needs-confirmation@example.com");
+    await page.getByLabel("Password", { exact: true }).fill("password123");
+    await page.getByLabel("Confirm password").fill("password123");
+    await page.getByRole("button", { name: "Create account" }).click();
+
+    // The account exists, so telling the visitor to sign in is a dead end:
+    // Auth will refuse them until they click the emailed link.
+    await expect(page).toHaveURL(/\/auth\/verify(\?|$)/);
+    await expect(page.getByRole("heading", { name: /check your email/i })).toBeVisible();
+    await expect(page.getByText("needs-confirmation@example.com")).toBeVisible();
+    await expect(page.getByText(/please sign in/i)).toHaveCount(0);
+  });
+
   test("the platform brands itself as Reconciliation Through Relationships", async ({
     landing,
   }) => {
