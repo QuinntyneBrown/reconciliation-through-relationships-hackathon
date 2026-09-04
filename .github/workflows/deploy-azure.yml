@@ -220,8 +220,15 @@ jobs:
               # Prove the Dockerfile's public/ and .next/static copies landed;
               # without them the app serves HTML and 404s every asset.
               LOGO_CODE=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 45 "https://${FQDN}/rtr-logo.png" || echo 000)
+              # Guard the empty case: with ASSET unset the URL collapses to the
+              # site root, which answers 200 and would fake a passing check.
               ASSET=$(printf '%s' "$HOME_BODY" | grep -oE '/_next/static/[^"]+' | head -1)
-              ASSET_CODE=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 45 "https://${FQDN}${ASSET}" || echo 000)
+              if [ -n "$ASSET" ]; then
+                ASSET_CODE=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 45 "https://${FQDN}${ASSET}" || echo 000)
+              else
+                ASSET="(none referenced)"
+                ASSET_CODE=000
+              fi
               echo "attempt ${attempt}: title ok, /auth/login ${LOGIN_CODE}, logo ${LOGO_CODE}, ${ASSET} ${ASSET_CODE}"
               if [ "$LOGO_CODE" = "200" ] && [ "$ASSET_CODE" = "200" ]; then
                 echo "Smoke test passed."
