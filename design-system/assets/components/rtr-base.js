@@ -1,0 +1,2 @@
+export const h=(v='')=>String(v).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
+export class B extends HTMLElement{static get observedAttributes(){return []}connectedCallback(){this.r()}attributeChangedCallback(){if(this.isConnected)this.r()}t(n,d=''){return this.getAttribute(n)??d}b(n){return this.hasAttribute(n)&&this.getAttribute(n)!=='false'}n(n,d=0){const v=Number(this.getAttribute(n));return Number.isFinite(v)?v:d}m(k='_html'){if(!this[k])this[k]=this.innerHTML.trim();return this[k]}}

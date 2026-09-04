@@ -97,7 +97,7 @@ docs/                       Architecture, product, and operations documentation
 | Document | Purpose |
 | --- | --- |
 | [User guide](docs/guide/README.md) | Screen-by-screen participant and facilitator instructions |
-| [Design system](docs/design-system/README.md) | Foundations and UI component reference with screenshots |
+| [Design system](design-system/README.md) | Standalone Vite catalog, foundations, live components, and static deployment |
 | [Architecture](docs/ARCHITECTURE.md) | Concise system layers and data flow |
 | [Architecture description](docs/SOFTWARE_ARCHITECTURE_DESCRIPTION.md) | Detailed ISO/IEC/IEEE 42010-aligned system description |
 | [Database schema](docs/DB_SCHEMA.md) | Tables, relationships, privacy safeguards, and open decisions |
