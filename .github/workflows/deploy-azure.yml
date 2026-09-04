@@ -78,6 +78,14 @@ jobs:
       # NEXT_PUBLIC_* are baked into the client bundle at build time. If blank,
       # createBrowserClient("") throws and every /auth/* page fails at runtime
       # with no build-time warning. Fail here instead.
+      #
+      # Local-dev values are rejected for the same reason, and they are the more
+      # dangerous case because nothing downstream notices: the image builds, the
+      # revision deploys, the smoke test passes, and every page renders. But
+      # NEXT_PUBLIC_SUPABASE_URL ships to the browser, so a loopback address
+      # resolves to the VISITOR's own machine and every signup and login attempt
+      # dies with ERR_CONNECTION_REFUSED. Auth that cannot work must fail the
+      # build rather than deploy looking healthy.
       - name: Verify build-time public config is present
         env:
           SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
@@ -86,6 +94,30 @@ jobs:
           set -euo pipefail
           [ -n "$SUPABASE_URL" ] || { echo "::error::Secret NEXT_PUBLIC_SUPABASE_URL is empty; auth pages would crash at runtime."; exit 1; }
           [ -n "$SUPABASE_ANON_KEY" ] || { echo "::error::Secret NEXT_PUBLIC_SUPABASE_ANON_KEY is empty; auth pages would crash at runtime."; exit 1; }
+
+          case "$SUPABASE_URL" in
+            *localhost*|*127.0.0.1*|*0.0.0.0*|*"[::1]"*)
+              echo "::error::NEXT_PUBLIC_SUPABASE_URL points at loopback. It is baked into the browser bundle, where it resolves to the visitor's own machine, so signup and login would be dead for every user. Set it to the hosted project URL from Supabase > Project Settings > Data API."
+              exit 1 ;;
+          esac
+
+          case "$SUPABASE_URL" in
+            https://*) ;;
+            *) echo "::error::NEXT_PUBLIC_SUPABASE_URL must be an https:// URL of a hosted Supabase project."; exit 1 ;;
+          esac
+
+          # The Supabase CLI's local stack hands out a well-known demo anon key,
+          # issued by "supabase-demo". It is valid JWT-shaped config that no
+          # hosted project will ever accept.
+          PAYLOAD=$(printf '%s' "$SUPABASE_ANON_KEY" | cut -d. -f2)
+          case $(( ${#PAYLOAD} % 4 )) in
+            2) PAYLOAD="${PAYLOAD}==" ;;
+            3) PAYLOAD="${PAYLOAD}=" ;;
+          esac
+          if printf '%s' "$PAYLOAD" | tr '_-' '/+' | base64 -d 2>/dev/null | grep -q 'supabase-demo'; then
+            echo "::error::NEXT_PUBLIC_SUPABASE_ANON_KEY is the Supabase CLI local demo key, not a hosted project key. Copy the anon key from Supabase > Project Settings > API Keys."
+            exit 1
+          fi
 
       - name: Compute image reference
         id: ref
