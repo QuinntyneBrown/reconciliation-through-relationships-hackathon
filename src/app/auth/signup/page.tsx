@@ -36,7 +36,15 @@ export default function SignupPage() {
     setLoading(true);
     const supabase = createSupabaseBrowserClient();
 
-    const { data, error } = await supabase.auth.signUp({ email, password });
+    // Without this, Auth builds the confirmation link from the project's Site
+    // URL — which points at localhost, so anyone signing up on the deployed
+    // site gets a link to their own machine. The target must also be listed in
+    // the project's redirect allow-list or Auth falls back to Site URL anyway.
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+    });
 
     if (error) {
       toast.error(error.message);
