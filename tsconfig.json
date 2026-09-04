@@ -40,7 +40,7 @@
   ],
   "exclude": [
     "node_modules",
-    "boundary-interface-tests",
-    "boundary-interface-tests/**/*"
+    "e2e",
+    "e2e/**/*"
   ]
 }

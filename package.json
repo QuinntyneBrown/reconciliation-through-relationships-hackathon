@@ -12,8 +12,8 @@
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test:boundary": "playwright test --config=boundary-interface-tests/playwright.config.ts",
-    "test:boundary:ui": "playwright test --config=boundary-interface-tests/playwright.config.ts --ui",
+    "test:boundary": "playwright test --config=e2e/playwright.config.ts",
+    "test:boundary:ui": "playwright test --config=e2e/playwright.config.ts --ui",
     "seed": "tsx supabase/seeds/participants.ts"
   },
   "dependencies": {

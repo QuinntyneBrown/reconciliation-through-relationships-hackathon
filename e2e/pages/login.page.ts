@@ -1,42 +1,27 @@
-import { expect, type Page } from "@playwright/test";
-
 import { BasePage } from "./base.page";
-import { TEST_PASSWORD, testUsers, type TestUserKey } from "../support/test-data";
+
+export type Account = "participant" | "new" | "learner" | "facilitator";
+
+const emails: Record<Account, string> = {
+  participant: "participant@example.com",
+  new: "new@example.com",
+  learner: "learner@example.com",
+  facilitator: "facilitator@example.com",
+};
 
 export class LoginPage extends BasePage {
-  readonly email = this.page.getByLabel("Email address");
-  readonly password = this.page.getByLabel("Password", { exact: true });
-  readonly submit = this.page.getByRole("button", { name: "Sign in" });
-
-  constructor(page: Page) {
-    super(page);
+  async goto() {
+    await this.page.goto("/auth/login");
   }
 
-  async open() {
-    await this.goto("/auth/login");
-    await expect(this.page.getByRole("heading", { name: "Welcome back" })).toBeVisible();
+  async signIn(email: string, password = "password123") {
+    await this.page.getByLabel("Email address").fill(email);
+    await this.page.getByLabel("Password", { exact: true }).fill(password);
+    await this.page.getByRole("button", { name: "Sign in" }).click();
   }
 
-  async signIn(key: TestUserKey) {
-    await this.open();
-    await this.email.fill(testUsers[key].email);
-    await this.password.fill(TEST_PASSWORD);
-    await this.submit.click();
-    await this.waitForAuthenticatedNavigation();
-  }
-
-  async signInWith(email: string, password: string) {
-    await this.open();
-    await this.email.fill(email);
-    await this.password.fill(password);
-    await this.submit.click();
-    if (Object.values(testUsers).some((user) => user.email === email)) {
-      await this.waitForAuthenticatedNavigation();
-    }
-  }
-
-  private async waitForAuthenticatedNavigation() {
-    await this.page.waitForURL((url) => url.pathname !== "/auth/login");
-    await this.page.waitForLoadState("networkidle");
+  async signInAs(account: Account) {
+    await this.goto();
+    await this.signIn(emails[account]);
   }
 }

@@ -1,6 +1,6 @@
 # Requirement-to-test traceability
 
-`B/x` = `boundary-interface-tests/specs/x.spec.ts`; `E/nn` = `e2e/tests/nn-*.spec.ts`. "—" = no automated test yet (candidate for future ATDD work).
+`E/x` = `e2e/specs/x.spec.ts`. "—" = no automated test yet (candidate for future ATDD work).
 
 | L2 | Test coverage |
 |---|---|

@@ -1,19 +1,8 @@
-import { expect, type Page } from "@playwright/test";
-
 import { BasePage } from "./base.page";
 
 export class DashboardPage extends BasePage {
-  constructor(page: Page) {
-    super(page);
-  }
-
-  async expectWelcome(name: string) {
-    await expect(this.page.getByRole("heading", { name: `Welcome, ${name}` })).toBeVisible();
-  }
-
   async openAllParticipants() {
-    await this.page.getByRole("tab", { name: /All participants/ }).click();
-    await expect(this.page.getByPlaceholder("Search by name, city, or interest…")).toBeVisible();
+    await this.page.getByRole("tab", { name: "All participants" }).click();
   }
 
   async search(term: string) {
@@ -26,14 +15,28 @@ export class DashboardPage extends BasePage {
   }
 
   async showMap() {
-    await this.page.getByRole("button", { name: "Map", exact: true }).click();
-    await expect(
-      this.page.getByText("Only showing participants who consented to map display."),
-    ).toBeVisible();
+    await this.page.getByRole("button", { name: "Map" }).click();
+  }
+
+  async showList() {
+    await this.page.getByRole("button", { name: "List" }).click();
+  }
+
+  resultCount() {
+    return this.page.getByText(/^\d+ participants?$/);
+  }
+
+  async openAccountMenu() {
+    await this.page.getByRole("button", { name: "Open account menu" }).click();
+  }
+
+  async openMyProfile() {
+    await this.openAccountMenu();
+    await this.page.getByRole("menuitem", { name: "My profile" }).click();
   }
 
   async signOut() {
-    await this.page.getByRole("button", { name: /Open account menu/ }).click();
+    await this.openAccountMenu();
     await this.page.getByRole("menuitem", { name: "Sign out" }).click();
   }
 }

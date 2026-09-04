@@ -1,27 +1,18 @@
 import { defineConfig, devices } from "@playwright/test";
-import path from "node:path";
 
-const rootDir = path.resolve(__dirname, "..");
+const appPort = 3100;
+const backendPort = 54329;
 
 export default defineConfig({
-  testDir: path.join(__dirname, "tests"),
-  outputDir: path.join(__dirname, "test-results"),
-  globalSetup: path.join(__dirname, "support", "global-setup.ts"),
-  globalTeardown: path.join(__dirname, "support", "global-teardown.ts"),
+  testDir: "./specs",
   fullyParallel: false,
   workers: 1,
-  forbidOnly: Boolean(process.env.CI),
-  retries: process.env.CI ? 2 : 0,
-  reporter: process.env.CI
-    ? [
-        ["line"],
-        ["html", { outputFolder: path.join(__dirname, "playwright-report"), open: "never" }],
-      ]
-    : "list",
   timeout: 30_000,
-  expect: { timeout: 7_500 },
+  expect: { timeout: 5_000 },
+  outputDir: "./test-results",
+  reporter: [["list"], ["html", { outputFolder: "./playwright-report", open: "never" }]],
   use: {
-    baseURL: "http://127.0.0.1:3000",
+    baseURL: `http://127.0.0.1:${appPort}`,
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
     video: "retain-on-failure",
@@ -32,11 +23,26 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"] },
     },
   ],
-  webServer: {
-    command: "npm run dev -- --hostname 127.0.0.1 --port 3000",
-    cwd: rootDir,
-    url: "http://127.0.0.1:3000",
-    reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
-  },
+  webServer: [
+    {
+      command: `npx tsx support/mock-backend.ts --port ${backendPort}`,
+      url: `http://127.0.0.1:${backendPort}/__mock/health`,
+      reuseExistingServer: !process.env.CI,
+      timeout: 30_000,
+    },
+    {
+      command: `npm --prefix .. run dev -- --hostname 127.0.0.1 --port ${appPort}`,
+      url: `http://127.0.0.1:${appPort}`,
+      reuseExistingServer: !process.env.CI,
+      timeout: 120_000,
+      env: {
+        DATA_SOURCE: "mock",
+        NEXT_PUBLIC_SUPABASE_URL: `http://127.0.0.1:${backendPort}`,
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: "boundary-interface-test-key",
+        NEXT_PUBLIC_MAPBOX_TOKEN: "",
+        ZOOM_ACCESS_TOKEN: "boundary-interface-test-token",
+        NEXT_DIST_DIR: ".next-boundary",
+      },
+    },
+  ],
 });

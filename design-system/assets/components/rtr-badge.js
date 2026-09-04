@@ -1,0 +1,1 @@
+import {B,h} from './rtr-base.js'; class X extends B{static get observedAttributes(){return['variant','dot']} r(){const c=this.m()||h(this.t('label','Badge'));this.innerHTML=`<span class="rtr-badge" data-variant="${h(this.t('variant','default'))}" data-dot="${this.b('dot')}">${c}</span>`}} if(!customElements.get('rtr-badge'))customElements.define('rtr-badge',X);

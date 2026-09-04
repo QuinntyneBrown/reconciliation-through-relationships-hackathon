@@ -1,29 +1,35 @@
-import { expect, type Page } from "@playwright/test";
-
 import { BasePage } from "./base.page";
 
 export class LandingPage extends BasePage {
-  constructor(page: Page) {
-    super(page);
-  }
-
-  async open() {
-    await this.goto("/");
-    await expect(
-      this.page.getByRole("heading", { name: /Reconciliation begins with a relationship/ }),
-    ).toBeVisible();
-  }
-
-  async openJourneySection() {
-    await this.page.getByRole("link", { name: "See how it works" }).click();
-    await expect(this.page).toHaveURL(/#how$/);
-    await expect(
-      this.page.getByRole("heading", { name: "Four steps, at your pace" }),
-    ).toBeVisible();
+  async goto() {
+    await this.page.goto("/");
   }
 
   async beginJourney() {
     await this.page.getByRole("link", { name: "Begin your journey" }).click();
-    await this.expectPath("/auth/login");
+  }
+
+  async showHowItWorks() {
+    await this.page.getByRole("link", { name: "See how it works" }).click();
+  }
+
+  journeySection() {
+    return this.page.locator("#how");
+  }
+
+  tagline() {
+    return this.page.getByText("An invitation, in response to the TRC's calls to action");
+  }
+
+  organizationLogo() {
+    return this.page.getByRole("img", { name: "Reconciliation Through Relationships logo" });
+  }
+
+  successStories() {
+    return this.page.getByRole("region", { name: "Success stories" });
+  }
+
+  testimonials() {
+    return this.successStories().getByRole("figure");
   }
 }

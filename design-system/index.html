@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="RTR design-system catalog.">
+  <title>RTR Design System</title>
+  <link rel="stylesheet" href="assets/tokens.css">
+  <link rel="stylesheet" href="assets/foundations.css">
+  <link rel="stylesheet" href="assets/docs.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <button id="menu" class="menu-button" type="button" aria-expanded="false" aria-controls="docs-nav" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+    <a class="brand-link" href="#/" aria-label="RTR Design System home"><span class="brand-mark" aria-hidden="true"></span><span><strong>Reconciliation</strong><small>Through Relationships</small></span></a>
+    <div class="site-search">
+      <span class="search-icon" aria-hidden="true">⌕</span>
+      <input id="search" type="search" aria-label="Search documentation" placeholder="Search foundations and components" autocomplete="off" aria-controls="search-results" aria-expanded="false">
+      <kbd>/</kbd>
+      <div id="search-results" class="search-results" role="listbox" hidden></div>
+    </div>
+    <a class="header-link" href="component-manifest.json" target="_blank" rel="noreferrer">Manifest ↗</a>
+  </header>
+  <div class="site-layout">
+    <aside id="docs-nav" class="docs-nav" aria-label="Design system navigation"></aside>
+    <button id="nav-scrim" class="nav-scrim" type="button" aria-label="Close navigation" hidden></button>
+    <main id="main" tabindex="-1"><div class="loading-state">Loading…</div></main>
+  </div>
+  <div id="status" class="status" role="status" aria-live="polite" aria-atomic="true"></div>
+  <script type="module" src="assets/catalog.js"></script>
+</body>
+</html>

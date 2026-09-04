@@ -45,13 +45,15 @@ npx playwright install chromium
 For changes to application behavior, run:
 
 ```bash
-npm run test:boundary
+npm run test:e2e
 npm run typecheck
 npm run lint
 npm run build
 ```
 
-Use `npm run test:e2e` for critical full-stack journeys when the change requires it. The end-to-end suite needs configured external services; the [boundary suite](boundary-interface-tests/README.md) uses deterministic local doubles.
+The end-to-end suite uses deterministic local doubles and does not call production
+services. See the [end-to-end test guide](e2e/README.md) for its coverage and
+one-time browser setup.
 
 For non-behavior changes, run only the checks relevant to the files changed. Continuous integration runs type checking and a production build; contributors should also run lint locally for source changes.
 

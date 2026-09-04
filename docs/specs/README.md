@@ -2,7 +2,7 @@
 
 The requirements are organized first by the same **subsystems** used in [`docs/detailed-designs`](../detailed-designs/README.md), then by **capability** within each subsystem. A capability is a coherent, independently reusable area of functionality (the building blocks other solutions could be assembled from). Each subsystem's namesake capability keeps its high-level requirements (`L1.md`) and detailed requirements (`L2.md`) at the subsystem root; additional capabilities use named subfolders.
 
-Reverse-engineered from the implemented system on 2026-07-12. Sources of truth, in priority order: the acceptance test suites (`boundary-interface-tests/specs/`, `e2e/tests/`), the application source (`src/`) and database migrations (`supabase/migrations/`), the UI state catalogs (`docs/mocks/`), and the intent documents (`docs/challenge.txt`, `docs/plan.md`, `docs/DECISIONS.md`).
+Reverse-engineered from the implemented system on 2026-07-12. Sources of truth, in priority order: the acceptance test suite (`e2e/specs/`), the application source (`src/`) and database migrations (`supabase/migrations/`), the UI state catalogs (`docs/mocks/`), and the intent documents (`docs/challenge.txt`, `docs/plan.md`, `docs/DECISIONS.md`).
 
 ## Subsystems
 

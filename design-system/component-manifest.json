@@ -1,0 +1,1493 @@
+{
+  "schemaVersion": 1,
+  "product": {
+    "name": "Reconciliation Through Relationships Design System",
+    "shortName": "RTR Design System",
+    "version": "1.0.0",
+    "description": "A standalone, manifest-driven catalog for RTR foundations, components, validation, and browser tests."
+  },
+  "foundations": [
+    {
+      "id": "principles",
+      "name": "Principles",
+      "description": "# Principles",
+      "docPath": "foundations/01-principles.md",
+      "highlights": [
+        "Readable first.",
+        "Consent is a design element."
+      ],
+      "demo": "principles"
+    },
+    {
+      "id": "design-tokens",
+      "name": "Design tokens",
+      "description": "# Design tokens",
+      "docPath": "foundations/02-design-tokens.md",
+      "highlights": [
+        "Palette -> roles -> utilities.",
+        "Tokens, not hard-coded colors."
+      ],
+      "demo": "design-tokens"
+    },
+    {
+      "id": "color",
+      "name": "Color",
+      "description": "# Color",
+      "docPath": "foundations/03-color.md",
+      "highlights": [
+        "Meaningful, land-informed hues.",
+        "Status is never color alone."
+      ],
+      "demo": "color"
+    },
+    {
+      "id": "typography",
+      "name": "Typography",
+      "description": "# Typography",
+      "docPath": "foundations/04-typography.md",
+      "highlights": [
+        "Fraunces for voice, Atkinson for reading.",
+        "Generous sizes and line length."
+      ],
+      "demo": "typography"
+    },
+    {
+      "id": "layout-and-spacing",
+      "name": "Layout & spacing",
+      "description": "# Layout & spacing",
+      "docPath": "foundations/05-layout-and-spacing.md",
+      "highlights": [
+        "4px rhythm with touch-friendly spacing.",
+        "Rounded geometry and restrained elevation."
+      ],
+      "demo": "layout-and-spacing"
+    },
+    {
+      "id": "brand-and-motifs",
+      "name": "Brand & motifs",
+      "description": "# Brand & motifs",
+      "docPath": "foundations/06-brand-and-motifs.md",
+      "highlights": [
+        "Two strands, one open circle.",
+        "Use the weave sparingly."
+      ],
+      "demo": "brand-and-motifs"
+    },
+    {
+      "id": "iconography",
+      "name": "Iconography",
+      "description": "# Iconography",
+      "docPath": "foundations/07-iconography.md",
+      "highlights": [
+        "Simple supportive glyphs.",
+        "Pair icons with words where needed."
+      ],
+      "demo": "iconography"
+    },
+    {
+      "id": "accessibility",
+      "name": "Accessibility",
+      "description": "# Accessibility",
+      "docPath": "foundations/08-accessibility.md",
+      "highlights": [
+        "Visible focus and real labels.",
+        "Reduced motion and text-backed errors."
+      ],
+      "demo": "accessibility"
+    }
+  ],
+  "categories": [
+    {
+      "id": "actions",
+      "label": "Actions",
+      "description": "Buttons and direct action affordances."
+    },
+    {
+      "id": "forms",
+      "label": "Form controls",
+      "description": "Text entry, selection, and validation patterns."
+    },
+    {
+      "id": "indicators",
+      "label": "Indicators",
+      "description": "Statuses, identities, progress, and loading."
+    },
+    {
+      "id": "navigation",
+      "label": "Navigation",
+      "description": "Headers, tabs, menus, sheets, and wayfinding."
+    },
+    {
+      "id": "layout",
+      "label": "Layout & content",
+      "description": "Cards, separators, tables, rows, and page framing."
+    },
+    {
+      "id": "feedback",
+      "label": "Popups & feedback",
+      "description": "Dialogs, alerts, toasts, tooltips, and notifications."
+    },
+    {
+      "id": "signature",
+      "label": "Signature components",
+      "description": "Distinctly RTR patterns and motifs."
+    }
+  ],
+  "components": [
+    {
+      "id": "button",
+      "name": "Button",
+      "description": "A button is a promise about what happens next, so its label names the action\u2019s **result** \u2014 \u201cSchedule call,\u201d \u201cBegin your journey,\u201d never \u201cSubmit\u201d or \u201cOK.\u201d Visual weight communicates importance: exactly one solid primary button per view, with every other action stepping down to outline, soft, quiet, or link.",
+      "category": "actions",
+      "selector": "rtr-button",
+      "source": "assets/components/rtr-button.js",
+      "implementation": "custom-element",
+      "docPath": "components/button.md",
+      "attributes": [
+        {
+          "name": "variant",
+          "type": "enum",
+          "default": "default",
+          "description": "Variant name"
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "default": "default",
+          "description": "Size token"
+        },
+        {
+          "name": "icon",
+          "type": "string",
+          "default": "",
+          "description": "Optional leading symbol"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": false,
+          "description": "Disables the button"
+        },
+        {
+          "name": "aria-label",
+          "type": "string",
+          "default": "",
+          "description": "Accessible label for icon-only actions"
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "default": "",
+          "description": "Renders the control as a link"
+        }
+      ],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Primary and secondary actions."
+        }
+      ],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Visible child content."
+        }
+      ],
+      "events": [
+        {
+          "name": "click",
+          "description": "Bubbles from the inner control."
+        }
+      ],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative button usage.",
+          "fixture": "button"
+        }
+      ]
+    },
+    {
+      "id": "form-field",
+      "name": "Form field",
+      "description": "There is no <FormField> wrapper to import. A field is four parts stacked with an 8px gap (space-y-2):",
+      "category": "forms",
+      "selector": "rtr-form-field",
+      "source": "assets/components/rtr-form-field.js",
+      "implementation": "custom-element",
+      "docPath": "components/form-field.md",
+      "attributes": [
+        {
+          "name": "label",
+          "type": "string",
+          "default": "",
+          "description": "Visible label"
+        },
+        {
+          "name": "hint",
+          "type": "string",
+          "default": "",
+          "description": "Helper copy"
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": false,
+          "description": "Adds a required marker"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "default": "",
+          "description": "Validation copy"
+        }
+      ],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "There is no <FormField> wrapper to import. A field is four parts stacked with an 8px gap (space-y-2):"
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative form field usage.",
+          "fixture": "form-field"
+        }
+      ]
+    },
+    {
+      "id": "input",
+      "name": "Input",
+      "description": "Input is a thin styling layer over the native <input>: it forwards type, value, placeholder, and every other input attribute untouched, and paints on the RTR control look. Pair it with a Label and, when a submit fails, a berry error message \u2014 see the form field pattern for the full assembly.",
+      "category": "forms",
+      "selector": "rtr-input",
+      "source": "assets/components/rtr-input.js",
+      "implementation": "custom-element",
+      "docPath": "components/input.md",
+      "attributes": [
+        {
+          "name": "type",
+          "type": "string",
+          "default": "text",
+          "description": "Native input type"
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "default": "",
+          "description": "Placeholder copy"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "default": "",
+          "description": "Current value"
+        },
+        {
+          "name": "invalid",
+          "type": "boolean",
+          "default": false,
+          "description": "Validation state"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": false,
+          "description": "Disabled state"
+        }
+      ],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Input is a thin styling layer over the native <input>: it forwards type, value, placeholder, and every other input attribute untouched, and paints on the RTR control look. Pair it with a Label and, when a submit fails, a berry error message \u2014 see the form field pattern for the full assembly."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative input usage.",
+          "fixture": "input"
+        }
+      ]
+    },
+    {
+      "id": "textarea",
+      "name": "Textarea",
+      "description": "Textarea shares every visual token with Input \u2014 parchment fill, 1.5px border-strong border, 10px radius, spruce hover/focus border, ochre focus outline, berry aria-invalid state \u2014 through the shared controlStyles. It adds three things: a taller minimum height, a relaxed line height for reading prose, and a vertical resize handle.",
+      "category": "forms",
+      "selector": "rtr-textarea",
+      "source": "assets/components/rtr-textarea.js",
+      "implementation": "custom-element",
+      "docPath": "components/textarea.md",
+      "attributes": [
+        {
+          "name": "rows",
+          "type": "number",
+          "default": 4,
+          "description": "Visible rows"
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "default": "",
+          "description": "Prompt copy"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "default": "",
+          "description": "Current value"
+        },
+        {
+          "name": "invalid",
+          "type": "boolean",
+          "default": false,
+          "description": "Validation state"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": false,
+          "description": "Disabled state"
+        }
+      ],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Textarea shares every visual token with Input \u2014 parchment fill, 1.5px border-strong border, 10px radius, spruce hover/focus border, ochre focus outline, berry aria-invalid state \u2014 through the shared controlStyles. It adds three things: a taller minimum height, a relaxed line height for reading prose, and a vertical resize handle."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative textarea usage.",
+          "fixture": "textarea"
+        }
+      ]
+    },
+    {
+      "id": "select",
+      "name": "Select",
+      "description": "Select is not one component but a set of parts you compose, the same shape as Base UI's own API. The trigger wears the shared control contract (parchment fill, 1.5px border-strong border, 10px radius, spruce hover/focus border, ochre focus outline), so a closed select is visually a sibling of an Input. Use it when the options are a fixed, known set \u2014 provinces, formats \u2014 and a free-text Input otherwise.",
+      "category": "forms",
+      "selector": "rtr-select",
+      "source": "assets/components/rtr-select.js",
+      "implementation": "custom-element",
+      "docPath": "components/select.md",
+      "attributes": [
+        {
+          "name": "options",
+          "type": "list",
+          "default": "",
+          "description": "Pipe-delimited value:label options"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "default": "",
+          "description": "Selected value"
+        },
+        {
+          "name": "invalid",
+          "type": "boolean",
+          "default": false,
+          "description": "Validation state"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": false,
+          "description": "Disabled state"
+        }
+      ],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Select is not one component but a set of parts you compose, the same shape as Base UI's own API. The trigger wears the shared control contract (parchment fill, 1.5px border-strong border, 10px radius, spruce hover/focus border, ochre focus outline), so a closed select is visually a sibling of an Input. Use it when the options are a fixed, known set \u2014 provinces, formats \u2014 and a free-text Input otherwise."
+        }
+      ],
+      "slots": [],
+      "events": [
+        {
+          "name": "change",
+          "description": "Raised when the value changes."
+        }
+      ],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative select usage.",
+          "fixture": "select"
+        }
+      ]
+    },
+    {
+      "id": "checkbox",
+      "name": "Checkbox",
+      "description": "Use a checkbox for options that are **independent** \u2014 any number can be on at once (availability days, preferred formats, participation categories). When the options are mutually exclusive, use a Radio group; when a single setting flips a behavior on or off, use a Switch.",
+      "category": "forms",
+      "selector": "rtr-checkbox",
+      "source": "assets/components/rtr-checkbox.js",
+      "implementation": "custom-element",
+      "docPath": "components/checkbox.md",
+      "attributes": [
+        {
+          "name": "checked",
+          "type": "boolean",
+          "default": false,
+          "description": "Selection state"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "default": "",
+          "description": "Supporting copy"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": false,
+          "description": "Disabled state"
+        }
+      ],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Use a checkbox for options that are **independent** \u2014 any number can be on at once (availability days, preferred formats, participation categories). When the options are mutually exclusive, use a Radio group; when a single setting flips a behavior on or off, use a Switch."
+        }
+      ],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Visible child content."
+        }
+      ],
+      "events": [
+        {
+          "name": "change",
+          "description": "Raised when the value changes."
+        }
+      ],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative checkbox usage.",
+          "fixture": "checkbox"
+        }
+      ]
+    },
+    {
+      "id": "radio-group",
+      "name": "Radio group",
+      "description": "Use a radio group when the options are **mutually exclusive** and few enough to show all at once \u2014 \"Are you Indigenous? Yes / No\", \"Sex\", \"Preferred connection format\". For independent options where any number can be on, use Checkbox; for a long list, use Select.",
+      "category": "forms",
+      "selector": ".rtr-radio-group",
+      "source": "assets/catalog-content.js",
+      "implementation": "template",
+      "docPath": "components/radio-group.md",
+      "attributes": [],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Use a fieldset + legend for grouped single-choice options."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative radio group usage.",
+          "fixture": "radio-group"
+        }
+      ]
+    },
+    {
+      "id": "switch",
+      "name": "Switch",
+      "description": "Use a switch for a setting that reads naturally as **on or off** and whose label names a state, not a choice: \"Auto-matching enabled\", \"Show me on the regional map\". For picking among options use a Radio group or Checkbox; the switch is for behaviors you turn on and off.",
+      "category": "forms",
+      "selector": "rtr-switch",
+      "source": "assets/components/rtr-switch.js",
+      "implementation": "custom-element",
+      "docPath": "components/switch.md",
+      "attributes": [
+        {
+          "name": "checked",
+          "type": "boolean",
+          "default": false,
+          "description": "Selection state"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "default": "",
+          "description": "Visible label"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "default": "",
+          "description": "Supporting copy"
+        }
+      ],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Use a switch for a setting that reads naturally as **on or off** and whose label names a state, not a choice: \"Auto-matching enabled\", \"Show me on the regional map\". For picking among options use a Radio group or Checkbox; the switch is for behaviors you turn on and off."
+        }
+      ],
+      "slots": [],
+      "events": [
+        {
+          "name": "change",
+          "description": "Raised when the value changes."
+        }
+      ],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative switch usage.",
+          "fixture": "switch"
+        }
+      ]
+    },
+    {
+      "id": "slider",
+      "name": "Slider",
+      "description": "Reach for a slider when a rough position along a range is more meaningful than a typed number and the exact value matters less than the sense of \"more or less\". When the precise number matters \u2014 and cohort threshold is a borderline case \u2014 a number Input is often clearer, so always pair a slider with a visible read-out of its current value.",
+      "category": "forms",
+      "selector": ".rtr-slider-demo",
+      "source": "assets/catalog-content.js",
+      "implementation": "template",
+      "docPath": "components/slider.md",
+      "attributes": [],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Pair range input with visible value text."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative slider usage.",
+          "fixture": "slider"
+        }
+      ]
+    },
+    {
+      "id": "badge",
+      "name": "Badge",
+      "description": "A badge summarizes one fact about the thing it sits on. The two families answer two different questions. **Caption badges** (13.5px, no dot) describe or filter \u2014 a person\u2019s background, an interest, an active filter. **Status pills** (12.5px, with a 7px leading dot) report where someone is on their journey.",
+      "category": "indicators",
+      "selector": "rtr-badge",
+      "source": "assets/components/rtr-badge.js",
+      "implementation": "custom-element",
+      "docPath": "components/badge.md",
+      "attributes": [
+        {
+          "name": "variant",
+          "type": "enum",
+          "default": "default",
+          "description": "Caption or status tone"
+        },
+        {
+          "name": "dot",
+          "type": "boolean",
+          "default": false,
+          "description": "Shows the status dot"
+        }
+      ],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "A badge summarizes one fact about the thing it sits on. The two families answer two different questions. **Caption badges** (13.5px, no dot) describe or filter \u2014 a person\u2019s background, an interest, an active filter. **Status pills** (12.5px, with a 7px leading dot) report where someone is on their journey."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative badge usage.",
+          "fixture": "badge"
+        }
+      ]
+    },
+    {
+      "id": "avatar",
+      "name": "Avatar",
+      "description": "Avatars are **initials only, by design**. On this platform a photo is something you share inside a conversation once both people have agreed to connect \u2014 it is never displayed by the system beforehand. Initials keep every list, card, and table warm and personal without pre-empting that consent.",
+      "category": "indicators",
+      "selector": "rtr-avatar",
+      "source": "assets/components/rtr-avatar.js",
+      "implementation": "custom-element",
+      "docPath": "components/avatar.md",
+      "attributes": [
+        {
+          "name": "initials",
+          "type": "string",
+          "default": "RT",
+          "description": "Initials to render"
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "default": "default",
+          "description": "Avatar size"
+        },
+        {
+          "name": "tone",
+          "type": "enum",
+          "default": "default",
+          "description": "Avatar tone"
+        },
+        {
+          "name": "badge",
+          "type": "string",
+          "default": "",
+          "description": "Badge content"
+        }
+      ],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Avatars are **initials only, by design**. On this platform a photo is something you share inside a conversation once both people have agreed to connect \u2014 it is never displayed by the system beforehand. Initials keep every list, card, and table warm and personal without pre-empting that consent."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative avatar usage.",
+          "fixture": "avatar"
+        }
+      ]
+    },
+    {
+      "id": "progress",
+      "name": "Progress",
+      "description": "Progress on this platform is about a person\u2019s path, not a loading state. The bar is a 10px sand track with a spruce-600 fill \u2014 calm, warm, and paired with a label row that says the same thing in words (\u201c2 of 4 modules\u201d) so the number is never left to the eye alone.",
+      "category": "indicators",
+      "selector": "rtr-progress",
+      "source": "assets/components/rtr-progress.js",
+      "implementation": "custom-element",
+      "docPath": "components/progress.md",
+      "attributes": [
+        {
+          "name": "value",
+          "type": "number",
+          "default": 0,
+          "description": "Completed amount"
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "default": 100,
+          "description": "Maximum amount"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "default": "",
+          "description": "Visible label"
+        }
+      ],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Progress on this platform is about a person\u2019s path, not a loading state. The bar is a 10px sand track with a spruce-600 fill \u2014 calm, warm, and paired with a label row that says the same thing in words (\u201c2 of 4 modules\u201d) so the number is never left to the eye alone."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative progress usage.",
+          "fixture": "progress"
+        }
+      ]
+    },
+    {
+      "id": "skeleton",
+      "name": "Skeleton",
+      "description": "A skeleton mirrors the layout it replaces \u2014 same box sizes, same rhythm \u2014 in the muted sand color, pulsing gently until the real content arrives. It reassures without demanding attention, and it keeps the page from reflowing when content lands.",
+      "category": "indicators",
+      "selector": ".rtr-skeleton-card",
+      "source": "assets/catalog-content.js",
+      "implementation": "template",
+      "docPath": "components/skeleton.md",
+      "attributes": [],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "A skeleton mirrors the layout it replaces \u2014 same box sizes, same rhythm \u2014 in the muted sand color, pulsing gently until the real content arrives. It reassures without demanding attention, and it keeps the page from reflowing when content lands."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative skeleton usage.",
+          "fixture": "skeleton"
+        }
+      ]
+    },
+    {
+      "id": "app-header",
+      "name": "App header",
+      "description": "AppHeader is one component that every top-level surface wraps with its own links and actions. It is a spruce-800 bar, sticky to the top of the viewport, finished with a **3px ochre bottom strand** (border-ochre-600) that ties the header to the brand\u2019s two-strand motif. The wordmark sits at the left, the primary nav fills the middle, and role and account controls collect on the right.",
+      "category": "navigation",
+      "selector": ".rtr-shell-header",
+      "source": "assets/catalog-content.js",
+      "implementation": "template",
+      "docPath": "components/app-header.md",
+      "attributes": [],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Sticky spruce shell header with brand, navigation, and actions."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative app header usage.",
+          "fixture": "app-header"
+        }
+      ]
+    },
+    {
+      "id": "tabs",
+      "name": "Tabs",
+      "description": "A tab set is a horizontal row of triggers over a shared bottom rule. The active trigger draws an **ochre-700 underline** (--secondary-foreground) and darkens its label to heading weight; the rest sit in muted text until hovered. Tabs are for switching between peer views of the same data \u2014 the dashboard\u2019s Recommended / Connections / All participants \u2014 not for navigating between pages, which belongs to the app header.",
+      "category": "navigation",
+      "selector": "rtr-tabs",
+      "source": "assets/components/rtr-tabs.js",
+      "implementation": "custom-element",
+      "docPath": "components/tabs.md",
+      "attributes": [
+        {
+          "name": "tabs",
+          "type": "list",
+          "default": "",
+          "description": "Pipe-delimited Label::Panel pairs"
+        },
+        {
+          "name": "active",
+          "type": "string",
+          "default": "",
+          "description": "Active tab label"
+        }
+      ],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "A tab set is a horizontal row of triggers over a shared bottom rule. The active trigger draws an **ochre-700 underline** (--secondary-foreground) and darkens its label to heading weight; the rest sit in muted text until hovered. Tabs are for switching between peer views of the same data \u2014 the dashboard\u2019s Recommended / Connections / All participants \u2014 not for navigating between pages, which belongs to the app header."
+        }
+      ],
+      "slots": [],
+      "events": [
+        {
+          "name": "change",
+          "description": "Raised when the value changes."
+        }
+      ],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative tabs usage.",
+          "fixture": "tabs"
+        }
+      ]
+    },
+    {
+      "id": "sheet",
+      "name": "Sheet",
+      "description": "A Sheet is a Dialog that enters from a screen edge rather than the center. Its one shipped job is **mobile navigation**: below 861px the app header hides its inline nav and a Menu button opens a right-side Sheet holding the same links. The panel is a --popover surface by default; the header recolours it to spruce-800 so the mobile nav matches the bar it came from.",
+      "category": "navigation",
+      "selector": ".rtr-sheet-demo",
+      "source": "assets/catalog-content.js",
+      "implementation": "template",
+      "docPath": "components/sheet.md",
+      "attributes": [],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Edge-anchored supporting panel for mobile navigation."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative sheet usage.",
+          "fixture": "sheet"
+        }
+      ]
+    },
+    {
+      "id": "dropdown-menu",
+      "name": "Dropdown menu",
+      "description": "A dropdown menu is a **parchment popup** (--popover) with 4px of padding, a rounded-lg corner, a hairline ring-foreground/10 ring, and a soft shadow. It collects the actions that would otherwise crowd the header \u2014 viewing a profile, signing out \u2014 behind a single avatar button. Items highlight on focus; the one destructive action, **Sign out**, is drawn in berry.",
+      "category": "navigation",
+      "selector": ".rtr-dropdown-demo",
+      "source": "assets/catalog-content.js",
+      "implementation": "template",
+      "docPath": "components/dropdown-menu.md",
+      "attributes": [],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Short action list anchored to a trigger."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative dropdown menu usage.",
+          "fixture": "dropdown-menu"
+        }
+      ]
+    },
+    {
+      "id": "breadcrumb-and-pagination",
+      "name": "Breadcrumb & pagination",
+      "description": "Breadcrumbs and pagination answer *where am I* and *how do I move through this*. Both are secondary to the app header and tabs: reach for them only inside long facilitator tables and drill-down views, where a title alone no longer locates the reader.",
+      "category": "navigation",
+      "selector": ".rtr-breadcrumb-demo",
+      "source": "assets/catalog-content.js",
+      "implementation": "template",
+      "docPath": "components/breadcrumb-and-pagination.md",
+      "attributes": [],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Wayfinding for deeper facilitator workflows."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative breadcrumb & pagination usage.",
+          "fixture": "breadcrumb-and-pagination"
+        }
+      ]
+    },
+    {
+      "id": "navigation-menu",
+      "name": "Navigation menu",
+      "description": "# Navigation menu",
+      "category": "navigation",
+      "selector": ".rtr-navigation-menu",
+      "source": "assets/catalog-content.js",
+      "implementation": "template",
+      "docPath": "components/navigation-menu.md",
+      "attributes": [],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Secondary navigation within a section."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative navigation menu usage.",
+          "fixture": "navigation-menu"
+        }
+      ]
+    },
+    {
+      "id": "card",
+      "name": "Card",
+      "description": "Cards are the workhorses of the interface, and their guiding rule is that they **lead with the person**. A participant or match card opens with the avatar and name \u2014 the record details (status, region, match score) follow. The surface is parchment with a 1px border, a 16px radius, and shadow-rtr-1; on an interactive card the border warms to spruce as you hover.",
+      "category": "layout",
+      "selector": "rtr-card",
+      "source": "assets/components/rtr-card.js",
+      "implementation": "custom-element",
+      "docPath": "components/card.md",
+      "attributes": [
+        {
+          "name": "title",
+          "type": "string",
+          "default": "",
+          "description": "Card heading"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "default": "",
+          "description": "Supporting copy"
+        },
+        {
+          "name": "footer",
+          "type": "string",
+          "default": "",
+          "description": "Footer copy"
+        },
+        {
+          "name": "eyebrow",
+          "type": "string",
+          "default": "",
+          "description": "Context label"
+        }
+      ],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Cards are the workhorses of the interface, and their guiding rule is that they **lead with the person**. A participant or match card opens with the avatar and name \u2014 the record details (status, region, match score) follow. The surface is parchment with a 1px border, a 16px radius, and shadow-rtr-1; on an interactive card the border warms to spruce as you hover."
+        }
+      ],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Visible child content."
+        }
+      ],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative card usage.",
+          "fixture": "card"
+        }
+      ]
+    },
+    {
+      "id": "separator",
+      "name": "Separator",
+      "description": "A separator is the quietest divider in the system: a single hairline in the --border color. Use it to separate sections that already belong together \u2014 rows in a settings list, groups of links in a footer. When content needs a heavier boundary, that is a job for a Card or spacing, not a rule.",
+      "category": "layout",
+      "selector": ".rtr-separator-demo",
+      "source": "assets/catalog-content.js",
+      "implementation": "template",
+      "docPath": "components/separator.md",
+      "attributes": [],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Low-emphasis divider between related content."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative separator usage.",
+          "fixture": "separator"
+        }
+      ]
+    },
+    {
+      "id": "table",
+      "name": "Table",
+      "description": "Tables are for **facilitator views only**. Participants never see each other in a grid \u2014 they meet through cards and list rows. When a facilitator does need to scan many people at once, the table keeps the platform\u2019s warmth: uppercase birch headers sit lightly above the rows, and every row opens with the person \u2014 a small avatar and name \u2014 before any status or date.",
+      "category": "layout",
+      "selector": ".rtr-table-demo",
+      "source": "assets/catalog-content.js",
+      "implementation": "template",
+      "docPath": "components/table.md",
+      "attributes": [],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Dense facilitator data view."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative table usage.",
+          "fixture": "table"
+        }
+      ]
+    },
+    {
+      "id": "list-row",
+      "name": "List row",
+      "description": "The list row is the participant-facing counterpart to a table row. Where a table packs people into a grid for a facilitator to scan, a list row gives each person their own soft card-like row \u2014 avatar, name, a line of context, and a trailing status. The **entire row is one link**, so there is a single, generous target and nothing to hunt for.",
+      "category": "layout",
+      "selector": ".rtr-list-row",
+      "source": "assets/catalog-content.js",
+      "implementation": "template",
+      "docPath": "components/list-row.md",
+      "attributes": [],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Whole-row target for a single item."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative list row usage.",
+          "fixture": "list-row"
+        }
+      ]
+    },
+    {
+      "id": "empty-state",
+      "name": "Empty state",
+      "description": "An empty state is a moment of waiting, not a failure, and the panel is written to feel that way: the muted brand mark \u2014 a circle still waiting to form \u2014 sits above a calm heading and a sentence that explains *why* it\u2019s empty and what happens next. Because relationships in this product genuinely take time, most empty states reassure rather than prompt; an action is offered only when there\u2019s a useful next step.",
+      "category": "layout",
+      "selector": ".rtr-empty-state",
+      "source": "assets/catalog-content.js",
+      "implementation": "template",
+      "docPath": "components/empty-state.md",
+      "attributes": [],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Explain what is missing and how to proceed."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative empty state usage.",
+          "fixture": "empty-state"
+        }
+      ]
+    },
+    {
+      "id": "page-intro",
+      "name": "Page intro",
+      "description": "Every page begins the same way, so people always know where the content starts: a small ochre **eyebrow** names the section, a Fraunces **heading** names the page, an optional **lead** sets the tone in one sentence, and a woven strand closes the unit like a threshold crossed. Actions \u2014 a primary button, or a small settings control \u2014 sit to the right on wide screens and drop below the heading on narrow ones.",
+      "category": "layout",
+      "selector": ".rtr-page-intro",
+      "source": "assets/catalog-content.js",
+      "implementation": "template",
+      "docPath": "components/page-intro.md",
+      "attributes": [],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Eyebrow, heading, lead, weave, and actions."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative page intro usage.",
+          "fixture": "page-intro"
+        }
+      ]
+    },
+    {
+      "id": "app-footer",
+      "name": "App footer",
+      "description": "The footer is a bg-spruce-900 band that mirrors the app header at the other end of the page. It carries the panel-on-dark figure \u2014 the faint facing-profiles motif \u2014 behind its content, closes with the on-dark weave, and always ends on the **territorial acknowledgment**. It is pinned to the bottom of short pages with mt-auto.",
+      "category": "layout",
+      "selector": ".rtr-footer",
+      "source": "assets/catalog-content.js",
+      "implementation": "template",
+      "docPath": "components/app-footer.md",
+      "attributes": [],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Mission copy and territorial acknowledgement on dark surface."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative app footer usage.",
+          "fixture": "app-footer"
+        }
+      ]
+    },
+    {
+      "id": "dialog",
+      "name": "Dialog",
+      "description": "A dialog interrupts. Reserve it for a self-contained task the participant should finish or dismiss before moving on \u2014 scheduling a call, reviewing a partner's profile \u2014 never for content that belongs on the page. Every dialog is a rounded-2xl parchment popup with a 1px border and a 4px ochre-700 strand across its top edge, laid over a spruce-tinted backdrop that dims the page behind it. A ghost icon close sits in the top-right corner; footer actions align to the right.",
+      "category": "feedback",
+      "selector": "rtr-dialog",
+      "source": "assets/components/rtr-dialog.js",
+      "implementation": "custom-element",
+      "docPath": "components/dialog.md",
+      "attributes": [
+        {
+          "name": "title",
+          "type": "string",
+          "default": "",
+          "description": "Dialog title"
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "default": false,
+          "description": "Shows the dialog"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "default": "",
+          "description": "Supporting sentence"
+        },
+        {
+          "name": "actions",
+          "type": "list",
+          "default": "Close",
+          "description": "Footer action labels"
+        }
+      ],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "A dialog interrupts. Reserve it for a self-contained task the participant should finish or dismiss before moving on \u2014 scheduling a call, reviewing a partner's profile \u2014 never for content that belongs on the page. Every dialog is a rounded-2xl parchment popup with a 1px border and a 4px ochre-700 strand across its top edge, laid over a spruce-tinted backdrop that dims the page behind it. A ghost icon close sits in the top-right corner; footer actions align to the right."
+        }
+      ],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Visible child content."
+        }
+      ],
+      "events": [
+        {
+          "name": "close",
+          "description": "Raised when the dialog closes."
+        }
+      ],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative dialog usage.",
+          "fixture": "dialog"
+        }
+      ]
+    },
+    {
+      "id": "tooltip",
+      "name": "Tooltip",
+      "description": "Tooltips carry supplementary hints \u2014 most often the reason an action is unavailable \u2014 on a compact spruce-800 surface with on-dark text. They are deliberately rare in the app: use one only when a control needs a short explanation that would clutter the layout if shown inline, and never for information a participant must not miss (that belongs in an Alert) or as a control's only accessible name.",
+      "category": "feedback",
+      "selector": ".rtr-tooltip-demo",
+      "source": "assets/catalog-content.js",
+      "implementation": "template",
+      "docPath": "components/tooltip.md",
+      "attributes": [],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Context-only clarification, never critical instructions."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative tooltip usage.",
+          "fixture": "tooltip"
+        }
+      ]
+    },
+    {
+      "id": "toast",
+      "name": "Toast",
+      "description": "A toast tells a participant an action worked (or didn't) and then disappears. Use it for transient confirmations \u2014 \"Settings saved.\", \"Match approved and participants notified.\" \u2014 where the outcome doesn't need to persist on screen. Anything the participant must not miss, or must act on, belongs in an inline Alert instead, which stays put until it's resolved.",
+      "category": "feedback",
+      "selector": ".rtr-toast-demo",
+      "source": "assets/catalog-content.js",
+      "implementation": "template",
+      "docPath": "components/toast.md",
+      "attributes": [],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Transient confirmation that does not block progress."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative toast usage.",
+          "fixture": "toast"
+        }
+      ]
+    },
+    {
+      "id": "alert",
+      "name": "Alert",
+      "description": "An alert stays on the page until the situation it describes changes, which is what sets it apart from a Toast: use it for status a participant needs to keep seeing \u2014 \"You're on the waitlist.\", \"This connection is under review.\" Each alert is a rounded-xl banner with a single border-and-tint pair drawn from one meaning, leading with a bolded sentence and an optional description beneath.",
+      "category": "feedback",
+      "selector": "rtr-alert",
+      "source": "assets/components/rtr-alert.js",
+      "implementation": "custom-element",
+      "docPath": "components/alert.md",
+      "attributes": [
+        {
+          "name": "variant",
+          "type": "enum",
+          "default": "info",
+          "description": "Alert tone"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "default": "",
+          "description": "Alert title"
+        }
+      ],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "An alert stays on the page until the situation it describes changes, which is what sets it apart from a Toast: use it for status a participant needs to keep seeing \u2014 \"You're on the waitlist.\", \"This connection is under review.\" Each alert is a rounded-xl banner with a single border-and-tint pair drawn from one meaning, leading with a bolded sentence and an optional description beneath."
+        }
+      ],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Visible child content."
+        }
+      ],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative alert usage.",
+          "fixture": "alert"
+        }
+      ]
+    },
+    {
+      "id": "notification-center",
+      "name": "Notification center",
+      "description": "The bell lives in the spruce app header. It shows an ochre count of unread notifications, and opening it reveals a scrollable parchment panel of the twenty most recent. New notifications arrive live over a realtime subscription \u2014 each one both prepends to the panel and raises a Toast with a \"View\" action. Clicking a row marks it read and routes to the connection or dashboard it concerns.",
+      "category": "feedback",
+      "selector": ".rtr-notification-demo",
+      "source": "assets/catalog-content.js",
+      "implementation": "template",
+      "docPath": "components/notification-center.md",
+      "attributes": [],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Bell trigger with recent notifications panel."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative notification center usage.",
+          "fixture": "notification-center"
+        }
+      ]
+    },
+    {
+      "id": "cohort-circle",
+      "name": "Cohort circle",
+      "description": "The cohort circle answers one question at a glance: *how close is this region to gathering?* Seats sit evenly around a ring, one per eligible participant, and the centre always shows the running count. Nothing about the meaning depends on colour alone \u2014 the number and the outlined empty seats carry the same information for anyone who can't distinguish spruce from ochre.",
+      "category": "signature",
+      "selector": ".rtr-cohort-circle",
+      "source": "assets/catalog-content.js",
+      "implementation": "template",
+      "docPath": "components/cohort-circle.md",
+      "attributes": [],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Seat-by-seat readiness indicator."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative cohort circle usage.",
+          "fixture": "cohort-circle"
+        }
+      ]
+    },
+    {
+      "id": "journey-stepper",
+      "name": "Journey stepper",
+      "description": "The stepper turns a form or wizard into a walk with a visible destination. Three states read at a glance: a **completed** step is a solid spruce circle with a check, the **current** step is a solid ochre circle showing its number, and an **upcoming** step is a hollow outline. The rail between steps fills spruce up to the current position, so progress is legible from the connecting line alone.",
+      "category": "signature",
+      "selector": ".rtr-journey-stepper",
+      "source": "assets/catalog-content.js",
+      "implementation": "template",
+      "docPath": "components/journey-stepper.md",
+      "attributes": [],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Sequential orientation through onboarding or learning."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative journey stepper usage.",
+          "fixture": "journey-stepper"
+        }
+      ]
+    },
+    {
+      "id": "rtr-brand",
+      "name": "RTR brand",
+      "description": "The mark is two arcs \u2014 ochre and river \u2014 that together form a single circle around two dots: two people held by one relationship. The circle is **open at the top and bottom**, so the relationship is never closed to others. A muted variant drains the colour, removes the dots, and dashes one strand; it stands in wherever a relationship hasn\u2019t formed yet, most often inside an empty state. The woven strand echoes the same two colours as an interlacing divider.",
+      "category": "signature",
+      "selector": ".rtr-brand-lockup",
+      "source": "assets/catalog-content.js",
+      "implementation": "template",
+      "docPath": "components/rtr-brand.md",
+      "attributes": [],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Open-circle mark and two-line wordmark."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative rtr brand usage.",
+          "fixture": "rtr-brand"
+        }
+      ]
+    },
+    {
+      "id": "message-bubbles",
+      "name": "Message bubbles",
+      "description": "A connection chat is the first real conversation between two matched people, so the bubbles are calm rather than app-loud: generous radius, quiet borders, and only two colours. **Your** messages align right in a spruce-100 bubble; **their** messages align left in parchment, led by the sender\u2019s avatar. Each bubble\u2019s corner nearest its sender is tightened, giving a subtle tail without a drawn pointer. A day divider separates conversations across dates, and a small meta line under each bubble carries the sender, time, and \u2014 for your own messages \u2014 whether it has been read.",
+      "category": "signature",
+      "selector": ".rtr-message-thread",
+      "source": "assets/catalog-content.js",
+      "implementation": "template",
+      "docPath": "components/message-bubbles.md",
+      "attributes": [],
+      "api": [
+        {
+          "name": "Usage",
+          "type": "pattern",
+          "description": "Alternating conversation bubbles."
+        }
+      ],
+      "slots": [],
+      "events": [],
+      "examples": [
+        {
+          "id": "default",
+          "title": "Representative example",
+          "description": "Representative message bubbles usage.",
+          "fixture": "message-bubbles"
+        }
+      ]
+    }
+  ]
+}

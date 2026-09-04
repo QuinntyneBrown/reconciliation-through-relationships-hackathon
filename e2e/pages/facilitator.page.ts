@@ -1,41 +1,40 @@
-import { expect, type Locator, type Page } from "@playwright/test";
-
 import { BasePage } from "./base.page";
 
 export class FacilitatorPage extends BasePage {
-  constructor(page: Page) {
-    super(page);
+  async navigate(name: "Overview" | "Participants" | "Matches" | "Cohorts" | "Settings") {
+    await this.page.getByRole("navigation", { name: "Main" }).getByRole("link", { name }).click();
   }
 
-  async expectOverview() {
-    await expect(this.page.getByRole("heading", { name: "Community overview" })).toBeVisible();
-    for (const label of [
-      "Total participants",
-      "Completed learning",
-      "Pending matches",
-      "Active connections",
-      "Regional cohorts",
-    ]) {
-      await expect(this.page.getByText(label, { exact: true })).toBeVisible();
-    }
+  async toggleAutoMatching() {
+    await this.page.getByRole("switch").first().click();
   }
 
-  async openMatching() {
-    await this.goto("/facilitator/matching");
-    await expect(this.page.getByRole("heading", { name: "Match management" })).toBeVisible();
+  async chooseManualParticipants(indigenous: string, nonIndigenous: string) {
+    await this.page.getByRole("combobox").nth(0).click();
+    await this.page.getByRole("option", { name: new RegExp(indigenous) }).click();
+    await this.page.getByRole("combobox").nth(1).click();
+    await this.page.getByRole("option", { name: new RegExp(nonIndigenous) }).click();
   }
 
-  matchCard(participantName: string): Locator {
-    return this.page.locator('[data-slot="card"]').filter({ hasText: participantName });
-  }
-
-  async createManualMatch(indigenousName: string, nonIndigenousName: string) {
-    const selects = this.page.getByRole("combobox");
-    await selects.nth(0).click();
-    await this.page.getByRole("option", { name: new RegExp(indigenousName) }).click();
-    await selects.nth(1).click();
-    await this.page.getByRole("option", { name: new RegExp(nonIndigenousName) }).click();
+  async createMatch() {
     await this.page.getByRole("button", { name: "Create match" }).click();
-    await this.expectToast("Manual match created.");
+  }
+
+  async approveFirst() {
+    await this.page.getByRole("button", { name: "Approve" }).first().click();
+  }
+
+  async rejectFirst() {
+    await this.page.getByRole("button", { name: "Reject" }).first().click();
+  }
+
+  async openMatchesTab(name: "Approved" | "Rejected") {
+    await this.page.getByRole("tab", { name: new RegExp(name) }).click();
+  }
+
+  async saveSettings(threshold: string) {
+    await this.page.getByRole("switch").click();
+    await this.page.getByLabel("Cohort threshold").fill(threshold);
+    await this.page.getByRole("button", { name: "Save settings" }).click();
   }
 }

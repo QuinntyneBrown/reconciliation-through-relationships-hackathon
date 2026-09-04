@@ -1,23 +1,21 @@
-import { expect, type Page } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 
 export class BasePage {
   constructor(readonly page: Page) {}
 
-  async goto(path: string) {
-    await this.page.goto(path);
+  heading(name: string | RegExp): Locator {
+    return this.page.getByRole("heading", { name });
   }
 
-  async expectPath(path: string | RegExp) {
-    await expect(this.page).toHaveURL(
-      typeof path === "string"
-        ? new RegExp(`${path.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}/?$`)
-        : path,
-    );
+  toast(message: string | RegExp): Locator {
+    return this.page.getByText(message, { exact: typeof message === "string" });
   }
 
-  async expectToast(message: string | RegExp) {
-    await expect(
-      this.page.locator("[data-sonner-toast]").filter({ hasText: message }),
-    ).toBeVisible();
+  async openMobileNavigation() {
+    await this.page.getByRole("button", { name: "Open navigation" }).click();
+  }
+
+  mobileNavigation(): Locator {
+    return this.page.getByRole("navigation", { name: "Mobile navigation" });
   }
 }
