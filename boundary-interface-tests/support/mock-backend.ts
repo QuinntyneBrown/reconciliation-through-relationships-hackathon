@@ -5,6 +5,7 @@ type Row = Record<string, unknown>;
 type Failure = { table: string; method: string; message?: string };
 
 let database = createDatabase();
+let authAccounts = { ...authUsers };
 let failures: Failure[] = [];
 let sequence = 100;
 
@@ -48,7 +49,7 @@ function accessToken(userId: string) {
 }
 
 function userFromId(id: string) {
-  const account = Object.values(authUsers).find((item) => item.id === id);
+  const account = Object.values(authAccounts).find((item) => item.id === id);
   return account
     ? {
         id: account.id,
@@ -208,16 +209,68 @@ function maybeFailure(table: string, method: string, res: ServerResponse) {
 }
 
 async function handleAuth(req: IncomingMessage, res: ServerResponse, url: URL) {
+  if (url.pathname === "/auth/v1/signup" && req.method === "POST") {
+    const body = (await readBody(req)) as { email?: string; password?: string };
+    if (!body.email || !body.password) {
+      json(res, 400, { code: "validation_failed", msg: "Email and password are required" });
+      return;
+    }
+    if (authAccounts[body.email]) {
+      json(res, 422, { code: "user_already_exists", msg: "User already registered" });
+      return;
+    }
+
+    const id = `signup-user-${sequence++}`;
+    authAccounts[body.email] = { id, email: body.email, password: body.password };
+    const createdAt = new Date().toISOString();
+    database.profiles.push({
+      id,
+      first_name: null,
+      last_name: null,
+      bio: null,
+      additional_matching_info: null,
+      is_indigenous: null,
+      sex: null,
+      participation_categories: [],
+      city: null,
+      province: null,
+      treaty_area: null,
+      faith_tradition: null,
+      faith_tradition_other: null,
+      interests: [],
+      availability: { days: [], times: [] },
+      participation_format: [],
+      language_preferences: [],
+      personal_boundaries: null,
+      matching_preferences: {
+        weight_location: true,
+        weight_interests: true,
+        weight_sex: false,
+      },
+      role: "participant",
+      onboarding_completed: false,
+      learning_completed: false,
+      map_consent: false,
+      lat: null,
+      lng: null,
+      avatar_url: null,
+      created_at: createdAt,
+      updated_at: createdAt,
+    });
+    json(res, 200, { user: userFromId(id) });
+    return;
+  }
+
   if (url.pathname === "/auth/v1/token" && req.method === "POST") {
     const body = (await readBody(req)) as {
       email?: string;
       password?: string;
       refresh_token?: string;
     };
-    let account = body.email ? authUsers[body.email] : undefined;
+    let account = body.email ? authAccounts[body.email] : undefined;
     if (url.searchParams.get("grant_type") === "refresh_token" && body.refresh_token) {
       const id = body.refresh_token.replace(/^refresh-/, "");
-      account = Object.values(authUsers).find((item) => item.id === id);
+      account = Object.values(authAccounts).find((item) => item.id === id);
     }
     if (!account || (body.password !== undefined && body.password !== account.password)) {
       json(res, 400, {
@@ -359,6 +412,7 @@ const server = createServer(async (req, res) => {
     }
     if (url.pathname === "/__mock/reset" && req.method === "POST") {
       database = createDatabase();
+      authAccounts = { ...authUsers };
       failures = [];
       sequence = 100;
       json(res, 200, { ok: true });

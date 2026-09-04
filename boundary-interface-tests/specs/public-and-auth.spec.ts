@@ -1,9 +1,81 @@
 // Acceptance Test
-// Traces to: L2-LAND-001, L2-LAND-002, L2-LAND-003, L2-LAND-004, L2-LAND-005, L2-AUTH-007, L2-AUTH-008, L2-AUTH-010, L2-AUTH-011, L2-SHELL-013, L2-DSGN-074, L2-DSGN-075, L2-DSGN-076
-// Description: Landing page content, sign-in and journey-stage routing, protected-route redirects, navigation, contrast, and responsive behavior
+// Traces to: L2-LAND-001, L2-LAND-002, L2-LAND-003, L2-LAND-004, L2-LAND-005, L2-AUTH-006, L2-AUTH-007, L2-AUTH-008, L2-AUTH-010, L2-AUTH-011, L2-SHELL-013, L2-DSGN-074, L2-DSGN-075, L2-DSGN-076
+// Description: Landing page content, sign-up, sign-in and journey-stage routing, protected-route redirects, navigation, contrast, and responsive behavior
 import { test, expect } from "../support/fixtures";
 
 test.describe("public journey and authentication", () => {
+  test("the sign-up form is clear and accessible", async ({ page, backend: _backend }) => {
+    await page.goto("/auth/signup");
+
+    await expect(page.locator("main")).toHaveCount(1);
+
+    const email = page.getByLabel("Email address");
+    const password = page.getByLabel("Password", { exact: true });
+    const confirmation = page.getByLabel("Confirm password");
+
+    await expect(email).toHaveAttribute("autocomplete", "email");
+    await expect(password).toHaveAttribute("autocomplete", "new-password");
+    await expect(password).toHaveAttribute("aria-describedby", "password-requirements");
+    await expect(confirmation).toHaveAttribute("autocomplete", "new-password");
+    await expect(confirmation).toHaveAttribute("placeholder", "Re-enter your password");
+    await expect(page.getByText("Use at least 8 characters.", { exact: true })).toBeVisible();
+
+    for (const name of ["Show password", "Show password confirmation"]) {
+      const revealButton = page.getByRole("button", { name, exact: true });
+      await expect(revealButton).toHaveCount(1);
+      const box = await revealButton.boundingBox();
+      expect(box).not.toBeNull();
+      expect(box!.width).toBeGreaterThanOrEqual(44);
+      expect(box!.height).toBeGreaterThanOrEqual(44);
+    }
+  });
+
+  test("client-side sign-up rules keep invalid credentials away from Auth", async ({
+    page,
+    backend: _backend,
+  }) => {
+    const signUpRequests: string[] = [];
+    page.on("request", (request) => {
+      if (request.url().endsWith("/auth/v1/signup")) signUpRequests.push(request.url());
+    });
+
+    await page.goto("/auth/signup");
+    await page.getByLabel("Email address").fill("created@example.com");
+    await page.getByLabel("Password", { exact: true }).fill("short");
+    await page.getByLabel("Confirm password").fill("short");
+    await page.getByRole("button", { name: "Create account" }).click();
+    await expect(page.getByText("Password must be at least 8 characters.")).toBeVisible();
+
+    await page.getByLabel("Password", { exact: true }).fill("password123");
+    await page.getByLabel("Confirm password").fill("different-password");
+    await page.getByRole("button", { name: "Create account" }).click();
+    await expect(page.getByText("Passwords do not match.")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Create account" })).toBeEnabled();
+    expect(signUpRequests).toHaveLength(0);
+  });
+
+  test("valid sign-up creates a participant account and starts onboarding", async ({
+    page,
+    backend,
+  }) => {
+    const profilesBefore = ((await backend.state()).profiles ?? []).length;
+
+    await page.goto("/auth/signup");
+    await page.getByLabel("Email address").fill("created@example.com");
+    await page.getByLabel("Password", { exact: true }).fill("password123");
+    await page.getByLabel("Confirm password").fill("password123");
+    await page.getByRole("button", { name: "Create account" }).click();
+
+    await expect(page).toHaveURL(/\/onboarding$/);
+    const profilesAfter = (await backend.state()).profiles ?? [];
+    expect(profilesAfter).toHaveLength(profilesBefore + 1);
+    expect(profilesAfter.at(-1)).toMatchObject({
+      role: "participant",
+      onboarding_completed: false,
+      learning_completed: false,
+    });
+  });
+
   test("the platform brands itself as Reconciliation Through Relationships", async ({
     landing,
   }) => {
@@ -45,9 +117,7 @@ test.describe("public journey and authentication", () => {
     await expect(landing.page.getByText(/relationships as Christians/)).toBeVisible();
   });
 
-  test("the journey explains you choose whether a facilitator matches you", async ({
-    landing,
-  }) => {
+  test("the journey explains you choose whether a facilitator matches you", async ({ landing }) => {
     await landing.goto();
     await expect(
       landing.journeySection().getByText(/choose whether a facilitator matches you/i),

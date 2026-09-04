@@ -5,7 +5,7 @@
 | L2 | Test coverage |
 |---|---|
 | L2-LAND-001…L2-LAND-005 | B/public-and-auth; E/01 (journey headings, CTAs) |
-| L2-AUTH-006 | — (signup exercised manually; e2e users are seeded) |
+| L2-AUTH-006 | B/public-and-auth |
 | L2-AUTH-007, L2-AUTH-008 | B/public-and-auth; E/01 |
 | L2-AUTH-009 | — |
 | L2-AUTH-010, L2-AUTH-011 | B/public-and-auth; E/01 |
