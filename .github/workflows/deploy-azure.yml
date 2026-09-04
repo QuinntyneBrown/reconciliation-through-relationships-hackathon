@@ -2,9 +2,7 @@ name: Deploy to Azure
 
 on:
   push:
-    # TEMPORARY: deploy/azure-container-apps is here only to verify this
-    # pipeline before it merges. Removed in the commit that follows.
-    branches: [main, deploy/azure-container-apps]
+    branches: [main]
   workflow_dispatch:
     inputs:
       image_tag:
@@ -207,14 +205,32 @@ jobs:
           FQDN: ${{ steps.fqdn.outputs.fqdn }}
         run: |
           set -uo pipefail
+          # Status codes alone are NOT a health signal here: when no revision is
+          # serving, Container Apps returns its own "Azure Container App -
+          # Unavailable" page with HTTP 200. So assert on content.
+          #
+          # /api/participants is deliberately not checked: src/proxy.ts redirects
+          # unauthenticated requests, so it correctly answers 307, never 200.
           for attempt in $(seq 1 24); do
-            HOME_CODE=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 45 "https://${FQDN}/" || echo 000)
-            API_CODE=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 45 "https://${FQDN}/api/participants" || echo 000)
-            echo "attempt ${attempt}: / -> ${HOME_CODE}, /api/participants -> ${API_CODE}"
-            if [ "$HOME_CODE" = "200" ] && [ "$API_CODE" = "200" ]; then
-              echo "Smoke test passed."
-              echo "### Deployed to [https://${FQDN}](https://${FQDN})" >> "$GITHUB_STEP_SUMMARY"
-              exit 0
+            HOME_BODY=$(curl -sS --max-time 45 "https://${FQDN}/" 2>/dev/null || true)
+            LOGIN_CODE=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 45 "https://${FQDN}/auth/login" || echo 000)
+            # A real render always carries the app's own <title>.
+            if printf '%s' "$HOME_BODY" | grep -qi '<title>Reconciliation Through Relationships</title>' \
+               && [ "$LOGIN_CODE" = "200" ]; then
+              # Prove the Dockerfile's public/ and .next/static copies landed;
+              # without them the app serves HTML and 404s every asset.
+              LOGO_CODE=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 45 "https://${FQDN}/rtr-logo.png" || echo 000)
+              ASSET=$(printf '%s' "$HOME_BODY" | grep -oE '/_next/static/[^"]+' | head -1)
+              ASSET_CODE=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 45 "https://${FQDN}${ASSET}" || echo 000)
+              echo "attempt ${attempt}: title ok, /auth/login ${LOGIN_CODE}, logo ${LOGO_CODE}, ${ASSET} ${ASSET_CODE}"
+              if [ "$LOGO_CODE" = "200" ] && [ "$ASSET_CODE" = "200" ]; then
+                echo "Smoke test passed."
+                echo "### Deployed to [https://${FQDN}](https://${FQDN})" >> "$GITHUB_STEP_SUMMARY"
+                exit 0
+              fi
+              echo "::warning::App renders but static assets are missing."
+            else
+              echo "attempt ${attempt}: not serving yet (/auth/login -> ${LOGIN_CODE})"
             fi
             sleep 10
           done
