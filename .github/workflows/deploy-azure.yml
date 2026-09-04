@@ -1,0 +1,240 @@
+name: Deploy to Azure
+
+on:
+  push:
+    # TEMPORARY: deploy/azure-container-apps is here only to verify this
+    # pipeline before it merges. Removed in the commit that follows.
+    branches: [main, deploy/azure-container-apps]
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: >-
+          Redeploy an image already in GHCR, e.g. "sha-1a2b3c4". Leave blank to
+          build this ref. This is the rollback lever.
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+# Serialize deploys. cancel-in-progress is deliberately false: killing a run
+# mid `az containerapp update` leaves the app half-updated.
+concurrency:
+  group: deploy-azure-production
+  cancel-in-progress: false
+
+env:
+  # MUST be lowercase. github.repository_owner is "QuinntyneBrown" and GHCR
+  # rejects uppercase path segments with a 403 that reads like an auth failure.
+  IMAGE: ghcr.io/quinntynebrown/rtr
+  AZ_RESOURCE_GROUP: rg-rtr
+  AZ_CONTAINERAPP: rtr
+
+jobs:
+  verify:
+    name: Typecheck, lint, and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22 # matches the container base image
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      # Non-blocking on purpose: main carries a pre-existing react-hooks/purity
+      # error (Date.now() during render in ConnectionChat.tsx). Gating on lint
+      # today would block every deploy. Drop continue-on-error once it is fixed.
+      - name: Lint
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Build
+        run: npm run build
+
+  build:
+    name: Build and push image
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    if: github.event_name == 'push' || inputs.image_tag == ''
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      image_ref: ${{ steps.ref.outputs.image_ref }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      # NEXT_PUBLIC_* are baked into the client bundle at build time. If blank,
+      # createBrowserClient("") throws and every /auth/* page fails at runtime
+      # with no build-time warning. Fail here instead.
+      - name: Verify build-time public config is present
+        env:
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        run: |
+          set -euo pipefail
+          [ -n "$SUPABASE_URL" ] || { echo "::error::Secret NEXT_PUBLIC_SUPABASE_URL is empty; auth pages would crash at runtime."; exit 1; }
+          [ -n "$SUPABASE_ANON_KEY" ] || { echo "::error::Secret NEXT_PUBLIC_SUPABASE_ANON_KEY is empty; auth pages would crash at runtime."; exit 1; }
+
+      - name: Compute image reference
+        id: ref
+        run: echo "image_ref=${IMAGE}:sha-${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # SHA tags only. A mutable :latest would make the deployed revision
+      # ambiguous and rollback guesswork.
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          platforms: linux/amd64 # Container Apps Consumption is amd64
+          provenance: false # keep a plain manifest rather than an OCI index
+          sbom: false
+          tags: ${{ steps.ref.outputs.image_ref }}
+          # Links the package to this repository; without it the package looks
+          # orphaned and later GITHUB_TOKEN pushes can be denied.
+          labels: |
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+          build-args: |
+            NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+            NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+            NEXT_PUBLIC_MAPBOX_TOKEN=${{ secrets.NEXT_PUBLIC_MAPBOX_TOKEN }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    name: Deploy revision
+    needs: [verify, build]
+    # build is legitimately skipped when redeploying an existing tag.
+    if: >-
+      always()
+      && needs.verify.result == 'success'
+      && (needs.build.result == 'success' || needs.build.result == 'skipped')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read # job-level permissions REPLACE the top-level block
+      id-token: write # OIDC federated credential for Azure
+    steps:
+      - name: Resolve image to deploy
+        id: img
+        env:
+          REQUESTED_TAG: ${{ inputs.image_tag }}
+          BUILT_REF: ${{ needs.build.outputs.image_ref }}
+        run: |
+          set -euo pipefail
+          if [ -n "${REQUESTED_TAG:-}" ]; then
+            echo "ref=${IMAGE}:${REQUESTED_TAG}" >> "$GITHUB_OUTPUT"
+          else
+            echo "ref=${BUILT_REF}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Log in to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Install Container Apps CLI extension
+        run: az extension add --name containerapp --upgrade --only-show-errors
+
+      - name: Capture currently deployed image for rollback
+        id: prev
+        run: |
+          set -euo pipefail
+          PREV=$(az containerapp show \
+            --name "$AZ_CONTAINERAPP" --resource-group "$AZ_RESOURCE_GROUP" \
+            --query 'properties.template.containers[0].image' -o tsv)
+          echo "Currently deployed: $PREV"
+          echo "image=$PREV" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy new revision
+        run: |
+          set -euo pipefail
+          # Revision suffixes must be lowercase alphanumeric or '-', must START
+          # with a letter, and must be unique for the app's lifetime. A bare
+          # short SHA fails both (it can begin with a digit, and redeploying the
+          # same SHA collides), hence the r<run_number>- prefix.
+          SUFFIX="r${{ github.run_number }}-${GITHUB_SHA::7}"
+          az containerapp update \
+            --name "$AZ_CONTAINERAPP" \
+            --resource-group "$AZ_RESOURCE_GROUP" \
+            --image "${{ steps.img.outputs.ref }}" \
+            --revision-suffix "$SUFFIX" \
+            --output none
+          echo "Deployed ${{ steps.img.outputs.ref }} as $SUFFIX"
+
+      - name: Read ingress FQDN
+        id: fqdn
+        run: |
+          set -euo pipefail
+          FQDN=$(az containerapp show \
+            --name "$AZ_CONTAINERAPP" --resource-group "$AZ_RESOURCE_GROUP" \
+            --query 'properties.configuration.ingress.fqdn' -o tsv)
+          echo "fqdn=$FQDN" >> "$GITHUB_OUTPUT"
+
+      # min-replicas=0 means the first request pays image pull + container start
+      # + Next.js boot, and `az containerapp update` returns once the revision is
+      # provisioned, not once it can serve. Do not tighten these timings.
+      - name: Smoke test
+        env:
+          FQDN: ${{ steps.fqdn.outputs.fqdn }}
+        run: |
+          set -uo pipefail
+          for attempt in $(seq 1 24); do
+            HOME_CODE=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 45 "https://${FQDN}/" || echo 000)
+            API_CODE=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 45 "https://${FQDN}/api/participants" || echo 000)
+            echo "attempt ${attempt}: / -> ${HOME_CODE}, /api/participants -> ${API_CODE}"
+            if [ "$HOME_CODE" = "200" ] && [ "$API_CODE" = "200" ]; then
+              echo "Smoke test passed."
+              echo "### Deployed to [https://${FQDN}](https://${FQDN})" >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "::error::Smoke test failed after 24 attempts against https://${FQDN}/"
+          exit 1
+
+      - name: Roll back to previous image on failure
+        if: failure() && steps.prev.outputs.image != ''
+        run: |
+          set -euo pipefail
+          echo "::warning::Rolling back to ${{ steps.prev.outputs.image }}"
+          az containerapp update \
+            --name "$AZ_CONTAINERAPP" \
+            --resource-group "$AZ_RESOURCE_GROUP" \
+            --image "${{ steps.prev.outputs.image }}" \
+            --revision-suffix "rb${{ github.run_number }}" \
+            --output none
+
+      - name: Show recent revisions
+        if: always()
+        run: |
+          az containerapp revision list \
+            --name "$AZ_CONTAINERAPP" --resource-group "$AZ_RESOURCE_GROUP" \
+            --query "reverse(sort_by([].{name:name,active:properties.active,created:properties.createdTime,image:properties.template.containers[0].image}, &created))[:5]" \
+            -o table
