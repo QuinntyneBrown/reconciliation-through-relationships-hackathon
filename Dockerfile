@@ -3,14 +3,14 @@
 # Production image for Azure Container Apps.
 # Built around Next.js standalone output; see docs/deployment/AZURE_CHEAPEST.md.
 #
-# Builder and runner MUST share the same base image. next/image optimizes
-# /rtr-logo.png at runtime on / and /demo, and the standalone trace carries the
-# musl-linked sharp binaries (@img/sharp-linuxmusl-x64). Those will not load on
-# a glibc base such as node:22-slim.
-ARG NODE_VERSION=22-alpine
+# Node 20 on Debian slim, matching the CI runner that is known to build this
+# repo. Node 22 segfaults in TypeScript 7's native binary during `next build`.
+# Builder and runner MUST share the same base image: next/image optimizes
+# /rtr-logo.png at runtime on / and /demo, and the standalone trace carries
+# whichever platform-specific sharp binary npm installed.
+ARG NODE_VERSION=20-bookworm-slim
 
 FROM node:${NODE_VERSION} AS deps
-RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json package-lock.json ./
 # NODE_ENV is deliberately left unset: next build needs devDependencies, and
@@ -18,7 +18,6 @@ COPY package.json package-lock.json ./
 RUN npm ci --no-audit --no-fund
 
 FROM node:${NODE_VERSION} AS builder
-RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -51,7 +50,8 @@ ENV NODE_ENV=production \
     HOSTNAME=0.0.0.0 \
     DATA_SOURCE=mock
 
-RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
+RUN groupadd --system --gid 1001 nodejs \
+ && useradd --system --uid 1001 --gid nodejs nextjs
 
 # standalone omits public/ and .next/static, so both are copied in explicitly.
 # Without them the app boots and serves every page unstyled with 404s on chunks.
