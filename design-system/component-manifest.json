@@ -10,7 +10,7 @@
     {
       "id": "principles",
       "name": "Principles",
-      "description": "# Principles",
+      "description": "Three principles govern every design decision in RTR. When a component page and a principle disagree, the principle wins.",
       "docPath": "foundations/01-principles.md",
       "highlights": [
         "Readable first.",
@@ -21,7 +21,7 @@
     {
       "id": "design-tokens",
       "name": "Design tokens",
-      "description": "# Design tokens",
+      "description": "All visual decisions flow from one token file. Components consume semantic roles like --primary and --card, never raw palette values.",
       "docPath": "foundations/02-design-tokens.md",
       "highlights": [
         "Palette -> roles -> utilities.",
@@ -32,7 +32,7 @@
     {
       "id": "color",
       "name": "Color",
-      "description": "# Color",
+      "description": "A palette drawn from the land: spruce forest, birchbark, prairie ochre, river water, wild berry. Every hue carries a fixed meaning, and status is never colour alone.",
       "docPath": "foundations/03-color.md",
       "highlights": [
         "Meaningful, land-informed hues.",
@@ -43,7 +43,7 @@
     {
       "id": "typography",
       "name": "Typography",
-      "description": "# Typography",
+      "description": "Two typefaces divide the work: Fraunces carries the voice and Atkinson Hyperlegible carries the reading, at generous sizes.",
       "docPath": "foundations/04-typography.md",
       "highlights": [
         "Fraunces for voice, Atkinson for reading.",
@@ -54,7 +54,7 @@
     {
       "id": "layout-and-spacing",
       "name": "Layout & spacing",
-      "description": "# Layout & spacing",
+      "description": "Calm, single-minded layout: one column of content on a birch page, parchment surfaces for anything that groups, and a 4px spacing scale.",
       "docPath": "foundations/05-layout-and-spacing.md",
       "highlights": [
         "4px rhythm with touch-friendly spacing.",
@@ -65,7 +65,7 @@
     {
       "id": "brand-and-motifs",
       "name": "Brand & motifs",
-      "description": "# Brand & motifs",
+      "description": "Three geometric motifs: the open-circle mark, the woven strand, and the panel-on-dark figure. Abstract by design, never appropriated artwork.",
       "docPath": "foundations/06-brand-and-motifs.md",
       "highlights": [
         "Two strands, one open circle.",
@@ -76,7 +76,7 @@
     {
       "id": "iconography",
       "name": "Iconography",
-      "description": "# Iconography",
+      "description": "A single consistent family of 2px-stroke outline icons from Lucide. Icons support text; they never replace it except in labelled icon buttons.",
       "docPath": "foundations/07-iconography.md",
       "highlights": [
         "Simple supportive glyphs.",
@@ -87,7 +87,7 @@
     {
       "id": "accessibility",
       "name": "Accessibility",
-      "description": "# Accessibility",
+      "description": "Accessibility commitments are design constraints: readable type, visible focus, real labels, reduced-motion support, and plain language.",
       "docPath": "foundations/08-accessibility.md",
       "highlights": [
         "Visible focus and real labels.",
@@ -212,7 +212,7 @@
     {
       "id": "form-field",
       "name": "Form field",
-      "description": "There is no <FormField> wrapper to import. A field is four parts stacked with an 8px gap (space-y-2):",
+      "description": "A form field is a **composition**, not a single component: a label, a control, optional hint text, and — when validation fails — an error message, wired together for the screen reader.",
       "category": "forms",
       "selector": "rtr-form-field",
       "source": "assets/components/rtr-form-field.js",
@@ -248,7 +248,7 @@
         {
           "name": "Usage",
           "type": "pattern",
-          "description": "There is no <FormField> wrapper to import. A field is four parts stacked with an 8px gap (space-y-2):"
+          "description": "A field is four parts stacked with an 8px gap: label, control, optional hint, and — when validation fails — an error message wired to the control with aria-describedby."
         }
       ],
       "slots": [],
@@ -933,7 +933,7 @@
     {
       "id": "navigation-menu",
       "name": "Navigation menu",
-      "description": "# Navigation menu",
+      "description": "A hover/focus-driven menu bar with animated flyout panels. Retained in the library but not used in the shipped product, whose flat navigation lives in the app header and mobile sheet.",
       "category": "navigation",
       "selector": ".rtr-navigation-menu",
       "source": "assets/catalog-content.js",
