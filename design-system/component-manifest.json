@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "product": {
-    "name": "Reconciliation Through Relationships Design System",
-    "shortName": "RTR Design System",
+    "name": "Groundwork Design System",
+    "shortName": "Groundwork Design System",
     "version": "1.0.0",
-    "description": "A standalone, manifest-driven catalog for RTR foundations, components, validation, and browser tests."
+    "description": "A standalone, manifest-driven catalog for Groundwork foundations, components, validation, and browser tests."
   },
   "foundations": [
     {
@@ -12,10 +12,7 @@
       "name": "Principles",
       "description": "# Principles",
       "docPath": "foundations/01-principles.md",
-      "highlights": [
-        "Readable first.",
-        "Consent is a design element."
-      ],
+      "highlights": ["Readable first.", "Consent is a design element."],
       "demo": "principles"
     },
     {
@@ -23,10 +20,7 @@
       "name": "Design tokens",
       "description": "# Design tokens",
       "docPath": "foundations/02-design-tokens.md",
-      "highlights": [
-        "Palette -> roles -> utilities.",
-        "Tokens, not hard-coded colors."
-      ],
+      "highlights": ["Palette -> roles -> utilities.", "Tokens, not hard-coded colors."],
       "demo": "design-tokens"
     },
     {
@@ -34,10 +28,7 @@
       "name": "Color",
       "description": "# Color",
       "docPath": "foundations/03-color.md",
-      "highlights": [
-        "Meaningful, land-informed hues.",
-        "Status is never color alone."
-      ],
+      "highlights": ["Meaningful, land-informed hues.", "Status is never color alone."],
       "demo": "color"
     },
     {
@@ -67,10 +58,7 @@
       "name": "Brand & motifs",
       "description": "# Brand & motifs",
       "docPath": "foundations/06-brand-and-motifs.md",
-      "highlights": [
-        "Two strands, one open circle.",
-        "Use the weave sparingly."
-      ],
+      "highlights": ["Two strands, one open circle.", "Use the weave sparingly."],
       "demo": "brand-and-motifs"
     },
     {
@@ -78,10 +66,7 @@
       "name": "Iconography",
       "description": "# Iconography",
       "docPath": "foundations/07-iconography.md",
-      "highlights": [
-        "Simple supportive glyphs.",
-        "Pair icons with words where needed."
-      ],
+      "highlights": ["Simple supportive glyphs.", "Pair icons with words where needed."],
       "demo": "iconography"
     },
     {
@@ -89,10 +74,7 @@
       "name": "Accessibility",
       "description": "# Accessibility",
       "docPath": "foundations/08-accessibility.md",
-      "highlights": [
-        "Visible focus and real labels.",
-        "Reduced motion and text-backed errors."
-      ],
+      "highlights": ["Visible focus and real labels.", "Reduced motion and text-backed errors."],
       "demo": "accessibility"
     }
   ],
@@ -130,7 +112,7 @@
     {
       "id": "signature",
       "label": "Signature components",
-      "description": "Distinctly RTR patterns and motifs."
+      "description": "Distinctly Groundwork patterns and motifs."
     }
   ],
   "components": [
@@ -265,7 +247,7 @@
     {
       "id": "input",
       "name": "Input",
-      "description": "Input is a thin styling layer over the native <input>: it forwards type, value, placeholder, and every other input attribute untouched, and paints on the RTR control look. Pair it with a Label and, when a submit fails, a berry error message \u2014 see the form field pattern for the full assembly.",
+      "description": "Input is a thin styling layer over the native <input>: it forwards type, value, placeholder, and every other input attribute untouched, and paints on the Groundwork control look. Pair it with a Label and, when a submit fails, a berry error message \u2014 see the form field pattern for the full assembly.",
       "category": "forms",
       "selector": "rtr-input",
       "source": "assets/components/rtr-input.js",
@@ -307,7 +289,7 @@
         {
           "name": "Usage",
           "type": "pattern",
-          "description": "Input is a thin styling layer over the native <input>: it forwards type, value, placeholder, and every other input attribute untouched, and paints on the RTR control look. Pair it with a Label and, when a submit fails, a berry error message \u2014 see the form field pattern for the full assembly."
+          "description": "Input is a thin styling layer over the native <input>: it forwards type, value, placeholder, and every other input attribute untouched, and paints on the Groundwork control look. Pair it with a Label and, when a submit fails, a berry error message \u2014 see the form field pattern for the full assembly."
         }
       ],
       "slots": [],
@@ -1435,7 +1417,7 @@
     },
     {
       "id": "rtr-brand",
-      "name": "RTR brand",
+      "name": "Groundwork brand",
       "description": "The mark is two arcs \u2014 ochre and river \u2014 that together form a single circle around two dots: two people held by one relationship. The circle is **open at the top and bottom**, so the relationship is never closed to others. A muted variant drains the colour, removes the dots, and dashes one strand; it stands in wherever a relationship hasn\u2019t formed yet, most often inside an empty state. The woven strand echoes the same two colours as an interlacing divider.",
       "category": "signature",
       "selector": ".rtr-brand-lockup",

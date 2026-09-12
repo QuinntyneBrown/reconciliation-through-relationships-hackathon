@@ -81,7 +81,7 @@ export default async function FacilitatorPage() {
         <PageIntro
           eyebrow="Facilitator workspace"
           title="Community overview"
-          description="Review the RTR participant community, learning progress, matches, and regional cohorts."
+          description="Review the Groundwork participant community, learning progress, matches, and regional cohorts."
         />
 
         {/* Stats */}
@@ -102,7 +102,7 @@ export default async function FacilitatorPage() {
         </div>
 
         {/* Quick actions */}
-        <div className="border-border bg-card divide-border overflow-hidden rounded-2xl border divide-y">
+        <div className="border-border bg-card divide-border divide-y overflow-hidden rounded-2xl border">
           {[
             {
               label: "Review pending matches",
@@ -137,7 +137,7 @@ export default async function FacilitatorPage() {
               <div className="bg-spruce-100 text-spruce-700 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
                 <action.icon className="h-5 w-5" />
               </div>
-              <div className="flex-1 min-w-0">
+              <div className="min-w-0 flex-1">
                 <p className="text-heading font-semibold">{action.label}</p>
                 <p className="text-muted-foreground text-sm">{action.description}</p>
               </div>

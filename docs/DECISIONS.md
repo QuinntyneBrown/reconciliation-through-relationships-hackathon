@@ -29,6 +29,6 @@ These come straight from the brief's "Decisions to confirm with RTR." They affec
 - **Privacy-first defaults.** When unsure whether to show participant data, don't. Map consent is opt-in.
 - **Human in the loop.** No two participants are ever auto-connected — a facilitator approves every match.
 
-## Hackathon scope reminder (from the brief)
+## Original scope reminder (from the brief)
 
 Focus on the **primary end-to-end journey**: register → learn → become eligible → appear on map / get matched by a facilitator. Synthetic data + lightweight auth are fine. Depth on the happy path beats breadth of half-features.

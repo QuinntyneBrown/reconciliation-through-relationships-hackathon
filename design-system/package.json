@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Standalone Reconciliation Through Relationships design-system catalog.",
+  "description": "Standalone Groundwork design-system catalog.",
   "scripts": {
     "start": "vite --host 127.0.0.1 --port 5175",
     "build": "vite build",

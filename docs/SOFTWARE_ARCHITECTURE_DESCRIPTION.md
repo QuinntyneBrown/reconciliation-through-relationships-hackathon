@@ -3,7 +3,7 @@
 ## 1. Identification
 
 **System of interest:** Reconciliation Through Relationships (RTR) Platform  
-**Repository:** `https://github.com/QuinntyneBrown/reconciliation-through-relationships-hackathon`  
+**Repository:** `https://github.com/QuinntyneBrown/groundwork`  
 **Architecture description type:** Source-based software architecture description aligned to ISO/IEC/IEEE 42010 concepts  
 **Description pattern:** Based on the source-backed descriptions in [`QuinntyneBrown/software-architecture-description`](https://github.com/QuinntyneBrown/software-architecture-description)  
 **Inspected branch:** `feat/rtr-platform-implementation`  
@@ -16,7 +16,7 @@ This document describes the implemented and intended architecture visible in the
 
 ## 2. Purpose and Scope
 
-The purpose of this description is to make the RTR Platform understandable to participants, facilitators, RTR leadership, contributors, operators, privacy reviewers, and future delivery teams by documenting:
+The purpose of this description is to make the Groundwork understandable to participants, facilitators, RTR leadership, contributors, operators, privacy reviewers, and future delivery teams by documenting:
 
 - the product mission, system boundary, actors, and external dependencies
 - the participant and facilitator journeys implemented in the application
@@ -46,7 +46,7 @@ The scope excludes:
 
 ## 3. System Mission
 
-The RTR Platform is a responsive relationship-building portal created in response to the Truth and Reconciliation Commission's call for meaningful interaction between Indigenous and non-Indigenous people. Its implemented mission is to:
+The Groundwork is a responsive relationship-building portal created in response to the Truth and Reconciliation Commission's call for meaningful interaction between Indigenous and non-Indigenous people. Its implemented mission is to:
 
 1. authenticate and onboard participants into a structured profile
 2. guide participants through audience-specific preparation material
@@ -57,7 +57,7 @@ The RTR Platform is a responsive relationship-building portal created in respons
 7. support ongoing conversation and Zoom call scheduling
 8. give facilitators a view of participant progress, matches, connections, cohorts, and settings
 
-The repository is a hackathon implementation, not a production safeguarding platform. It demonstrates the primary journey with synthetic data and managed-service integrations while leaving several policy and hardening decisions open for RTR.
+Groundwork is a prototype implementation, not a production safeguarding platform. It demonstrates the primary journey with synthetic data and managed-service integrations while leaving several policy and hardening decisions open for RTR.
 
 ## 4. Architectural Style and Constraints
 
@@ -75,7 +75,7 @@ Important constraints visible in the snapshot are:
 
 | Category | Constraint |
 |---|---|
-| Delivery maturity | Hackathon build using synthetic data and lightweight authentication |
+| Delivery maturity | Prototype build using synthetic data and lightweight authentication |
 | Web runtime | Next.js `16.2.10`, React `19.2.4`, TypeScript 5 in strict mode |
 | UI | Tailwind CSS 4, Base UI-backed shadcn components, and a repository-specific RTR theme |
 | Full journey | Requires Supabase URL and anonymous key; seed creation also requires the service-role key |
@@ -133,7 +133,7 @@ flowchart LR
     Steward[RTR leadership and domain steward]
     Browser[Web browser]
 
-    subgraph RTR[RTR Platform]
+    subgraph GROUNDWORK[Groundwork]
         Web[Next.js web application]
         Domain[Eligibility and matching logic]
         Mock[In-memory mock repository]
@@ -583,7 +583,7 @@ Application logging is limited to console errors in the Zoom adapter and seed ou
 | Modifiability | Feature-oriented routes, shared components, generated database types, pure matching functions | Direct Supabase use is widespread; mock and persistent domain models drift; repository abstraction is only partially adopted |
 | Security | Server user checks, RLS, route proxy, connection membership check before Zoom call | Critical workflows rely on client orchestration; authorization and profile disclosure require a dedicated security review |
 | Reliability | Managed persistence, database constraints, foreign keys, RLS, server-rendered initial state | Multi-write workflows are non-transactional; errors after partial completion can leave inconsistent matches/connections/notifications |
-| Performance | Server-side filtered reads, in-memory matching, small hackathon dataset, managed database | Candidate scoring is all-pairs/in-memory and profile queries often select every column; no pagination or load evidence exists |
+| Performance | Server-side filtered reads, in-memory matching, small demo dataset, managed database | Candidate scoring is all-pairs/in-memory and profile queries often select every column; no pagination or load evidence exists |
 | Testability | Pure domain functions, strict TypeScript, lint/build scripts, mock repository | No automated unit, integration, RLS, browser, accessibility, or end-to-end tests are checked in |
 | Operability | Central environment example, migrations, seed command, standard Next scripts | No observability, CI/CD, backup, restore, migration-runbook, or incident-response assets |
 
@@ -680,7 +680,7 @@ The following rules keep the views in this description tied to the source snapsh
 
 ## 18. Assessment Summary
 
-The RTR Platform has a coherent product journey and a pragmatic hackathon architecture: one Next.js application, a managed Supabase backend, transparent deterministic matching, facilitator tools, mutual connection consent, Realtime messaging, and optional map/meeting integrations. The strongest architectural ideas are the explicit preparation gate, human-readable match criteria, consent-aware mapping, city-level geography, and the effort to encode authorization in RLS rather than UI alone.
+The Groundwork has a coherent product journey and a pragmatic prototype architecture: one Next.js application, a managed Supabase backend, transparent deterministic matching, facilitator tools, mutual connection consent, Realtime messaging, and optional map/meeting integrations. The strongest architectural ideas are the explicit preparation gate, human-readable match criteria, consent-aware mapping, city-level geography, and the effort to encode authorization in RLS rather than UI alone.
 
 The system should nevertheless be treated as a prototype. Its central pressure points sit exactly where the product is most sensitive: profile disclosure, facilitator approval, participant consent, cultural content governance, and relationship-state integrity. Those concerns are compounded by two divergent data architectures, client-orchestrated multi-step writes, documentation drift, missing automated verification, and absent production operations. The next architecture phase should prioritize privacy and safeguarding invariants over feature breadth, then consolidate the data and matching models so every route follows the same rules.
 

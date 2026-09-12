@@ -24,7 +24,7 @@ export interface GeoLocation {
 }
 
 export interface Availability {
-  /** Free-form for the hackathon, e.g. "Weekday evenings", "Weekends". */
+  /** Free-form, e.g. "Weekday evenings", "Weekends". */
   notes?: string;
   weekdays?: boolean;
   weekends?: boolean;

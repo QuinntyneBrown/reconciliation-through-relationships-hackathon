@@ -1,6 +1,6 @@
-# RTR Design System
+# Groundwork Design System
 
-`design-system/` is now a standalone Vite product for the Reconciliation Through Relationships hackathon project.
+`design-system/` is a standalone Vite catalog for the Groundwork platform.
 
 ## Run locally
 

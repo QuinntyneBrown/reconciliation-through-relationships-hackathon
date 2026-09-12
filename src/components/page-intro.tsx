@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { Weave } from "@/components/rtr-brand";
+import { Weave } from "@/components/brand";
 import { cn } from "@/lib/utils";
 
 type PageIntroProps = {

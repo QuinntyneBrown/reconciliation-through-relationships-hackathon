@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { BrandMark } from "@/components/rtr-brand";
+import { BrandMark } from "@/components/brand";
 import { cn } from "@/lib/utils";
 
 export function EmptyState({

@@ -121,16 +121,18 @@ test.describe("public journey and authentication", () => {
     expect(redirectTo).toBe(`${new URL(page.url()).origin}/auth/callback`);
   });
 
-  test("the platform brands itself as Reconciliation Through Relationships", async ({
+  test("the platform brands itself as Groundwork", async ({ landing }) => {
+    await landing.goto();
+    await expect(landing.page).toHaveTitle(/Groundwork/);
+    await expect(landing.page.getByText("RTR Portal")).toHaveCount(0);
+    await expect(landing.brandLink()).toBeVisible();
+  });
+
+  test("the landing page credits Reconciliation Through Relationships as the partner organization", async ({
     landing,
   }) => {
     await landing.goto();
-    await expect(landing.page.getByText("RTR Portal")).toHaveCount(0);
-    await expect(
-      landing.page
-        .locator("header")
-        .getByRole("link", { name: "Reconciliation Through Relationships" }),
-    ).toBeVisible();
+    await expect(landing.partnerCredit()).toBeVisible();
   });
 
   test("the landing page shows the organization's logo", async ({ landing }) => {

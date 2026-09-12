@@ -40,7 +40,7 @@ export default function ScheduleMeetingModal({
   const [time, setTime] = useState("");
   const [duration, setDuration] = useState("60");
   const [topic, setTopic] = useState(
-    `RTR Connection Call — ${currentUser.first_name} & ${partner.first_name}`,
+    `Groundwork Connection Call — ${currentUser.first_name} & ${partner.first_name}`,
   );
   const [scheduling, setScheduling] = useState(false);
 

@@ -61,8 +61,7 @@ export default function ConnectionChat({
     .slice()
     .sort((a, b) => new Date(a.scheduled_at).getTime() - new Date(b.scheduled_at).getTime())
     .find((m) => {
-      const end =
-        new Date(m.scheduled_at).getTime() + (m.duration_minutes ?? 60) * 60 * 1000;
+      const end = new Date(m.scheduled_at).getTime() + (m.duration_minutes ?? 60) * 60 * 1000;
       return end > now;
     });
   const canScheduleCall = isActive && !upcomingMeeting;
@@ -222,7 +221,7 @@ export default function ConnectionChat({
     <div className="bg-background flex h-screen flex-col overflow-hidden">
       <DashboardNav user={currentUser} />
       {/* Header */}
-      <header className="border-border bg-parchment border-b px-4 py-3 shrink-0">
+      <header className="border-border bg-parchment shrink-0 border-b px-4 py-3">
         <div className="mx-auto flex max-w-3xl items-center gap-3">
           <Button variant="ghost" size="icon" onClick={() => router.back()} aria-label="Back">
             <ArrowLeft className="h-4 w-4" />
@@ -258,9 +257,9 @@ export default function ConnectionChat({
         </div>
       </header>
 
-      <div className="mx-auto flex w-full max-w-3xl flex-1 min-h-0">
+      <div className="mx-auto flex min-h-0 w-full max-w-3xl flex-1">
         {/* Chat area */}
-        <div className="flex flex-1 flex-col min-h-0">
+        <div className="flex min-h-0 flex-1 flex-col">
           {/* Connect prompt */}
           {!isActive && (
             <div className="bg-primary/5 border-border border-b p-4 text-center">
@@ -268,8 +267,8 @@ export default function ConnectionChat({
                 <div className="space-y-1">
                   <p className="text-sm font-medium">Under facilitator review</p>
                   <p className="text-muted-foreground text-sm">
-                    Both you and <strong>{partner.first_name}</strong> have chosen to connect.
-                    A facilitator is reviewing your match — you&apos;ll be notified once approved.
+                    Both you and <strong>{partner.first_name}</strong> have chosen to connect. A
+                    facilitator is reviewing your match — you&apos;ll be notified once approved.
                   </p>
                 </div>
               ) : iHaveConnected ? (
@@ -280,7 +279,7 @@ export default function ConnectionChat({
               ) : (
                 <div className="space-y-2">
                   <p className="text-sm font-medium">
-                    RTR has matched you with {partner.first_name}!
+                    Groundwork has matched you with {partner.first_name}!
                   </p>
                   <p className="text-muted-foreground text-sm">
                     Click connect to start your relationship journey. Both parties must connect to
@@ -327,11 +326,7 @@ export default function ConnectionChat({
               return (
                 <div key={msg.id} className={`flex ${isMine ? "justify-end" : "justify-start"}`}>
                   {!isMine && (
-                    <Avatar
-                      size="sm"
-                      variant="default"
-                      className="mt-1 mr-2"
-                    >
+                    <Avatar size="sm" variant="default" className="mt-1 mr-2">
                       <AvatarFallback>{partnerInitials}</AvatarFallback>
                     </Avatar>
                   )}
@@ -367,7 +362,7 @@ export default function ConnectionChat({
           </div>
 
           {/* Input */}
-          <div className="border-border bg-card border-t p-3 shrink-0">
+          <div className="border-border bg-card shrink-0 border-t p-3">
             <form onSubmit={sendMessage} className="flex gap-2">
               <Input
                 value={input}
@@ -402,16 +397,16 @@ export default function ConnectionChat({
               <Avatar size="lg" variant="default">
                 <AvatarFallback>{partnerInitials}</AvatarFallback>
               </Avatar>
-              <div className="flex-1 min-w-0">
+              <div className="min-w-0 flex-1">
                 <DialogTitle>
                   {partner.first_name} {partner.last_name}
                 </DialogTitle>
                 <DialogDescription>
-                  <span className="flex flex-wrap items-center gap-2 mt-1">
+                  <span className="mt-1 flex flex-wrap items-center gap-2">
                     <Badge variant={partner.is_indigenous ? "default" : "secondary"}>
                       {partner.is_indigenous ? "Indigenous" : "Non-Indigenous"}
                     </Badge>
-                    <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <span className="text-muted-foreground flex items-center gap-1 text-xs">
                       <MapPin className="h-3 w-3" />
                       {partner.city}, {partner.province}
                     </span>
@@ -424,7 +419,7 @@ export default function ConnectionChat({
           <div className="space-y-4 pt-2 text-sm">
             {partner.bio && (
               <div>
-                <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wide mb-1">
+                <p className="text-muted-foreground mb-1 text-xs font-semibold tracking-wide uppercase">
                   About
                 </p>
                 <p>{partner.bio}</p>
@@ -432,7 +427,7 @@ export default function ConnectionChat({
             )}
             {partner.treaty_area && (
               <div>
-                <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wide mb-1">
+                <p className="text-muted-foreground mb-1 text-xs font-semibold tracking-wide uppercase">
                   Treaty area
                 </p>
                 <p>{partner.treaty_area}</p>
@@ -441,7 +436,7 @@ export default function ConnectionChat({
             <div className="grid grid-cols-2 gap-4">
               {partner.age != null && (
                 <div>
-                  <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wide mb-1">
+                  <p className="text-muted-foreground mb-1 text-xs font-semibold tracking-wide uppercase">
                     Age
                   </p>
                   <p>{partner.age}</p>
@@ -449,7 +444,7 @@ export default function ConnectionChat({
               )}
               {partner.faith_tradition && (
                 <div>
-                  <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wide mb-1">
+                  <p className="text-muted-foreground mb-1 text-xs font-semibold tracking-wide uppercase">
                     Faith
                   </p>
                   <p className="capitalize">
@@ -461,7 +456,7 @@ export default function ConnectionChat({
               )}
               {partner.language_preferences.length > 0 && (
                 <div>
-                  <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wide mb-1">
+                  <p className="text-muted-foreground mb-1 text-xs font-semibold tracking-wide uppercase">
                     Languages
                   </p>
                   <p className="capitalize">{partner.language_preferences.join(", ")}</p>
@@ -469,7 +464,7 @@ export default function ConnectionChat({
               )}
               {partner.participation_format.length > 0 && (
                 <div>
-                  <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wide mb-1">
+                  <p className="text-muted-foreground mb-1 text-xs font-semibold tracking-wide uppercase">
                     Format
                   </p>
                   <p className="capitalize">
@@ -480,7 +475,7 @@ export default function ConnectionChat({
             </div>
             {partner.interests.length > 0 && (
               <div>
-                <p className="text-muted-foreground text-xs font-semibold uppercase tracking-wide mb-1">
+                <p className="text-muted-foreground mb-1 text-xs font-semibold tracking-wide uppercase">
                   Interests
                 </p>
                 <div className="flex flex-wrap gap-1">

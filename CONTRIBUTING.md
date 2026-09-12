@@ -14,8 +14,8 @@ By participating, you agree to follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 ## Development setup
 
 ```bash
-git clone https://github.com/QuinntyneBrown/reconciliation-through-relationships-hackathon.git
-cd reconciliation-through-relationships-hackathon
+git clone https://github.com/QuinntyneBrown/groundwork.git
+cd groundwork
 npm ci
 cp .env.example .env.local
 npm run dev

@@ -30,7 +30,7 @@ export default async function AdminParticipantsPage() {
         <PageIntro
           eyebrow="Participant community"
           title="Participants"
-          description={`${participants?.length ?? 0} registered participants across the RTR journey.`}
+          description={`${participants?.length ?? 0} registered participants across the Groundwork journey.`}
         />
         <ParticipantsTable participants={participants ?? []} />
       </main>

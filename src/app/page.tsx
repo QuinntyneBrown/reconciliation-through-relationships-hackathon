@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { AppFooter } from "@/components/app-footer";
 import { AppHeader } from "@/components/app-header";
-import { Weave } from "@/components/rtr-brand";
+import { Weave } from "@/components/brand";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -64,7 +64,7 @@ export default function LandingPage() {
               <Link href="/auth/login">Sign in</Link>
             </Button>
             <Button variant="on-dark" size="sm" asChild>
-              <Link href="/auth/signup">Join RTR</Link>
+              <Link href="/auth/signup">Join Groundwork</Link>
             </Button>
           </div>
         }

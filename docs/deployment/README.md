@@ -8,7 +8,7 @@ Pricing checked **July 11, 2026**. All amounts are **USD per month**, before tax
 - **Best low-cost production default:** [DigitalOcean App Platform](DIGITALOCEAN.md) on the fixed 1 GiB plan. It is $10/month for the app, includes deployment automation and managed TLS, and avoids Azure's cold start and AWS server maintenance.
 - **Best when the team already operates AWS:** [AWS Lightsail](AWS.md) on the 2 GiB plan. Its $12/month app bill is predictable, but the team owns Linux patching, process supervision, TLS, and rollback automation.
 
-For this project, start with Azure for a hackathon/demo or DigitalOcean for a small public launch. Move from Supabase Free to Pro before relying on the service for production participant data.
+For this project, start with Azure for a demo or DigitalOcean for a small public launch. Move from Supabase Free to Pro before relying on the service for production participant data.
 
 If you have already settled on Azure and only want the cheapest option within it, see [The cheapest way to deploy this app on Azure](AZURE_CHEAPEST.md). It compares Container Apps against App Service, Static Web Apps, and a plain VM with rates rechecked on September 4, 2026, and lists the configuration mistakes that turn the $0 estimate into a real bill.
 

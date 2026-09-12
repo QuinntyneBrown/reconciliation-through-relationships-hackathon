@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { RtrBrand, Weave } from "@/components/rtr-brand";
+import { Brand, Weave } from "@/components/brand";
 import { toast } from "sonner";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
@@ -75,7 +75,7 @@ export default function SignupPage() {
   return (
     <div className="grid min-h-screen min-[861px]:grid-cols-2">
       <aside className="bg-spruce-800 text-on-dark rtr-panel-on-dark hidden flex-col justify-between p-12 [--rtr-figure-position:center_bottom] min-[861px]:flex">
-        <RtrBrand href="/" />
+        <Brand href="/" />
         <div>
           <p className="font-heading text-on-dark max-w-[20ch] text-[26px] leading-[1.4] italic">
             &ldquo;We were told the truth. Now we choose the relationship.&rdquo;
@@ -96,9 +96,9 @@ export default function SignupPage() {
             href="/"
             className="text-spruce-700 mb-8 inline-flex text-sm font-semibold min-[861px]:hidden"
           >
-            ← Back to RTR
+            ← Back to Groundwork
           </Link>
-          <h1 id="signup-heading">Join RTR</h1>
+          <h1 id="signup-heading">Join Groundwork</h1>
           <p className="text-ink-soft mt-2">
             Create your account to begin the reconciliation journey.
           </p>
@@ -106,7 +106,7 @@ export default function SignupPage() {
           <Card className="mt-6">
             <CardHeader className="sr-only">
               <CardTitle>Create account</CardTitle>
-              <CardDescription>Join Reconciliation Through Relationships.</CardDescription>
+              <CardDescription>Join Groundwork.</CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -192,7 +192,7 @@ export default function SignupPage() {
           </Card>
 
           <p className="text-ink-faint mt-5 text-center text-xs">
-            Your email is used only for your RTR account and notifications.
+            Your email is used only for your Groundwork account and notifications.
           </p>
         </div>
       </section>

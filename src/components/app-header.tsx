@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 
-import { RtrBrand } from "@/components/rtr-brand";
+import { Brand } from "@/components/brand";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -53,7 +53,10 @@ export function AppHeader({
   className,
 }: AppHeaderProps) {
   const pathname = usePathname();
-  const activeHref = findActiveHref(pathname, navItems.map((i) => i.href));
+  const activeHref = findActiveHref(
+    pathname,
+    navItems.map((i) => i.href),
+  );
 
   return (
     <header
@@ -63,7 +66,7 @@ export function AppHeader({
       )}
     >
       <div className="mx-auto flex min-h-16 w-full max-w-7xl items-center gap-6 px-4 sm:px-6">
-        <RtrBrand href={homeHref} />
+        <Brand href={homeHref} />
 
         {navItems.length > 0 && (
           <nav
@@ -114,9 +117,7 @@ export function AppHeader({
               </SheetTrigger>
               <SheetContent side="right" className="border-spruce-700 bg-spruce-800 text-on-dark">
                 <SheetHeader className="border-on-dark/15 border-b px-5 py-5">
-                  <SheetTitle className="text-on-dark text-left">
-                    Reconciliation Through Relationships
-                  </SheetTitle>
+                  <SheetTitle className="text-on-dark text-left">Groundwork</SheetTitle>
                 </SheetHeader>
                 <nav className="flex flex-col p-3" aria-label="Mobile navigation">
                   {navItems.map((item) => {

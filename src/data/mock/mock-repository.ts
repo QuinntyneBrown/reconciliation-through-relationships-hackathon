@@ -9,7 +9,7 @@ import { MOCK_PARTICIPANTS } from "./participants";
  * In-memory repository backed by synthetic data.
  *
  * Lets the whole team build and demo without a database. State lives in module
- * memory, so it resets on server restart — that's fine for the hackathon.
+ * memory, so it resets on server restart — that's fine for local development.
  */
 export class MockRepository implements Repository {
   private participants: ParticipantProfile[] = [...MOCK_PARTICIPANTS];

@@ -1,5 +1,5 @@
 /*
- * RTR design tokens are the single source of truth for both the application
+ * Groundwork design tokens are the single source of truth for both the application
  * and the static design specimens in docs/mocks. Components should consume
  * semantic roles (for example --primary), not palette values directly.
  */

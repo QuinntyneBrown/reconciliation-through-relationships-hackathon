@@ -95,7 +95,9 @@ export default function OnboardingPage() {
   async function submit() {
     setSaving(true);
     const supabase = createSupabaseBrowserClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     if (!user) {
       toast.error("Session expired. Please sign in again.");
@@ -144,26 +146,27 @@ export default function OnboardingPage() {
   const progress = ((step + 1) / STEPS.length) * 100;
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="bg-background flex min-h-screen flex-col">
       {/* Header */}
-      <header className="border-b border-border bg-card px-4 py-4">
-        <div className="max-w-2xl mx-auto">
+      <header className="border-border bg-card border-b px-4 py-4">
+        <div className="mx-auto max-w-2xl">
           <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-primary">RTR · Create your profile</p>
+            <p className="text-primary text-sm font-medium">Groundwork · Create your profile</p>
             <button
               onClick={async () => {
-                const { createSupabaseBrowserClient } = await import("@/data/supabase/browser-client");
+                const { createSupabaseBrowserClient } =
+                  await import("@/data/supabase/browser-client");
                 await createSupabaseBrowserClient().auth.signOut();
                 router.push("/auth/login");
               }}
-              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+              className="text-muted-foreground hover:text-foreground text-xs transition-colors"
             >
               Sign out
             </button>
           </div>
           <div className="mt-3 flex items-center gap-3">
-            <Progress value={progress} className="flex-1 h-2" />
-            <span className="text-xs text-muted-foreground whitespace-nowrap">
+            <Progress value={progress} className="h-2 flex-1" />
+            <span className="text-muted-foreground text-xs whitespace-nowrap">
               Step {step + 1} of {STEPS.length}
             </span>
           </div>
@@ -171,12 +174,12 @@ export default function OnboardingPage() {
             {STEPS.map((s, i) => (
               <span
                 key={s}
-                className={`text-xs px-2 py-0.5 rounded-full ${
+                className={`rounded-full px-2 py-0.5 text-xs ${
                   i === step
                     ? "bg-primary text-primary-foreground"
                     : i < step
-                    ? "bg-accent/20 text-accent-foreground"
-                    : "text-muted-foreground"
+                      ? "bg-accent/20 text-accent-foreground"
+                      : "text-muted-foreground"
                 }`}
               >
                 {s}
@@ -187,11 +190,9 @@ export default function OnboardingPage() {
       </header>
 
       {/* Step content */}
-      <main className="flex-1 flex flex-col items-center px-4 py-8">
+      <main className="flex flex-1 flex-col items-center px-4 py-8">
         <div className="w-full max-w-2xl">
-          {step === 0 && (
-            <StepBasicInfo data={data} onChange={updateData} onNext={next} />
-          )}
+          {step === 0 && <StepBasicInfo data={data} onChange={updateData} onNext={next} />}
           {step === 1 && (
             <StepLocation data={data} onChange={updateData} onNext={next} onBack={back} />
           )}

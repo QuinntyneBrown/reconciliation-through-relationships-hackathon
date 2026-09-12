@@ -8,7 +8,7 @@ This project is under active development. Security fixes are applied to the late
 
 Do not disclose a suspected vulnerability in a public issue, discussion, pull request, or social channel.
 
-Use [GitHub private vulnerability reporting](https://github.com/QuinntyneBrown/reconciliation-through-relationships-hackathon/security/advisories/new) to send the maintainers:
+Use [GitHub private vulnerability reporting](https://github.com/QuinntyneBrown/groundwork/security/advisories/new) to send the maintainers:
 
 - A description of the vulnerability and its potential impact
 - The affected route, component, dependency, or configuration
@@ -21,4 +21,4 @@ Maintainers will acknowledge a report as soon as practical, investigate it, and 
 
 ## Security considerations
 
-The repository is a hackathon-origin project and has not completed an independent production security or privacy assessment. Deployers are responsible for reviewing authentication, authorization, row-level security, dependency risk, secret management, data residency, logging, backups, and applicable privacy obligations before handling personal information.
+The project has not completed an independent production security or privacy assessment. Deployers are responsible for reviewing authentication, authorization, row-level security, dependency risk, secret management, data residency, logging, backups, and applicable privacy obligations before handling personal information.

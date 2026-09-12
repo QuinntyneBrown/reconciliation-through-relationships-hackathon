@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
-import { RtrBrand, Weave } from "@/components/rtr-brand";
+import { Brand, Weave } from "@/components/brand";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -40,17 +40,14 @@ const SLIDES: Slide[] = [
           className="mb-10 w-64 sm:w-80"
           priority
         />
-        <Badge className="bg-ochre-500 text-spruce-900 mb-6">
-          FaithTech Hackathon · 2026
-        </Badge>
+        <Badge className="bg-ochre-500 text-spruce-900 mb-6">FaithTech Hackathon · 2026</Badge>
         <h1 className="font-heading text-on-dark mb-6 text-6xl italic sm:text-7xl md:text-8xl">
-          Reconciliation begins with a{" "}
-          <span className="text-ochre-500">relationship.</span>
+          Reconciliation begins with a <span className="text-ochre-500">relationship.</span>
         </h1>
         <Weave onDark className="mt-8 w-40" />
         <p className="text-on-dark-soft mt-12 max-w-2xl text-lg">
-          A digital home for the Truth and Reconciliation Commission&apos;s call to
-          real, human connection between Indigenous and non-Indigenous Canadians.
+          A digital home for the Truth and Reconciliation Commission&apos;s call to real, human
+          connection between Indigenous and non-Indigenous Canadians.
         </p>
       </div>
     ),
@@ -67,8 +64,8 @@ const SLIDES: Slide[] = [
         </h2>
         <p className="text-ink-soft mb-10 max-w-3xl text-xl leading-relaxed">
           RTR pairs Indigenous and non-Indigenous participants for months of one-on-one
-          conversation, guided by facilitators and shared learning about Indigenous history
-          in Canada.
+          conversation, guided by facilitators and shared learning about Indigenous history in
+          Canada.
         </p>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
@@ -94,18 +91,23 @@ const SLIDES: Slide[] = [
               body: "The program closes with the whole cohort gathering to share what grew from every friendship.",
             },
           ].map((s) => (
-            <div key={s.step} className="border-border bg-parchment shadow-rtr-1 rounded-2xl border p-5">
-              <span className="text-ochre-500 font-heading mb-1 block text-2xl italic">{s.step}</span>
+            <div
+              key={s.step}
+              className="border-border bg-parchment shadow-rtr-1 rounded-2xl border p-5"
+            >
+              <span className="text-ochre-500 font-heading mb-1 block text-2xl italic">
+                {s.step}
+              </span>
               <h3 className="text-heading mb-2 text-lg font-semibold">{s.title}</h3>
               <p className="text-ink-soft text-sm leading-relaxed">{s.body}</p>
             </div>
           ))}
         </div>
 
-        <p className="text-ink mt-8 max-w-4xl text-lg italic leading-relaxed">
-          Today all of this runs on spreadsheets, email chains, and phone calls — brittle,
-          slow, and impossible to answer basic questions like{" "}
-          <span className="text-heading not-italic font-semibold">
+        <p className="text-ink mt-8 max-w-4xl text-lg leading-relaxed italic">
+          Today all of this runs on spreadsheets, email chains, and phone calls — brittle, slow, and
+          impossible to answer basic questions like{" "}
+          <span className="text-heading font-semibold not-italic">
             &ldquo;how many people are ready to gather in Regina?&rdquo;
           </span>
         </p>
@@ -153,9 +155,7 @@ const SLIDES: Slide[] = [
               <div className="bg-spruce-100 text-spruce-700 mb-4 flex h-11 w-11 items-center justify-center rounded-xl">
                 <p.icon className="h-5 w-5" />
               </div>
-              <h3 className="text-heading mb-2 text-lg font-semibold">
-                {p.title}
-              </h3>
+              <h3 className="text-heading mb-2 text-lg font-semibold">{p.title}</h3>
               <p className="text-ink-soft text-base leading-relaxed">{p.body}</p>
             </div>
           ))}
@@ -178,13 +178,9 @@ const SLIDES: Slide[] = [
           <div className="border-berry-700/20 bg-berry-100/30 rounded-2xl border p-6">
             <div className="mb-4 flex items-center gap-2">
               <div className="bg-berry-700 h-2 w-2 rounded-full" />
-              <p className="text-berry-700 text-sm font-semibold uppercase tracking-wide">
-                Before
-              </p>
+              <p className="text-berry-700 text-sm font-semibold tracking-wide uppercase">Before</p>
             </div>
-            <h3 className="text-heading mb-4 text-xl font-semibold">
-              Manual, brittle, invisible
-            </h3>
+            <h3 className="text-heading mb-4 text-xl font-semibold">Manual, brittle, invisible</h3>
             <ul className="text-ink space-y-3 text-base leading-relaxed">
               <li className="flex gap-2">
                 <span className="text-berry-700">×</span>
@@ -217,13 +213,11 @@ const SLIDES: Slide[] = [
           <div className="border-spruce-700/20 bg-spruce-100 rounded-2xl border p-6">
             <div className="mb-4 flex items-center gap-2">
               <div className="bg-spruce-700 h-2 w-2 rounded-full" />
-              <p className="text-spruce-700 text-sm font-semibold uppercase tracking-wide">
-                With RTR Portal
+              <p className="text-spruce-700 text-sm font-semibold tracking-wide uppercase">
+                With Groundwork
               </p>
             </div>
-            <h3 className="text-heading mb-4 text-xl font-semibold">
-              Guided, safe, scalable
-            </h3>
+            <h3 className="text-heading mb-4 text-xl font-semibold">Guided, safe, scalable</h3>
             <ul className="text-ink space-y-3 text-base leading-relaxed">
               <li className="flex gap-2">
                 <span className="text-spruce-700">✓</span>
@@ -334,7 +328,7 @@ const SLIDES: Slide[] = [
               body: "Regional discovery map — city precision only, consent required to appear",
             },
             {
-              label: "RTR design system",
+              label: "Groundwork design system",
               body: "Spruce, ochre, birch tokens — accessible, culturally grounded, mobile-first",
             },
           ].map((t) => (
@@ -342,9 +336,7 @@ const SLIDES: Slide[] = [
               key={t.label}
               className="border-border bg-parchment shadow-rtr-1 rounded-2xl border p-6"
             >
-              <Badge className="bg-spruce-100 text-spruce-700 mb-3">
-                {t.label}
-              </Badge>
+              <Badge className="bg-spruce-100 text-spruce-700 mb-3">{t.label}</Badge>
               <p className="text-ink-soft leading-relaxed">{t.body}</p>
             </div>
           ))}
@@ -390,15 +382,11 @@ const SLIDES: Slide[] = [
             },
           ].map((s) => (
             <div key={s.step} className="flex flex-col">
-              <span className="text-ochre-500 font-heading mb-2 text-4xl italic">
-                {s.step}
-              </span>
+              <span className="text-ochre-500 font-heading mb-2 text-4xl italic">{s.step}</span>
               <div className="bg-spruce-100 text-spruce-700 mb-3 flex h-10 w-10 items-center justify-center rounded-xl">
                 <s.icon className="h-5 w-5" />
               </div>
-              <h3 className="text-heading mb-1 text-lg font-semibold">
-                {s.title}
-              </h3>
+              <h3 className="text-heading mb-1 text-lg font-semibold">{s.title}</h3>
               <p className="text-ink-soft text-base leading-relaxed">{s.body}</p>
             </div>
           ))}
@@ -413,9 +401,7 @@ const SLIDES: Slide[] = [
     id: "facilitator",
     render: () => (
       <div className="bg-spruce-800 text-on-dark flex h-full flex-col justify-center px-12 sm:px-24">
-        <p className="text-ochre-500 rtr-eyebrow mb-4">
-          Solution · Facilitator
-        </p>
+        <p className="text-ochre-500 rtr-eyebrow mb-4">Solution · Facilitator</p>
         <h2 className="font-heading text-on-dark mb-10 text-5xl">
           What used to take a week now takes a Zoom.
         </h2>
@@ -447,12 +433,8 @@ const SLIDES: Slide[] = [
                 <s.icon className="h-6 w-6" />
               </div>
               <div>
-                <h3 className="text-on-dark mb-2 text-xl font-semibold">
-                  {s.title}
-                </h3>
-                <p className="text-on-dark-soft text-lg leading-relaxed">
-                  {s.body}
-                </p>
+                <h3 className="text-on-dark mb-2 text-xl font-semibold">{s.title}</h3>
+                <p className="text-on-dark-soft text-lg leading-relaxed">{s.body}</p>
               </div>
             </div>
           ))}
@@ -467,17 +449,13 @@ const SLIDES: Slide[] = [
     render: () => (
       <div className="flex h-full flex-col items-center justify-center px-12 text-center sm:px-24">
         <Badge className="bg-ochre-500 text-spruce-900 mb-6">Live now</Badge>
-        <h2 className="font-heading text-heading mb-6 text-6xl">
-          Let&apos;s open the platform.
-        </h2>
+        <h2 className="font-heading text-heading mb-6 text-6xl">Let&apos;s open the platform.</h2>
         <p className="text-ink mb-8 max-w-2xl text-xl leading-relaxed">
-          Two test accounts on the deployed app — sign in as a participant to
-          walk the journey, then as a facilitator to approve a match.
+          Two test accounts on the deployed app — sign in as a participant to walk the journey, then
+          as a facilitator to approve a match.
         </p>
         <div className="border-border bg-parchment shadow-rtr-1 mb-6 rounded-2xl border p-8">
-          <p className="text-ink-soft mb-3 text-sm font-semibold uppercase tracking-wide">
-            Try it
-          </p>
+          <p className="text-ink-soft mb-3 text-sm font-semibold tracking-wide uppercase">Try it</p>
           <a
             href="https://rtr-platform.vercel.app"
             target="_blank"
@@ -538,8 +516,8 @@ const SLIDES: Slide[] = [
               <p className="text-heading text-lg font-semibold">Next up: Cohorts</p>
             </div>
             <p className="text-ink mb-4 text-base leading-relaxed">
-              The map already <em>detects</em> when a region has 5+ eligible
-              participants. The next milestone builds the cohort itself:
+              The map already <em>detects</em> when a region has 5+ eligible participants. The next
+              milestone builds the cohort itself:
             </p>
             <ul className="text-ink space-y-2 text-base leading-relaxed">
               <li>Facilitator forms a cohort from the map</li>
@@ -565,12 +543,8 @@ const SLIDES: Slide[] = [
     render: () => (
       <div className="bg-spruce-800 text-on-dark flex h-full flex-col items-center justify-center px-12 text-center">
         <Weave onDark className="mb-10 w-40" />
-        <h1 className="font-heading text-on-dark mb-6 text-7xl italic">
-          Miigwech.
-        </h1>
-        <p className="font-heading text-ochre-500 mb-12 text-3xl italic">
-          Thank you.
-        </p>
+        <h1 className="font-heading text-on-dark mb-6 text-7xl italic">Miigwech.</h1>
+        <p className="font-heading text-ochre-500 mb-12 text-3xl italic">Thank you.</p>
         <p className="text-on-dark-soft max-w-2xl text-xl leading-relaxed">
           We were told the truth. Now we choose the relationship.
         </p>
@@ -606,7 +580,10 @@ export default function DemoPage() {
     <div className="bg-birch fixed inset-0 flex flex-col">
       {/* Slide surface */}
       <div className="flex-1 overflow-hidden">
-        <div key={current.id} className="animate-in fade-in slide-in-from-right-4 h-full duration-300">
+        <div
+          key={current.id}
+          className="animate-in fade-in slide-in-from-right-4 h-full duration-300"
+        >
           {current.render()}
         </div>
       </div>
@@ -614,7 +591,7 @@ export default function DemoPage() {
       {/* Nav bar */}
       <div className="border-border bg-parchment/95 supports-[backdrop-filter]:bg-parchment/80 flex items-center justify-between border-t px-6 py-3 backdrop-blur">
         <div className="flex items-center gap-3">
-          <RtrBrand />
+          <Brand />
           <span className="text-ink-faint text-sm">FaithTech Hackathon</span>
         </div>
 

@@ -90,7 +90,7 @@
   --radius-4xl: calc(var(--r-lg) + 12px);
   --shadow-rtr-1: var(--shadow-1);
   --shadow-rtr-2: var(--shadow-2);
-  /* RTR brand palette — exposed as Tailwind utilities (bg-spruce-800, text-river-700, etc.) */
+  /* Groundwork brand palette — exposed as Tailwind utilities (bg-spruce-800, text-river-700, etc.) */
   --color-spruce-900: var(--spruce-900);
   --color-spruce-800: var(--spruce-800);
   --color-spruce-700: var(--spruce-700);

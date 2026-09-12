@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { Weave } from "@/components/rtr-brand";
+import { Weave } from "@/components/brand";
 
 export function AppFooter() {
   return (
@@ -8,8 +8,9 @@ export function AppFooter() {
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
           <div>
-            <h4 className="text-on-dark mb-2">Reconciliation Through Relationships</h4>
+            <h4 className="text-on-dark mb-2">Groundwork</h4>
             <p>Building meaningful relationships between Indigenous and non-Indigenous people.</p>
+            <p className="mt-1">In partnership with Reconciliation Through Relationships.</p>
             <p className="mt-1">
               <Link
                 href="https://rightrelationship.ca"

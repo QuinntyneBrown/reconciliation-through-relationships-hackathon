@@ -43,10 +43,11 @@ type BrandProps = {
   className?: string;
 };
 
-export function RtrBrand({ href = "/dashboard", className }: BrandProps) {
+export function Brand({ href = "/dashboard", className }: BrandProps) {
   return (
     <Link
       href={href}
+      aria-label="Groundwork home"
       className={cn(
         "text-on-dark hover:text-on-dark mr-3 flex shrink-0 items-center gap-2.5 no-underline",
         className,
@@ -55,10 +56,10 @@ export function RtrBrand({ href = "/dashboard", className }: BrandProps) {
       <BrandMark className="size-[30px]" />
       <span className="leading-none">
         <span className="font-heading block text-[19px] leading-[1.1] font-semibold tracking-[0.01em]">
-          Reconciliation
+          Groundwork
         </span>
         <span className="text-on-dark-soft mt-0.5 block text-[10.5px] leading-none font-semibold tracking-[0.12em] uppercase">
-          Through Relationships
+          Reconciliation Through Relationships
         </span>
       </span>
     </Link>

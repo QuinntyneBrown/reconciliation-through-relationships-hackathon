@@ -1,5 +1,5 @@
 /**
- * Copy for the RTR marketing one-sheets.
+ * Copy for the Groundwork marketing one-sheets.
  * Source of truth for claims: README.md, docs/guide/, docs/design-system/.
  */
 
@@ -123,7 +123,7 @@ export const docs = [
     id: "rtr-guided-onboarding",
     eyebrow: "Capability · Getting started",
     title: "A welcome, not a form.",
-    lead: "If you can use email and a web browser, you can join RTR. Five gentle steps introduce you to the community — at your own pace, in your own words.",
+    lead: "If you can use email and a web browser, you can join Groundwork. Five gentle steps introduce you to the community — at your own pace, in your own words.",
     features: [
       {
         icon: "user",
@@ -182,7 +182,7 @@ export const docs = [
     id: "rtr-guided-matching",
     eyebrow: "Capability · Guided matching",
     title: "Introduced with care. Connected by consent.",
-    lead: "RTR never auto-matches. A trained facilitator reviews every recommendation, and both people must say yes before any contact opens.",
+    lead: "Groundwork never auto-matches. A trained facilitator reviews every recommendation, and both people must say yes before any contact opens.",
     features: [
       {
         icon: "eye",
@@ -209,7 +209,7 @@ export const docs = [
     id: "rtr-community-map",
     eyebrow: "Capability · Community & regional map",
     title: "Local by design. Private by default.",
-    lead: "Reconciliation happens in communities, not in feeds. RTR shows circles forming near you — while keeping every location at region level.",
+    lead: "Reconciliation happens in communities, not in feeds. Groundwork shows circles forming near you — while keeping every location at region level.",
     features: [
       {
         icon: "map",
@@ -236,7 +236,7 @@ export const docs = [
     id: "rtr-messaging-meetings",
     eyebrow: "Capability · Messaging & meetings",
     title: "From first hello to sitting down together.",
-    lead: "Once two people agree to connect, RTR gives the relationship room to grow — requests, messages, and meetings in one calm place.",
+    lead: "Once two people agree to connect, Groundwork gives the relationship room to grow — requests, messages, and meetings in one calm place.",
     features: [
       {
         icon: "mark",
@@ -263,7 +263,7 @@ export const docs = [
     id: "rtr-facilitator-tools",
     eyebrow: "Capability · Facilitator tools",
     title: "Care for the people doing the caring.",
-    lead: "Facilitators guide the community — reviewing matches, supporting journeys, forming local groups. RTR keeps their time where it belongs: with people.",
+    lead: "Facilitators guide the community — reviewing matches, supporting journeys, forming local groups. Groundwork keeps their time where it belongs: with people.",
     features: [
       {
         icon: "dashboard",

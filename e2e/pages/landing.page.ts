@@ -25,6 +25,14 @@ export class LandingPage extends BasePage {
     return this.page.getByRole("img", { name: "Reconciliation Through Relationships logo" });
   }
 
+  brandLink() {
+    return this.page.locator("header").getByRole("link", { name: "Groundwork home" });
+  }
+
+  partnerCredit() {
+    return this.page.locator("footer").getByRole("link", { name: "rightrelationship.ca" });
+  }
+
   successStories() {
     return this.page.getByRole("region", { name: "Success stories" });
   }

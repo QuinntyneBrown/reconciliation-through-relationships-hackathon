@@ -28,7 +28,9 @@ export default function LoginPage() {
       setLoading(false);
       return;
     }
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
     if (!user) return;
     const { data: profile } = await supabase
       .from("profiles")
@@ -44,15 +46,15 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4">
+    <div className="bg-background flex min-h-screen flex-col items-center justify-center px-4">
       <Link href="/" className="mb-8 text-center">
-        <p className="text-2xl font-bold text-primary">Reconciliation Through Relationships</p>
+        <p className="text-primary text-2xl font-bold">Groundwork</p>
       </Link>
 
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Welcome</CardTitle>
-          <CardDescription>Sign in to your RTR account.</CardDescription>
+          <CardDescription>Sign in to your Groundwork account.</CardDescription>
         </CardHeader>
 
         <CardContent>
@@ -84,7 +86,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
-                  className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -94,7 +96,7 @@ export default function LoginPage() {
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "Signing in…" : "Sign in"}
             </Button>
-            <p className="text-center text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-center text-sm">
               New here?{" "}
               <Link
                 href="/auth/signup"

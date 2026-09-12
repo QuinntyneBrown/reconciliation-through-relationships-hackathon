@@ -1,12 +1,12 @@
-# RTR User Guide
+# Groundwork User Guide
 
-Welcome to **Reconciliation Through Relationships (RTR)**. This guide explains,
-in plain language, how to use the RTR website — step by step, with pictures.
+Welcome to **Groundwork**, the platform built with Reconciliation Through
+Relationships (RTR). This guide explains, in plain language, how to use it — step by step, with pictures.
 
 You don't need any technical knowledge to follow along. If you can use email and
-a web browser, you can use RTR.
+a web browser, you can use Groundwork.
 
-![The RTR welcome page. A large heading reads "Reconciliation begins with a relationship," with a "Begin your journey" button.](images/landing.png)
+![The Groundwork welcome page. A large heading reads "Reconciliation begins with a relationship," with a "Begin your journey" button.](images/landing.png)
 
 ---
 
@@ -22,7 +22,7 @@ faith. It was founded in 2021 by Indigenous leaders.
 
 ## Who is this guide for?
 
-There are two kinds of people who use RTR:
+There are two kinds of people who use Groundwork:
 
 - **Participants** — anyone joining RTR to learn and to be matched with someone
   for a one-to-one relationship. Most of this guide is for you.

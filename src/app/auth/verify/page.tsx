@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { MailCheck } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { RtrBrand, Weave } from "@/components/rtr-brand";
+import { Brand, Weave } from "@/components/brand";
 
 /**
  * Where sign-up sends people when the project confirms email addresses. The
@@ -19,7 +19,7 @@ function VerifyContent({ email }: { email?: string }) {
         href="/"
         className="text-spruce-700 mb-8 inline-flex text-sm font-semibold min-[861px]:hidden"
       >
-        ← Back to RTR
+        ← Back to Groundwork
       </Link>
 
       <span className="bg-spruce-50 text-spruce-800 mb-5 inline-flex h-12 w-12 items-center justify-center rounded-full">
@@ -48,7 +48,7 @@ function VerifyContent({ email }: { email?: string }) {
         </CardHeader>
         <CardContent>
           <ul className="text-ink-soft space-y-3 text-sm">
-            <li>The link opens RTR and signs you in automatically.</li>
+            <li>The link opens Groundwork and signs you in automatically.</li>
             <li>It can take a minute to arrive. Check your spam folder before trying again.</li>
             <li>Already confirmed? You can sign in below.</li>
           </ul>
@@ -64,7 +64,7 @@ function VerifyContent({ email }: { email?: string }) {
       </Card>
 
       <p className="text-ink-faint mt-5 text-center text-xs">
-        Your email is used only for your RTR account and notifications.
+        Your email is used only for your Groundwork account and notifications.
       </p>
     </div>
   );
@@ -80,7 +80,7 @@ export default async function VerifyPage({
   return (
     <div className="grid min-h-screen min-[861px]:grid-cols-2">
       <aside className="bg-spruce-800 text-on-dark rtr-panel-on-dark hidden flex-col justify-between p-12 [--rtr-figure-position:center_bottom] min-[861px]:flex">
-        <RtrBrand href="/" />
+        <Brand href="/" />
         <div>
           <p className="font-heading text-on-dark max-w-[20ch] text-[26px] leading-[1.4] italic">
             &ldquo;We were told the truth. Now we choose the relationship.&rdquo;

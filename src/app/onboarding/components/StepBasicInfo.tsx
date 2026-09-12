@@ -112,7 +112,7 @@ export default function StepBasicInfo({ data, onChange, onNext }: Props) {
           id="bio"
           value={data.bio}
           onChange={(e) => onChange({ bio: e.target.value })}
-          placeholder="Share a little about who you are — your story, what you care about, and what brings you to RTR."
+          placeholder="Share a little about who you are — your story, what you care about, and what brings you to Groundwork."
           rows={4}
         />
       </div>

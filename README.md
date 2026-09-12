@@ -1,11 +1,11 @@
 <div align="center">
   <img src="public/rtr-logo.png" alt="Reconciliation Through Relationships" width="220">
 
-# Reconciliation Through Relationships
+# Groundwork
 
 A digital platform for learning, listening, and building meaningful relationships between Indigenous and non-Indigenous people.
 
-[![Build](https://github.com/QuinntyneBrown/reconciliation-through-relationships-hackathon/actions/workflows/ci.yml/badge.svg)](https://github.com/QuinntyneBrown/reconciliation-through-relationships-hackathon/actions/workflows/ci.yml)
+[![Build](https://github.com/QuinntyneBrown/groundwork/actions/workflows/ci.yml/badge.svg)](https://github.com/QuinntyneBrown/groundwork/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-107C10.svg)](LICENSE)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -17,9 +17,11 @@ A digital platform for learning, listening, and building meaningful relationship
 
 ## About the project
 
-Reconciliation Through Relationships (RTR) helps participants move from registration and a shared learning journey to facilitator-supported, local relationship building. The application is developed in partnership with [Reconciliation Through Relationships](https://rightrelationship.ca/) in response to the Truth and Reconciliation Commission of Canada's Calls to Action.
+Groundwork helps participants move from registration and a shared learning journey to facilitator-supported, local relationship building. The application is developed in partnership with [Reconciliation Through Relationships](https://rightrelationship.ca/) (RTR) in response to the Truth and Reconciliation Commission of Canada's Calls to Action.
 
-This repository began as a hackathon project. It uses synthetic data for development and demonstration; it must not be treated as a production system of record without an independent privacy, security, accessibility, and operational review. The original challenge is available in [docs/challenge.txt](docs/challenge.txt).
+Groundwork is named for what it does: participants complete the learning journey before they become eligible for matching, so the platform lays the groundwork and the people build the relationship.
+
+The project uses synthetic data for development and demonstration; it must not be treated as a production system of record without an independent privacy, security, accessibility, and operational review. The brief the project was originally built against is available in [docs/challenge.txt](docs/challenge.txt).
 
 ## Features
 
@@ -44,8 +46,8 @@ See the [illustrated user guide](docs/guide/README.md) for the complete particip
 ### Local development
 
 ```bash
-git clone https://github.com/QuinntyneBrown/reconciliation-through-relationships-hackathon.git
-cd reconciliation-through-relationships-hackathon
+git clone https://github.com/QuinntyneBrown/groundwork.git
+cd groundwork
 npm ci
 cp .env.example .env.local
 npm run dev
@@ -121,4 +123,4 @@ Maintainer responsibilities, decision making, and the path to becoming a maintai
 
 ## License
 
-Copyright (c) 2026 Reconciliation Through Relationships contributors. Released under the [MIT License](LICENSE).
+Copyright (c) 2026 Groundwork contributors. Released under the [MIT License](LICENSE).

@@ -5,10 +5,10 @@
 Before asking for help:
 
 1. Review the [README](README.md), [user guide](docs/guide/README.md), and [architecture documentation](docs/ARCHITECTURE.md).
-2. Search [existing issues](https://github.com/QuinntyneBrown/reconciliation-through-relationships-hackathon/issues) for the same problem.
+2. Search [existing issues](https://github.com/QuinntyneBrown/groundwork/issues) for the same problem.
 3. Confirm the problem still occurs on the latest `main` branch with supported Node.js and dependency versions.
 
-For reproducible defects, open a [bug report](https://github.com/QuinntyneBrown/reconciliation-through-relationships-hackathon/issues/new?template=bug_report.yml). For scoped improvements, open a [feature request](https://github.com/QuinntyneBrown/reconciliation-through-relationships-hackathon/issues/new?template=feature_request.yml).
+For reproducible defects, open a [bug report](https://github.com/QuinntyneBrown/groundwork/issues/new?template=bug_report.yml). For scoped improvements, open a [feature request](https://github.com/QuinntyneBrown/groundwork/issues/new?template=feature_request.yml).
 
 Include the expected and actual behaviour, reproduction steps, relevant environment details, and sanitized logs or screenshots. Never post participant data, credentials, tokens, or security vulnerabilities.
 

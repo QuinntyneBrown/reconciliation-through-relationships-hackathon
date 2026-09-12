@@ -8,7 +8,7 @@ This document answers one question: of the Azure services that can host this app
 
 **Azure Container Apps on the Consumption plan, one container, `min-replicas=0`, `max-replicas=1`, 0.5 vCPU and 1 GiB, with the free managed TLS certificate.**
 
-For a hackathon demo or a low-traffic pilot this costs **$0/month for the Azure portion**, because the Consumption free grant covers roughly 100 active replica-hours and 2 million requests per subscription per calendar month. You pay only when you exceed the grant or pin a replica warm.
+For a demo or a low-traffic pilot this costs **$0/month for the Azure portion**, because the Consumption free grant covers roughly 100 active replica-hours and 2 million requests per subscription per calendar month. You pay only when you exceed the grant or pin a replica warm.
 
 The trade is a cold start. When the app has scaled to zero, the first request pays container start plus Next.js boot before it responds.
 

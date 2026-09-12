@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Reconciliation Through Relationships",
+  title: "Groundwork",
   description:
     "A welcoming platform helping Indigenous and non-Indigenous participants learn, connect, and build local reconciliation cohorts.",
 };

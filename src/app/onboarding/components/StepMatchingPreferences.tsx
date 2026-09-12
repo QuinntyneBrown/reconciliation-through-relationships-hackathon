@@ -102,7 +102,7 @@ export default function StepMatchingPreferences({
       <div className="border-border bg-muted/30 text-muted-foreground rounded-lg border p-4 text-sm">
         <p className="text-foreground mb-1 font-medium">Privacy commitment</p>
         <p>
-          Your personal information is only shared with your matched connection and RTR
+          Your personal information is only shared with your matched connection and Groundwork
           facilitators. Your exact location is never shown to other participants. You can update or
           delete your profile at any time.
         </p>
