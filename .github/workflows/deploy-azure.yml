@@ -136,7 +136,7 @@ jobs:
       # SHA tags only. A mutable :latest would make the deployed revision
       # ambiguous and rollback guesswork.
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: ./Dockerfile
