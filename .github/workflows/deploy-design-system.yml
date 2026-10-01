@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Build and deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
